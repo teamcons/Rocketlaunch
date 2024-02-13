@@ -48,6 +48,20 @@ Write-Output "[STARTUP] Getting all variables in place"
 [string]$LOAD_SOURCE_FROM = "$env:USERPROFILE\Downloads\"
 
 
+#========================================
+# Outlook Capabilities
+
+
+$OL=New-Object -ComObject OUTLOOK.APPLICATION
+$ns = $OL.GETNAMESPACE("MAPI")
+$date = Get-Date (Get-Date).AddDays(-2) -Format 'dd/MM/yyyy'
+$filter = "[ReceivedTime] >= '$date 17:30'"
+$allmails = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
+
+
+
+
+
 # Load templates from a csv in same place as executable
 [string]$LOAD_TEMPLATES_FROM = $MyInvocation.MyCommand.Path
 [string]$ROOTSTRUCTURE = "M:\9_JOBS_XTRF\"
@@ -118,7 +132,7 @@ Add-Type -AssemblyName System.Drawing
 
 $form = New-Object System.Windows.Forms.Form
 $form.Text = $APPNAME
-$form.Size = New-Object System.Drawing.Size(265,400)
+$form.Size = New-Object System.Drawing.Size(265,420)
 $form.StartPosition = 'CenterScreen'
 $form.FormBorderStyle = 'FixedDialog'
 $form.MaximizeBox = $false
@@ -165,17 +179,74 @@ $form.Controls.Add($textBox)
 $form.Add_Shown({$textBox.Select()})
 
 
+
+#=====================
+#= COMBOBOX EMAIL    =
+
+
+# Label above input
+$labelcombobox = New-Object System.Windows.Forms.Label
+$labelcombobox.Location = New-Object System.Drawing.Point(20,85)
+$labelcombobox.Size = New-Object System.Drawing.Size(215,20)
+$labelcombobox.Text = 'Email mit Ausgangsdatei'
+$form.Controls.Add($labelcombobox)
+
+$Combobox = New-Object System.Windows.Forms.Combobox 
+$Combobox.Location = New-Object System.Drawing.Size(20,105) 
+$Combobox.Size = New-Object System.Drawing.Size(215,20) 
+$Combobox.Height = 200
+$Combobox.DropDownStyle = [System.Windows.Forms.ComboBoxStyle]::DropDownList
+
+$allgoodmails = New-Object System.Collections.ArrayList
+[int]$goodmailindex = 0
+
+# Look for emails with attachments
+foreach ($mail in $allmails)
+{
+
+    [bool]$AddToGoodMails = $false
+    foreach ( $attach in $mail.Attachments ) 
+    {
+        #echo $attach.FileName
+        if ($attach.FileName -match  "(.pdf|.doc|.xls)" )
+        {
+            $AddToGoodMails = $true
+
+        }   # End of each mails
+
+    } #End of checking attachments
+
+    # we found one with attachment !
+    if ($AddToGoodMails -eq $true)
+    {
+        $allgoodmails.Add($mail)
+        [void] $Combobox.Items.Add($mail.Subject)
+        $goodmailindex += 1
+
+    } # End of adding goodmail
+
+} # End of looking for emails with attachments
+
+
+[void] $Combobox.Items.Add("(Ich möchte die Dateien selbst holen)")
+[void] $Combobox.Items.Add("(Keine Ausgangsdatei)")
+$Combobox.SelectedItem = $Combobox.Items[0]
+
+$form.Controls.Add($Combobox) 
+
+
+
 #=====================
 #= LIST OF TEMPLATES =
 
-$label2 = New-Object System.Windows.Forms.Label
-$label2.Location = New-Object System.Drawing.Point(20,90)
-$label2.Size = New-Object System.Drawing.Size(215,30)
-$label2.Text = 'Welche Projektvorlage soll verwendet werden?'
-$form.Controls.Add($label2)
+$labeltemplate = New-Object System.Windows.Forms.Label
+$labeltemplate.Location = New-Object System.Drawing.Point(20,140)
+$labeltemplate.Size = New-Object System.Drawing.Size(215,30)
+$labeltemplate.Text = 'Welche Projektvorlage soll verwendet werden?'
+$form.Controls.Add($labeltemplate)
 
 $listBox = New-Object System.Windows.Forms.ListBox
-$listBox.Location = New-Object System.Drawing.Point(20,120)
+$listBox.Location = New-Object System.Drawing.Point(20,170)
 $listBox.Size = New-Object System.Drawing.Size(215,60)
 $listBox.Height = 120
 
@@ -197,18 +268,18 @@ $form.Controls.Add($listBox)
 
 
 # Check if include original files
-$CheckIfSourceFiles = New-Object System.Windows.Forms.CheckBox        
-$CheckIfSourceFiles.Location = New-Object System.Drawing.Point(20,240)
-$CheckIfSourceFiles.Size = New-Object System.Drawing.Size(215,25)
-$CheckIfSourceFiles.Text = "Ausgangsdateien einbeziehen?"
-$CheckIfSourceFiles.UseVisualStyleBackColor = $True
-$CheckIfSourceFiles.Checked = $True
-$form.Controls.Add($CheckIfSourceFiles)
+#$CheckIfSourceFiles = New-Object System.Windows.Forms.CheckBox        
+#$CheckIfSourceFiles.Location = New-Object System.Drawing.Point(20,240)
+#$CheckIfSourceFiles.Size = New-Object System.Drawing.Size(215,25)
+#$CheckIfSourceFiles.Text = "Ausgangsdateien einbeziehen?"
+#$CheckIfSourceFiles.UseVisualStyleBackColor = $True
+#$CheckIfSourceFiles.Checked = $True
+#$form.Controls.Add($CheckIfSourceFiles)
 
 
 # Check if count words ?
 $CheckIfAnalysis = New-Object System.Windows.Forms.CheckBox        
-$CheckIfAnalysis.Location = New-Object System.Drawing.Point(20,265)
+$CheckIfAnalysis.Location = New-Object System.Drawing.Point(20,285)
 $CheckIfAnalysis.Size = New-Object System.Drawing.Size(215,25)
 $CheckIfAnalysis.Text = "Wortzahl machen? (Langsam)"
 $CheckIfAnalysis.UseVisualStyleBackColor = $True
@@ -219,7 +290,7 @@ $form.Controls.Add($CheckIfAnalysis)
 
 # Check if start new trados project
 $CheckIfTrados = New-Object System.Windows.Forms.CheckBox        
-$CheckIfTrados.Location = New-Object System.Drawing.Point(20,290)
+$CheckIfTrados.Location = New-Object System.Drawing.Point(20,310)
 $CheckIfTrados.Size = New-Object System.Drawing.Size(215,25)
 $CheckIfTrados.Text = "Ein neues Trados-Projekt beginnen?"
 $CheckIfTrados.UseVisualStyleBackColor = $True
@@ -232,16 +303,20 @@ $form.Controls.Add($CheckIfTrados)
 #= OKCANCEL BUTTONS =
 
 $okButton = New-Object System.Windows.Forms.Button
-$okButton.Location = New-Object System.Drawing.Point(40,325)
+$okButton.Location = New-Object System.Drawing.Point(40,345)
 $okButton.Size = New-Object System.Drawing.Size(80,25)
 $okButton.Text = 'Los!'
 $okButton.UseVisualStyleBackColor = $True
 $okButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
 $form.AcceptButton = $okButton
+
+
+#$okButton.BackColor =”Green”
+
 $form.Controls.Add($okButton)
 
 $cancelButton = New-Object System.Windows.Forms.Button
-$cancelButton.Location = New-Object System.Drawing.Point(135,325)
+$cancelButton.Location = New-Object System.Drawing.Point(135,345)
 $cancelButton.Size = New-Object System.Drawing.Size(80,25)
 $cancelButton.Text = 'Nö'
 $cancelButton.UseVisualStyleBackColor = $True
