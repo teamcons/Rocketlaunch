@@ -65,9 +65,9 @@ Write-Output "[STARTUP] Getting all variables in place"
 try
 {
     # 
-    cd $ROOTSTRUCTURE
-    cd (dir 2024_* -Directory | Select-Object -Last 1)   
-    $PREDICT_CODE =  (dir -Directory | Select-Object -Last 1).Name.Substring(5,4)
+    Set-Location $ROOTSTRUCTURE
+    Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)   
+    $PREDICT_CODE =  (Get-ChildItem -Directory | Select-Object -Last 1).Name.Substring(5,4)
     $PREDICT_CODE =  [int]$PREDICT_CODE + 1
     [string]$PREDICT_CODE =  -join($YEAR,"-",$PREDICT_CODE,"_")
     Write-Output "[PREDICTED] Next is $PREDICT_CODE"
@@ -542,8 +542,8 @@ if ($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
   
         # Create the CSV
         $ANALYSIS = -join($DIRCODE,"_","Analyse.csv")
-        echo "sep=;" | Out-File -FilePath "$INFO\$ANALYSIS"
-        echo "Datei;Wörterzahl" | Out-File -FilePath "$INFO\$ANALYSIS" -Append 
+        Write-Output "sep=;" | Out-File -FilePath "$INFO\$ANALYSIS"
+        Write-Output "Datei;Wörterzahl" | Out-File -FilePath "$INFO\$ANALYSIS" -Append 
         
 
 
@@ -576,7 +576,7 @@ if ($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
             [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Word.WdStatistic]::wdStatisticWords)
             [int]$totalcount += $wordcount
             Write-Output "Wordcount: $wordcount"
-            echo "$newname;$wordcount" | Out-File -FilePath "$INFO\$ANALYSIS" -Append 
+            Write-Output "$newname;$wordcount" | Out-File -FilePath "$INFO\$ANALYSIS" -Append 
 
         
             #CLOSE FILE
@@ -595,7 +595,7 @@ if ($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
         $word.Quit()
     
         # Finish CSV file, 
-        echo "SUMME;$totalcount" | Out-File -FilePath "$INFO\$ANALYSIS" -Append
+        Write-Output "SUMME;$totalcount" | Out-File -FilePath "$INFO\$ANALYSIS" -Append
 
         # and create shortcut to it in orig for quick access
         # name has the totalcount for quicker overview
@@ -643,12 +643,12 @@ if ($CheckIfTrados.CheckState.ToString() -eq "Checked")
 
     # May not be where expected
     try {
-        cd "C:\Program Files (x86)\Trados\Trados Studio\Studio17"
+        Set-Location "C:\Program Files (x86)\Trados\Trados Studio\Studio17"
         }
     catch { 
         $TRADOSDIR = (Get-ChildItem -Path "C:\Program Files (x86)" -Filter *.sdlproj -Recurse -ErrorAction SilentlyContinue -Force -File).Directory.FullName
         Write-Output "[DETECTED] Trados in $TRADOSDIR"
-        cd $TRADOSDIR
+        Set-Location $TRADOSDIR
         }
 
     .\SDLTradosStudio.exe /createProject /name $PROJECTNAME
