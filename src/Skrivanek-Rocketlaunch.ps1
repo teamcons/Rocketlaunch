@@ -229,8 +229,8 @@ foreach ($mail in $allmails)
 
 
 # Add few other
-[void] $Combobox.Items.Add("(Ich möchte die Dateien selbst holen)")
-[void] $Combobox.Items.Add("(Keine Ausgangsdatei)")
+[void] $Combobox.Items.Add("(Ich möchte die Dateien selber holen)")
+[void] $Combobox.Items.Add("(Keine Ausgangsdatei, Danke!)")
 $Combobox.SelectedItem = $Combobox.Items[0]
 
 # Maybe we already have a name
@@ -576,20 +576,36 @@ $o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
 
 
 # If user asked to include source files, include those in new folder, with naming conventions
-if ($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
+if ($Combobox.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
 {
 
-    Write-Output "[DETECTED] Load source files"
 
-    # Grab source files
-    $SOURCEFILES = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
-        InitialDirectory = $LOAD_SOURCE_FROM
-        Multiselect = $true
-        Title = $APPNAME
+    if ($Combobox.SelectedItem -is "(Ich möchte die Dateien selber holen)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
+    {
+        Write-Output "[DETECTED] Load source files"
+
+        # Grab source files
+        $SOURCEFILES = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
+            InitialDirectory = $LOAD_SOURCE_FROM
+            Multiselect = $true
+            Title = $APPNAME
+        }
+        $null = $SOURCEFILES.ShowDialog()
+        Write-Output "[INPUT] Got:"
+        Write-Output $SOURCEFILES.FileNames
+    } # End of user load themselves
+    else
+    {
+        
+        Write-Output "[DETECTED] Get source files from email"
     }
-    $null = $SOURCEFILES.ShowDialog()
-    Write-Output "[INPUT] Got:"
-    Write-Output $SOURCEFILES.FileNames
+
+
+
+
+
+
+
 
 
     # CHECK WE HAVE THE MINIMUM FOLDERS
@@ -620,7 +636,11 @@ if ($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
 
         # Need to use Word
         $word = New-Object -ComObject Word.Application 
+        $excel = New-Object -ComObject Excel.Application 
+        $powerpoint = New-Object -ComObject Powerpoint.Application 
         $word.Visible = $false 
+        $excel.Visible = $false 
+        $powerpoint.Visible = $false 
         [int]$totalcount = 0
   
         # Create the CSV
@@ -640,28 +660,57 @@ if ($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
     foreach ($file in $SOURCEFILES.FileNames)
     {
 
-        # DO THE MOVE
-        $truefile = Get-Item "$file"
-        $newname = -join($DIRCODE,"_",$truefile.BaseName,"_orig",$truefile.Extension)
-        Write-Output "[MOVE] Move to $ORIG\$newname"
-        Move-Item -Path "$truefile" -Destination "$ORIG\$newname"
 
-        
+
+        if ($Combobox.SelectedItem -is "(Ich möchte die Dateien selber holen)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
+        {
+            # DO THE MOVE
+            $truefile = Get-Item "$file"
+            $newname = -join($DIRCODE,"_",$truefile.BaseName,"_orig",$truefile.Extension)
+            Write-Output "[MOVE] Move to $ORIG\$newname"
+            Move-Item -Path "$truefile" -Destination "$ORIG\$newname"
+        }
+        else {
+            # SAVE FROM OUTLOOK
+            Write-Output "TODO TODO SAVE FROM OUTLOOK"
+        }
 
         
         # ONLY IF ANALYSIS WISHED
         if ($CheckIfAnalysis.CheckState.ToString() -eq "Checked")
         {
-            # OPEN IN WORD
-            $filecontent = $word.Documents.Open("$ORIG\$newname")
 
-            # PROCESS COUNT
-            [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Word.WdStatistic]::wdStatisticWords)
+            # Use different backend depending on what needed
+            if ("$newname" -contains ".doc" )
+            {
+                # OPEN IN WORD, PROCESS COUNT
+                $filecontent = $word.Documents.Open("$ORIG\$newname")
+                [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Word.WdStatistic]::wdStatisticWords)
+            }
+            elseif ("$newname" -contains ".xls" )
+            {
+                # OPEN IN EXCEL, PROCESS COUNT
+                $filecontent = $excel.Documents.Open("$ORIG\$newname")
+                [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Excel.WdStatistic]::wdStatisticWords)
+            }
+            elseif ("$newname" -contains ".ppt" )
+            {
+                # OPEN IN POWRPOINT, PROCESS COUNT
+                $filecontent = $powerpoint.Documents.Open("$ORIG\$newname")
+                [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Powerpoint.WdStatistic]::wdStatisticWords)
+            }
+            else
+            {
+                # IDK
+                [int]$wordcount = 0
+            }
+        
+            # USE THE WORDCOUNT
             [int]$totalcount += $wordcount
             Write-Output "Wordcount: $wordcount"
             Write-Output "$newname;$wordcount" | Out-File -FilePath "$INFO\$ANALYSIS" -Append 
 
-        
+
             #CLOSE FILE
             $filecontent.Close()
         }
@@ -676,6 +725,8 @@ if ($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
     {
         # Wont need Word anymore
         $word.Quit()
+        $excel.Quit()
+        $powerpoint.Quit()
     
         # Finish CSV file, 
         Write-Output "SUMME;$totalcount" | Out-File -FilePath "$INFO\$ANALYSIS" -Append

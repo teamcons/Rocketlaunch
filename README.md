@@ -11,7 +11,7 @@ The manual is for coworkers who may want to use it.
 
 
 <div align="center">
-    <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/img/Screenshot\ Skrivanek-Rocketlaunch.png" /></td>
+    <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/img/Screenshot Skrivanek-Rocketlaunch.png" /></td>
 </div>
 
 # Some more stuff
