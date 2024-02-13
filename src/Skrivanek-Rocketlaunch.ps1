@@ -228,9 +228,17 @@ foreach ($mail in $allmails)
 } # End of looking for emails with attachments
 
 
+# Add few other
 [void] $Combobox.Items.Add("(Ich möchte die Dateien selbst holen)")
 [void] $Combobox.Items.Add("(Keine Ausgangsdatei)")
 $Combobox.SelectedItem = $Combobox.Items[0]
+
+# Maybe we already have a name
+$allgoodmails[0].SenderEmailAddress -match "@(?<content>.*).com"
+$attempt_at_companyname = $matches["content"]
+$attempt_at_companyname = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
+$textBox.Text = -join($PREDICT_CODE,$attempt_at_companyname)
+
 
 $form.Controls.Add($Combobox) 
 
@@ -240,15 +248,15 @@ $form.Controls.Add($Combobox)
 #= LIST OF TEMPLATES =
 
 $labeltemplate = New-Object System.Windows.Forms.Label
-$labeltemplate.Location = New-Object System.Drawing.Point(20,140)
+$labeltemplate.Location = New-Object System.Drawing.Point(20,145)
 $labeltemplate.Size = New-Object System.Drawing.Size(215,30)
 $labeltemplate.Text = 'Welche Projektvorlage soll verwendet werden?'
 $form.Controls.Add($labeltemplate)
 
 $listBox = New-Object System.Windows.Forms.ListBox
-$listBox.Location = New-Object System.Drawing.Point(20,170)
-$listBox.Size = New-Object System.Drawing.Size(215,60)
-$listBox.Height = 120
+$listBox.Location = New-Object System.Drawing.Point(20,175)
+$listBox.Size = New-Object System.Drawing.Size(215,40)
+$listBox.Height = 100
 
 [void] $listBox.Items.Add('Minimal')
 $listBox.SelectedItem = "Minimal"
@@ -279,7 +287,7 @@ $form.Controls.Add($listBox)
 
 # Check if count words ?
 $CheckIfAnalysis = New-Object System.Windows.Forms.CheckBox        
-$CheckIfAnalysis.Location = New-Object System.Drawing.Point(20,285)
+$CheckIfAnalysis.Location = New-Object System.Drawing.Point(20,280)
 $CheckIfAnalysis.Size = New-Object System.Drawing.Size(215,25)
 $CheckIfAnalysis.Text = "Wortzahl machen? (Langsam)"
 $CheckIfAnalysis.UseVisualStyleBackColor = $True
@@ -290,7 +298,7 @@ $form.Controls.Add($CheckIfAnalysis)
 
 # Check if start new trados project
 $CheckIfTrados = New-Object System.Windows.Forms.CheckBox        
-$CheckIfTrados.Location = New-Object System.Drawing.Point(20,310)
+$CheckIfTrados.Location = New-Object System.Drawing.Point(20,305)
 $CheckIfTrados.Size = New-Object System.Drawing.Size(215,25)
 $CheckIfTrados.Text = "Ein neues Trados-Projekt beginnen?"
 $CheckIfTrados.UseVisualStyleBackColor = $True

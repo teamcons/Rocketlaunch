@@ -9,8 +9,9 @@ I am learning powershell as i write and expand it. Its bound to have some ugly a
 
 The manual is for coworkers who may want to use it.
 
+
 <div align="center">
-    <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/img/Skrivanek-Rocketlaunch.png" /></td>
+    <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/img/Screenshot\ Skrivanek-Rocketlaunch.png" /></td>
 </div>
 
 # Some more stuff
