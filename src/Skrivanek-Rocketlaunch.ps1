@@ -124,6 +124,8 @@ $stream = [System.IO.MemoryStream]::new($iconBytes, 0, $iconBytes.Length)
 #================
 #= INITIAL WORK =
 
+[int]$form_leftalign = 50
+
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
@@ -132,9 +134,9 @@ Add-Type -AssemblyName System.Drawing
 
 $form = New-Object System.Windows.Forms.Form
 $form.Text = $APPNAME
-$form.Size = New-Object System.Drawing.Size(265,420)
+$form.Size = New-Object System.Drawing.Size(350,550)
 $form.StartPosition = 'CenterScreen'
-$form.FormBorderStyle = 'FixedDialog'
+#$form.FormBorderStyle = 'FixedDialog'
 $form.MaximizeBox = $false
 $form.Topmost = $True
 #$form.BackColor = "White"
@@ -148,13 +150,12 @@ $form.Icon = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($st
 # FANCY ICON
 
 $pictureBox = new-object Windows.Forms.PictureBox
-$pictureBox.Location = New-Object System.Drawing.Point(20,10)
+$pictureBox.Location = New-Object System.Drawing.Point($form_leftalign,10)
 
 $img = [System.Drawing.Image]::Fromfile($NEWPROJECTICON);
 $pictureBox.Width = $img.Size.Width
 $pictureBox.Height = $img.Size.Height
 $pictureBox.Image = $img;
-
 $form.controls.add($pictureBox)
 
 
@@ -164,7 +165,7 @@ $form.controls.add($pictureBox)
 
 # Label above input
 $label = New-Object System.Windows.Forms.Label
-$label.Location = New-Object System.Drawing.Point(90,25)
+$label.Location = New-Object System.Drawing.Point(($form_leftalign + 80),25)
 $label.Size = New-Object System.Drawing.Size(145,20)
 $label.Font = New-Object System.Drawing.Font("Arial",11,[System.Drawing.FontStyle]::Bold)
 $label.Text = 'Projektname:'
@@ -172,7 +173,7 @@ $form.Controls.Add($label)
 
 # Input box
 $textBox = New-Object System.Windows.Forms.TextBox
-$textBox.Location = New-Object System.Drawing.Point(90,50)
+$textBox.Location = New-Object System.Drawing.Point(($form_leftalign + 80),50)
 $textBox.Size = New-Object System.Drawing.Size(145,30)
 $textBox.Text = $PREDICT_CODE
 $form.Controls.Add($textBox)
@@ -186,13 +187,13 @@ $form.Add_Shown({$textBox.Select()})
 
 # Label above input
 $labelcombobox = New-Object System.Windows.Forms.Label
-$labelcombobox.Location = New-Object System.Drawing.Point(20,85)
+$labelcombobox.Location = New-Object System.Drawing.Point($form_leftalign,85)
 $labelcombobox.Size = New-Object System.Drawing.Size(215,20)
 $labelcombobox.Text = 'Email mit Ausgangsdatei'
 $form.Controls.Add($labelcombobox)
 
 $Combobox = New-Object System.Windows.Forms.Combobox 
-$Combobox.Location = New-Object System.Drawing.Size(20,105) 
+$Combobox.Location = New-Object System.Drawing.Size($form_leftalign,105) 
 $Combobox.Size = New-Object System.Drawing.Size(215,20) 
 $Combobox.Height = 200
 $Combobox.DropDownStyle = [System.Windows.Forms.ComboBoxStyle]::DropDownList
@@ -248,13 +249,13 @@ $form.Controls.Add($Combobox)
 #= LIST OF TEMPLATES =
 
 $labeltemplate = New-Object System.Windows.Forms.Label
-$labeltemplate.Location = New-Object System.Drawing.Point(20,145)
+$labeltemplate.Location = New-Object System.Drawing.Point($form_leftalign,145)
 $labeltemplate.Size = New-Object System.Drawing.Size(215,30)
 $labeltemplate.Text = 'Welche Projektvorlage soll verwendet werden?'
 $form.Controls.Add($labeltemplate)
 
 $listBox = New-Object System.Windows.Forms.ListBox
-$listBox.Location = New-Object System.Drawing.Point(20,175)
+$listBox.Location = New-Object System.Drawing.Point($form_leftalign,175)
 $listBox.Size = New-Object System.Drawing.Size(215,40)
 $listBox.Height = 100
 
@@ -287,7 +288,7 @@ $form.Controls.Add($listBox)
 
 # Check if count words ?
 $CheckIfAnalysis = New-Object System.Windows.Forms.CheckBox        
-$CheckIfAnalysis.Location = New-Object System.Drawing.Point(20,280)
+$CheckIfAnalysis.Location = New-Object System.Drawing.Point($form_leftalign,280)
 $CheckIfAnalysis.Size = New-Object System.Drawing.Size(215,25)
 $CheckIfAnalysis.Text = "Wortzahl machen? (Langsam)"
 $CheckIfAnalysis.UseVisualStyleBackColor = $True
@@ -298,7 +299,7 @@ $form.Controls.Add($CheckIfAnalysis)
 
 # Check if start new trados project
 $CheckIfTrados = New-Object System.Windows.Forms.CheckBox        
-$CheckIfTrados.Location = New-Object System.Drawing.Point(20,305)
+$CheckIfTrados.Location = New-Object System.Drawing.Point($form_leftalign,305)
 $CheckIfTrados.Size = New-Object System.Drawing.Size(215,25)
 $CheckIfTrados.Text = "Ein neues Trados-Projekt beginnen?"
 $CheckIfTrados.UseVisualStyleBackColor = $True
@@ -311,7 +312,7 @@ $form.Controls.Add($CheckIfTrados)
 #= OKCANCEL BUTTONS =
 
 $okButton = New-Object System.Windows.Forms.Button
-$okButton.Location = New-Object System.Drawing.Point(40,345)
+$okButton.Location = New-Object System.Drawing.Point($form_leftalign,345)
 $okButton.Size = New-Object System.Drawing.Size(80,25)
 $okButton.Text = 'Los!'
 $okButton.UseVisualStyleBackColor = $True
