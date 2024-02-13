@@ -29,12 +29,13 @@ $allmails = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filt
 #$goodmails = ( $mail[3] | Where-Object { $_.Attachments.FileName -match "(.pdf|.doc|.xls)" } )
 
 
-
+$allgoodmails = New-Object System.Collections.ArrayList
+[int]$goodmailindex = 0
 
 foreach ($mail in $allmails)
 {
 
-    #[bool]$istrueattach = $false
+    [bool]$AddToGoodMails = $false
     foreach ( $attach in $mail.Attachments ) 
     {
         #echo $attach.FileName
@@ -44,16 +45,25 @@ foreach ($mail in $allmails)
             echo $mail.Subject
             echo $mail.SenderName
 
-        }
 
+            $AddToGoodMails = $true
+
+
+
+        }   End of each mails
+
+    } #End of checking attachments
+
+    if ($AddToGoodMails -is $true)
+    {
+        $allgoodmails.Add($mail)
+        $goodmailindex += 1
 
     }
 
 }
 
 
+# $allgoodmails
 
-
-#echo $goodmails.Subject
-
-
+#$mail[3].Attachments[8].saveasfile("C:\Users\stella.Menier\text.pdf")
