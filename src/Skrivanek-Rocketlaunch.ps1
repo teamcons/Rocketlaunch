@@ -137,8 +137,8 @@ Add-Type -AssemblyName System.Drawing
 
 $form                   = New-Object System.Windows.Forms.Form
 $form.Text              = $APPNAME
-$form.Size              = New-Object System.Drawing.Size(550,450)
-$form.MinimumSize       = New-Object System.Drawing.Size(350,550)
+$form.Size              = New-Object System.Drawing.Size(600,450)
+$form.MinimumSize       = New-Object System.Drawing.Size(600,450)
 $form.MaximumSize       = New-Object System.Drawing.Size(750,550)
 $form.AutoSize          = $true
 $form.AutoScale         = $true
@@ -213,17 +213,17 @@ $imageList.Images.Add("IconMail",$icon_mail)
 ## Configure the ListView
 $sourcefiles                   = New-Object System.Windows.Forms.ListView
 $sourcefiles.Width             = 450 #$form.ClientRectangle.Width
-$sourcefiles.Height            = 120 # $Form.ClientRectangle.Height
+$sourcefiles.Height            = 150 # $Form.ClientRectangle.Height
 $sourcefiles.Location          = New-Object System.Drawing.Size($form_leftalign,120) 
-$sourcefiles.Size              = New-Object System.Drawing.Size(450,120) 
+$sourcefiles.Size              = New-Object System.Drawing.Size(500,150) 
 $sourcefiles.FullRowSelect = $True
 $sourcefiles.AutoResizeColumns(2)
 $sourcefiles.View              = [System.Windows.Forms.View]::Details
 $sourcefiles.SmallImageList = $imageList
 
 #$sourcefiles.Columns.Add("Art")
-$sourcefiles.Columns.Add("Betreff",270)
-$sourcefiles.Columns.Add("Von",150)
+$sourcefiles.Columns.Add("Betreff",300)
+$sourcefiles.Columns.Add("Von",170)
 #$sourcefiles.Columns.Add("Empfangen",100)
 #$sourcefiles.Columns.Add("Dateien")
 
@@ -301,34 +301,53 @@ $form.Controls.Add($sourcefiles)
 #=====================
 #= LIST OF TEMPLATES =
 
-$labeltemplate                  = New-Object System.Windows.Forms.Label
-$labeltemplate.Location         = New-Object System.Drawing.Point($form_leftalign,260)
-$labeltemplate.Size             = New-Object System.Drawing.Size(215,30)
-$labeltemplate.Text             = 'Welche Projektvorlage soll verwendet werden?'
-$form.Controls.Add($labeltemplate)
+# $labeltemplate                  = New-Object System.Windows.Forms.Label
+# $labeltemplate.Location         = New-Object System.Drawing.Point($form_leftalign,260)
+# $labeltemplate.Size             = New-Object System.Drawing.Size(215,30)
+# $labeltemplate.Text             = 'Welche Projektvorlage soll verwendet werden?'
+# $form.Controls.Add($labeltemplate)
+# $templates                        = New-Object System.Windows.Forms.ListView
+# $templates.Location               = New-Object System.Drawing.Point($form_leftalign,290)
+# $templates.Size                   = New-Object System.Drawing.Size(450,200)
+# $templates.AutoSize               = $true 
+# $templates.Height                 = 100
+# $templates.FullRowSelect = $True
+# $templates.AutoResizeColumns(2)
+# $templates.View              = [System.Windows.Forms.View]::Details
+# $templates.Columns.Add("Vorlage",100)
+# $templates.Columns.Add("Ordner",250)
+# ## LOAD FROM CSV HERE
+# $templatesItem = New-Object System.Windows.Forms.ListViewItem("Minimal")
+# [void]$templatesItem.Subitems.Add("00_info, 01_orig")
+# [void]$templates.Items.Add($templatesItem)
+# $form.Controls.Add($templates)
 
-$templates                        = New-Object System.Windows.Forms.ListView
-$templates.Location               = New-Object System.Drawing.Point($form_leftalign,290)
-$templates.Size                   = New-Object System.Drawing.Size(450,200)
-$templates.AutoSize               = $true 
-$templates.Height                 = 100
+$label2 = New-Object System.Windows.Forms.Label
+$label2.Location = New-Object System.Drawing.Point($form_leftalign,300)
+$label2.Size = New-Object System.Drawing.Size(250,30)
+$label2.Text = 'Welche Projektvorlage soll verwendet werden?'
+$form.Controls.Add($label2)
 
-$templates.FullRowSelect = $True
-$templates.AutoResizeColumns(2)
-$templates.View              = [System.Windows.Forms.View]::Details
+$listBox = New-Object System.Windows.Forms.ListBox
+$listBox.Location = New-Object System.Drawing.Point($form_leftalign,330)
+$listBox.Size = New-Object System.Drawing.Size(250,30)
+$listBox.Height = 120
 
-
-$templates.Columns.Add("Vorlage",100)
-$templates.Columns.Add("Ordner",250)
+[void] $listBox.Items.Add('Minimal')
+$listBox.SelectedItem = "Minimal"
 
 ## LOAD FROM CSV HERE
-$templatesItem = New-Object System.Windows.Forms.ListViewItem("Minimal")
-[void]$templatesItem.Subitems.Add("00_info, 01_orig")
-[void]$templates.Items.Add($templatesItem)
+[void] $listBox.Items.Add('Standard TEP')
+[void] $listBox.Items.Add('Provider macht TEP')
+[void] $listBox.Items.Add('Sworn Translation')
+[void] $listBox.Items.Add('MemoQ')
+[void] $listBox.Items.Add('Production')
+
+$form.Controls.Add($listBox)
 
 
 
-$form.Controls.Add($templates)
+
 
 #===========
 #= OPTIONS =
@@ -346,7 +365,7 @@ $form.Controls.Add($templates)
 
 # Check if count words ?
 $CheckIfAnalysis                = New-Object System.Windows.Forms.CheckBox        
-$CheckIfAnalysis.Location       = New-Object System.Drawing.Point($form_leftalign,380)
+$CheckIfAnalysis.Location       = New-Object System.Drawing.Point(($form_leftalign + 300),300)
 $CheckIfAnalysis.Size           = New-Object System.Drawing.Size(250,25)
 $CheckIfAnalysis.Text           = "Wortzahl machen? (Langsam)"
 $CheckIfAnalysis.UseVisualStyleBackColor = $True
@@ -357,7 +376,7 @@ $form.Controls.Add($CheckIfAnalysis)
 
 # Check if start new trados project
 $CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox        
-$CheckIfTrados.Location         = New-Object System.Drawing.Point($form_leftalign,415)
+$CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 300),330)
 $CheckIfTrados.Size             = New-Object System.Drawing.Size(250,25)
 $CheckIfTrados.Text             = "Ein neues Trados-Projekt beginnen?"
 $CheckIfTrados.UseVisualStyleBackColor = $True
@@ -371,7 +390,7 @@ $form.Controls.Add($CheckIfTrados)
 
 $okButton                   = New-Object System.Windows.Forms.Button
 $okButton.Location          = New-Object System.Drawing.Point(($form_leftalign + 120),470)
-$okButton.Size              = New-Object System.Drawing.Size(100,30)
+$okButton.Size              = New-Object System.Drawing.Size(120,30)
 $okButton.Text              = 'Los!'
 $okButton.UseVisualStyleBackColor = $True
 $okButton.DialogResult      = [System.Windows.Forms.DialogResult]::OK
@@ -382,7 +401,7 @@ $form.Controls.Add($okButton)
 
 $cancelButton               = New-Object System.Windows.Forms.Button
 $cancelButton.Location      = New-Object System.Drawing.Point(($form_leftalign + 250),470)
-$cancelButton.Size          = New-Object System.Drawing.Size(100,30)
+$cancelButton.Size          = New-Object System.Drawing.Size(120,30)
 $cancelButton.Text          = 'Nö'
 $cancelButton.UseVisualStyleBackColor = $False #$True
 $cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
