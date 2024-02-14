@@ -202,10 +202,13 @@ $form.Controls.Add($labelsourcefiles)
 # mail ,015
 # folder ,013
 # folder ,103
-#$imagelist                      = new-Object System.Windows.Forms.ImageList 
-#$imagelist.ImageSize            = New-Object System.Drawing.Size(24,24) # Size of the pictures
-#$windowsicons                      = [System.Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\System32\imageres.dll")
-#$imageList.Images.Add("WindowsIco",$windowsicons)
+$imagelist                      = new-Object System.Windows.Forms.ImageList 
+$imagelist.ImageSize            = New-Object System.Drawing.Size(24,24) # Size of the pictures
+$icon_folder                      = [Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\Explorer.exe")
+$icon_mail                      = [Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\Explorer.exe")
+$icon_nope                      = [Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\Explorer.exe")
+
+$imageList.Images.Add("IconMail",$icon_mail)
 
 ## Configure the ListView
 $sourcefiles                   = New-Object System.Windows.Forms.ListView
@@ -216,21 +219,14 @@ $sourcefiles.Size              = New-Object System.Drawing.Size(450,120)
 $sourcefiles.FullRowSelect = $True
 $sourcefiles.AutoResizeColumns(2)
 $sourcefiles.View              = [System.Windows.Forms.View]::Details
-
-#$sourcefiles.SmallImageList = $imageList
+$sourcefiles.SmallImageList = $imageList
 
 #$sourcefiles.Columns.Add("Art")
 $sourcefiles.Columns.Add("Betreff",270)
 $sourcefiles.Columns.Add("Von",150)
 #$sourcefiles.Columns.Add("Empfangen",100)
 #$sourcefiles.Columns.Add("Dateien")
- 
-#$Combobox                   = New-Object System.Windows.Forms.Combobox 
-#$Combobox
-#$Combobox.Size              = New-Object System.Drawing.Size(215,20) 
-#$Combobox.AutoSize          = $true 
-#$Combobox.Height            = 200
-#$Combobox.DropDownStyle     = [System.Windows.Forms.ComboBoxStyle]::DropDownList
+
 
 $allgoodmails               = New-Object System.Collections.ArrayList
 [int]$goodmailindex = 0
@@ -292,6 +288,10 @@ $allgoodmails[0].SenderEmailAddress -match "@(?<content>.*).com"
 $attempt_at_companyname         = $matches["content"]
 $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
 $textBox.Text                   = -join($PREDICT_CODE,$attempt_at_companyname)
+
+
+$sourcefiles.Items.Add("IconMail",0)
+
 
 # Add the ListView to the Form
 $form.Controls.Add($sourcefiles)
