@@ -137,7 +137,7 @@ Add-Type -AssemblyName System.Drawing
 
 $form                   = New-Object System.Windows.Forms.Form
 $form.Text              = $APPNAME
-$form.Size              = New-Object System.Drawing.Size(350,550)
+$form.Size              = New-Object System.Drawing.Size(550,450)
 $form.MinimumSize       = New-Object System.Drawing.Size(350,550)
 $form.MaximumSize       = New-Object System.Drawing.Size(750,550)
 $form.AutoSize          = $true
@@ -197,32 +197,33 @@ $labelsourcefiles.Text             = 'Email mit Ausgangsdatei'
 $form.Controls.Add($labelsourcefiles)
 
 
-$imageList = new-Object System.Windows.Forms.ImageList 
-$imageList.ImageSize = New-Object System.Drawing.Size(30,30) # Size of the pictures
-
-#'%SystemRoot%\System32\imageres.dll,-149'
-$icon_mail                      = [System.Drawing.SystemIcons]::Question
-$icon_folder                    = [System.Drawing.SystemIcons]::Question
-$icon_no                        = [System.Drawing.SystemIcons]::Question
- 
-
-#$ListView                   = New-Object System.Windows.Forms.ListView
-$sourcefiles                   = new-Object System.Windows.Forms.ImageList 
+#'Windows icons
+# for index: https://renenyffenegger.ch/development/Windows/PowerShell/examples/WinAPI/ExtractIconEx/imageres.html
+# mail ,015
+# folder ,013
+# folder ,103
+#$imagelist                      = new-Object System.Windows.Forms.ImageList 
+#$imagelist.ImageSize            = New-Object System.Drawing.Size(24,24) # Size of the pictures
+#$windowsicons                      = [System.Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\System32\imageres.dll")
+#$imageList.Images.Add("WindowsIco",$windowsicons)
 
 ## Configure the ListView
-$sourcefiles.View              = [System.Windows.Forms.View]::Details
-$sourcefiles.Width             = 250 #$form.ClientRectangle.Width
-$sourcefiles.Height            = 200 # $Form.ClientRectangle.Height
+$sourcefiles                   = New-Object System.Windows.Forms.ListView
+$sourcefiles.Width             = 450 #$form.ClientRectangle.Width
+$sourcefiles.Height            = 120 # $Form.ClientRectangle.Height
 $sourcefiles.Location          = New-Object System.Drawing.Size($form_leftalign,120) 
-$sourcefiles.Size              = New-Object System.Drawing.Size(250,100) 
+$sourcefiles.Size              = New-Object System.Drawing.Size(450,120) 
 $sourcefiles.FullRowSelect = $True
-$sourcefiles..AutoResizeColumns(2)
+$sourcefiles.AutoResizeColumns(2)
+$sourcefiles.View              = [System.Windows.Forms.View]::Details
 
-$sourcefiles.Columns.Add("")
-$sourcefiles.Columns.Add("Betreff")
-$sourcefiles.Columns.Add("Von")
-$sourcefiles.Columns.Add("Empfangen")
-$sourcefiles.Columns.Add("Dateien")
+#$sourcefiles.SmallImageList = $imageList
+
+#$sourcefiles.Columns.Add("Art")
+$sourcefiles.Columns.Add("Betreff",270)
+$sourcefiles.Columns.Add("Von",150)
+#$sourcefiles.Columns.Add("Empfangen",100)
+#$sourcefiles.Columns.Add("Dateien")
  
 #$Combobox                   = New-Object System.Windows.Forms.Combobox 
 #$Combobox
@@ -247,27 +248,21 @@ foreach ($mail in $allmails)
             $AddToGoodMails = $true
 
         }   # End of each mails
-
     } #End of checking attachments
 
     # we found one with attachment !
     if ($AddToGoodMails -eq $true)
     {
         $allgoodmails.Add($mail)
-        [void] $Combobox.Items.Add($mail.Subject)
-
 
         # Add to da list
         $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($mail.Subject)
-        $sourcefilesItem.Subitems.Add("",0)
-        $sourcefilesItem.Subitems.Add($mail.SenderName)
-        $sourcefilesItem.Subitems.Add($Mail.ReceivedTime)
-        $sourcefilesItem.Subitems.Add("no")
-        $sourcefiles.Items.Add($sourcefilesItem)
-
-
-
-
+        #$sourcefilesItem.Subitems.Add("mail")
+        #$sourcefilesItem.Subitems.Add($windowsicons)
+        [void]$sourcefilesItem.Subitems.Add($mail.SenderName)
+        #$sourcefilesItem.Subitems.Add($Mail.ReceivedTime.ToString("hh:mm, u\m dd/MM"))
+        #$sourcefilesItem.Subitems.Add("no")
+        [void]$sourcefiles.Items.Add($sourcefilesItem)
         $goodmailindex += 1
 
     } # End of adding goodmail
@@ -280,12 +275,16 @@ foreach ($mail in $allmails)
 #[void] $Combobox.Items.Add("(Keine Ausgangsdatei, Danke!)")
 
 $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem("(Ich möchte die Dateien selber holen)")
-$sourcefiles.Items.Add($sourcefilesItem)
+#$sourcefilesItem.Subitems.Add($windowsicons,013)
+#$sourcefilesItem.Subitems.Add("ordner")
+[void]$sourcefiles.Items.Add($sourcefilesItem)
 
-$sourcefilesItem = New-Object System.Windows.Forms.ListViewItem("(Keine Ausgangsdatei, Danke!)")
-$sourcefiles.Items.Add($sourcefilesItem)
+#$sourcefilesItem = New-Object System.Windows.Forms.ListViewItem("(Keine Ausgangsdatei, Danke!)")
+#$sourcefilesItem.Subitems.Add($windowsicons,103)
+#$sourcefilesItem.Subitems.Add("nein")
+#$sourcefiles.Items.Add($sourcefilesItem)
 
-$sourcefiles.SelectedItem = $sourcefiles.Items[0]
+#$sourcefiles.SelectedItem = $sourcefiles.Items[0]
 #$Combobox.SelectedItem = $Combobox.Items[0]
 
 # Maybe we already have a name
@@ -296,7 +295,6 @@ $textBox.Text                   = -join($PREDICT_CODE,$attempt_at_companyname)
 
 # Add the ListView to the Form
 $form.Controls.Add($sourcefiles)
-#$form.Controls.Add($Combobox) 
 
 
 
@@ -304,30 +302,33 @@ $form.Controls.Add($sourcefiles)
 #= LIST OF TEMPLATES =
 
 $labeltemplate                  = New-Object System.Windows.Forms.Label
-$labeltemplate.Location         = New-Object System.Drawing.Point($form_leftalign,200)
+$labeltemplate.Location         = New-Object System.Drawing.Point($form_leftalign,260)
 $labeltemplate.Size             = New-Object System.Drawing.Size(215,30)
 $labeltemplate.Text             = 'Welche Projektvorlage soll verwendet werden?'
 $form.Controls.Add($labeltemplate)
 
-$listBox                        = New-Object System.Windows.Forms.ListBox
-$listBox.Location               = New-Object System.Drawing.Point($form_leftalign,230)
-$listBox.Size                   = New-Object System.Drawing.Size(215,40)
-$listBox.AutoSize               = $true 
-$listBox.Height                 = 100
+$templates                        = New-Object System.Windows.Forms.ListView
+$templates.Location               = New-Object System.Drawing.Point($form_leftalign,290)
+$templates.Size                   = New-Object System.Drawing.Size(450,200)
+$templates.AutoSize               = $true 
+$templates.Height                 = 100
 
-[void] $listBox.Items.Add('Minimal')
+$templates.FullRowSelect = $True
+$templates.AutoResizeColumns(2)
+$templates.View              = [System.Windows.Forms.View]::Details
 
+
+$templates.Columns.Add("Vorlage",100)
+$templates.Columns.Add("Ordner",250)
 
 ## LOAD FROM CSV HERE
-[void] $listBox.Items.Add('Standard TEP')
-[void] $listBox.Items.Add('Provider macht TEP')
-[void] $listBox.Items.Add('Sworn Translation')
-[void] $listBox.Items.Add('MemoQ')
-[void] $listBox.Items.Add('Production')
+$templatesItem = New-Object System.Windows.Forms.ListViewItem("Minimal")
+[void]$templatesItem.Subitems.Add("00_info, 01_orig")
+[void]$templates.Items.Add($templatesItem)
 
-$listBox.SelectedItem       = $listbox.Items[0]
-$form.Controls.Add($listBox)
 
+
+$form.Controls.Add($templates)
 
 #===========
 #= OPTIONS =
@@ -345,7 +346,7 @@ $form.Controls.Add($listBox)
 
 # Check if count words ?
 $CheckIfAnalysis                = New-Object System.Windows.Forms.CheckBox        
-$CheckIfAnalysis.Location       = New-Object System.Drawing.Point($form_leftalign,320)
+$CheckIfAnalysis.Location       = New-Object System.Drawing.Point($form_leftalign,380)
 $CheckIfAnalysis.Size           = New-Object System.Drawing.Size(250,25)
 $CheckIfAnalysis.Text           = "Wortzahl machen? (Langsam)"
 $CheckIfAnalysis.UseVisualStyleBackColor = $True
@@ -356,7 +357,7 @@ $form.Controls.Add($CheckIfAnalysis)
 
 # Check if start new trados project
 $CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox        
-$CheckIfTrados.Location         = New-Object System.Drawing.Point($form_leftalign,345)
+$CheckIfTrados.Location         = New-Object System.Drawing.Point($form_leftalign,415)
 $CheckIfTrados.Size             = New-Object System.Drawing.Size(250,25)
 $CheckIfTrados.Text             = "Ein neues Trados-Projekt beginnen?"
 $CheckIfTrados.UseVisualStyleBackColor = $True
@@ -369,7 +370,7 @@ $form.Controls.Add($CheckIfTrados)
 #= OKCANCEL BUTTONS =
 
 $okButton                   = New-Object System.Windows.Forms.Button
-$okButton.Location          = New-Object System.Drawing.Point(($form_leftalign + 10),480)
+$okButton.Location          = New-Object System.Drawing.Point(($form_leftalign + 120),470)
 $okButton.Size              = New-Object System.Drawing.Size(100,30)
 $okButton.Text              = 'Los!'
 $okButton.UseVisualStyleBackColor = $True
@@ -380,7 +381,7 @@ $form.AcceptButton          = $okButton
 $form.Controls.Add($okButton)
 
 $cancelButton               = New-Object System.Windows.Forms.Button
-$cancelButton.Location      = New-Object System.Drawing.Point(($form_leftalign + 140),480)
+$cancelButton.Location      = New-Object System.Drawing.Point(($form_leftalign + 250),470)
 $cancelButton.Size          = New-Object System.Drawing.Size(100,30)
 $cancelButton.Text          = 'Nö'
 $cancelButton.UseVisualStyleBackColor = $False #$True
@@ -632,11 +633,11 @@ $o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
 
 
 # If user asked to include source files, include those in new folder, with naming conventions
-if ($Combobox.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
+if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
 {
 
 
-    if ($Combobox.SelectedItem -is "(Ich möchte die Dateien selber holen)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
+    if ($sourcefiles.SelectedItem -is "(Ich möchte die Dateien selber holen)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
     {
         Write-Output "[DETECTED] Load source files"
 
