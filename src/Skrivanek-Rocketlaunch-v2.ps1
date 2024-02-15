@@ -25,7 +25,7 @@
 #===============================================
 
 
-
+#========================================
 # Fancy !
 Write-Output "================================"
 Write-Output "=        -ROCKETLAUNCH!        ="
@@ -46,6 +46,38 @@ Write-Output "[STARTUP] Getting all variables in place"
 [string]$APPNAME            = "-Rocketlaunch!"
 [string]$PROJECTTEMPLATE    = "Minimal"
 [string]$LOAD_SOURCE_FROM   = "$env:USERPROFILE\Downloads\"
+
+
+
+#========================================
+# Defaults
+
+[bool]$default_doanalysis           = $false
+[bool]$default_opentrados           = $true
+#[bool]$default_loadfromoutlook     = $true
+[bool]$default_createshortcut       = $true
+[bool]$default_openexplorer         = $true
+
+
+
+#========================================
+# Localization
+
+[string]$text_projectname           = "Projektname"
+
+[string]$text_standardtab           = "Standard"
+[string]$text_loadfilesfrom         = 'Email mit Ausgangsdatei'
+[string]$text_usewhichtemplate      = 'Welche Projektvorlage soll verwendet werden?'
+
+[string]$text_advancedtab           = "Erweitert"
+[string]$text_doanalysis            = "Eine analyse machen ? (Langsam)"
+[string]$text_opentrados            = "Trados öffnen ?"
+[string]$text_openexplorer          = "Explorer öffnen ?"
+
+[string]$text_help                  = "Hilfe"
+[string]$text_OK                    = "Los!"
+[string]$text_Cancel                = "Nö"
+
 
 
 #========================================
@@ -172,8 +204,8 @@ $form.controls.add($pictureBox)
 # LABEL AND TEXT
 # Label above input
 $label                  = New-Object System.Windows.Forms.Label
-$label.Location         = New-Object System.Drawing.Point(($form_leftalign + 80),35)
-$label.Size             = New-Object System.Drawing.Size(145,20)
+$label.Location         = New-Object System.Drawing.Point(($form_leftalign + 80),30)
+$label.Size             = New-Object System.Drawing.Size(170,20)
 $label.AutoSize         = $true
 $label.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Bold)
 $label.Text             = 'Projektname:'
@@ -182,7 +214,7 @@ $form.Controls.Add($label)
 # Input box
 $textBox                = New-Object System.Windows.Forms.TextBox
 $textBox.Location       = New-Object System.Drawing.Point(($form_leftalign + 80),60)
-$textBox.Size           = New-Object System.Drawing.Size(150,30)
+$textBox.Size           = New-Object System.Drawing.Size(170,30)
 $textBox.Text           = $PREDICT_CODE
 $form.Controls.Add($textBox)
 $form.Add_Shown({$textBox.Select()})
@@ -197,7 +229,7 @@ $form.Add_Shown({$textBox.Select()})
 $labelsourcefiles                  = New-Object System.Windows.Forms.Label
 $labelsourcefiles.Location         = New-Object System.Drawing.Point($form_leftalign,100)
 $labelsourcefiles.Size             = New-Object System.Drawing.Size(240,20)
-$labelsourcefiles.Text             = 'Email mit Ausgangsdatei'
+$labelsourcefiles.Text             = $text_loadfilesfrom
 $form.Controls.Add($labelsourcefiles)
 
 
@@ -226,7 +258,7 @@ $sourcefiles.View              = [System.Windows.Forms.View]::Details
 $sourcefiles.SmallImageList = $imageList
 
 #$sourcefiles.Columns.Add("Art")
-$sourcefiles.Columns.Add("Betreff",370)
+$sourcefiles.Columns.Add("Betreff",360)
 $sourcefiles.Columns.Add("Von",200)
 #$sourcefiles.Columns.Add("Empfangen",100)
 #$sourcefiles.Columns.Add("Dateien")
@@ -328,13 +360,13 @@ $form.Controls.Add($sourcefiles)
 
 $label2 = New-Object System.Windows.Forms.Label
 $label2.Location = New-Object System.Drawing.Point($form_leftalign,300)
-$label2.Size = New-Object System.Drawing.Size(250,30)
-$label2.Text = 'Welche Projektvorlage soll verwendet werden?'
+$label2.Size = New-Object System.Drawing.Size(500,30)
+$label2.Text = $text_usewhichtemplate
 $form.Controls.Add($label2)
 
 $listBox = New-Object System.Windows.Forms.ListBox
 $listBox.Location = New-Object System.Drawing.Point($form_leftalign,330)
-$listBox.Size = New-Object System.Drawing.Size(250,30)
+$listBox.Size = New-Object System.Drawing.Size(570,120)
 $listBox.Height = 120
 
 [void] $listBox.Items.Add('Minimal')
@@ -368,24 +400,24 @@ $form.Controls.Add($listBox)
 
 
 # Check if count words ?
-$CheckIfAnalysis                = New-Object System.Windows.Forms.CheckBox        
-$CheckIfAnalysis.Location       = New-Object System.Drawing.Point(($form_leftalign + 300),300)
-$CheckIfAnalysis.Size           = New-Object System.Drawing.Size(250,25)
-$CheckIfAnalysis.Text           = "Wortzahl machen? (Langsam)"
-$CheckIfAnalysis.UseVisualStyleBackColor = $True
-$CheckIfAnalysis.Checked        = $True
-$form.Controls.Add($CheckIfAnalysis)
+#$CheckIfAnalysis                = New-Object System.Windows.Forms.CheckBox        
+#$CheckIfAnalysis.Location       = New-Object System.Drawing.Point(($form_leftalign + 300),300)
+#$CheckIfAnalysis.Size           = New-Object System.Drawing.Size(250,25)
+#$CheckIfAnalysis.Text           = "Wortzahl machen? (Langsam)"
+#$CheckIfAnalysis.UseVisualStyleBackColor = $True
+#$CheckIfAnalysis.Checked        = $True
+#$form.Controls.Add($CheckIfAnalysis)
 
 
 
 # Check if start new trados project
-$CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox        
-$CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 300),330)
-$CheckIfTrados.Size             = New-Object System.Drawing.Size(250,25)
-$CheckIfTrados.Text             = "Ein neues Trados-Projekt beginnen?"
-$CheckIfTrados.UseVisualStyleBackColor = $True
-$CheckIfTrados.Checked          = $True
-$form.Controls.Add($CheckIfTrados)
+#$CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox        
+#$CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 300),330)
+#$CheckIfTrados.Size             = New-Object System.Drawing.Size(250,25)
+#$CheckIfTrados.Text             = "Ein neues Trados-Projekt beginnen?"
+#$CheckIfTrados.UseVisualStyleBackColor = $True
+#$CheckIfTrados.Checked          = $True
+#$form.Controls.Add($CheckIfTrados)
 
 
 
