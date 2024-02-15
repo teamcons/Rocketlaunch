@@ -56,7 +56,7 @@ Write-Output "[STARTUP] Getting all variables in place"
 #========================================
 # Defaults
 
-[string]$default_filesfrom          = "outlook"
+[string]$default_filesfrom          = "Outlook"
 [string]$default_fromdisk           = "$env:USERPROFILE\Downloads\"
 [bool]$default_doanalysis           = $false
 [bool]$default_opentrados           = $true
@@ -70,10 +70,14 @@ Write-Output "[STARTUP] Getting all variables in place"
 # Localization
 
 [string]$text_projectname           = "Ein neues Projekt anlegen:"
-[string]$text_loadfilesfrom         = 'Email mit Ausgangsdatei'
-[string]$text_usewhichtemplate      = 'Welche Projektvorlage soll verwendet werden?'
 [string]$text_doanalysis            = "Analyse machen ? (Langsam)"
 [string]$text_opentrados            = "Neues Trados-Projekt ?"
+
+[string]$text_loadfilesfrom         = 'Email mit Ausgangsdatei'
+[string]$text_nofilesource          = "Keine Ausgangsdatei"
+
+[string]$text_usewhichtemplate      = 'Welche Projektvorlage soll verwendet werden?'
+[string]$text_loadtemplate          = "Laden..."
 [string]$text_help                  = "Hilfe"
 [string]$text_OK                    = "Los!"
 [string]$text_Cancel                = "Nö"
@@ -211,7 +215,7 @@ $form.Add_Shown({$textBox.Select()})
 # Check if count words ?
 $CheckIfAnalysis                = New-Object System.Windows.Forms.CheckBox        
 $CheckIfAnalysis.Location       = New-Object System.Drawing.Point(($form_leftalign + 400),30)
-$CheckIfAnalysis.Size           = New-Object System.Drawing.Size(200,30)
+$CheckIfAnalysis.Size           = New-Object System.Drawing.Size(200,20)
 $CheckIfAnalysis.Text           = $text_doanalysis
 $CheckIfAnalysis.UseVisualStyleBackColor = $True
 $CheckIfAnalysis.Checked        = $default_doanalysis
@@ -222,7 +226,7 @@ $form.Controls.Add($CheckIfAnalysis)
 # Check if start new trados project
 $CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox        
 $CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 400),60)
-$CheckIfTrados.Size             = New-Object System.Drawing.Size(200,30)
+$CheckIfTrados.Size             = New-Object System.Drawing.Size(200,20)
 $CheckIfTrados.Text             = $text_opentrados
 $CheckIfTrados.UseVisualStyleBackColor = $True
 $CheckIfTrados.Checked          = $default_opentrados
@@ -243,12 +247,23 @@ $labelsourcefiles                  = New-Object System.Windows.Forms.Label
 $labelsourcefiles.Location         = New-Object System.Drawing.Point($form_leftalign,110)
 $labelsourcefiles.Size             = New-Object System.Drawing.Size(240,20)
 $labelsourcefiles.Text             = $text_loadfilesfrom
-
 $labelsourcefiles.Font              = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
-
 $form.Controls.Add($labelsourcefiles)
 
 
+
+$gui_filesource                 = New-Object System.Windows.Forms.Combobox
+$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 400),105)
+$gui_filesource.Size            = New-Object System.Drawing.Size(180,20)
+$gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
+
+[void] $gui_filesource.Items.Add("Outlook")  
+[void] $gui_filesource.Items.Add($text_nofilesource)  
+
+$gui_filesource.SelectedItem = $default_filesfrom
+
+
+$form.Controls.Add($gui_filesource)
 #'Windows icons
 # for index: https://renenyffenegger.ch/development/Windows/PowerShell/examples/WinAPI/ExtractIconEx/imageres.html
 # mail ,015
@@ -352,20 +367,39 @@ $form.Controls.Add($sourcefiles)
 #= LIST OF TEMPLATES =
 
 
+#
+# Label and button
+#
+
 $labeltemplate                  = New-Object System.Windows.Forms.Label
 $labeltemplate.Text             = $text_usewhichtemplate
 $labeltemplate.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
 $labeltemplate.Location         = New-Object System.Drawing.Point($form_leftalign,280)
-$labeltemplate.Size             = New-Object System.Drawing.Size(500,20)
+$labeltemplate.Size             = New-Object System.Drawing.Size(300,20)
 $form.Controls.Add($labeltemplate)
 
 
+$gui_browsetemplate                   = New-Object System.Windows.Forms.Button
+$gui_browsetemplate.Location          = New-Object System.Drawing.Point(($form_leftalign + 500),280)
+$gui_browsetemplate.Size              = New-Object System.Drawing.Size(80,20)
+$gui_browsetemplate.Text              = $text_loadtemplate
+$gui_browsetemplate.UseVisualStyleBackColor = $True
+$gui_browsetemplate.add_click({
+    [System.Windows.Forms.MessageBox]::Show("Nein." , $APPNAME)
+})
+$form.Controls.Add($gui_browsetemplate)
+
+
+
+#
+# Listview
+#
 
 $templates                        = New-Object System.Windows.Forms.ListView
 $templates.Location               = New-Object System.Drawing.Point($form_leftalign,300)
-$templates.Size                   = New-Object System.Drawing.Size(580,120)
+$templates.Size                   = New-Object System.Drawing.Size(580,130)
 $templates.AutoSize               = $true 
-$templates.Height                 = 120
+$templates.Height                 = 130
 $templates.FullRowSelect = $True
 $templates.AutoResizeColumns(2)
 $templates.View              = [System.Windows.Forms.View]::Details
@@ -493,7 +527,7 @@ Write-Output "[INPUT] Got: $PROJECTNAME"
 
 
 
-
+#================================================================================================================================================================
 #==============================================================
 #                     Processing Le input                     =
 #==============================================================
