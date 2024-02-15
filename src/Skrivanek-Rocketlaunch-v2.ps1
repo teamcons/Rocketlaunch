@@ -74,7 +74,7 @@ Write-Output "[STARTUP] Getting all variables in place"
 [string]$text_loadfilesfrom         = 'Email mit Ausgangsdatei'
 [string]$text_usewhichtemplate      = 'Welche Projektvorlage soll verwendet werden?'
 [string]$text_advancedtab           = "Erweitert"
-[string]$text_doanalysis            = "Eine analyse machen ? (Langsam)"
+[string]$text_doanalysis            = "Analyse machen ? (Langsam)"
 [string]$text_opentrados            = "Trados öffnen ?"
 [string]$text_openexplorer          = "Explorer öffnen ?"
 [string]$text_help                  = "Hilfe"
@@ -150,8 +150,8 @@ $stream = [System.IO.MemoryStream]::new($iconBytes, 0, $iconBytes.Length)
 #================
 #= INITIAL WORK =
 
-[int]$form_leftalign = 30
-[int]$form_verticalalign = 470
+[int]$form_leftalign = 25
+[int]$form_verticalalign = 440
 
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
@@ -161,7 +161,7 @@ Add-Type -AssemblyName System.Drawing
 
 $form                   = New-Object System.Windows.Forms.Form
 $form.Text              = $APPNAME
-$form.Size              = New-Object System.Drawing.Size(700,($form_verticalalign + 95))
+$form.Size              = New-Object System.Drawing.Size(625,($form_verticalalign + 60 ))
 #$form.MinimumSize       = New-Object System.Drawing.Size(600,450)
 #$form.MaximumSize       = New-Object System.Drawing.Size(750,550)
 $form.AutoSize          = $true
@@ -169,10 +169,10 @@ $form.AutoScale         = $true
 $form.Font              = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
 
 $form.StartPosition     = 'CenterScreen'
-#$form.FormBorderStyle  = 'FixedDialog'
+$form.FormBorderStyle   = 'FixedDialog'
 $form.MaximizeBox       = $false
 $form.Topmost           = $True
-$form.BackColor        = "White"
+$form.BackColor         = "White"
 $form.Icon              = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
 
 
@@ -199,7 +199,7 @@ $label.Location         = New-Object System.Drawing.Point(($form_leftalign + 80)
 $label.Size             = New-Object System.Drawing.Size(170,20)
 $label.AutoSize         = $true
 $label.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Bold)
-$label.Text             = 'Projektname:'
+$label.Text             = $text_projectname
 $form.Controls.Add($label)
 
 # Input box
@@ -209,6 +209,31 @@ $textBox.Size           = New-Object System.Drawing.Size(170,30)
 $textBox.Text           = $PREDICT_CODE
 $form.Controls.Add($textBox)
 $form.Add_Shown({$textBox.Select()})
+
+
+# Check if count words ?
+$CheckIfAnalysis                = New-Object System.Windows.Forms.CheckBox        
+$CheckIfAnalysis.Location       = New-Object System.Drawing.Point(($form_leftalign + 400),60)
+$CheckIfAnalysis.Size           = New-Object System.Drawing.Size(200,25)
+$CheckIfAnalysis.Text           = $text_doanalysis
+$CheckIfAnalysis.UseVisualStyleBackColor = $True
+$CheckIfAnalysis.Checked        = $default_doanalysis
+$form.Controls.Add($CheckIfAnalysis)
+
+
+
+# Check if start new trados project
+$CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox        
+$CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 400),30)
+$CheckIfTrados.Size             = New-Object System.Drawing.Size(200,25)
+$CheckIfTrados.Text             = $text_opentrados
+$CheckIfTrados.UseVisualStyleBackColor = $True
+$CheckIfTrados.Checked          = $default_opentrados
+$form.Controls.Add($CheckIfTrados)
+
+
+
+
 
 
 
@@ -229,24 +254,24 @@ $form.Controls.Add($labelsourcefiles)
 # mail ,015
 # folder ,013
 # folder ,103
-$imagelist                      = new-Object System.Windows.Forms.ImageList 
-$imagelist.ImageSize            = New-Object System.Drawing.Size(16,16) # Size of the pictures
-$icon_folder                      = [Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\Explorer.exe")
-$icon_mail                      = [Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\Explorer.exe")
-$icon_nope                      = [Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\Explorer.exe")
-
-$imageList.Images.Add("IconMail",$icon_mail)
+#$imagelist                      = new-Object System.Windows.Forms.ImageList 
+#$imagelist.ImageSize            = New-Object System.Drawing.Size(16,16) # Size of the pictures
+#$icon_folder                      = [Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\Explorer.exe")
+#$icon_mail                      = [Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\Explorer.exe")
+#$icon_nope                      = [Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\Explorer.exe")
+#$imageList.Images.Add("IconMail",$icon_mail)
 
 ## Configure the ListView
 $sourcefiles                   = New-Object System.Windows.Forms.ListView
 $sourcefiles.Width             = 450 #$form.ClientRectangle.Width
 $sourcefiles.Height            = 150 # $Form.ClientRectangle.Height
 $sourcefiles.Location          = New-Object System.Drawing.Size($form_leftalign,120) 
-$sourcefiles.Size              = New-Object System.Drawing.Size(570,150) 
+$sourcefiles.Size              = New-Object System.Drawing.Size(580,120) 
 $sourcefiles.FullRowSelect = $True
+$sourcefiles.HideSelection = $false
 $sourcefiles.AutoResizeColumns(2)
 $sourcefiles.View              = [System.Windows.Forms.View]::Details
-$sourcefiles.SmallImageList = $imageList
+#$sourcefiles.SmallImageList = $imageList
 
 #$sourcefiles.Columns.Add("Art")
 $sourcefiles.Columns.Add("Betreff",360)
@@ -317,8 +342,6 @@ $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInf
 $textBox.Text                   = -join($PREDICT_CODE,$attempt_at_companyname)
 
 
-$sourcefiles.Items.Add("IconMail",0)
-
 
 # Add the ListView to the Form
 $form.Controls.Add($sourcefiles)
@@ -350,14 +373,14 @@ $form.Controls.Add($sourcefiles)
 # $form.Controls.Add($templates)
 
 $label2 = New-Object System.Windows.Forms.Label
-$label2.Location = New-Object System.Drawing.Point($form_leftalign,300)
-$label2.Size = New-Object System.Drawing.Size(500,30)
+$label2.Location = New-Object System.Drawing.Point($form_leftalign,280)
+$label2.Size = New-Object System.Drawing.Size(500,20)
 $label2.Text = $text_usewhichtemplate
 $form.Controls.Add($label2)
 
 $listBox = New-Object System.Windows.Forms.ListBox
-$listBox.Location = New-Object System.Drawing.Point($form_leftalign,330)
-$listBox.Size = New-Object System.Drawing.Size(670,120)
+$listBox.Location = New-Object System.Drawing.Point($form_leftalign,300)
+$listBox.Size = New-Object System.Drawing.Size(580,120)
 $listBox.Height = 120
 
 [void] $listBox.Items.Add('Minimal')
@@ -390,64 +413,56 @@ $form.Controls.Add($listBox)
 #$form.Controls.Add($CheckIfSourceFiles)
 
 
-# Check if count words ?
-#$CheckIfAnalysis                = New-Object System.Windows.Forms.CheckBox        
-#$CheckIfAnalysis.Location       = New-Object System.Drawing.Point(($form_leftalign + 300),300)
-#$CheckIfAnalysis.Size           = New-Object System.Drawing.Size(250,25)
-#$CheckIfAnalysis.Text           = "Wortzahl machen? (Langsam)"
-#$CheckIfAnalysis.UseVisualStyleBackColor = $True
-#$CheckIfAnalysis.Checked        = $True
-#$form.Controls.Add($CheckIfAnalysis)
-
-
-
-# Check if start new trados project
-#$CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox        
-#$CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 300),330)
-#$CheckIfTrados.Size             = New-Object System.Drawing.Size(250,25)
-#$CheckIfTrados.Text             = "Ein neues Trados-Projekt beginnen?"
-#$CheckIfTrados.UseVisualStyleBackColor = $True
-#$CheckIfTrados.Checked          = $True
-#$form.Controls.Add($CheckIfTrados)
 
 
 
 #====================
 #= OKCANCEL BUTTONS =
 
+$gui_panel = New-Object System.Windows.Forms.Panel
+$gui_panel.Left = 0
+$gui_panel.Top = ($form_verticalalign)
 
-$gui_advanced_settings                   = New-Object System.Windows.Forms.Button
-$gui_advanced_settings.Location          = New-Object System.Drawing.Point(($form_leftalign),$form_verticalalign)
-$gui_advanced_settings.Size              = New-Object System.Drawing.Size(120,30)
-$gui_advanced_settings.Text              = 'Erweitert...'
-$gui_advanced_settings.UseVisualStyleBackColor = $True
-$gui_advanced_settings.add_click({
+$gui_panel.Width = 625
+$gui_panel.Height = 55
+$gui_panel.BackColor = '241,241,241'
+
+$gui_help                   = New-Object System.Windows.Forms.Button
+$gui_help.Location          = New-Object System.Drawing.Point(($form_leftalign),20)
+$gui_help.Size              = New-Object System.Drawing.Size(120,25)
+$gui_help.Text              = $text_help
+$gui_help.UseVisualStyleBackColor = $True
+$gui_help.add_click({
     [System.Windows.Forms.MessageBox]::Show("Hello World. " + ($firstNameTextBox.Text) + " " + ($lastNameTextbox.Text) , "My Dialog Box")
 })
+$form.Controls.Add($gui_help)
 
-
-$form.Controls.Add($gui_advanced_settings)
-
-
-
-$gui_okButton                   = New-Object System.Windows.Forms.Button
-$gui_okButton.Location          = New-Object System.Drawing.Point(($form_leftalign + 400),$form_verticalalign)
-$gui_okButton.Size              = New-Object System.Drawing.Size(120,30)
-$gui_okButton.Text              = 'Los!'
-$gui_okButton.UseVisualStyleBackColor = $True
-$gui_okButton.DialogResult      = [System.Windows.Forms.DialogResult]::OK
-$form.AcceptButton          = $gui_okButton
+$gui_okButton                               = New-Object System.Windows.Forms.Button
+$gui_okButton.Location                      = New-Object System.Drawing.Point(($form_leftalign + 330),20)
+$gui_okButton.Size                          = New-Object System.Drawing.Size(120,25)
+$gui_okButton.Text                          = $text_OK
+$gui_okButton.UseVisualStyleBackColor       = $True
+$gui_okButton.DialogResult                  = [System.Windows.Forms.DialogResult]::OK
+$form.AcceptButton                          = $gui_okButton
 #$gui_okButton.BackColor =”Green”
 $form.Controls.Add($gui_okButton)
 
-$gui_cancelButton               = New-Object System.Windows.Forms.Button
-$gui_cancelButton.Location      = New-Object System.Drawing.Point(($form_leftalign + 550),$form_verticalalign)
-$gui_cancelButton.Size          = New-Object System.Drawing.Size(120,30)
-$gui_cancelButton.Text          = 'Nö'
-$gui_cancelButton.UseVisualStyleBackColor = $False #$True
-$gui_cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
-$form.CancelButton          = $gui_cancelButton
+$gui_cancelButton                           = New-Object System.Windows.Forms.Button
+$gui_cancelButton.Location                  = New-Object System.Drawing.Point(($form_leftalign + 460),20)
+$gui_cancelButton.Size                      = New-Object System.Drawing.Size(120,25)
+$gui_cancelButton.Text                      = $text_Cancel
+$gui_cancelButton.UseVisualStyleBackColor   = $True
+$gui_cancelButton.DialogResult              = [System.Windows.Forms.DialogResult]::Cancel
+$form.CancelButton                          = $gui_cancelButton
 $form.Controls.Add($gui_cancelButton)
+
+
+$gui_panel.Controls.Add($gui_okButton)
+$gui_panel.Controls.Add($gui_cancelButton)
+$gui_panel.Controls.Add($gui_help)
+$gui_panel.Show()
+
+$form.Controls.Add($gui_panel)
 
 
 
