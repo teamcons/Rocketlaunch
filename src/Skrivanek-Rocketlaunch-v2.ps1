@@ -206,7 +206,7 @@ $form.Controls.Add($label)
 # Input box
 $textBox                = New-Object System.Windows.Forms.TextBox
 $textBox.Location       = New-Object System.Drawing.Point(($form_leftalign + 80),60)
-$textBox.Size           = New-Object System.Drawing.Size(170,30)
+$textBox.Size           = New-Object System.Drawing.Size(250,30)
 $textBox.Text           = $PREDICT_CODE
 $form.Controls.Add($textBox)
 $form.Add_Shown({$textBox.Select()})
