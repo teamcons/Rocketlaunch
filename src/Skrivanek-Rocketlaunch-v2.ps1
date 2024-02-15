@@ -60,10 +60,10 @@ Write-Output "[STARTUP] Getting all variables in place"
 [string]$default_fromdisk           = "$env:USERPROFILE\Downloads\"
 [bool]$default_doanalysis           = $false
 [bool]$default_opentrados           = $true
-[bool]$default_createshortcut       = $true
-[bool]$default_outlookfolder        = $true
-[bool]$default_movesourcemail       = $true
-[bool]$default_openexplorer         = $true
+#[bool]$default_createshortcut       = $true
+#[bool]$default_outlookfolder        = $true
+#[bool]$default_movesourcemail       = $true
+#[bool]$default_openexplorer         = $true
 
 
 #========================================
@@ -440,7 +440,7 @@ $gui_help.Size              = New-Object System.Drawing.Size(120,25)
 $gui_help.Text              = $text_help
 $gui_help.UseVisualStyleBackColor = $True
 $gui_help.add_click({
-    [System.Windows.Forms.MessageBox]::Show("Hello World. " + ($firstNameTextBox.Text) + " " + ($lastNameTextbox.Text) , "My Dialog Box")
+    [System.Windows.Forms.MessageBox]::Show("Frag Stella" , $APPNAME)
 })
 $form.Controls.Add($gui_help)
 
