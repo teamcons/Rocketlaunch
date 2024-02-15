@@ -48,16 +48,17 @@ Write-Output "[STARTUP] Getting all variables in place"
 [string]$LOAD_SOURCE_FROM   = "$env:USERPROFILE\Downloads\"
 
 
-
 #========================================
 # Defaults
 
+[string]$default_filesfrom          = "outlook"
+[string]$default_downloaded         = "$env:USERPROFILE\Downloads\"
 [bool]$default_doanalysis           = $false
 [bool]$default_opentrados           = $true
-#[bool]$default_loadfromoutlook     = $true
 [bool]$default_createshortcut       = $true
+[bool]$default_outlookfolder        = $true
+[bool]$default_movesourcemail       = $true
 [bool]$default_openexplorer         = $true
-
 
 
 #========================================
@@ -89,9 +90,6 @@ $ns                         = $OL.GETNAMESPACE("MAPI")
 $date                       = Get-Date (Get-Date).AddDays(-2) -Format 'dd/MM/yyyy'
 $filter                     = "[ReceivedTime] >= '$date 17:30'"
 $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
-
-
-
 
 
 # Load templates from a csv in same place as executable
@@ -150,11 +148,6 @@ $stream = [System.IO.MemoryStream]::new($iconBytes, 0, $iconBytes.Length)
 #==============================================================
 
 
-#= Layout
-# Icon, name, input field
-# Listbox
-# Checkboxes
-#=
 
 #================
 #= INITIAL WORK =
