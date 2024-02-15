@@ -69,14 +69,11 @@ Write-Output "[STARTUP] Getting all variables in place"
 #========================================
 # Localization
 
-[string]$text_projectname           = "Projektname"
-[string]$text_standardtab           = "Standard"
+[string]$text_projectname           = "Ein neues Projekt anlegen:"
 [string]$text_loadfilesfrom         = 'Email mit Ausgangsdatei'
 [string]$text_usewhichtemplate      = 'Welche Projektvorlage soll verwendet werden?'
-[string]$text_advancedtab           = "Erweitert"
 [string]$text_doanalysis            = "Analyse machen ? (Langsam)"
-[string]$text_opentrados            = "Trados öffnen ?"
-[string]$text_openexplorer          = "Explorer öffnen ?"
+[string]$text_opentrados            = "Neues Trados-Projekt ?"
 [string]$text_help                  = "Hilfe"
 [string]$text_OK                    = "Los!"
 [string]$text_Cancel                = "Nö"
@@ -196,7 +193,7 @@ $form.controls.add($pictureBox)
 # Label above input
 $label                  = New-Object System.Windows.Forms.Label
 $label.Location         = New-Object System.Drawing.Point(($form_leftalign + 80),30)
-$label.Size             = New-Object System.Drawing.Size(170,20)
+$label.Size             = New-Object System.Drawing.Size(240,20)
 $label.AutoSize         = $true
 $label.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Bold)
 $label.Text             = $text_projectname
@@ -213,8 +210,8 @@ $form.Add_Shown({$textBox.Select()})
 
 # Check if count words ?
 $CheckIfAnalysis                = New-Object System.Windows.Forms.CheckBox        
-$CheckIfAnalysis.Location       = New-Object System.Drawing.Point(($form_leftalign + 400),60)
-$CheckIfAnalysis.Size           = New-Object System.Drawing.Size(200,25)
+$CheckIfAnalysis.Location       = New-Object System.Drawing.Point(($form_leftalign + 400),30)
+$CheckIfAnalysis.Size           = New-Object System.Drawing.Size(200,30)
 $CheckIfAnalysis.Text           = $text_doanalysis
 $CheckIfAnalysis.UseVisualStyleBackColor = $True
 $CheckIfAnalysis.Checked        = $default_doanalysis
@@ -224,8 +221,8 @@ $form.Controls.Add($CheckIfAnalysis)
 
 # Check if start new trados project
 $CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox        
-$CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 400),30)
-$CheckIfTrados.Size             = New-Object System.Drawing.Size(200,25)
+$CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 400),60)
+$CheckIfTrados.Size             = New-Object System.Drawing.Size(200,30)
 $CheckIfTrados.Text             = $text_opentrados
 $CheckIfTrados.UseVisualStyleBackColor = $True
 $CheckIfTrados.Checked          = $default_opentrados
@@ -243,9 +240,12 @@ $form.Controls.Add($CheckIfTrados)
 
 # Label above input
 $labelsourcefiles                  = New-Object System.Windows.Forms.Label
-$labelsourcefiles.Location         = New-Object System.Drawing.Point($form_leftalign,100)
+$labelsourcefiles.Location         = New-Object System.Drawing.Point($form_leftalign,110)
 $labelsourcefiles.Size             = New-Object System.Drawing.Size(240,20)
 $labelsourcefiles.Text             = $text_loadfilesfrom
+
+$labelsourcefiles.Font              = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
+
 $form.Controls.Add($labelsourcefiles)
 
 
@@ -265,7 +265,7 @@ $form.Controls.Add($labelsourcefiles)
 $sourcefiles                   = New-Object System.Windows.Forms.ListView
 $sourcefiles.Width             = 450 #$form.ClientRectangle.Width
 $sourcefiles.Height            = 150 # $Form.ClientRectangle.Height
-$sourcefiles.Location          = New-Object System.Drawing.Size($form_leftalign,120) 
+$sourcefiles.Location          = New-Object System.Drawing.Size($form_leftalign,130) 
 $sourcefiles.Size              = New-Object System.Drawing.Size(580,120) 
 $sourcefiles.FullRowSelect = $True
 $sourcefiles.HideSelection = $false
@@ -351,49 +351,56 @@ $form.Controls.Add($sourcefiles)
 #=====================
 #= LIST OF TEMPLATES =
 
-# $labeltemplate                  = New-Object System.Windows.Forms.Label
-# $labeltemplate.Location         = New-Object System.Drawing.Point($form_leftalign,260)
-# $labeltemplate.Size             = New-Object System.Drawing.Size(215,30)
-# $labeltemplate.Text             = 'Welche Projektvorlage soll verwendet werden?'
-# $form.Controls.Add($labeltemplate)
-# $templates                        = New-Object System.Windows.Forms.ListView
-# $templates.Location               = New-Object System.Drawing.Point($form_leftalign,290)
-# $templates.Size                   = New-Object System.Drawing.Size(450,200)
-# $templates.AutoSize               = $true 
-# $templates.Height                 = 100
-# $templates.FullRowSelect = $True
-# $templates.AutoResizeColumns(2)
-# $templates.View              = [System.Windows.Forms.View]::Details
-# $templates.Columns.Add("Vorlage",100)
-# $templates.Columns.Add("Ordner",250)
+
+$labeltemplate                  = New-Object System.Windows.Forms.Label
+$labeltemplate.Text             = $text_usewhichtemplate
+$labeltemplate.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
+$labeltemplate.Location         = New-Object System.Drawing.Point($form_leftalign,280)
+$labeltemplate.Size             = New-Object System.Drawing.Size(500,20)
+$form.Controls.Add($labeltemplate)
+
+
+
+$templates                        = New-Object System.Windows.Forms.ListView
+$templates.Location               = New-Object System.Drawing.Point($form_leftalign,300)
+$templates.Size                   = New-Object System.Drawing.Size(580,120)
+$templates.AutoSize               = $true 
+$templates.Height                 = 100
+$templates.FullRowSelect = $True
+$templates.AutoResizeColumns(2)
+$templates.View              = [System.Windows.Forms.View]::Details
+$templates.HideSelection = $false
+$templates.Columns.Add("Vorlage",150)
+$templates.Columns.Add("Ordner 00",100)
+$templates.Columns.Add("Ordner 01",100)
+
+
+
+
 # ## LOAD FROM CSV HERE
-# $templatesItem = New-Object System.Windows.Forms.ListViewItem("Minimal")
-# [void]$templatesItem.Subitems.Add("00_info, 01_orig")
-# [void]$templates.Items.Add($templatesItem)
-# $form.Controls.Add($templates)
+$templatesItem = New-Object System.Windows.Forms.ListViewItem("Minimal")
+[void]$templatesItem.Subitems.Add("00_info")
+[void]$templatesItem.Subitems.Add("01_orig")
 
-$label2 = New-Object System.Windows.Forms.Label
-$label2.Location = New-Object System.Drawing.Point($form_leftalign,280)
-$label2.Size = New-Object System.Drawing.Size(500,20)
-$label2.Text = $text_usewhichtemplate
-$form.Controls.Add($label2)
+[void]$templates.Items.Add($templatesItem)
+$form.Controls.Add($templates)
 
-$listBox = New-Object System.Windows.Forms.ListBox
-$listBox.Location = New-Object System.Drawing.Point($form_leftalign,300)
-$listBox.Size = New-Object System.Drawing.Size(580,120)
-$listBox.Height = 120
 
-[void] $listBox.Items.Add('Minimal')
-$listBox.SelectedItem = "Minimal"
+#$listBox = New-Object System.Windows.Forms.ListBox
+#$listBox.Location = New-Object System.Drawing.Point($form_leftalign,300)
+#$listBox.Size = New-Object System.Drawing.Size(580,120)
+#$listBox.Height = 120
+
+#[void] $listBox.Items.Add('Minimal')
+#$listBox.SelectedItem = "Minimal"
 
 ## LOAD FROM CSV HERE
-[void] $listBox.Items.Add('Standard TEP')
-[void] $listBox.Items.Add('Provider macht TEP')
-[void] $listBox.Items.Add('Sworn Translation')
-[void] $listBox.Items.Add('MemoQ')
-[void] $listBox.Items.Add('Production')
-
-$form.Controls.Add($listBox)
+#[void] $listBox.Items.Add('Standard TEP')
+#[void] $listBox.Items.Add('Provider macht TEP')
+#[void] $listBox.Items.Add('Sworn Translation')
+#[void] $listBox.Items.Add('MemoQ')
+#[void] $listBox.Items.Add('Production')
+#$form.Controls.Add($listBox)
 
 
 
