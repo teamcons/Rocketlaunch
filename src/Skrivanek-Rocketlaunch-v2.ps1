@@ -45,14 +45,19 @@ Write-Output ""
 Write-Output "[STARTUP] Getting all variables in place"
 [string]$APPNAME            = "-Rocketlaunch!"
 [string]$PROJECTTEMPLATE    = "Minimal"
-[string]$LOAD_SOURCE_FROM   = "$env:USERPROFILE\Downloads\"
+
+# Load templates from a csv in same place as executable
+#[string]$LOAD_TEMPLATES_FROM = $MyInvocation.MyCommand.Path
+[string]$ROOTSTRUCTURE      = "M:\9_JOBS_XTRF\"
+[regex]$CODEPATTERN         = -join($YEAR,"-[0-9]")
+[string]$YEAR               = get-date –f yyyy
 
 
 #========================================
 # Defaults
 
 [string]$default_filesfrom          = "outlook"
-[string]$default_downloaded         = "$env:USERPROFILE\Downloads\"
+[string]$default_fromdisk           = "$env:USERPROFILE\Downloads\"
 [bool]$default_doanalysis           = $false
 [bool]$default_opentrados           = $true
 [bool]$default_createshortcut       = $true
@@ -65,16 +70,13 @@ Write-Output "[STARTUP] Getting all variables in place"
 # Localization
 
 [string]$text_projectname           = "Projektname"
-
 [string]$text_standardtab           = "Standard"
 [string]$text_loadfilesfrom         = 'Email mit Ausgangsdatei'
 [string]$text_usewhichtemplate      = 'Welche Projektvorlage soll verwendet werden?'
-
 [string]$text_advancedtab           = "Erweitert"
 [string]$text_doanalysis            = "Eine analyse machen ? (Langsam)"
 [string]$text_opentrados            = "Trados öffnen ?"
 [string]$text_openexplorer          = "Explorer öffnen ?"
-
 [string]$text_help                  = "Hilfe"
 [string]$text_OK                    = "Los!"
 [string]$text_Cancel                = "Nö"
@@ -92,14 +94,10 @@ $filter                     = "[ReceivedTime] >= '$date 17:30'"
 $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
 
 
-# Load templates from a csv in same place as executable
-#[string]$LOAD_TEMPLATES_FROM = $MyInvocation.MyCommand.Path
-[string]$ROOTSTRUCTURE      = "M:\9_JOBS_XTRF\"
-[regex]$CODEPATTERN         = -join($YEAR,"-[0-9]")
-[string]$YEAR               = get-date –f yyyy
+
 
 # TRADOS. TODO: MORE FLEXIBLE
-[string]$NEWPROJECTICON     = "C:\Program Files (x86)\Trados\Trados Studio\Studio17\StudioTips\de\00_WelcomeFlow\NewProject.ico"
+#[string]$NEWPROJECTICON     = "C:\Program Files (x86)\Trados\Trados Studio\Studio17\StudioTips\de\00_WelcomeFlow\NewProject.ico"
 
 
 
@@ -163,7 +161,7 @@ Add-Type -AssemblyName System.Drawing
 
 $form                   = New-Object System.Windows.Forms.Form
 $form.Text              = $APPNAME
-$form.Size              = New-Object System.Drawing.Size(650,($form_verticalalign + 95))
+$form.Size              = New-Object System.Drawing.Size(700,($form_verticalalign + 95))
 #$form.MinimumSize       = New-Object System.Drawing.Size(600,450)
 #$form.MaximumSize       = New-Object System.Drawing.Size(750,550)
 $form.AutoSize          = $true
@@ -359,7 +357,7 @@ $form.Controls.Add($label2)
 
 $listBox = New-Object System.Windows.Forms.ListBox
 $listBox.Location = New-Object System.Drawing.Point($form_leftalign,330)
-$listBox.Size = New-Object System.Drawing.Size(570,120)
+$listBox.Size = New-Object System.Drawing.Size(670,120)
 $listBox.Height = 120
 
 [void] $listBox.Items.Add('Minimal')
@@ -433,7 +431,7 @@ $form.Controls.Add($gui_advanced_settings)
 
 
 $gui_okButton                   = New-Object System.Windows.Forms.Button
-$gui_okButton.Location          = New-Object System.Drawing.Point(($form_leftalign + 320),$form_verticalalign)
+$gui_okButton.Location          = New-Object System.Drawing.Point(($form_leftalign + 400),$form_verticalalign)
 $gui_okButton.Size              = New-Object System.Drawing.Size(120,30)
 $gui_okButton.Text              = 'Los!'
 $gui_okButton.UseVisualStyleBackColor = $True
@@ -443,7 +441,7 @@ $form.AcceptButton          = $gui_okButton
 $form.Controls.Add($gui_okButton)
 
 $gui_cancelButton               = New-Object System.Windows.Forms.Button
-$gui_cancelButton.Location      = New-Object System.Drawing.Point(($form_leftalign + 450),$form_verticalalign)
+$gui_cancelButton.Location      = New-Object System.Drawing.Point(($form_leftalign + 550),$form_verticalalign)
 $gui_cancelButton.Size          = New-Object System.Drawing.Size(120,30)
 $gui_cancelButton.Text          = 'Nö'
 $gui_cancelButton.UseVisualStyleBackColor = $False #$True
@@ -705,7 +703,7 @@ if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIf
 
         # Grab source files
         $SOURCEFILES = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
-            InitialDirectory    = $LOAD_SOURCE_FROM
+            InitialDirectory    = $default_fromdisk
             Multiselect         = $true
             Title               = $APPNAME
         }
