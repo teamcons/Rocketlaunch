@@ -148,7 +148,7 @@ $stream = [System.IO.MemoryStream]::new($iconBytes, 0, $iconBytes.Length)
 #= INITIAL WORK =
 
 [int]$form_leftalign = 25
-[int]$form_verticalalign = 440
+[int]$form_verticalalign = 460
 
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
@@ -365,7 +365,7 @@ $templates                        = New-Object System.Windows.Forms.ListView
 $templates.Location               = New-Object System.Drawing.Point($form_leftalign,300)
 $templates.Size                   = New-Object System.Drawing.Size(580,120)
 $templates.AutoSize               = $true 
-$templates.Height                 = 100
+$templates.Height                 = 120
 $templates.FullRowSelect = $True
 $templates.AutoResizeColumns(2)
 $templates.View              = [System.Windows.Forms.View]::Details
@@ -431,11 +431,11 @@ $gui_panel.Left = 0
 $gui_panel.Top = ($form_verticalalign)
 
 $gui_panel.Width = 625
-$gui_panel.Height = 55
+$gui_panel.Height = 50
 $gui_panel.BackColor = '241,241,241'
 
 $gui_help                   = New-Object System.Windows.Forms.Button
-$gui_help.Location          = New-Object System.Drawing.Point(($form_leftalign),20)
+$gui_help.Location          = New-Object System.Drawing.Point(($form_leftalign),10)
 $gui_help.Size              = New-Object System.Drawing.Size(120,25)
 $gui_help.Text              = $text_help
 $gui_help.UseVisualStyleBackColor = $True
@@ -445,7 +445,7 @@ $gui_help.add_click({
 $form.Controls.Add($gui_help)
 
 $gui_okButton                               = New-Object System.Windows.Forms.Button
-$gui_okButton.Location                      = New-Object System.Drawing.Point(($form_leftalign + 330),20)
+$gui_okButton.Location                      = New-Object System.Drawing.Point(($form_leftalign + 330),10)
 $gui_okButton.Size                          = New-Object System.Drawing.Size(120,25)
 $gui_okButton.Text                          = $text_OK
 $gui_okButton.UseVisualStyleBackColor       = $True
@@ -455,7 +455,7 @@ $form.AcceptButton                          = $gui_okButton
 $form.Controls.Add($gui_okButton)
 
 $gui_cancelButton                           = New-Object System.Windows.Forms.Button
-$gui_cancelButton.Location                  = New-Object System.Drawing.Point(($form_leftalign + 460),20)
+$gui_cancelButton.Location                  = New-Object System.Drawing.Point(($form_leftalign + 460),10)
 $gui_cancelButton.Size                      = New-Object System.Drawing.Size(120,25)
 $gui_cancelButton.Text                      = $text_Cancel
 $gui_cancelButton.UseVisualStyleBackColor   = $True
