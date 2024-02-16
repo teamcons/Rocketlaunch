@@ -359,19 +359,18 @@ foreach ($mail in $allmails)
 
 # TODO
 # Add company name of mail we click on
-$sourcefiles.OnItemActivate({
-
-    echo $sourcefiles.FocusedItem.Index
-
-$allgoodmails[$sourcefiles.FocusedItem.Index].SenderEmailAddress -match "@(?<content>.*).com"
-$attempt_at_companyname         = $matches["content"]
-$attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
-echo $attempt_at_companyname
-[string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
-[string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
-[string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
-[string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )  
-                })
+#$sourcefiles.OnItemActivate({
+#    echo $sourcefiles.FocusedItem.Index
+#
+#$allgoodmails[$sourcefiles.FocusedItem.Index].SenderEmailAddress -match "@(?<content>.*).com"
+#$attempt_at_companyname         = $matches["content"]
+#$attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
+#echo $attempt_at_companyname
+#[string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
+#[string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
+#[string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
+#[string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )  
+#                })
 
 
 
@@ -562,12 +561,6 @@ elseif ($PROJECTNAME -match "^[0-9]")
 $PROJECTNAME = -join($YEAR,"-",$PROJECTNAME)
 
 
-###########################DEBUG
-#Write-Output "DEBUG"
-#Write-Output "IS CORRECT ?"
-#Write-Output "$PROJECTNAME"
-#exit
-###########################DEBUG
 
 
 ##### Ultimate check
@@ -590,8 +583,6 @@ exit }
 #==============================================================
 #                      Build The Project                      =
 #==============================================================
-
-
 # REBUILT THE WHOLE TREE
 # Its in... year, underscore
 $BASEFOLDER     = -join($ROOTSTRUCTURE,$DIRCODE.Substring(0,4),"_")
@@ -603,6 +594,28 @@ if (!(Test-Path $BASEFOLDER -PathType Container)) {
     New-Item -ItemType Directory -Force -Path "$BASEFOLDER"
 }
 $BASEFOLDER = -join($BASEFOLDER,"\",$PROJECTNAME)
+
+
+
+
+###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG
+Write-Output "DEBUG"
+Write-Output "IS CORRECT ?"
+Write-Output "$PROJECTNAME"
+
+Write-Output "IS SELECTED"
+
+
+Write-Output $allgoodmails[$sourcefiles.SelectedItems.Index].Text
+$allgoodmails[$sourcefiles.SelectedItems.Index].Attachments
+# FileName
+
+Write-Output "IS SELECTED"
+Write-Output $templates.SelectedItems.Text
+
+
+exit
+###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG
 
 
 
@@ -635,10 +648,6 @@ foreach ($folder in $FOLDERS)
     Write-Output "[CREATE] folder: $BASEFOLDER\$folder"
     New-Item -ItemType Directory -Path "$BASEFOLDER\$folder"
 }
-
-
-
-
 # PIN TO EXPLORER
 $o = new-object -com shell.application
 $o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
@@ -735,10 +744,6 @@ if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIf
         $ANALYSIS = -join($DIRCODE,"_Analyse_Rocketlaunch.csv")
         Write-Output "sep=;" | Out-File -FilePath "$INFO\$ANALYSIS"
         Write-Output "Datei;Wörterzahl" | Out-File -FilePath "$INFO\$ANALYSIS" -Append 
-        
-
-
-
      }    
 
 
@@ -750,7 +755,7 @@ if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIf
 
 
 
-        if ($Combobox.SelectedItem -eq "(Ich möchte die Dateien selber holen)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
+        if ($gui_filesource.SelectedItem -eq "(Ich möchte die Dateien selber holen)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
         {
             # DO THE MOVE
             $truefile = Get-Item "$file"
