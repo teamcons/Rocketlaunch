@@ -54,26 +54,15 @@ Write-Output "[STARTUP] Getting all variables in place"
 
 
 #========================================
-# Defaults
-
-[string]$default_filesfrom          = "Outlook"
-[string]$default_fromdisk           = "$env:USERPROFILE\Downloads\"
-[bool]$default_doanalysis           = $false
-[bool]$default_opentrados           = $true
-#[bool]$default_createshortcut       = $true
-#[bool]$default_outlookfolder        = $true
-#[bool]$default_movesourcemail       = $true
-#[bool]$default_openexplorer         = $true
-
-
-#========================================
 # Localization
 
 [string]$text_projectname           = "Ein neues Projekt anlegen:"
 [string]$text_doanalysis            = "Analyse machen ? (Langsam)"
 [string]$text_opentrados            = "Neues Trados-Projekt ?"
 
-[string]$text_loadfilesfrom         = 'Email mit Ausgangsdatei'
+[string]$text_loadfilesfrom         = 'Ausgangsdatei aus Quelle'
+[string]$text_from_Outlook          = "In Outlook"
+[string]$text_from_Downloads        = "In Downloads"
 [string]$text_nofilesource          = "Keine Ausgangsdatei"
 
 [string]$text_usewhichtemplate      = 'Welche Projektvorlage soll verwendet werden?'
@@ -81,6 +70,23 @@ Write-Output "[STARTUP] Getting all variables in place"
 [string]$text_help                  = "Hilfe"
 [string]$text_OK                    = "Los!"
 [string]$text_Cancel                = "Nö"
+
+
+
+
+
+
+#========================================
+# Defaults
+
+[string]$default_filesfrom          = $text_from_Outlook
+[string]$default_fromdisk           = "$env:USERPROFILE\Downloads\"
+[bool]$default_doanalysis           = $false
+[bool]$default_opentrados           = $true
+#[bool]$default_createshortcut       = $true
+#[bool]$default_outlookfolder        = $true
+#[bool]$default_movesourcemail       = $true
+#[bool]$default_openexplorer         = $true
 
 
 
@@ -278,13 +284,12 @@ $labelsourcefiles.Text             = $text_loadfilesfrom
 $labelsourcefiles.Font              = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
 $form.Controls.Add($labelsourcefiles)
 
-
-
 $gui_filesource                 = New-Object System.Windows.Forms.Combobox
 $gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 400),105)
 $gui_filesource.Size            = New-Object System.Drawing.Size(180,20)
 $gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
-[void] $gui_filesource.Items.Add("Outlook")  
+[void] $gui_filesource.Items.Add($text_from_Outlook) 
+[void] $gui_filesource.Items.Add($text_from_Downloads)   
 [void] $gui_filesource.Items.Add($text_nofilesource)  
 $gui_filesource.SelectedItem = $default_filesfrom
 
@@ -635,8 +640,6 @@ $o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
 if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
 {
 
-
-
     # CHECK WE HAVE THE MINIMUM FOLDERS
     # BECAUSE WE DONT KNOW WHAT TEMPLATE USER USED
     # IF THE STANDARD MINIMUM ISNT THERE, JUST USE BASE FOLDER INSTEAD
@@ -649,7 +652,6 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
     {
             [string]$INFO = "$BASEFOLDER\"
     }
-
     if (Test-Path "$BASEFOLDER\01_orig\" -PathType Container)
     {
             Write-Output "Has Orig"
@@ -661,22 +663,8 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
     }
 
 
-    # if ($sourcefiles.SelectedItem -is "(Ich möchte die Dateien selber holen)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
-    # {
-    #     Write-Output "[DETECTED] Load source files"
 
-    #     # Grab source files
-    #     $SOURCEFILES = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
-    #         InitialDirectory    = $default_fromdisk
-    #         Multiselect         = $true
-    #         Title               = $APPNAME
-    #     }
-    #     $null = $SOURCEFILES.ShowDialog()
-    #     Write-Output "[INPUT] Got:"
-    #     Write-Output $SOURCEFILES.FileNames
-    # } # End of user load themselves
-
-    if ($gui_filesource.SelectedItem -match "Outlook" )
+    if ($gui_filesource.SelectedItem -match $text_from_Outlook )
     {
         Write-Output "[DETECTED] Get source files from email"
         $sourcemail = $allgoodmails[$sourcefiles.SelectedItems.Index]
@@ -689,6 +677,26 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
             }
         } # End of attachment processing
     } # End of process outlook inclusion
+    elseif ($gui_filesource.SelectedItem -match $text_from_Downloads )
+    {
+         Write-Output "[DETECTED] Load source files"
+         # Grab source files
+         $load_files = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
+             InitialDirectory    = $default_fromdisk
+             Multiselect         = $true
+             Title               = $APPNAME
+         }
+         $null = $load_files.ShowDialog()
+         Write-Output "[INPUT] Got:"
+         Write-Output $SOURCEFILES.FileNames
+
+         foreach ($file in $load_files)
+         {
+             Write-Output "Moving $file"
+             Move-Item -Path $file -Destination $ORIG
+
+         }
+    } # End of user load themselves
 
     
 
