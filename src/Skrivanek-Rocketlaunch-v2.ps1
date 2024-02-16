@@ -431,22 +431,6 @@ $templates.Items[0].Selected = $true
 [void]$form.Controls.Add($templates)
 
 
-#$listBox = New-Object System.Windows.Forms.ListBox
-#$listBox.Location = New-Object System.Drawing.Point($form_leftalign,300)
-#$listBox.Size = New-Object System.Drawing.Size(580,120)
-#$listBox.Height = 120
-
-#[void] $listBox.Items.Add('Minimal')
-#$listBox.SelectedItem = "Minimal"
-
-## LOAD FROM CSV HERE
-#[void] $listBox.Items.Add('Standard TEP')
-#[void] $listBox.Items.Add('Provider macht TEP')
-#[void] $listBox.Items.Add('Sworn Translation')
-#[void] $listBox.Items.Add('MemoQ')
-#[void] $listBox.Items.Add('Production')
-#$form.Controls.Add($listBox)
-
 
 #====================
 #= OKCANCEL BUTTONS =
@@ -594,16 +578,11 @@ if (!(Test-Path $BASEFOLDER -PathType Container)) {
 $BASEFOLDER = -join($BASEFOLDER,"\",$PROJECTNAME)
 
 
-
-
 ###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG
 #Write-Output "DEBUG"
 #Write-Output "IS CORRECT ?"
 #exit
 ###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG
-
-
-
 
 
 Write-Output "[CREATE] Base folder: $BASEFOLDER"
@@ -638,9 +617,6 @@ foreach ($folder in $FOLDERS)
 # PIN TO EXPLORER
 $o = new-object -com shell.application
 $o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
-
-
-
 
 
 
@@ -715,8 +691,6 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
     } # End of process outlook inclusion
 
     
-
-
 
     # ONLY IF ANALYSIS WISHED
     if ($CheckIfAnalysis.CheckState.ToString() -eq "Checked")
