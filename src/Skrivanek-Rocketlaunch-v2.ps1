@@ -284,12 +284,9 @@ $gui_filesource                 = New-Object System.Windows.Forms.Combobox
 $gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 400),105)
 $gui_filesource.Size            = New-Object System.Drawing.Size(180,20)
 $gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
-
 [void] $gui_filesource.Items.Add("Outlook")  
 [void] $gui_filesource.Items.Add($text_nofilesource)  
-
 $gui_filesource.SelectedItem = $default_filesfrom
-
 
 $form.Controls.Add($gui_filesource)
 #'Windows icons
@@ -376,6 +373,7 @@ foreach ($mail in $allmails)
 
 
 # Add the ListView to the Form
+$sourcefiles.Items[0].Selected = $true
 $form.Controls.Add($sourcefiles)
 
 
@@ -423,13 +421,13 @@ $templates.HideSelection = $false
 
 
 
-
 # ## LOAD FROM CSV HERE
 $templatesItem = New-Object System.Windows.Forms.ListViewItem("Minimal")
 [void]$templatesItem.Subitems.Add("00_info")
 [void]$templatesItem.Subitems.Add("01_orig")
-
 [void]$templates.Items.Add($templatesItem)
+
+$templates.Items[0].Selected = $true
 [void]$form.Controls.Add($templates)
 
 
@@ -507,7 +505,7 @@ $gui_panel.Show()
 $result = $form.ShowDialog()
 
 [string]$PROJECTNAME        = $gui_code.Text 
-$PROJECTTEMPLATE            = $templates.SelectedItem
+$PROJECTTEMPLATE            = $templates.SelectedItems.Text
 
 # Cancel culture
 # Close if cancel
@@ -599,22 +597,9 @@ $BASEFOLDER = -join($BASEFOLDER,"\",$PROJECTNAME)
 
 
 ###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG
-Write-Output "DEBUG"
-Write-Output "IS CORRECT ?"
-Write-Output "$PROJECTNAME"
-
-Write-Output "IS SELECTED"
-
-
-Write-Output $allgoodmails[$sourcefiles.SelectedItems.Index].Text
-$allgoodmails[$sourcefiles.SelectedItems.Index].Attachments
-# FileName
-
-Write-Output "IS SELECTED"
-Write-Output $templates.SelectedItems.Text
-
-
-exit
+#Write-Output "DEBUG"
+#Write-Output "IS CORRECT ?"
+#exit
 ###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG
 
 
@@ -648,6 +633,8 @@ foreach ($folder in $FOLDERS)
     Write-Output "[CREATE] folder: $BASEFOLDER\$folder"
     New-Item -ItemType Directory -Path "$BASEFOLDER\$folder"
 }
+
+
 # PIN TO EXPLORER
 $o = new-object -com shell.application
 $o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
@@ -669,39 +656,8 @@ $o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
 
 
 # If user asked to include source files, include those in new folder, with naming conventions
-if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
+if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
 {
-
-
-    if ($sourcefiles.SelectedItem -is "(Ich möchte die Dateien selber holen)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
-    {
-        Write-Output "[DETECTED] Load source files"
-
-        # Grab source files
-        $SOURCEFILES = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
-            InitialDirectory    = $default_fromdisk
-            Multiselect         = $true
-            Title               = $APPNAME
-        }
-        $null = $SOURCEFILES.ShowDialog()
-        Write-Output "[INPUT] Got:"
-        Write-Output $SOURCEFILES.FileNames
-    } # End of user load themselves
-    else
-    {
-        
-        Write-Output "[DETECTED] Get source files from email"
-    }
-
-    # $getfrommail = $allgoodmails[$sourcefiles.FocusedItem.Index]
-
-
-    # for attachment in $getfrommail.Attachments
-    # if not image
-        # savefile($ORIG, $name)
-
-
-
 
 
 
@@ -710,6 +666,7 @@ if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIf
     # IF THE STANDARD MINIMUM ISNT THERE, JUST USE BASE FOLDER INSTEAD
     if (Test-Path "$BASEFOLDER\00_info\" -PathType Container)
     {
+            Write-Output "Has Info"
             [string]$INFO = "$BASEFOLDER\00_info\"
     }
     else
@@ -719,12 +676,46 @@ if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIf
 
     if (Test-Path "$BASEFOLDER\01_orig\" -PathType Container)
     {
+            Write-Output "Has Orig"
             [string]$ORIG = "$BASEFOLDER\01_orig\"
     }
     else
     {
             [string]$ORIG = "$BASEFOLDER\"
     }
+
+
+    # if ($sourcefiles.SelectedItem -is "(Ich möchte die Dateien selber holen)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
+    # {
+    #     Write-Output "[DETECTED] Load source files"
+
+    #     # Grab source files
+    #     $SOURCEFILES = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
+    #         InitialDirectory    = $default_fromdisk
+    #         Multiselect         = $true
+    #         Title               = $APPNAME
+    #     }
+    #     $null = $SOURCEFILES.ShowDialog()
+    #     Write-Output "[INPUT] Got:"
+    #     Write-Output $SOURCEFILES.FileNames
+    # } # End of user load themselves
+
+    if ($gui_filesource.SelectedItem -match "Outlook" )
+    {
+        Write-Output "[DETECTED] Get source files from email"
+        $sourcemail = $allgoodmails[$sourcefiles.SelectedItems.Index]
+        foreach ($attachment in $sourcemail.Attachments)
+        {
+            if ($attachment.FileName -notmatch "^image[0-9][0-9][0-9]")
+            {
+                Write-Output $attachment.FileName
+                $attachment.SaveAsFile((Join-Path $ORIG $attachment.FileName))
+            }
+        } # End of attachment processing
+    } # End of process outlook inclusion
+
+    
+
 
 
     # ONLY IF ANALYSIS WISHED
@@ -750,23 +741,11 @@ if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIf
     # PROCESS EACH SOURCE FILE
     # Rename and move file
     # Add count to total count and CSV
-    foreach ($file in $SOURCEFILES.FileNames)
+    foreach ($file in (Get-ChildItem $ORIG))
     {
-
-
-
-        if ($gui_filesource.SelectedItem -eq "(Ich möchte die Dateien selber holen)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
-        {
-            # DO THE MOVE
-            $truefile = Get-Item "$file"
-            $newname = -join($DIRCODE,"_",$truefile.BaseName,"_orig",$truefile.Extension)
-            Write-Output "[MOVE] Move to $ORIG\$newname"
-            Move-Item -Path "$truefile" -Destination "$ORIG\$newname"
-        }
-        else {
-            # SAVE FROM OUTLOOK
-            Write-Output "TODO TODO SAVE FROM OUTLOOK"
-        }
+        $newname = -join($DIRCODE,"_",$file.BaseName,"_orig",$file.Extension)
+        Write-Output "[RENAME] As $newname"
+        Rename-Item -Path $file.FullName -Newname "$newname"
 
         
         # ONLY IF ANALYSIS WISHED
