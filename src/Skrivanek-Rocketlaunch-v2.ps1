@@ -83,10 +83,11 @@ Write-Output "[STARTUP] Getting all variables in place"
 [string]$default_fromdisk           = "$env:USERPROFILE\Downloads\"
 [bool]$default_doanalysis           = $false
 [bool]$default_opentrados           = $true
-#[bool]$default_createshortcut       = $true
-#[bool]$default_outlookfolder        = $true
-#[bool]$default_movesourcemail       = $true
-#[bool]$default_openexplorer         = $true
+
+[bool]$default_createshortcut       = $true
+[bool]$default_createoutlookfolder  = $true
+[bool]$default_movesourcemail       = $true
+[bool]$default_openexplorer         = $true
 
 
 
@@ -620,9 +621,11 @@ foreach ($folder in $FOLDERS)
 
 
 # PIN TO EXPLORER
-$o = new-object -com shell.application
-$o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
-
+if ($default_createshortcut -eq $true)
+{
+    $o = new-object -com shell.application
+    $o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
+}
 
 
 
@@ -662,8 +665,6 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
             [string]$ORIG = "$BASEFOLDER\"
     }
 
-
-
     if ($gui_filesource.SelectedItem -match $text_from_Outlook )
     {
         Write-Output "[DETECTED] Get source files from email"
@@ -694,7 +695,6 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
          {
              Write-Output "Moving $file"
              Move-Item -Path $file -Destination $ORIG
-
          }
     } # End of user load themselves
 
@@ -703,7 +703,6 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
     # ONLY IF ANALYSIS WISHED
     if ($CheckIfAnalysis.CheckState.ToString() -eq "Checked")
     {
-
         # Need to use Word
         $word           = New-Object -ComObject Word.Application 
         $excel          = New-Object -ComObject Excel.Application 
@@ -733,7 +732,6 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
         # ONLY IF ANALYSIS WISHED
         if ($CheckIfAnalysis.CheckState.ToString() -eq "Checked")
         {
-
             # Use different backend depending on what needed
             # Each time, check the extension to know what we deal with
             if ("$newname" -match ".[doc|docx]$" )
@@ -765,7 +763,6 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
                 # COUNT WORDS IN TXT FILE
                 [int]$wordcount = (Get-Content "$ORIG\$newname" | Measure-Object –Word).Words
             }
-
             else
             {
                 # IDK
@@ -840,7 +837,6 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
 if ($CheckIfTrados.CheckState.ToString() -eq "Checked")
 {
 	Write-Output "Starting Trados Studio..."
-
     # May not be where expected
     try {
         Set-Location "C:\Program Files (x86)\Trados\Trados Studio\Studio17"
@@ -852,16 +848,12 @@ if ($CheckIfTrados.CheckState.ToString() -eq "Checked")
         }
 
     .\SDLTradosStudio.exe /createProject /name $PROJECTNAME
-
-
-
 }
 
 
-#=============
-#= LAST STEP =
-
 # OK NOW WE WORK
+if ($default_openexplorer -eq $true )
+{
 Write-Output "Starting Explorer..."
 start-process explorer "$BASEFOLDER"
-
+}
