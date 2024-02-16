@@ -90,9 +90,9 @@ Write-Output "[STARTUP] Getting all variables in place"
 Write-Output "[STARTUP] Outlook Capabilities"
 $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
 $ns                         = $OL.GETNAMESPACE("MAPI")
-$date                       = Get-Date (Get-Date).AddDays(-2) -Format 'dd/MM/yyyy'
+$date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy'
 $filter                     = "[ReceivedTime] >= '$date 17:30'"
-$allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
+$allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Find($filter)
 
 
 
@@ -111,14 +111,16 @@ try
     # 
     Set-Location $ROOTSTRUCTURE
     Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)   
-    $PREDICT_CODE           =  (Get-ChildItem -Directory | Select-Object -Last 1).Name.Substring(5,4)
-    $PREDICT_CODE           =  [int]$PREDICT_CODE + 1
-    [string]$PREDICT_CODE   =  -join($YEAR,"-",$PREDICT_CODE,"_")
+    $PREDICT_CODE                =  (Get-ChildItem -Directory | Select-Object -Last 1).Name.Substring(5,4)
+    [int]$PREDICT_CODE                =  [int]$PREDICT_CODE + 1
+    [bool]$CODE_PREDICTED       = $true
+    #[string]$PREDICT_CODE   =  -join($YEAR,"-",$PREDICT_CODE,"_")
     Write-Output "[PREDICTED] Next is $PREDICT_CODE"
 }
 catch
 {
-    $PREDICT_CODE = -join($YEAR,"-")
+    [bool]$CODE_PREDICTED       = $false
+    #$PREDICT_CODE = -join($YEAR,"-")
 }
 
 
@@ -204,12 +206,38 @@ $label.Text             = $text_projectname
 $form.Controls.Add($label)
 
 # Input box
-$textBox                = New-Object System.Windows.Forms.TextBox
-$textBox.Location       = New-Object System.Drawing.Point(($form_leftalign + 80),60)
-$textBox.Size           = New-Object System.Drawing.Size(250,30)
-$textBox.Text           = $PREDICT_CODE
-$form.Controls.Add($textBox)
-$form.Add_Shown({$textBox.Select()})
+$gui_year                  = New-Object System.Windows.Forms.Label
+$gui_year.Location         = New-Object System.Drawing.Point(($form_leftalign + 80),63)
+$gui_year.Size             = New-Object System.Drawing.Size(18,20)
+$gui_year.AutoSize         = $true
+$gui_year.Text             = -join($YEAR,"-")
+$form.Controls.Add($gui_year)
+
+# If we have a predicted code we have a numerical value and can offer next codes
+if ($CODE_PREDICTED -eq $true)
+{
+    $gui_code                 = New-Object System.Windows.Forms.Combobox
+    $gui_code.Location       = New-Object System.Drawing.Point(($form_leftalign + 116),60)
+    $gui_code.Size           = New-Object System.Drawing.Size(170,30)    
+    [void] $gui_code.Items.Add( -join($PREDICT_CODE,"_") )  
+    [void] $gui_code.Items.Add( -join(($PREDICT_CODE + 1),"_") )  
+    [void] $gui_code.Items.Add( -join(($PREDICT_CODE + 2),"_") )  
+    [void] $gui_code.Items.Add( -join(($PREDICT_CODE + 3),"_") )  
+    $gui_code.SelectedItem = $gui_code.Items[0]
+    $form.Controls.Add($gui_code)    
+    $form.Add_Shown({$gui_code.Select()})
+}
+else
+{
+    $gui_code                = New-Object System.Windows.Forms.TextBox
+    $gui_code.Location       = New-Object System.Drawing.Point(($form_leftalign + 112),60)
+    $gui_code.Size           = New-Object System.Drawing.Size(170,30)
+    $gui_code.Text           = ""
+    $form.Controls.Add($gui_code)
+    $form.Add_Shown({$gui_code.Select()})
+}
+    
+
 
 
 # Check if count words ?
@@ -288,9 +316,8 @@ $sourcefiles.AutoResizeColumns(2)
 $sourcefiles.View              = [System.Windows.Forms.View]::Details
 #$sourcefiles.SmallImageList = $imageList
 
-#$sourcefiles.Columns.Add("Art")
-$sourcefiles.Columns.Add("Betreff",360)
-$sourcefiles.Columns.Add("Von",200)
+[void]$sourcefiles.Columns.Add("Betreff",360)
+[void]$sourcefiles.Columns.Add("Von",200)
 #$sourcefiles.Columns.Add("Empfangen",100)
 #$sourcefiles.Columns.Add("Dateien")
 
@@ -320,11 +347,7 @@ foreach ($mail in $allmails)
 
         # Add to da list
         $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($mail.Subject)
-        #$sourcefilesItem.Subitems.Add("mail")
-        #$sourcefilesItem.Subitems.Add($windowsicons)
         [void]$sourcefilesItem.Subitems.Add($mail.SenderName)
-        #$sourcefilesItem.Subitems.Add($Mail.ReceivedTime.ToString("hh:mm, u\m dd/MM"))
-        #$sourcefilesItem.Subitems.Add("no")
         [void]$sourcefiles.Items.Add($sourcefilesItem)
         $goodmailindex += 1
 
@@ -333,28 +356,23 @@ foreach ($mail in $allmails)
 } # End of looking for emails with attachments
 
 
-# Add few other
-#[void] $Combobox.Items.Add("(Ich möchte die Dateien selber holen)")
-#[void] $Combobox.Items.Add("(Keine Ausgangsdatei, Danke!)")
 
-$sourcefilesItem = New-Object System.Windows.Forms.ListViewItem("(Ich möchte die Dateien selber holen)")
-#$sourcefilesItem.Subitems.Add($windowsicons,013)
-#$sourcefilesItem.Subitems.Add("ordner")
-[void]$sourcefiles.Items.Add($sourcefilesItem)
+# TODO
+# Add company name of mail we click on
+$sourcefiles.OnItemActivate({
 
-#$sourcefilesItem = New-Object System.Windows.Forms.ListViewItem("(Keine Ausgangsdatei, Danke!)")
-#$sourcefilesItem.Subitems.Add($windowsicons,103)
-#$sourcefilesItem.Subitems.Add("nein")
-#$sourcefiles.Items.Add($sourcefilesItem)
+    echo $sourcefiles.FocusedItem.Index
 
-#$sourcefiles.SelectedItem = $sourcefiles.Items[0]
-#$Combobox.SelectedItem = $Combobox.Items[0]
-
-# Maybe we already have a name
-$allgoodmails[0].SenderEmailAddress -match "@(?<content>.*).com"
+$allgoodmails[$sourcefiles.FocusedItem.Index].SenderEmailAddress -match "@(?<content>.*).com"
 $attempt_at_companyname         = $matches["content"]
 $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
-$textBox.Text                   = -join($PREDICT_CODE,$attempt_at_companyname)
+echo $attempt_at_companyname
+[string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
+[string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
+[string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
+[string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )  
+                })
+
 
 
 
@@ -366,11 +384,7 @@ $form.Controls.Add($sourcefiles)
 #=====================
 #= LIST OF TEMPLATES =
 
-
-#
 # Label and button
-#
-
 $labeltemplate                  = New-Object System.Windows.Forms.Label
 $labeltemplate.Text             = $text_usewhichtemplate
 $labeltemplate.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
@@ -404,9 +418,9 @@ $templates.FullRowSelect = $True
 $templates.AutoResizeColumns(2)
 $templates.View              = [System.Windows.Forms.View]::Details
 $templates.HideSelection = $false
-$templates.Columns.Add("Vorlage",150)
-$templates.Columns.Add("Ordner 00",100)
-$templates.Columns.Add("Ordner 01",100)
+[void]$templates.Columns.Add("Vorlage",150)
+[void]$templates.Columns.Add("Ordner 00",100)
+[void]$templates.Columns.Add("Ordner 01",100)
 
 
 
@@ -417,7 +431,7 @@ $templatesItem = New-Object System.Windows.Forms.ListViewItem("Minimal")
 [void]$templatesItem.Subitems.Add("01_orig")
 
 [void]$templates.Items.Add($templatesItem)
-$form.Controls.Add($templates)
+[void]$form.Controls.Add($templates)
 
 
 #$listBox = New-Object System.Windows.Forms.ListBox
@@ -486,7 +500,7 @@ $gui_okButton.UseVisualStyleBackColor       = $True
 $gui_okButton.DialogResult                  = [System.Windows.Forms.DialogResult]::OK
 $form.AcceptButton                          = $gui_okButton
 #$gui_okButton.BackColor =”Green”
-$form.Controls.Add($gui_okButton)
+[void]$form.Controls.Add($gui_okButton)
 
 $gui_cancelButton                           = New-Object System.Windows.Forms.Button
 $gui_cancelButton.Location                  = New-Object System.Drawing.Point(($form_leftalign + 460),10)
@@ -495,7 +509,7 @@ $gui_cancelButton.Text                      = $text_Cancel
 $gui_cancelButton.UseVisualStyleBackColor   = $True
 $gui_cancelButton.DialogResult              = [System.Windows.Forms.DialogResult]::Cancel
 $form.CancelButton                          = $gui_cancelButton
-$form.Controls.Add($gui_cancelButton)
+[void]$form.Controls.Add($gui_cancelButton)
 
 
 $gui_panel.Controls.Add($gui_okButton)
@@ -503,7 +517,7 @@ $gui_panel.Controls.Add($gui_cancelButton)
 $gui_panel.Controls.Add($gui_help)
 $gui_panel.Show()
 
-$form.Controls.Add($gui_panel)
+[void]$form.Controls.Add($gui_panel)
 
 
 
@@ -773,8 +787,12 @@ if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIf
         Write-Output "[DETECTED] Get source files from email"
     }
 
+    # $getfrommail = $allgoodmails[$sourcefiles.FocusedItem.Index]
 
 
+    # for attachment in $getfrommail.Attachments
+    # if not image
+        # savefile($BASE, $name)
 
 
 
@@ -817,7 +835,7 @@ if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIf
         [int]$totalcount = 0
   
         # Create the CSV
-        $ANALYSIS = -join($DIRCODE,"_","Analyse.csv")
+        $ANALYSIS = -join($DIRCODE,"_Analyse_Rocketlaunch.csv")
         Write-Output "sep=;" | Out-File -FilePath "$INFO\$ANALYSIS"
         Write-Output "Datei;Wörterzahl" | Out-File -FilePath "$INFO\$ANALYSIS" -Append 
         
@@ -835,7 +853,7 @@ if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIf
 
 
 
-        if ($Combobox.SelectedItem -is "(Ich möchte die Dateien selber holen)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
+        if ($Combobox.SelectedItem -eq "(Ich möchte die Dateien selber holen)") #($CheckIfSourceFiles.CheckState.ToString() -eq "Checked")
         {
             # DO THE MOVE
             $truefile = Get-Item "$file"
@@ -919,12 +937,12 @@ if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIf
 
         # and create shortcut to it in orig for quick access
         # name has the totalcount for quicker overview
-        Write-Output "[CREATE] Shortcute to Analysis"
-        shortcutname    = -join("$totalcount","w","lnk")
-        $WshShell       = New-Object -comObject WScript.Shell
-        $Shortcut       = $WshShell.CreateShortcut("$ORIG\$shortcutname")
-        $Shortcut.TargetPath = "$INFO\$ANALYSIS"
-        $Shortcut.Save()
+        #Write-Output "[CREATE] Shortcute to Analysis"
+        #shortcutname    = -join("$totalcount","w","lnk")
+        #$WshShell       = New-Object -comObject WScript.Shell
+        #$Shortcut       = $WshShell.CreateShortcut("$ORIG\$shortcutname")
+        #$Shortcut.TargetPath = "$INFO\$ANALYSIS"
+        #$Shortcut.Save()
 
 
         # Clipboard
@@ -934,13 +952,13 @@ if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIf
    
         # Have a NICE NOTIFICATION THIS IS BALLERS
         # WOOOOHOOOO
-        $objNotifyIcon = New-Object System.Windows.Forms.NotifyIcon
-        #$objNotifyIcon.Icon = "M:\4_BE\06_General information\Stella\Skrivanek-Rocketlaunch\assets\Rocketlaunch-Icon.ico"
-        $objNotifyIcon.Icon             = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
-        $objNotifyIcon.BalloonTipIcon   = "Info"
-        $objNotifyIcon.BalloonTipText   = "Die Wortzahl ($totalcount) können Sie über Strng+V einfügen ;)"
-        $objNotifyIcon.BalloonTipTitle  = "Wortzahl Zur Zwischenablage hinzugefügt!"
-        $objNotifyIcon.Visible          = $True
+        $objNotifyIcon                      = New-Object System.Windows.Forms.NotifyIcon
+        #$objNotifyIcon.Icon = "M:\4_BE\06_General information\Stella\Skrivanek-Rocketlaunch\assets\Rocketlaunch-Icon.ico"  
+        $objNotifyIcon.Icon                 = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
+        $objNotifyIcon.BalloonTipTitle      = "Wortzahl Zur Zwischenablage hinzugefügt!"
+        $objNotifyIcon.BalloonTipIcon       = "Info"
+        $objNotifyIcon.BalloonTipText       = -join("Die Wortzahl (",$totalcount,"w) können Sie über Strng+V einfügen ;)")
+        $objNotifyIcon.Visible              = $True
         $objNotifyIcon.ShowBalloonTip(10000)
     } # End of Cleanup analysis
    
