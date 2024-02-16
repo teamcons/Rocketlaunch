@@ -451,26 +451,6 @@ $templatesItem = New-Object System.Windows.Forms.ListViewItem("Minimal")
 #$form.Controls.Add($listBox)
 
 
-
-
-
-#===========
-#= OPTIONS =
-
-
-# Check if include original files
-#$CheckIfSourceFiles = New-Object System.Windows.Forms.CheckBox        
-#$CheckIfSourceFiles.Location = New-Object System.Drawing.Point(20,240)
-#$CheckIfSourceFiles.Size = New-Object System.Drawing.Size(215,25)
-#$CheckIfSourceFiles.Text = "Ausgangsdateien einbeziehen?"
-#$CheckIfSourceFiles.UseVisualStyleBackColor = $True
-#$CheckIfSourceFiles.Checked = $True
-#$form.Controls.Add($CheckIfSourceFiles)
-
-
-
-
-
 #====================
 #= OKCANCEL BUTTONS =
 
@@ -527,8 +507,8 @@ $gui_panel.Show()
 
 $result = $form.ShowDialog()
 
-[string]$PROJECTNAME        = $textBox.Text 
-$PROJECTTEMPLATE            = $listBox.SelectedItem
+[string]$PROJECTNAME        = $gui_code.Text 
+$PROJECTTEMPLATE            = $templates.SelectedItem
 
 # Cancel culture
 # Close if cancel
@@ -548,7 +528,7 @@ Write-Output "[INPUT] Got: $PROJECTNAME"
 
 
 # Empty, so go on with what was initially predicted
-if ("$PROJECTNAME" -notmatch "[0-9]" )
+if ("$PROJECTNAME" -notmatch "^[0-9]" )
 {
 
     $PROJECTNAME = -join($PREDICT_CODE,$PROJECTNAME)
@@ -560,80 +540,26 @@ $PROJECTNAME = $PROJECTNAME.Split([IO.Path]::GetInvalidFileNameChars()) -join '_
 Write-Output "Removed invalid. Now: $PROJECTNAME"
 
 
-
-# Code is formed correctly buuuut...
-# Person started with invalid char - the slash from XTRF or some shit
-# Test for underscore because invalid charactersvebeen stripped
-if ($PROJECTNAME -match "^20[0-9][0-9]_[0-9]")
+# is it missing zeros
+if ($PROJECTNAME -match "^[0-9][0-9][0-9]")
 {
-    [regex]$pattern = '_'
-    $PROJECTNAME = $pattern.replace($PROJECTNAME, '-', 1)
-    Write-Output "Slash, replace with dash. Now: $PROJECTNAME"
-}
-
-
-
-
-
-# If it matches the pattern
-# We'll probably just have to insert missing zeros, if
-if ($PROJECTNAME -match "$CODEPATTERN" )
-{
-
-    Write-Output "Case : Wellformed code"
-    
-
-    # just check if it is missing zeros
-    if ($PROJECTNAME -match "^20[0-9][0-9]-[0-9][0-9][0-9]")
-    {
-        $PROJECTNAME = $PROJECTNAME.Insert(5,"0")
-        Write-Output "Missing first zero. Now: $PROJECTNAME"
-
-    }
-    elseif ($PROJECTNAME -match "^20[0-9][0-9]\-[0-9][0-9]")
-    {
-        $PROJECTNAME = $PROJECTNAME.Insert(5,"00")
-        Write-Output "Missing two zero. Now: $PROJECTNAME"
-    }
-    elseif ($PROJECTNAME -match "^20[0-9][0-9]\-[0-9]")
-    {
-        $PROJECTNAME = $PROJECTNAME.Insert(5,"000")
-        Write-Output "Missing three zero. Now: $PROJECTNAME"
-    }
-
+    $PROJECTNAME = -join("0",$PROJECTNAME)
+    Write-Output "Missing first zero. Now: $PROJECTNAME"
 
 }
-else { Write-Output "$PROJECTNAME does not match $CODEPATTERN" }
-
-# does NOT Start with year, but with numbers, or slash-numbers.
-if ($PROJECTNAME -notmatch "^[0-9][0-9][0-9][0-9]-")
+elseif ($PROJECTNAME -match "^[0-9][0-9]")
 {
-    Write-Output "Case : No year, adding year"
-
-    # is it missing zeros
-    if ($PROJECTNAME -match "^[0-9][0-9][0-9]")
-    {
-        $PROJECTNAME = -join("0",$PROJECTNAME)
-        Write-Output "Missing first zero. Now: $PROJECTNAME"
-
-    }
-    elseif ($PROJECTNAME -match "^[0-9][0-9]")
-    {
-        $PROJECTNAME = -join("00",$PROJECTNAME)
-        Write-Output "Missing two zero. Now: $PROJECTNAME"
-    }
-    elseif ($PROJECTNAME -match "^[0-9]")
-    {
-        $PROJECTNAME = -join("000",$PROJECTNAME)
-        Write-Output "Missing three zero. Now: $PROJECTNAME"
-    }
-
-
-    # Add year
-    $PROJECTNAME = -join($YEAR,"-",$PROJECTNAME)
-
-
+    $PROJECTNAME = -join("00",$PROJECTNAME)
+    Write-Output "Missing two zero. Now: $PROJECTNAME"
 }
+elseif ($PROJECTNAME -match "^[0-9]")
+{
+    $PROJECTNAME = -join("000",$PROJECTNAME)
+    Write-Output "Missing three zero. Now: $PROJECTNAME"
+}
+
+# Add year
+$PROJECTNAME = -join($YEAR,"-",$PROJECTNAME)
 
 
 ###########################DEBUG
@@ -658,35 +584,6 @@ Angegeben: $PROJECTCODE"
 	[void] [System.Windows.Forms.MessageBox]::Show($ERRORTEXT,$APPNAME,$btn,$ico)
 
 exit }
-
-
-
-
-## ULTIMATE ULTIMATE CHECK
-if (($result -eq [System.Windows.Forms.DialogResult]::OK) -and ($DIRCODE -match "^20[0-9][0-9]\-[0-9][0-9][0-9][0-9]" ))
-{
-
-Write-Output "[INPUT] Project Name is $PROJECTNAME"
-Write-Output "[INPUT] Project Template is $PROJECTTEMPLATE"
-
-Write-Output "[INPUT] Include Source Files ?" $CheckIfSourceFiles.CheckState
-Write-Output "[INPUT] Start new Trados project ?" $CheckIfTrados.CheckState
-
-Write-Output "[DETECTED] Dircode is $DIRCODE"
-
-}
-else { 	$ERRORTEXT="Projektcode oder vorlage ist unpassend !!!
-Format: 20[0-9][0-9]\-[0-9][0-9][0-9][0-9] + Name
-Angegeben: $PROJECTCODE"
-
-	$btn = [System.Windows.Forms.MessageBoxButtons]::OK
-	$ico = [System.Windows.Forms.MessageBoxIcon]::Information
-
-	Add-Type -AssemblyName System.Windows.Forms 
-	[void] [System.Windows.Forms.MessageBox]::Show($ERRORTEXT,$APPNAME,$btn,$ico)
-
-exit  }
-
 
 
 
@@ -792,7 +689,7 @@ if ($sourcefiles.SelectedItem -isnot "(Keine Ausgangsdatei, Danke!)") #($CheckIf
 
     # for attachment in $getfrommail.Attachments
     # if not image
-        # savefile($BASE, $name)
+        # savefile($ORIG, $name)
 
 
 
