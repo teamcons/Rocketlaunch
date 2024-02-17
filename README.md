@@ -1,5 +1,5 @@
 
-# Skrivanek-Tag
+# -Rocketlaunch!
 
 A program to create new projects, in the right place, super super quick and how I want it, because I am lazy and impatient.
 On the technical aspect, it is a Powershell script, written in imperative style, using Windows.Forms as GUI and compiled into PS2EXE. 
