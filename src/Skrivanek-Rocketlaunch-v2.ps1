@@ -72,7 +72,13 @@ Write-Output "[STARTUP] Getting all variables in place"
 [string]$text_Cancel                = "Nö"
 
 
+[string]$text_about = "-Rocketlaunch! V2.0
+Neue Projekte erstellen, sehr sehr schnell
+AGPL-3.0 Stella Ménier - stella.menier@gmx.de
 
+Github Repo öffnen ?"
+
+[string]$GITHUB_LINK = "https://github.com/teamcons/Skrivanek-Rocketlaunch"
 
 
 
@@ -200,6 +206,11 @@ $img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).
 $pictureBox.Width       = 64 #$img.Size.Width
 $pictureBox.Height      = 64 #$img.Size.Height
 $pictureBox.Image       = $img;
+$pictureBox.Add_Click({
+                    $Result = [System.Windows.Forms.MessageBox]::Show($text_about,$APPNAME,4,[System.Windows.Forms.MessageBoxIcon]::Information)
+                    If ($Result -eq "Yes") { Start-Process $GITHUB_LINK } })
+
+
 $form.controls.add($pictureBox)
 
 # LABEL AND TEXT
