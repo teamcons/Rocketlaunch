@@ -455,10 +455,14 @@ $templates.Items[0].Selected = $true
 $gui_panel = New-Object System.Windows.Forms.Panel
 $gui_panel.Left = 0
 $gui_panel.Top = ($form_verticalalign)
-
 $gui_panel.Width = 625
-$gui_panel.Height = 50
+$gui_panel.Height = 40
 $gui_panel.BackColor = '241,241,241'
+$gui_panel.Anchor = ([System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right)
+
+
+
+
 
 $gui_help                   = New-Object System.Windows.Forms.Button
 $gui_help.Location          = New-Object System.Drawing.Point(($form_leftalign),10)
@@ -836,6 +840,7 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
         $objNotifyIcon.ShowBalloonTip(10000)
     } # End of Cleanup analysis
    
+
     
 
 
