@@ -263,7 +263,7 @@ $CheckIfAnalysis                = New-Object System.Windows.Forms.CheckBox
 $CheckIfAnalysis.Location       = New-Object System.Drawing.Point(($form_leftalign + 400),30)
 $CheckIfAnalysis.Size           = New-Object System.Drawing.Size(200,20)
 $CheckIfAnalysis.Text           = $text_doanalysis
-$CheckIfAnalysis.UseVisualStyleBackColor = $True
+#$CheckIfAnalysis.UseVisualStyleBackColor = $True
 $CheckIfAnalysis.Checked        = $default_doanalysis
 $form.Controls.Add($CheckIfAnalysis)
 
@@ -274,7 +274,7 @@ $CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox
 $CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 400),60)
 $CheckIfTrados.Size             = New-Object System.Drawing.Size(200,20)
 $CheckIfTrados.Text             = $text_opentrados
-$CheckIfTrados.UseVisualStyleBackColor = $True
+#$CheckIfTrados.UseVisualStyleBackColor = $True
 $CheckIfTrados.Checked          = $default_opentrados
 $form.Controls.Add($CheckIfTrados)
 
@@ -411,7 +411,7 @@ $gui_browsetemplate                   = New-Object System.Windows.Forms.Button
 $gui_browsetemplate.Location          = New-Object System.Drawing.Point(($form_leftalign + 500),280)
 $gui_browsetemplate.Size              = New-Object System.Drawing.Size(80,20)
 $gui_browsetemplate.Text              = $text_loadtemplate
-$gui_browsetemplate.UseVisualStyleBackColor = $True
+#$gui_browsetemplate.UseVisualStyleBackColor = $True
 $gui_browsetemplate.add_click({
     [System.Windows.Forms.MessageBox]::Show("Nein." , $APPNAME)
 })
@@ -464,7 +464,7 @@ $gui_help                   = New-Object System.Windows.Forms.Button
 $gui_help.Location          = New-Object System.Drawing.Point(($form_leftalign),10)
 $gui_help.Size              = New-Object System.Drawing.Size(120,25)
 $gui_help.Text              = $text_help
-$gui_help.UseVisualStyleBackColor = $True
+#$gui_help.UseVisualStyleBackColor = $True
 $gui_help.add_click({
     [System.Windows.Forms.MessageBox]::Show("Frag Stella" , $APPNAME)
 })
@@ -475,9 +475,10 @@ $gui_okButton.Location                      = New-Object System.Drawing.Point(($
 $gui_okButton.Size                          = New-Object System.Drawing.Size(120,25)
 $gui_okButton.Text                          = $text_OK
 $gui_okButton.UseVisualStyleBackColor       = $True
+#$gui_okButton.BackColor                     = ”Green”
+#$gui_okButton.ForeColor                     = ”White”
 $gui_okButton.DialogResult                  = [System.Windows.Forms.DialogResult]::OK
 $form.AcceptButton                          = $gui_okButton
-#$gui_okButton.BackColor =”Green”
 [void]$form.Controls.Add($gui_okButton)
 
 $gui_cancelButton                           = New-Object System.Windows.Forms.Button
@@ -485,6 +486,8 @@ $gui_cancelButton.Location                  = New-Object System.Drawing.Point(($
 $gui_cancelButton.Size                      = New-Object System.Drawing.Size(120,25)
 $gui_cancelButton.Text                      = $text_Cancel
 $gui_cancelButton.UseVisualStyleBackColor   = $True
+#$gui_cancelButton.BackColor                  = ”Red”
+#$gui_cancelButton.ForeColor                  = ”White”
 $gui_cancelButton.DialogResult              = [System.Windows.Forms.DialogResult]::Cancel
 $form.CancelButton                          = $gui_cancelButton
 [void]$form.Controls.Add($gui_cancelButton)
