@@ -61,6 +61,10 @@ Write-Output "[STARTUP] Getting all variables in place"
 [string]$text_opentrados            = "Neues Trados-Projekt ?"
 
 [string]$text_loadfilesfrom         = 'Ausgangsdatei aus Quelle'
+[string]$text_columns_Subject         = 'Betreff'
+[string]$text_columns_Sendername         = 'Von'
+[string]$text_columns_Attachments         = 'Dateien'
+
 [string]$text_from_Outlook          = "In Outlook"
 [string]$text_from_Downloads        = "In Downloads"
 [string]$text_nofilesource          = "Keine Ausgangsdatei"
@@ -328,10 +332,10 @@ $sourcefiles.AutoResizeColumns(2)
 $sourcefiles.View              = [System.Windows.Forms.View]::Details
 #$sourcefiles.SmallImageList = $imageList
 
-[void]$sourcefiles.Columns.Add("Betreff",360)
-[void]$sourcefiles.Columns.Add("Von",200)
+[void]$sourcefiles.Columns.Add($text_columns_Subject,300)
+[void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
 #$sourcefiles.Columns.Add("Empfangen",100)
-#$sourcefiles.Columns.Add("Dateien")
+$sourcefiles.Columns.Add($text_columns_Attachments,60)
 
 
 # Look for emails with attachments
@@ -341,12 +345,14 @@ foreach ($mail in $allmails)
     echo $mail.Subject
 
     [bool]$AddToGoodMails = $false
+    [int]$CountGoodAttachments = 0
     foreach ( $attach in $mail.Attachments ) 
     {
         #echo $attach.FileName
-        if ($attach.FileName -match  "(.pdf|.doc|.xls|.xml|xlsx)" )
+        if ($attach.FileName -match  "(.pdf|.doc|.xls|.xml|xlsx|docx|ppt|pptx|txt|idml)" )
         {
             $AddToGoodMails = $true
+            [int]$CountGoodAttachments += 1
 
         }   # End of each mails
     } #End of checking attachments
@@ -359,6 +365,7 @@ foreach ($mail in $allmails)
         # Add to da list
         $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($mail.Subject)
         [void]$sourcefilesItem.Subitems.Add($mail.SenderName)
+        [void]$sourcefilesItem.Subitems.Add($CountGoodAttachments)
         [void]$sourcefiles.Items.Add($sourcefilesItem)
         $goodmailindex += 1
 
@@ -430,17 +437,36 @@ $templates.FullRowSelect = $True
 $templates.AutoResizeColumns(2)
 $templates.View              = [System.Windows.Forms.View]::Details
 $templates.HideSelection = $false
-[void]$templates.Columns.Add("Vorlage",150)
-[void]$templates.Columns.Add("Ordner 00",100)
-[void]$templates.Columns.Add("Ordner 01",100)
 
+[int]$listview_folder_spacing = 75
 
+[void]$templates.Columns.Add("Vorlage",140)
+[void]$templates.Columns.Add("00",$listview_folder_spacing)
+[void]$templates.Columns.Add("01",$listview_folder_spacing)
+[void]$templates.Columns.Add("02",$listview_folder_spacing)
+[void]$templates.Columns.Add("03",$listview_folder_spacing)
+[void]$templates.Columns.Add("04",$listview_folder_spacing)
+[void]$templates.Columns.Add("05",$listview_folder_spacing)
+[void]$templates.Columns.Add("06",$listview_folder_spacing)
+[void]$templates.Columns.Add("07",$listview_folder_spacing)
 
 # ## LOAD FROM CSV HERE
 $templatesItem = New-Object System.Windows.Forms.ListViewItem("Minimal")
-[void]$templatesItem.Subitems.Add("00_info")
-[void]$templatesItem.Subitems.Add("01_orig")
+[void]$templatesItem.Subitems.Add("info")
+[void]$templatesItem.Subitems.Add("orig")
 [void]$templates.Items.Add($templatesItem)
+
+$templatesItem = New-Object System.Windows.Forms.ListViewItem("TEP")
+[void]$templatesItem.Subitems.Add("info")
+[void]$templatesItem.Subitems.Add("orig")
+[void]$templatesItem.Subitems.Add("trados")
+[void]$templatesItem.Subitems.Add("to trans")
+[void]$templatesItem.Subitems.Add("from trans")
+[void]$templatesItem.Subitems.Add("to proof")
+[void]$templatesItem.Subitems.Add("from proof")
+[void]$templatesItem.Subitems.Add("to_client")
+[void]$templates.Items.Add($templatesItem)
+
 
 $templates.Items[0].Selected = $true
 [void]$form.Controls.Add($templates)
@@ -521,6 +547,8 @@ if ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
         exit
     }
 Write-Output "[INPUT] Got: $PROJECTNAME"
+
+
 
 
 
@@ -610,29 +638,25 @@ $BASEFOLDER = -join($BASEFOLDER,"\",$PROJECTNAME)
 Write-Output "[CREATE] Base folder: $BASEFOLDER"
 New-Item -ItemType Directory -Path "$BASEFOLDER"
 
-
-switch ( $PROJECTTEMPLATE )
-{
-    "Minimal"
-        { $FOLDERS = @("00_info", "01_orig" ) }
-    "Standard TEP"
-        { $FOLDERS = @("00_info", "01_orig", "02_trados", "03_to trans", "04_from trans", "05_to proof", "06_from proof", "07_to client") }
-    "Provider macht TEP"
-        { $FOLDERS = @("00_info", "01_orig", "02_trados", "03_to TEP", "04_from TEP", "05_to client") }
-    "Sworn Translation"
-        { $FOLDERS = @("00_info", "01_orig", "02_to client") }
-    "MemoQ"
-        { $FOLDERS = @("00_info", "01_orig", "02_memoQ", "03_to client") }
-    "Production"
-        { $FOLDERS = @("00_info") }
-}
-
+# Count folder number
+[int]$foldernumber = 0 
 
 # CREATE ALLLLL THE FOLDERS
-foreach ($folder in $FOLDERS)
+# Each subitem relevant
+foreach ($folder in $templates.SelectedItems[0].SubItems[1..20] )
 {
+
+    #Append folder number at start, construct full path
+    [string]$newfolder = -join("0",$foldernumber,"_",$folder.text)
+    [string]$newfolder = Join-Path $BASEFOLDER $newfolder
+
+
     Write-Output "[CREATE] folder: $BASEFOLDER\$folder"
-    New-Item -ItemType Directory -Path "$BASEFOLDER\$folder"
+    New-Item -ItemType Directory -Path $newfolder
+
+    # Next folder get next number
+    [int]$foldernumber += 1 
+
 }
 
 
