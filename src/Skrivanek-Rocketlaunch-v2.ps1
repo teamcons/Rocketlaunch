@@ -691,8 +691,8 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
         {
             if ($attachment.FileName -notmatch "^image[0-9][0-9][0-9]")
             {
-                Write-Output $attachment.FileName
-                $attachment.SaveAsFile((Join-Path $ORIG $attachment.FileName))
+                Write-Output (Join-Path $ORIG $attachment.FileName)
+                $attachment.SaveAsFile( (Join-Path $ORIG $attachment.FileName) )
             }
         } # End of attachment processing
     } # End of process outlook inclusion
