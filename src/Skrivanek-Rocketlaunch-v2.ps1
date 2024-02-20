@@ -44,7 +44,6 @@ Write-Output ""
 
 Write-Output "[STARTUP] Getting all variables in place"
 [string]$APPNAME            = "-Rocketlaunch!"
-[string]$PROJECTTEMPLATE    = "Minimal"
 
 # Load templates from a csv in same place as executable
 #[string]$LOAD_TEMPLATES_FROM = $MyInvocation.MyCommand.Path
@@ -431,7 +430,7 @@ $form.Controls.Add($gui_browsetemplate)
 $templates                        = New-Object System.Windows.Forms.ListView
 $templates.Location               = New-Object System.Drawing.Point($form_leftalign,300)
 $templates.Size                   = New-Object System.Drawing.Size(580,130)
-$templates.AutoSize               = $true 
+#$templates.AutoSize               = $true 
 $templates.Height                 = 130
 $templates.FullRowSelect = $True
 $templates.AutoResizeColumns(2)
@@ -642,15 +641,15 @@ New-Item -ItemType Directory -Path "$BASEFOLDER"
 [int]$foldernumber = 0 
 
 # CREATE ALLLLL THE FOLDERS
-# Each subitem relevant
-foreach ($folder in $templates.SelectedItems[0].SubItems[1..20] )
+# Skip the first element cuz no
+foreach ($folder in ($templates.SelectedItems[0].SubItems | Select-Object -Skip 1 ) )
 {
 
     #Append folder number at start, construct full path
     [string]$newfolder = -join("0",$foldernumber,"_",$folder.text)
     [string]$newfolder = Join-Path $BASEFOLDER $newfolder
 
-
+    # Say what we do, do it
     Write-Output "[CREATE] folder: $BASEFOLDER\$folder"
     New-Item -ItemType Directory -Path $newfolder
 
