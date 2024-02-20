@@ -639,9 +639,17 @@ foreach ($folder in $FOLDERS)
 # PIN TO EXPLORER
 if ($default_createshortcut -eq $true)
 {
+    Write-Output "[CREATE] Shortcut in File explorer"
     $o = new-object -com shell.application
     $o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
 }
+
+if ($default_createoutlookfolder -eq $true)
+{
+    Write-Output "[CREATE] Folder in Outlook"
+    $ns.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("02_ONGOING JOBS").Folders.Add((Split-Path -Path $BASEFOLDER -Leaf ))
+}
+
 
 
 
