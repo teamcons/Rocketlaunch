@@ -103,11 +103,9 @@ Github Repo öffnen ?"
 Write-Output "[STARTUP] Outlook Capabilities"
 $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
 $ns                         = $OL.GETNAMESPACE("MAPI")
-$date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy'
-$filter                     = "[ReceivedTime] >= '$date 17:30'"
-$allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Find($filter)
-
-
+$date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'
+$filter                     = "[ReceivedTime] >= '$date'"
+$allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
 
 
 # TRADOS. TODO: MORE FLEXIBLE
@@ -336,18 +334,17 @@ $sourcefiles.View              = [System.Windows.Forms.View]::Details
 #$sourcefiles.Columns.Add("Dateien")
 
 
-$allgoodmails               = New-Object System.Collections.ArrayList
-[int]$goodmailindex = 0
-
 # Look for emails with attachments
 foreach ($mail in $allmails)
 {
+    echo "a mail"
+    echo $mail.Subject
 
     [bool]$AddToGoodMails = $false
     foreach ( $attach in $mail.Attachments ) 
     {
         #echo $attach.FileName
-        if ($attach.FileName -match  "(.pdf|.doc|.xls)" )
+        if ($attach.FileName -match  "(.pdf|.doc|.xls|.xml|xlsx)" )
         {
             $AddToGoodMails = $true
 
@@ -390,7 +387,8 @@ foreach ($mail in $allmails)
 
 
 # Add the ListView to the Form
-$sourcefiles.Items[0].Selected = $true
+try { $sourcefiles.Items[0].Selected = $true }
+catch { Write-Output "No mail with relevant attach !" }
 $form.Controls.Add($sourcefiles)
 
 
