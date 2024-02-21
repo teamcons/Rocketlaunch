@@ -35,6 +35,10 @@ PS2EXE is required
 
 None required. Just run the EXE in "release" or PS script in "src"
 
+# Super Skrivanek Suite
+
+Its part of the suite of softwarescripts we did for our workplace because its relevant there for us.
+
 
 # Some more stuff
 
