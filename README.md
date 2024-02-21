@@ -21,7 +21,7 @@ Todo :
 
 
 <div align="center">
-    <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/img/Screenshot Rocketlaunch V2.png" /></td>
+    <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/img/Screenshot App.png" /></td>
 </div>
 
 
