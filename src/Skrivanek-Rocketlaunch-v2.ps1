@@ -178,16 +178,15 @@ Add-Type -AssemblyName System.Drawing
 
 $form                   = New-Object System.Windows.Forms.Form
 $form.Text              = $APPNAME
-$form.Size              = New-Object System.Drawing.Size(625,($form_verticalalign + 60 ))
-#$form.MinimumSize       = New-Object System.Drawing.Size(600,450)
+$form.Size              = New-Object System.Drawing.Size(635,($form_verticalalign + 80 ))
+$form.MinimumSize       = New-Object System.Drawing.Size(530,($form_verticalalign + 40 ))
 #$form.MaximumSize       = New-Object System.Drawing.Size(750,550)
-$form.AutoSize          = $true
-$form.AutoScale         = $true
+#$form.AutoSize          = $true
+#$form.AutoScale         = $true
 $form.Font              = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
 
 $form.StartPosition     = 'CenterScreen'
-$form.FormBorderStyle   = 'FixedDialog'
-$form.MaximizeBox       = $false
+#$form.FormBorderStyle   = 'FixedDialog'
 $form.Topmost           = $True
 $form.BackColor         = "White"
 $form.Icon              = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
@@ -200,7 +199,7 @@ $form.Icon              = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bit
 # FANCY ICON
 $pictureBox             = new-object Windows.Forms.PictureBox
 $pictureBox.Location    = New-Object System.Drawing.Point($form_leftalign,20)
-
+$pictureBox.Anchor      = "Left,Top"
 #$img                    = [System.Drawing.Image]::Fromfile($NEWPROJECTICON);
 $img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
 
@@ -222,6 +221,7 @@ $label.Size             = New-Object System.Drawing.Size(240,20)
 $label.AutoSize         = $true
 $label.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Bold)
 $label.Text             = $text_projectname
+$label.Anchor           = "Left,Top"
 $form.Controls.Add($label)
 
 # Input box
@@ -230,6 +230,7 @@ $gui_year.Location         = New-Object System.Drawing.Point(($form_leftalign + 
 $gui_year.Size             = New-Object System.Drawing.Size(18,20)
 $gui_year.AutoSize         = $true
 $gui_year.Text             = -join($YEAR,"-")
+$gui_year.Anchor           = "Left,Top"
 $form.Controls.Add($gui_year)
 
 # If we have a predicted code we have a numerical value and can offer next codes
@@ -266,6 +267,7 @@ $CheckIfAnalysis.Size           = New-Object System.Drawing.Size(200,20)
 $CheckIfAnalysis.Text           = $text_doanalysis
 #$CheckIfAnalysis.UseVisualStyleBackColor = $True
 $CheckIfAnalysis.Checked        = $default_doanalysis
+$CheckIfAnalysis.Anchor         = "Top,Right"
 $form.Controls.Add($CheckIfAnalysis)
 
 
@@ -277,6 +279,7 @@ $CheckIfTrados.Size             = New-Object System.Drawing.Size(200,20)
 $CheckIfTrados.Text             = $text_opentrados
 #$CheckIfTrados.UseVisualStyleBackColor = $True
 $CheckIfTrados.Checked          = $default_opentrados
+$CheckIfTrados.Anchor           = "Top,Right"
 $form.Controls.Add($CheckIfTrados)
 
 
@@ -294,13 +297,15 @@ $labelsourcefiles                  = New-Object System.Windows.Forms.Label
 $labelsourcefiles.Location         = New-Object System.Drawing.Point($form_leftalign,110)
 $labelsourcefiles.Size             = New-Object System.Drawing.Size(240,20)
 $labelsourcefiles.Text             = $text_loadfilesfrom
-$labelsourcefiles.Font              = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
+$labelsourcefiles.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
+$labelsourcefiles.Anchor           = "Left,Top"
 $form.Controls.Add($labelsourcefiles)
 
 $gui_filesource                 = New-Object System.Windows.Forms.Combobox
-$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 400),105)
-$gui_filesource.Size            = New-Object System.Drawing.Size(180,20)
+$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 450),105)
+$gui_filesource.Size            = New-Object System.Drawing.Size(130,20)
 $gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
+$gui_filesource.Anchor      = "Top,Right"
 [void] $gui_filesource.Items.Add($text_from_Outlook) 
 [void] $gui_filesource.Items.Add($text_from_Downloads)   
 [void] $gui_filesource.Items.Add($text_nofilesource)  
@@ -321,13 +326,14 @@ $form.Controls.Add($gui_filesource)
 
 ## Configure the ListView
 $sourcefiles                   = New-Object System.Windows.Forms.ListView
-$sourcefiles.Width             = 450 #$form.ClientRectangle.Width
-$sourcefiles.Height            = 150 # $Form.ClientRectangle.Height
 $sourcefiles.Location          = New-Object System.Drawing.Size($form_leftalign,130) 
 $sourcefiles.Size              = New-Object System.Drawing.Size(580,120) 
+$sourcefiles.Width             = 580 #$form.ClientRectangle.Width
+$sourcefiles.Height            = 120 # $Form.ClientRectangle.Height
 $sourcefiles.FullRowSelect = $True
 $sourcefiles.HideSelection = $false
-$sourcefiles.AutoResizeColumns(2)
+#$sourcefiles.AutoResizeColumns(2)
+$sourcefiles.Anchor         = "Left,Top,Right"
 $sourcefiles.View              = [System.Windows.Forms.View]::Details
 #$sourcefiles.SmallImageList = $imageList
 
@@ -338,6 +344,7 @@ $sourcefiles.Columns.Add($text_columns_Attachments,60)
 
 
 # Look for emails with attachments
+$allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
 foreach ($mail in $allmails)
 {
     echo "a mail"
@@ -408,6 +415,7 @@ $labeltemplate.Text             = $text_usewhichtemplate
 $labeltemplate.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
 $labeltemplate.Location         = New-Object System.Drawing.Point($form_leftalign,280)
 $labeltemplate.Size             = New-Object System.Drawing.Size(300,20)
+$labeltemplate.Anchor         = "Left,Top"
 $form.Controls.Add($labeltemplate)
 
 
@@ -415,6 +423,7 @@ $gui_browsetemplate                   = New-Object System.Windows.Forms.Button
 $gui_browsetemplate.Location          = New-Object System.Drawing.Point(($form_leftalign + 500),280)
 $gui_browsetemplate.Size              = New-Object System.Drawing.Size(80,20)
 $gui_browsetemplate.Text              = $text_loadtemplate
+$gui_browsetemplate.Anchor            = "Top,Right"
 #$gui_browsetemplate.UseVisualStyleBackColor = $True
 $gui_browsetemplate.add_click({
     [System.Windows.Forms.MessageBox]::Show("Nein." , $APPNAME)
@@ -436,6 +445,7 @@ $templates.FullRowSelect = $True
 $templates.AutoResizeColumns(2)
 $templates.View              = [System.Windows.Forms.View]::Details
 $templates.HideSelection = $false
+$templates.Anchor               = "Top,Left,Right, Bottom"
 
 [int]$listview_folder_spacing = 75
 
@@ -481,7 +491,7 @@ $gui_panel.Top = ($form_verticalalign)
 $gui_panel.Width = 625
 $gui_panel.Height = 40
 $gui_panel.BackColor = '241,241,241'
-$gui_panel.Anchor = ([System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right)
+$gui_panel.Anchor = "Left,Bottom,Right"
 
 
 
@@ -491,7 +501,8 @@ $gui_help                   = New-Object System.Windows.Forms.Button
 $gui_help.Location          = New-Object System.Drawing.Point(($form_leftalign),10)
 $gui_help.Size              = New-Object System.Drawing.Size(120,25)
 $gui_help.Text              = $text_help
-#$gui_help.UseVisualStyleBackColor = $True
+$gui_help.UseVisualStyleBackColor = $True
+$gui_help.Anchor            = "Left, Bottom"
 $gui_help.add_click({
     [System.Windows.Forms.MessageBox]::Show("Frag Stella" , $APPNAME)
 })
@@ -502,6 +513,7 @@ $gui_okButton.Location                      = New-Object System.Drawing.Point(($
 $gui_okButton.Size                          = New-Object System.Drawing.Size(120,25)
 $gui_okButton.Text                          = $text_OK
 $gui_okButton.UseVisualStyleBackColor       = $True
+$gui_okButton.Anchor                        = "Bottom,Right"
 #$gui_okButton.BackColor                     = ”Green”
 #$gui_okButton.ForeColor                     = ”White”
 $gui_okButton.DialogResult                  = [System.Windows.Forms.DialogResult]::OK
@@ -513,6 +525,7 @@ $gui_cancelButton.Location                  = New-Object System.Drawing.Point(($
 $gui_cancelButton.Size                      = New-Object System.Drawing.Size(120,25)
 $gui_cancelButton.Text                      = $text_Cancel
 $gui_cancelButton.UseVisualStyleBackColor   = $True
+$gui_cancelButton.Anchor                    = "Bottom, Right"
 #$gui_cancelButton.BackColor                  = ”Red”
 #$gui_cancelButton.ForeColor                  = ”White”
 $gui_cancelButton.DialogResult              = [System.Windows.Forms.DialogResult]::Cancel
