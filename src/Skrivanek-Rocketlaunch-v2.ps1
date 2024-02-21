@@ -355,7 +355,7 @@ foreach ($mail in $allmails)
     foreach ( $attach in $mail.Attachments ) 
     {
         #echo $attach.FileName
-        if ($attach.FileName -match  "(.pdf|.doc|.xls|.xml|xlsx|docx|ppt|pptx|txt|idml)" )
+        if ($attach.FileName -match  "(.pdf|.doc|.xls|.xml|.xlsx|.docx|.ppt|.pptx|.txt|.idml)" )
         {
             $AddToGoodMails = $true
             [int]$CountGoodAttachments += 1
