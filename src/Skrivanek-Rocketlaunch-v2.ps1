@@ -298,14 +298,14 @@ $labelsourcefiles.Location         = New-Object System.Drawing.Point($form_lefta
 $labelsourcefiles.Size             = New-Object System.Drawing.Size(240,20)
 $labelsourcefiles.Text             = $text_loadfilesfrom
 $labelsourcefiles.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
-$labelsourcefiles.Anchor           = "Left"
+$labelsourcefiles.Anchor           = "Top,Left"
 $form.Controls.Add($labelsourcefiles)
 
 $gui_filesource                 = New-Object System.Windows.Forms.Combobox
 $gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 450),105)
 $gui_filesource.Size            = New-Object System.Drawing.Size(130,20)
 $gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
-$gui_filesource.Anchor      = "Right"
+$gui_filesource.Anchor          = "Top,Right"
 [void] $gui_filesource.Items.Add($text_from_Outlook) 
 [void] $gui_filesource.Items.Add($text_from_Downloads)   
 [void] $gui_filesource.Items.Add($text_nofilesource)  
@@ -333,7 +333,7 @@ $sourcefiles.Height            = 120 # $Form.ClientRectangle.Height
 $sourcefiles.FullRowSelect = $True
 $sourcefiles.HideSelection = $false
 #$sourcefiles.AutoResizeColumns(2)
-$sourcefiles.Anchor         = "Left,Top,Right"
+$sourcefiles.Anchor         = "Left,Top,Right,Bottom"
 $sourcefiles.View              = [System.Windows.Forms.View]::Details
 #$sourcefiles.SmallImageList = $imageList
 
@@ -417,16 +417,19 @@ $labeltemplate.Text             = $text_usewhichtemplate
 $labeltemplate.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
 $labeltemplate.Location         = New-Object System.Drawing.Point($form_leftalign,280)
 $labeltemplate.Size             = New-Object System.Drawing.Size(300,20)
-$labeltemplate.Anchor         = "Left,Top"
+$labeltemplate.MinimumSize             = New-Object System.Drawing.Size(300,20)
+$labeltemplate.MaximumSize             = New-Object System.Drawing.Size(300,20)
+$labeltemplate.Anchor         = "Left,Bottom"
 $form.Controls.Add($labeltemplate)
 
 
 $gui_browsetemplate                   = New-Object System.Windows.Forms.Button
 $gui_browsetemplate.Location          = New-Object System.Drawing.Point(($form_leftalign + 500),280)
 $gui_browsetemplate.Size              = New-Object System.Drawing.Size(80,20)
+$gui_browsetemplate.MinimumSize       = New-Object System.Drawing.Size(80,20)
+$gui_browsetemplate.MaximumSize       = New-Object System.Drawing.Size(80,20)
 $gui_browsetemplate.Text              = $text_loadtemplate
-$gui_browsetemplate.Anchor            = "Top,Right"
-#$gui_browsetemplate.UseVisualStyleBackColor = $True
+$gui_browsetemplate.Anchor            = "Right,Bottom"
 $gui_browsetemplate.add_click({
     [System.Windows.Forms.MessageBox]::Show("Nein." , $APPNAME)
 })
@@ -441,13 +444,14 @@ $form.Controls.Add($gui_browsetemplate)
 $templates                        = New-Object System.Windows.Forms.ListView
 $templates.Location               = New-Object System.Drawing.Point($form_leftalign,300)
 $templates.Size                   = New-Object System.Drawing.Size(580,130)
-#$templates.AutoSize               = $true 
-$templates.Height                 = 130
+$templates.AutoSize               = $true 
+#$templates.Width                    = 580
+#$templates.Height                 = 130
 $templates.FullRowSelect = $True
 $templates.AutoResizeColumns(2)
 $templates.View              = [System.Windows.Forms.View]::Details
 $templates.HideSelection = $false
-$templates.Anchor               = "Top,Left,Right, Bottom"
+$templates.Anchor               = "Left,Right,Bottom"
 
 [int]$listview_folder_spacing = 75
 
