@@ -298,14 +298,14 @@ $labelsourcefiles.Location         = New-Object System.Drawing.Point($form_lefta
 $labelsourcefiles.Size             = New-Object System.Drawing.Size(240,20)
 $labelsourcefiles.Text             = $text_loadfilesfrom
 $labelsourcefiles.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
-$labelsourcefiles.Anchor           = "Left,Top"
+$labelsourcefiles.Anchor           = "Left"
 $form.Controls.Add($labelsourcefiles)
 
 $gui_filesource                 = New-Object System.Windows.Forms.Combobox
 $gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 450),105)
 $gui_filesource.Size            = New-Object System.Drawing.Size(130,20)
 $gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
-$gui_filesource.Anchor      = "Top,Right"
+$gui_filesource.Anchor      = "Right"
 [void] $gui_filesource.Items.Add($text_from_Outlook) 
 [void] $gui_filesource.Items.Add($text_from_Downloads)   
 [void] $gui_filesource.Items.Add($text_nofilesource)  
@@ -380,43 +380,30 @@ foreach ($mail in $allmails)
 } # End of looking for emails with attachments
 
 
-
-# TODO
-# Add company name of mail we click on
-#$sourcefiles.OnItemActivate({
-#    echo $sourcefiles.FocusedItem.Index
-#
-#$allgoodmails[$sourcefiles.FocusedItem.Index].SenderEmailAddress -match "@(?<content>.*).com"
-#$attempt_at_companyname         = $matches["content"]
-#$attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
-#echo $attempt_at_companyname
-#[string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
-#[string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
-#[string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
-#[string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )  
-#                })
-
-# try {
-#     $allgoodmails[$sourcefiles.FocusedItem.Index].SenderEmailAddress -match "@(?<content>.*).com"
-#     $attempt_at_companyname         = $matches["content"]
-#     $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
-#     echo $attempt_at_companyname
-#     [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
-#     [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
-#     [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
-#     [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )  
-# }
-# try {
-    
-# }
-# catch {
-#         echo nope
-# }
-
-
 # Add the ListView to the Form
-try { $sourcefiles.Items[0].Selected = $true }
-catch { Write-Output "No mail with relevant attach !" }
+try { 
+    $sourcefiles.Items[0].Selected = $true 
+
+     $allgoodmails[$sourcefiles.FocusedItem.Index].SenderEmailAddress -match "@(?<content>.*).com"
+     $attempt_at_companyname         = $matches["content"]
+     $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
+     echo $attempt_at_companyname
+     [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
+     [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
+     [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
+     [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )  
+}
+catch {
+    Write-Output "No mail with relevant attach !"
+
+    # Cant guess from emails, so guess from previous projects
+    #[string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
+    #[string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
+    #[string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
+    #[string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )  
+
+}
+
 $form.Controls.Add($sourcefiles)
 
 
