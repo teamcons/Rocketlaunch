@@ -396,7 +396,22 @@ foreach ($mail in $allmails)
 #[string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )  
 #                })
 
-
+# try {
+#     $allgoodmails[$sourcefiles.FocusedItem.Index].SenderEmailAddress -match "@(?<content>.*).com"
+#     $attempt_at_companyname         = $matches["content"]
+#     $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
+#     echo $attempt_at_companyname
+#     [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
+#     [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
+#     [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
+#     [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )  
+# }
+# try {
+    
+# }
+# catch {
+#         echo nope
+# }
 
 
 # Add the ListView to the Form
