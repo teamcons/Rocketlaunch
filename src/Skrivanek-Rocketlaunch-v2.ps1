@@ -275,13 +275,13 @@ $form.Controls.Add($CheckIfAnalysis) #>
 
 
 $panel_sourcefile = New-Object System.Windows.Forms.Panel
-$panel_sourcefile.Width = 625
-$panel_sourcefile.Height = 90
-$panel_sourcefile.Top = 10
-$panel_sourcefile.Left = 0
+$panel_sourcefile.Width         = 625
+$panel_sourcefile.Height        = 50
+$panel_sourcefile.Top           = 10
+$panel_sourcefile.Left          = 0
 $panel_sourcefile.BackColor     = "White" #'Green'
 #$panel_sourcefile.Anchor        = "Left,Top,Right,Bottom"
-$panel_sourcefile.Dock        = "Fill"
+$panel_sourcefile.Dock          = "Fill"
 
 # Label above input
 $labelsourcefiles                  = New-Object System.Windows.Forms.Label
@@ -293,8 +293,8 @@ $labelsourcefiles.Font             = New-Object System.Drawing.Font('Microsoft S
 
 
 $gui_filesource                 = New-Object System.Windows.Forms.Combobox
-$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 480),5)
-$gui_filesource.Size            = New-Object System.Drawing.Size(100,20)
+$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 440),5)
+$gui_filesource.Size            = New-Object System.Drawing.Size(140,20)
 $gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 $gui_filesource.Anchor          = "Top,Right"
 [void] $gui_filesource.Items.Add($text_from_Outlook) 
@@ -307,9 +307,9 @@ $gui_filesource.SelectedItem = $default_filesfrom
 ## Configure the ListView
 $sourcefiles                        = New-Object System.Windows.Forms.ListView
 $sourcefiles.Location               = New-Object System.Drawing.Size($form_leftalign,30) 
-$sourcefiles.Size                   = New-Object System.Drawing.Size(580,50) 
+$sourcefiles.Size                   = New-Object System.Drawing.Size(580,10) 
 $sourcefiles.Width                  = 580 #$form.ClientRectangle.Width
-$sourcefiles.Height                 = 50 # $Form.ClientRectangle.Height
+$sourcefiles.Height                 = 10 # $Form.ClientRectangle.Height
 $sourcefiles.FullRowSelect          = $True
 $sourcefiles.HideSelection          = $false
 $sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
@@ -318,7 +318,7 @@ $sourcefiles.View                   = [System.Windows.Forms.View]::Details
 [void]$sourcefiles.Columns.Add($text_columns_Subject,300)
 [void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
 #$sourcefiles.Columns.Add("Empfangen",100)
-[void]$sourcefiles.Columns.Add($text_columns_Attachments,60)
+[void]$sourcefiles.Columns.Add($text_columns_Attachments,70)
 
 
 # Look for emails with attachments
@@ -333,7 +333,7 @@ foreach ($mail in $allmails)
     foreach ( $attach in $mail.Attachments ) 
     {
         #echo $attach.FileName
-        if ($attach.FileName -match  ".{pdf|doc|docx|xls|xlsx|ppt|pptx|xml|idml|csv|txt}" )
+        if ($attach.FileName -match  ".(pdf|doc|docx|xls|xlsx|ppt|pptx|xml|idml|csv|txt|zip)" )
         {
             echo (-join("MATCH:",$attach.FileName))
             $AddToGoodMails = $true
@@ -417,11 +417,9 @@ $labeltemplate.Anchor                   = "Left,Top"
 
 
 $gui_browsetemplate                   = New-Object System.Windows.Forms.Button
-$gui_browsetemplate.Left                = ($form_leftalign + 500)
-$gui_browsetemplate.Top                 = 5
-$gui_browsetemplate.Size              = New-Object System.Drawing.Size(80,25)
-$gui_browsetemplate.MinimumSize       = New-Object System.Drawing.Size(80,25)
-$gui_browsetemplate.MaximumSize       = New-Object System.Drawing.Size(80,25)
+$gui_browsetemplate.Left              = ($form_leftalign + 480)
+$gui_browsetemplate.Top               = 5
+$gui_browsetemplate.Size              = New-Object System.Drawing.Size(100,25)
 $gui_browsetemplate.Text              = $text_loadtemplate
 $gui_browsetemplate.Anchor            = "Right,Top"
 $gui_browsetemplate.add_click({
