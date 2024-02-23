@@ -426,47 +426,50 @@ $gui_browsetemplate.add_click({
     [System.Windows.Forms.MessageBox]::Show("Nein." , $APPNAME)
 })
 
-$templates                          = New-Object System.Windows.Forms.ListView
+$templates                          = New-Object System.Windows.Forms.DataGridView
 $templates.Location                 = New-Object System.Drawing.Point($form_leftalign,30)
 $templates.Size                     = New-Object System.Drawing.Size(580,230)
 #$templates.AutoSize                 = $true 
-$templates.FullRowSelect = $True
+#$templates.FullRowSelect = $True
 $templates.AutoResizeColumns(2)
-$templates.View                     = [System.Windows.Forms.View]::Details
 $templates.Anchor                   = "Left,Right,Top,Bottom"
-$templates.HideSelection = $false
+$templates.BackgroundColor          = "White"
+$templates.GridColor                = "LightBlue"
+$templates.CellBorderStyle          = "SingleHorizontal"
 
-[int]$listview_folder_spacing = 75
+#$templates.RowHeadersVisible        = $false
+$templates.MultiSelect              = $false
 
-[void]$templates.Columns.Add("Vorlage",140)
-[void]$templates.Columns.Add("00",$listview_folder_spacing)
-[void]$templates.Columns.Add("01",$listview_folder_spacing)
-[void]$templates.Columns.Add("02",$listview_folder_spacing)
-[void]$templates.Columns.Add("03",$listview_folder_spacing)
-[void]$templates.Columns.Add("04",$listview_folder_spacing)
-[void]$templates.Columns.Add("05",$listview_folder_spacing)
-[void]$templates.Columns.Add("06",$listview_folder_spacing)
-[void]$templates.Columns.Add("07",$listview_folder_spacing)
+$templates.ColumnCount = 10
+[int]$folder_spacing = 75
+
+$templates.Columns[0].Name = "Vorlage"
+$templates.Columns[0].Width = 140
+
+$templates.Columns[1].Name = "00"
+$templates.Columns[1].Width = $folder_spacing
+$templates.Columns[2].Name = "00"
+$templates.Columns[2].Width = $folder_spacing
+$templates.Columns[3].Name = "00"
+$templates.Columns[3].Width = $folder_spacing
+$templates.Columns[4].Name = "00"
+$templates.Columns[4].Width = $folder_spacing
+$templates.Columns[5].Name = "00"
+$templates.Columns[5].Width = $folder_spacing
+$templates.Columns[6].Name = "00"
+$templates.Columns[6].Width = $folder_spacing
+$templates.Columns[7].Name = "00"
+$templates.Columns[7].Width = $folder_spacing
+
 
 # ## LOAD FROM CSV HERE
-$templatesItem = New-Object System.Windows.Forms.ListViewItem("Minimal")
-[void]$templatesItem.Subitems.Add("info")
-[void]$templatesItem.Subitems.Add("orig")
-[void]$templates.Items.Add($templatesItem)
 
-$templatesItem = New-Object System.Windows.Forms.ListViewItem("TEP")
-[void]$templatesItem.Subitems.Add("info")
-[void]$templatesItem.Subitems.Add("orig")
-[void]$templatesItem.Subitems.Add("trados")
-[void]$templatesItem.Subitems.Add("to trans")
-[void]$templatesItem.Subitems.Add("from trans")
-[void]$templatesItem.Subitems.Add("to proof")
-[void]$templatesItem.Subitems.Add("from proof")
-[void]$templatesItem.Subitems.Add("to_client")
-[void]$templates.Items.Add($templatesItem)
+$templates.Rows.Add("Minimal","info","orig");
+#$templates.Rows[0].HeaderCell.Value = "Minimal"
+
+$templates.Rows[0].Selected = $true
 
 
-$templates.Items[0].Selected = $true
 
 $panel_template.Controls.Add($labeltemplate)
 $panel_template.Controls.Add($gui_browsetemplate)
@@ -680,7 +683,7 @@ New-Item -ItemType Directory -Path "$BASEFOLDER"
 
 # CREATE ALLLLL THE FOLDERS
 # Skip the first element cuz no
-foreach ($folder in ($templates.SelectedItems[0].SubItems | Select-Object -Skip 1 ) )
+foreach ($folder in ($templates.Rows[$templates.CurrentCell.RowIndex].Cells.Value | Select-Object -Skip 1 ) )
 {
 
     #Append folder number at start, construct full path
@@ -695,7 +698,6 @@ foreach ($folder in ($templates.SelectedItems[0].SubItems | Select-Object -Skip 
     [int]$foldernumber += 1 
 
 }
-
 
 # PIN TO EXPLORER
 if ($default_createshortcut -eq $true)
