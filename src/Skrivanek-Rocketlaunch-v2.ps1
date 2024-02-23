@@ -355,7 +355,7 @@ foreach ($mail in $allmails)
     foreach ( $attach in $mail.Attachments ) 
     {
         #echo $attach.FileName
-        if ($attach.FileName -match  "(.pdf|.doc|.xls|.xml|.xlsx|.docx|.ppt|.pptx|.txt|.idml)" )
+        if ($attach.FileName -match  "(.[pdf|doc|xls|xml|xlsx|docx|ppt|pptx|txt|idml|zip])" )
         {
             $AddToGoodMails = $true
             [int]$CountGoodAttachments += 1
@@ -739,8 +739,9 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
         {
             if ($attachment.FileName -notmatch "^image[0-9][0-9][0-9]")
             {
-                Write-Output (Join-Path $ORIG $attachment.FileName)
-                $attachment.SaveAsFile( (Join-Path $ORIG $attachment.FileName) )
+                Write-Output (-join($ORIG,"\",$attachment.FileName))
+                $attachment.SaveAsFile( -join($ORIG,"\",$attachment.FileName) )
+
             }
         } # End of attachment processing
 
@@ -789,10 +790,16 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
      }    
 
 
+
+    # Before processing each source file,
+    # Deal with the archives first
+    Write-Output "Extracting all archives..."
+    Get-ChildItem -Path $ORIG -Filter *.zip | Expand-Archive -DestinationPath $ORIG
+
     # PROCESS EACH SOURCE FILE
     # Rename and move file
     # Add count to total count and CSV
-    foreach ($file in (Get-ChildItem $ORIG))
+    foreach ($file in (Get-ChildItem -Path $ORIG))
     {
         $newname = -join($DIRCODE,"_",$file.BaseName,"_orig",$file.Extension)
         Write-Output "[RENAME] As $newname"
@@ -804,31 +811,31 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
         {
             # Use different backend depending on what needed
             # Each time, check the extension to know what we deal with
-            if ("$newname" -match ".[doc|docx]$" )
+            if ("$newname" -match ".[doc|docx]" )
             {
                 # OPEN IN WORD, PROCESS COUNT
                 $filecontent = $word.Documents.Open("$ORIG\$newname")
                 [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Word.WdStatistic]::wdStatisticWords)
             }
-            elseif ("$newname" -match ".[xls|xlsx]$" )
+            elseif ("$newname" -match ".[xls|xlsx]" )
             {
                 # OPEN IN EXCEL, PROCESS COUNT
                 $filecontent = $excel.Documents.Open("$ORIG\$newname")
                 [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Excel.WdStatistic]::wdStatisticWords)
             }
-            elseif ("$newname" -match ".[ppt|pptx]$" )
+            elseif ("$newname" -match ".[ppt|pptx]" )
             {
                 # OPEN IN POWRPOINT, PROCESS COUNT
                 $filecontent = $powerpoint.Documents.Open("$ORIG\$newname")
                 [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Powerpoint.WdStatistic]::wdStatisticWords)
             }
-            elseif ("$newname" -match ".pdf$" )
+            elseif ("$newname" -match ".pdf" )
             {
                 # COUNT WORDS IN PDF FILE
                 [int]$wordcount = (Get-Content "$ORIG\$newname" | Measure-Object –Word).Words
             }
 
-            elseif ("$newname" -match ".[txt|csv]$" )
+            elseif ("$newname" -match ".[txt|csv]" )
             {
                 # COUNT WORDS IN TXT FILE
                 [int]$wordcount = (Get-Content "$ORIG\$newname" | Measure-Object –Word).Words
