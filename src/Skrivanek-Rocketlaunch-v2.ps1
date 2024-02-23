@@ -57,7 +57,7 @@ Write-Output "[STARTUP] Getting all variables in place"
 
 [string]$text_projectname           = "Ein neues Projekt anlegen:"
 [string]$text_doanalysis            = "Analyse machen ? (Langsam)"
-[string]$text_opentrados            = "Neues Trados-Projekt ?"
+[string]$text_opentrados            = "Trados?"
 
 [string]$text_loadfilesfrom         = 'Ausgangsdatei aus Quelle'
 [string]$text_columns_Subject         = 'Betreff'
@@ -167,19 +167,21 @@ $stream = [System.IO.MemoryStream]::new($iconBytes, 0, $iconBytes.Length)
 #================
 #= INITIAL WORK =
 
-[int]$form_leftalign = 25
-[int]$form_verticalalign = 460
 
+# Imports
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
-
-# Lets look cool
 [void] [System.Windows.Forms.Application]::EnableVisualStyles() 
+
+
+[int]$form_leftalign = 15
+[int]$form_verticalalign = 470
+
 
 $form                   = New-Object System.Windows.Forms.Form
 $form.Text              = $APPNAME
-$form.Size              = New-Object System.Drawing.Size(635,($form_verticalalign + 80 ))
-$form.MinimumSize       = New-Object System.Drawing.Size(530,($form_verticalalign + 40 ))
+$form.Size              = New-Object System.Drawing.Size(625,($form_verticalalign + 85 ))
+$form.MinimumSize       = New-Object System.Drawing.Size(500,($form_verticalalign + 40 ))
 #$form.MaximumSize       = New-Object System.Drawing.Size(750,550)
 #$form.AutoSize          = $true
 #$form.AutoScale         = $true
@@ -191,8 +193,6 @@ $form.Topmost           = $True
 $form.BackColor         = "White"
 $form.Icon              = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
 
-
-
 #==============
 #= INPUT TEXT =
 
@@ -200,16 +200,13 @@ $form.Icon              = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bit
 $pictureBox             = new-object Windows.Forms.PictureBox
 $pictureBox.Location    = New-Object System.Drawing.Point($form_leftalign,20)
 $pictureBox.Anchor      = "Left,Top"
-#$img                    = [System.Drawing.Image]::Fromfile($NEWPROJECTICON);
 $img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
-
-$pictureBox.Width       = 64 #$img.Size.Width
-$pictureBox.Height      = 64 #$img.Size.Height
+$pictureBox.Width       = 64
+$pictureBox.Height      = 64
 $pictureBox.Image       = $img;
 $pictureBox.Add_Click({
-                    $Result = [System.Windows.Forms.MessageBox]::Show($text_about,$APPNAME,4,[System.Windows.Forms.MessageBoxIcon]::Information)
-                    If ($Result -eq "Yes") { Start-Process $GITHUB_LINK } })
-
+    $Result = [System.Windows.Forms.MessageBox]::Show($text_about,$APPNAME,4,[System.Windows.Forms.MessageBoxIcon]::Information)
+    If ($Result -eq "Yes") { Start-Process $GITHUB_LINK } })
 
 $form.controls.add($pictureBox)
 
@@ -256,36 +253,19 @@ else
     $form.Controls.Add($gui_code)
     $form.Add_Shown({$gui_code.Select()})
 }
-    
 
 
-
-# Check if count words ?
+<# # Check if count words ?
 $CheckIfAnalysis                = New-Object System.Windows.Forms.CheckBox        
 $CheckIfAnalysis.Location       = New-Object System.Drawing.Point(($form_leftalign + 400),30)
 $CheckIfAnalysis.Size           = New-Object System.Drawing.Size(200,20)
 $CheckIfAnalysis.Text           = $text_doanalysis
-#$CheckIfAnalysis.UseVisualStyleBackColor = $True
 $CheckIfAnalysis.Checked        = $default_doanalysis
 $CheckIfAnalysis.Anchor         = "Top,Right"
-$form.Controls.Add($CheckIfAnalysis)
+$form.Controls.Add($CheckIfAnalysis) #>
 
-
-
-# Check if start new trados project
-$CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox        
-$CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 400),60)
-$CheckIfTrados.Size             = New-Object System.Drawing.Size(200,20)
-$CheckIfTrados.Text             = $text_opentrados
-#$CheckIfTrados.UseVisualStyleBackColor = $True
-$CheckIfTrados.Checked          = $default_opentrados
-$CheckIfTrados.Anchor           = "Top,Right"
-$form.Controls.Add($CheckIfTrados)
-
-
-
-
-
+# Old location
+#$CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 425),60)
 
 
 #===================
@@ -302,70 +282,61 @@ $labelsourcefiles.Anchor           = "Top,Left"
 $form.Controls.Add($labelsourcefiles)
 
 $gui_filesource                 = New-Object System.Windows.Forms.Combobox
-$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 450),105)
-$gui_filesource.Size            = New-Object System.Drawing.Size(130,20)
+$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 470),105)
+$gui_filesource.Size            = New-Object System.Drawing.Size(110,20)
 $gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 $gui_filesource.Anchor          = "Top,Right"
 [void] $gui_filesource.Items.Add($text_from_Outlook) 
 [void] $gui_filesource.Items.Add($text_from_Downloads)   
 [void] $gui_filesource.Items.Add($text_nofilesource)  
 $gui_filesource.SelectedItem = $default_filesfrom
-
 $form.Controls.Add($gui_filesource)
-#'Windows icons
-# for index: https://renenyffenegger.ch/development/Windows/PowerShell/examples/WinAPI/ExtractIconEx/imageres.html
-# mail ,015
-# folder ,013
-# folder ,103
-#$imagelist                      = new-Object System.Windows.Forms.ImageList 
-#$imagelist.ImageSize            = New-Object System.Drawing.Size(16,16) # Size of the pictures
-#$icon_folder                      = [Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\Explorer.exe")
-#$icon_mail                      = [Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\Explorer.exe")
-#$icon_nope                      = [Drawing.Icon]::ExtractAssociatedIcon("C:\Windows\Explorer.exe")
-#$imageList.Images.Add("IconMail",$icon_mail)
+
+
 
 ## Configure the ListView
-$sourcefiles                   = New-Object System.Windows.Forms.ListView
-$sourcefiles.Location          = New-Object System.Drawing.Size($form_leftalign,130) 
-$sourcefiles.Size              = New-Object System.Drawing.Size(580,120) 
-$sourcefiles.Width             = 580 #$form.ClientRectangle.Width
-$sourcefiles.Height            = 120 # $Form.ClientRectangle.Height
-$sourcefiles.FullRowSelect = $True
-$sourcefiles.HideSelection = $false
-#$sourcefiles.AutoResizeColumns(2)
-$sourcefiles.Anchor         = "Left,Top,Right,Bottom"
-$sourcefiles.View              = [System.Windows.Forms.View]::Details
-#$sourcefiles.SmallImageList = $imageList
+$sourcefiles                        = New-Object System.Windows.Forms.ListView
+$sourcefiles.Location               = New-Object System.Drawing.Size($form_leftalign,130) 
+$sourcefiles.Size                   = New-Object System.Drawing.Size(580,120) 
+$sourcefiles.Width                  = 580 #$form.ClientRectangle.Width
+$sourcefiles.Height                 = 120 # $Form.ClientRectangle.Height
+$sourcefiles.FullRowSelect          = $True
+$sourcefiles.HideSelection          = $false
+$sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
+$sourcefiles.View                   = [System.Windows.Forms.View]::Details
 
 [void]$sourcefiles.Columns.Add($text_columns_Subject,300)
 [void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
 #$sourcefiles.Columns.Add("Empfangen",100)
-$sourcefiles.Columns.Add($text_columns_Attachments,60)
+[void]$sourcefiles.Columns.Add($text_columns_Attachments,60)
 
 
 # Look for emails with attachments
+# For each email, we look attachments and count the ones with supported formats
+# We are not interested in junk like image001.jpg etc... which is signatures and stuff
+
 $allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
 foreach ($mail in $allmails)
 {
-    echo "a mail"
-    echo $mail.Subject
-
     [bool]$AddToGoodMails = $false
     [int]$CountGoodAttachments = 0
     foreach ( $attach in $mail.Attachments ) 
     {
         #echo $attach.FileName
-        if ($attach.FileName -match  "(.[pdf|doc|xls|xml|xlsx|docx|ppt|pptx|txt|idml|zip])" )
+        if ($attach.FileName -match  ".{pdf|doc|docx|xls|xlsx|ppt|pptx|xml|idml|csv|txt}" )
         {
+            echo (-join("MATCH:",$attach.FileName))
             $AddToGoodMails = $true
             [int]$CountGoodAttachments += 1
 
         }   # End of each mails
+        else {echo (-join("NOTMATCH:",$attach.FileName)) }  
     } #End of checking attachments
 
     # we found one with attachment !
     if ($AddToGoodMails -eq $true)
     {
+        # Currently observed one is a good one
         $allgoodmails.Add($mail)
 
         # Add to da list
@@ -374,7 +345,6 @@ foreach ($mail in $allmails)
         [void]$sourcefilesItem.Subitems.Add($CountGoodAttachments)
         [void]$sourcefiles.Items.Add($sourcefilesItem)
         $goodmailindex += 1
-
     } # End of adding goodmail
 
 } # End of looking for emails with attachments
@@ -383,15 +353,15 @@ foreach ($mail in $allmails)
 # Add the ListView to the Form
 try { 
     $sourcefiles.Items[0].Selected = $true 
-
-     $allgoodmails[$sourcefiles.FocusedItem.Index].SenderEmailAddress -match "@(?<content>.*).com"
-     $attempt_at_companyname         = $matches["content"]
-     $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
-     echo $attempt_at_companyname
-     [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
-     [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
-     [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
-     [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )  
+    
+    <# $allgoodmails[$sourcefiles.FocusedItem.Index].SenderEmailAddress -match "@(?<content>.*).com"
+    $attempt_at_companyname         = $matches["content"]
+    $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
+    echo $attempt_at_companyname
+    [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
+    [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
+    [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
+    [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )   #>
 }
 catch {
     Write-Output "No mail with relevant attach !"
@@ -403,6 +373,7 @@ catch {
     #[string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )  
 
 }
+
 
 $form.Controls.Add($sourcefiles)
 
@@ -441,17 +412,15 @@ $form.Controls.Add($gui_browsetemplate)
 # Listview
 #
 
-$templates                        = New-Object System.Windows.Forms.ListView
-$templates.Location               = New-Object System.Drawing.Point($form_leftalign,300)
-$templates.Size                   = New-Object System.Drawing.Size(580,130)
-$templates.AutoSize               = $true 
-#$templates.Width                    = 580
-#$templates.Height                 = 130
+$templates                          = New-Object System.Windows.Forms.ListView
+$templates.Location                 = New-Object System.Drawing.Point($form_leftalign,300)
+$templates.Size                     = New-Object System.Drawing.Size(580,150)
+#$templates.AutoSize                 = $true 
 $templates.FullRowSelect = $True
 $templates.AutoResizeColumns(2)
-$templates.View              = [System.Windows.Forms.View]::Details
+$templates.View                     = [System.Windows.Forms.View]::Details
+$templates.Anchor                   = "Left,Right,Top,Bottom"
 $templates.HideSelection = $false
-$templates.Anchor               = "Left,Right,Bottom"
 
 [int]$listview_folder_spacing = 75
 
@@ -499,10 +468,6 @@ $gui_panel.Height = 40
 $gui_panel.BackColor = '241,241,241'
 $gui_panel.Anchor = "Left,Bottom,Right"
 
-
-
-
-
 $gui_help                   = New-Object System.Windows.Forms.Button
 $gui_help.Location          = New-Object System.Drawing.Point(($form_leftalign),10)
 $gui_help.Size              = New-Object System.Drawing.Size(120,25)
@@ -512,7 +477,19 @@ $gui_help.Anchor            = "Left, Bottom"
 $gui_help.add_click({
     [System.Windows.Forms.MessageBox]::Show("Frag Stella" , $APPNAME)
 })
-$form.Controls.Add($gui_help)
+#[void]$form.Controls.Add($gui_help)
+
+
+# Check if start new trados project
+$CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox        
+$CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 130),12)
+$CheckIfTrados.Size             = New-Object System.Drawing.Size(70,20)
+$CheckIfTrados.Text             = $text_opentrados
+$CheckIfTrados.Checked          = $default_opentrados
+$CheckIfTrados.Anchor           = "Top,Left"
+#[void]$form.Controls.Add($CheckIfTrados)
+
+
 
 $gui_okButton                               = New-Object System.Windows.Forms.Button
 $gui_okButton.Location                      = New-Object System.Drawing.Point(($form_leftalign + 330),10)
@@ -524,7 +501,7 @@ $gui_okButton.Anchor                        = "Bottom,Right"
 #$gui_okButton.ForeColor                     = ”White”
 $gui_okButton.DialogResult                  = [System.Windows.Forms.DialogResult]::OK
 $form.AcceptButton                          = $gui_okButton
-[void]$form.Controls.Add($gui_okButton)
+#[void]$form.Controls.Add($gui_okButton)
 
 $gui_cancelButton                           = New-Object System.Windows.Forms.Button
 $gui_cancelButton.Location                  = New-Object System.Drawing.Point(($form_leftalign + 460),10)
@@ -536,12 +513,15 @@ $gui_cancelButton.Anchor                    = "Bottom, Right"
 #$gui_cancelButton.ForeColor                  = ”White”
 $gui_cancelButton.DialogResult              = [System.Windows.Forms.DialogResult]::Cancel
 $form.CancelButton                          = $gui_cancelButton
-[void]$form.Controls.Add($gui_cancelButton)
+#[void]$form.Controls.Add($gui_cancelButton)
+
+
+$gui_panel.Controls.Add($gui_help)
+$gui_panel.Controls.Add($CheckIfTrados)
 
 
 $gui_panel.Controls.Add($gui_okButton)
 $gui_panel.Controls.Add($gui_cancelButton)
-$gui_panel.Controls.Add($gui_help)
 $gui_panel.Show()
 
 [void]$form.Controls.Add($gui_panel)
@@ -806,7 +786,7 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
         Rename-Item -Path $file.FullName -Newname "$newname"
 
         
-        # ONLY IF ANALYSIS WISHED
+        <# # ONLY IF ANALYSIS WISHED
         if ($CheckIfAnalysis.CheckState.ToString() -eq "Checked")
         {
             # Use different backend depending on what needed
@@ -854,7 +834,7 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
 
             #CLOSE FILE
             $filecontent.Close()
-        }
+        } #>
 
 
     } # End of loop processing all source file
