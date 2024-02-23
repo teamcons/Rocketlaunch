@@ -189,7 +189,7 @@ $form.Font              = New-Object System.Drawing.Font('Microsoft Sans Serif',
 
 
 $form.StartPosition     = 'CenterScreen'
-$form.FormBorderStyle   = 'FixedDialog'
+#$form.FormBorderStyle   = 'FixedDialog'
 $form.Topmost           = $True
 $form.BackColor         = "White"
 $form.Icon              = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
@@ -276,12 +276,12 @@ $form.Controls.Add($CheckIfAnalysis) #>
 
 $panel_sourcefile = New-Object System.Windows.Forms.Panel
 $panel_sourcefile.Width = 625
-$panel_sourcefile.Height = 200
-$panel_sourcefile.Top = 100
+$panel_sourcefile.Height = 90
+$panel_sourcefile.Top = 10
 $panel_sourcefile.Left = 0
 $panel_sourcefile.BackColor     = "White" #'Green'
-$panel_sourcefile.Anchor        = "Left,Top,Right,Bottom"
-
+#$panel_sourcefile.Anchor        = "Left,Top,Right,Bottom"
+$panel_sourcefile.Dock        = "Fill"
 
 # Label above input
 $labelsourcefiles                  = New-Object System.Windows.Forms.Label
@@ -289,12 +289,12 @@ $labelsourcefiles.Location         = New-Object System.Drawing.Point($form_lefta
 $labelsourcefiles.Size             = New-Object System.Drawing.Size(240,20)
 $labelsourcefiles.Text             = $text_loadfilesfrom
 $labelsourcefiles.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
-$labelsourcefiles.Anchor           = "Top,Left"
+#$labelsourcefiles.Anchor           = "Top,Left"
 
 
 $gui_filesource                 = New-Object System.Windows.Forms.Combobox
-$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 490),5)
-$gui_filesource.Size            = New-Object System.Drawing.Size(90,20)
+$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 480),5)
+$gui_filesource.Size            = New-Object System.Drawing.Size(100,20)
 $gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 $gui_filesource.Anchor          = "Top,Right"
 [void] $gui_filesource.Items.Add($text_from_Outlook) 
@@ -307,9 +307,9 @@ $gui_filesource.SelectedItem = $default_filesfrom
 ## Configure the ListView
 $sourcefiles                        = New-Object System.Windows.Forms.ListView
 $sourcefiles.Location               = New-Object System.Drawing.Size($form_leftalign,30) 
-$sourcefiles.Size                   = New-Object System.Drawing.Size(580,160) 
+$sourcefiles.Size                   = New-Object System.Drawing.Size(580,50) 
 $sourcefiles.Width                  = 580 #$form.ClientRectangle.Width
-$sourcefiles.Height                 = 160 # $Form.ClientRectangle.Height
+$sourcefiles.Height                 = 50 # $Form.ClientRectangle.Height
 $sourcefiles.FullRowSelect          = $True
 $sourcefiles.HideSelection          = $false
 $sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
@@ -378,32 +378,15 @@ catch {
 }
 
 
-
-
-
-
-
-
 $panel_sourcefile.Controls.Add($labelsourcefiles)
 $panel_sourcefile.Controls.Add($gui_filesource)
 $panel_sourcefile.Controls.Add($sourcefiles)
 $panel_sourcefile.Show()
 
-$form.Controls.Add($panel_sourcefile)
-
 #$form.Controls.Add($labelsourcefiles)
 #$form.Controls.Add($gui_filesource)
 #$form.Controls.Add($sourcefiles)
 
-
-
-$Split = New-Object System.Windows.Forms.SplitContainer
-$Split.Anchor                       = "Left,Bottom,Top,Right"
-$Split.Top                          = 300
-$Split.Height                       = 10
-$Split.Width                        = 625
-
-#$form.Controls.Add($Split)
 
 
 
@@ -412,11 +395,12 @@ $Split.Width                        = 625
 
 $panel_template                         = New-Object System.Windows.Forms.Panel
 $panel_template.Width                   = 625
-$panel_template.Height                  = 200
+$panel_template.Height                  = 260
 $panel_template.Top                     = 300
 $panel_template.Left                    = 0
 $panel_template.BackColor               = "White" #'Red'
-$panel_template.Anchor = "Left,Right,Top,Bottom"
+#$panel_template.Anchor = "Left,Right,Top,Bottom"
+$panel_template.Dock = "Fill"
 
 
 # Label and button
@@ -424,7 +408,7 @@ $labeltemplate                          = New-Object System.Windows.Forms.Label
 $labeltemplate.Text                     = $text_usewhichtemplate
 $labeltemplate.Font                     = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
 $labeltemplate.Left                     = $form_leftalign
-$labeltemplate.Top                     = 10
+$labeltemplate.Top                      = 10
 $labeltemplate.Size                     = New-Object System.Drawing.Size(300,20)
 $labeltemplate.MinimumSize              = New-Object System.Drawing.Size(300,20)
 $labeltemplate.MaximumSize              = New-Object System.Drawing.Size(300,20)
@@ -446,7 +430,7 @@ $gui_browsetemplate.add_click({
 
 $templates                          = New-Object System.Windows.Forms.ListView
 $templates.Location                 = New-Object System.Drawing.Point($form_leftalign,30)
-$templates.Size                     = New-Object System.Drawing.Size(580,160)
+$templates.Size                     = New-Object System.Drawing.Size(580,230)
 #$templates.AutoSize                 = $true 
 $templates.FullRowSelect = $True
 $templates.AutoResizeColumns(2)
@@ -495,7 +479,24 @@ $panel_template.Show()
 #[void]$form.Controls.Add($gui_browsetemplate)
 #[void]$form.Controls.Add($templates)
 
-$form.Controls.Add($panel_template)
+
+$Split = New-Object System.Windows.Forms.SplitContainer
+$Split.Anchor                       = "Left,Bottom,Top,Right"
+$Split.Top                          = 90
+$Split.Height                       = ($form_verticalalign - 100)
+$Split.Width                        = 625
+$Split.Orientation                  = "Horizontal"
+$Split.BackColor                  = "LightBlue"
+
+#$form.Controls.Add($panel_template)
+#$form.Controls.Add($panel_sourcefile)
+
+
+$Split.Panel1.Controls.Add($panel_sourcefile)
+$Split.Panel2.Controls.Add($panel_template)
+
+$form.Controls.Add($Split)
+
 
 #====================
 #= OKCANCEL BUTTONS =
