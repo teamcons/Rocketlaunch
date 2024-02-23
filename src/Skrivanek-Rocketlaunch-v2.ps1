@@ -187,8 +187,9 @@ $form.MinimumSize       = New-Object System.Drawing.Size(500,($form_verticalalig
 #$form.AutoScale         = $true
 $form.Font              = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
 
+
 $form.StartPosition     = 'CenterScreen'
-#$form.FormBorderStyle   = 'FixedDialog'
+$form.FormBorderStyle   = 'FixedDialog'
 $form.Topmost           = $True
 $form.BackColor         = "White"
 $form.Icon              = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
@@ -278,8 +279,8 @@ $panel_sourcefile.Width = 625
 $panel_sourcefile.Height = 200
 $panel_sourcefile.Top = 100
 $panel_sourcefile.Left = 0
-$panel_sourcefile.BackColor = 'Green'
-$panel_sourcefile.Anchor = "Left,Top,Right,Bottom"
+$panel_sourcefile.BackColor     = "White" #'Green'
+$panel_sourcefile.Anchor        = "Left,Top,Right,Bottom"
 
 
 # Label above input
@@ -292,13 +293,14 @@ $labelsourcefiles.Anchor           = "Top,Left"
 
 
 $gui_filesource                 = New-Object System.Windows.Forms.Combobox
-$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 470),5)
-$gui_filesource.Size            = New-Object System.Drawing.Size(110,20)
+$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 490),5)
+$gui_filesource.Size            = New-Object System.Drawing.Size(90,20)
 $gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 $gui_filesource.Anchor          = "Top,Right"
 [void] $gui_filesource.Items.Add($text_from_Outlook) 
 [void] $gui_filesource.Items.Add($text_from_Downloads)   
 [void] $gui_filesource.Items.Add($text_nofilesource)  
+
 $gui_filesource.SelectedItem = $default_filesfrom
 
 
@@ -408,12 +410,12 @@ $Split.Width                        = 625
 #=====================
 #= LIST OF TEMPLATES =
 
-$panel_template = New-Object System.Windows.Forms.Panel
-$panel_template.Width = 625
-$panel_template.Height = 200
-$panel_template.Top = 300
-$panel_template.Left = 0
-$panel_template.BackColor = 'Red'
+$panel_template                         = New-Object System.Windows.Forms.Panel
+$panel_template.Width                   = 625
+$panel_template.Height                  = 200
+$panel_template.Top                     = 300
+$panel_template.Left                    = 0
+$panel_template.BackColor               = "White" #'Red'
 $panel_template.Anchor = "Left,Right,Top,Bottom"
 
 
@@ -426,18 +428,18 @@ $labeltemplate.Top                     = 10
 $labeltemplate.Size                     = New-Object System.Drawing.Size(300,20)
 $labeltemplate.MinimumSize              = New-Object System.Drawing.Size(300,20)
 $labeltemplate.MaximumSize              = New-Object System.Drawing.Size(300,20)
-$labeltemplate.Anchor                   = "Left,Bottom"
+$labeltemplate.Anchor                   = "Left,Top"
 
 
 
 $gui_browsetemplate                   = New-Object System.Windows.Forms.Button
-$gui_browsetemplate.Left = ($form_leftalign + 500)
-$gui_browsetemplate.Top = 10
-$gui_browsetemplate.Size              = New-Object System.Drawing.Size(80,20)
-$gui_browsetemplate.MinimumSize       = New-Object System.Drawing.Size(80,20)
-$gui_browsetemplate.MaximumSize       = New-Object System.Drawing.Size(80,20)
+$gui_browsetemplate.Left                = ($form_leftalign + 500)
+$gui_browsetemplate.Top                 = 5
+$gui_browsetemplate.Size              = New-Object System.Drawing.Size(80,25)
+$gui_browsetemplate.MinimumSize       = New-Object System.Drawing.Size(80,25)
+$gui_browsetemplate.MaximumSize       = New-Object System.Drawing.Size(80,25)
 $gui_browsetemplate.Text              = $text_loadtemplate
-$gui_browsetemplate.Anchor            = "Right,Bottom"
+$gui_browsetemplate.Anchor            = "Right,Top"
 $gui_browsetemplate.add_click({
     [System.Windows.Forms.MessageBox]::Show("Nein." , $APPNAME)
 })
