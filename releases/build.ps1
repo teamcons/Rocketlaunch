@@ -1,5 +1,5 @@
 ps2exe `
--inputFile ..\src\Skrivanek-Rocketlaunch.ps1 `
+-inputFile ..\src\Skrivanek-Rocketlaunch-v2.ps1 `
 -iconFile ..\assets\Rocketlaunch-Icon.ico `
 -noConsole `
 -noOutput `
@@ -11,4 +11,4 @@ ps2exe `
 -copyright "CC0 1.0 Universal Stella <stella.menier@gmx.de>" `
 -version 1.0 `
 -Verbose `
--outputFile ..\releases\Skrivanek-Rocketlaunch.exe
+-outputFile ..\releases\Skrivanek-Rocketlaunch-v2.exe
