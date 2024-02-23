@@ -175,7 +175,7 @@ Add-Type -AssemblyName System.Drawing
 
 
 [int]$form_leftalign = 15
-[int]$form_verticalalign = 470
+[int]$form_verticalalign = 500
 
 
 $form                   = New-Object System.Windows.Forms.Form
@@ -272,17 +272,27 @@ $form.Controls.Add($CheckIfAnalysis) #>
 #= SOURCE FILES    =
 
 
+
+$panel_sourcefile = New-Object System.Windows.Forms.Panel
+$panel_sourcefile.Width = 625
+$panel_sourcefile.Height = 200
+$panel_sourcefile.Top = 100
+$panel_sourcefile.Left = 0
+$panel_sourcefile.BackColor = 'Green'
+$panel_sourcefile.Anchor = "Left,Top,Right,Bottom"
+
+
 # Label above input
 $labelsourcefiles                  = New-Object System.Windows.Forms.Label
-$labelsourcefiles.Location         = New-Object System.Drawing.Point($form_leftalign,110)
+$labelsourcefiles.Location         = New-Object System.Drawing.Point($form_leftalign,10)
 $labelsourcefiles.Size             = New-Object System.Drawing.Size(240,20)
 $labelsourcefiles.Text             = $text_loadfilesfrom
 $labelsourcefiles.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
 $labelsourcefiles.Anchor           = "Top,Left"
-$form.Controls.Add($labelsourcefiles)
+
 
 $gui_filesource                 = New-Object System.Windows.Forms.Combobox
-$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 470),105)
+$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 470),5)
 $gui_filesource.Size            = New-Object System.Drawing.Size(110,20)
 $gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 $gui_filesource.Anchor          = "Top,Right"
@@ -290,16 +300,14 @@ $gui_filesource.Anchor          = "Top,Right"
 [void] $gui_filesource.Items.Add($text_from_Downloads)   
 [void] $gui_filesource.Items.Add($text_nofilesource)  
 $gui_filesource.SelectedItem = $default_filesfrom
-$form.Controls.Add($gui_filesource)
-
 
 
 ## Configure the ListView
 $sourcefiles                        = New-Object System.Windows.Forms.ListView
-$sourcefiles.Location               = New-Object System.Drawing.Size($form_leftalign,130) 
-$sourcefiles.Size                   = New-Object System.Drawing.Size(580,120) 
+$sourcefiles.Location               = New-Object System.Drawing.Size($form_leftalign,30) 
+$sourcefiles.Size                   = New-Object System.Drawing.Size(580,160) 
 $sourcefiles.Width                  = 580 #$form.ClientRectangle.Width
-$sourcefiles.Height                 = 120 # $Form.ClientRectangle.Height
+$sourcefiles.Height                 = 160 # $Form.ClientRectangle.Height
 $sourcefiles.FullRowSelect          = $True
 $sourcefiles.HideSelection          = $false
 $sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
@@ -365,37 +373,66 @@ try {
 }
 catch {
     Write-Output "No mail with relevant attach !"
-
-    # Cant guess from emails, so guess from previous projects
-    #[string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
-    #[string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
-    #[string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
-    #[string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )  
-
 }
 
 
-$form.Controls.Add($sourcefiles)
+
+
+
+
+
+
+$panel_sourcefile.Controls.Add($labelsourcefiles)
+$panel_sourcefile.Controls.Add($gui_filesource)
+$panel_sourcefile.Controls.Add($sourcefiles)
+$panel_sourcefile.Show()
+
+$form.Controls.Add($panel_sourcefile)
+
+#$form.Controls.Add($labelsourcefiles)
+#$form.Controls.Add($gui_filesource)
+#$form.Controls.Add($sourcefiles)
+
+
+
+$Split = New-Object System.Windows.Forms.SplitContainer
+$Split.Anchor                       = "Left,Bottom,Top,Right"
+$Split.Top                          = 300
+$Split.Height                       = 10
+$Split.Width                        = 625
+
+#$form.Controls.Add($Split)
 
 
 
 #=====================
 #= LIST OF TEMPLATES =
 
+$panel_template = New-Object System.Windows.Forms.Panel
+$panel_template.Width = 625
+$panel_template.Height = 200
+$panel_template.Top = 300
+$panel_template.Left = 0
+$panel_template.BackColor = 'Red'
+$panel_template.Anchor = "Left,Right,Top,Bottom"
+
+
 # Label and button
-$labeltemplate                  = New-Object System.Windows.Forms.Label
-$labeltemplate.Text             = $text_usewhichtemplate
-$labeltemplate.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
-$labeltemplate.Location         = New-Object System.Drawing.Point($form_leftalign,280)
-$labeltemplate.Size             = New-Object System.Drawing.Size(300,20)
-$labeltemplate.MinimumSize             = New-Object System.Drawing.Size(300,20)
-$labeltemplate.MaximumSize             = New-Object System.Drawing.Size(300,20)
-$labeltemplate.Anchor         = "Left,Bottom"
-$form.Controls.Add($labeltemplate)
+$labeltemplate                          = New-Object System.Windows.Forms.Label
+$labeltemplate.Text                     = $text_usewhichtemplate
+$labeltemplate.Font                     = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
+$labeltemplate.Left                     = $form_leftalign
+$labeltemplate.Top                     = 10
+$labeltemplate.Size                     = New-Object System.Drawing.Size(300,20)
+$labeltemplate.MinimumSize              = New-Object System.Drawing.Size(300,20)
+$labeltemplate.MaximumSize              = New-Object System.Drawing.Size(300,20)
+$labeltemplate.Anchor                   = "Left,Bottom"
+
 
 
 $gui_browsetemplate                   = New-Object System.Windows.Forms.Button
-$gui_browsetemplate.Location          = New-Object System.Drawing.Point(($form_leftalign + 500),280)
+$gui_browsetemplate.Left = ($form_leftalign + 500)
+$gui_browsetemplate.Top = 10
 $gui_browsetemplate.Size              = New-Object System.Drawing.Size(80,20)
 $gui_browsetemplate.MinimumSize       = New-Object System.Drawing.Size(80,20)
 $gui_browsetemplate.MaximumSize       = New-Object System.Drawing.Size(80,20)
@@ -404,17 +441,10 @@ $gui_browsetemplate.Anchor            = "Right,Bottom"
 $gui_browsetemplate.add_click({
     [System.Windows.Forms.MessageBox]::Show("Nein." , $APPNAME)
 })
-$form.Controls.Add($gui_browsetemplate)
-
-
-
-#
-# Listview
-#
 
 $templates                          = New-Object System.Windows.Forms.ListView
-$templates.Location                 = New-Object System.Drawing.Point($form_leftalign,300)
-$templates.Size                     = New-Object System.Drawing.Size(580,150)
+$templates.Location                 = New-Object System.Drawing.Point($form_leftalign,30)
+$templates.Size                     = New-Object System.Drawing.Size(580,160)
 #$templates.AutoSize                 = $true 
 $templates.FullRowSelect = $True
 $templates.AutoResizeColumns(2)
@@ -453,9 +483,17 @@ $templatesItem = New-Object System.Windows.Forms.ListViewItem("TEP")
 
 
 $templates.Items[0].Selected = $true
-[void]$form.Controls.Add($templates)
 
+$panel_template.Controls.Add($labeltemplate)
+$panel_template.Controls.Add($gui_browsetemplate)
+$panel_template.Controls.Add($templates)
+$panel_template.Show()
 
+#[void]$form.Controls.Add($labeltemplate)
+#[void]$form.Controls.Add($gui_browsetemplate)
+#[void]$form.Controls.Add($templates)
+
+$form.Controls.Add($panel_template)
 
 #====================
 #= OKCANCEL BUTTONS =
@@ -464,7 +502,7 @@ $gui_panel = New-Object System.Windows.Forms.Panel
 $gui_panel.Left = 0
 $gui_panel.Top = ($form_verticalalign)
 $gui_panel.Width = 625
-$gui_panel.Height = 40
+$gui_panel.Height = 50
 $gui_panel.BackColor = '241,241,241'
 $gui_panel.Anchor = "Left,Bottom,Right"
 
