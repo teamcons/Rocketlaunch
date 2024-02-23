@@ -436,9 +436,8 @@ $templates.Anchor                   = "Left,Right,Top,Bottom"
 $templates.BackgroundColor          = "White"
 $templates.GridColor                = "LightBlue"
 $templates.CellBorderStyle          = "SingleHorizontal"
-$templates.SelectionMode          = "FullRowSelect"
-
-#$templates.RowHeadersVisible        = $false
+$templates.SelectionMode            = "FullRowSelect"
+$templates.RowHeadersVisible        = $false
 $templates.MultiSelect              = $false
 
 $templates.ColumnCount = 10
