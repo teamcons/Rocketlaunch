@@ -34,7 +34,6 @@ Write-Output "================================"
 Write-Output ""
 Write-Output "For Skrivanek GmbH - Start new projects really, really quick!"
 Write-Output "CC0 Stella Ménier, Project manager Skrivanek BELGIUM - <stella.menier@gmx.de>"
-Write-Output "Git: https://github.com/teamcons/Skrivanek-Rocketlaunch"
 Write-Output ""
 Write-Output ""
 
@@ -158,7 +157,14 @@ $stream = [System.IO.MemoryStream]::new($iconBytes, 0, $iconBytes.Length)
 
 
 
-#===================================================
+
+
+
+
+
+
+
+#==============================================================================================================================================================================
 #                GUI - About Dialog                =
 #===================================================
 
@@ -235,7 +241,6 @@ $CheckIfNotify.Size           = New-Object System.Drawing.Size(400,20)
 $CheckIfNotify.Text           = "Send a notification when done ?"
 $CheckIfNotify.Checked        = $default_notifywhenfinished
 
-# Label above input
 $helptitle                     = New-Object System.Windows.Forms.Label
 $helptitle.Size                = New-Object System.Drawing.Size(300,20)
 $helptitle.Left                = $form_leftalign
@@ -423,9 +428,6 @@ $img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).
 $pictureBox.Width       = 64
 $pictureBox.Height      = 64
 $pictureBox.Image       = $img;
-$pictureBox.Add_Click({
-    $Result = [System.Windows.Forms.MessageBox]::Show($text_about,$APPNAME,4,[System.Windows.Forms.MessageBoxIcon]::Information)
-    If ($Result -eq "Yes") { Start-Process $GITHUB_LINK } })
 
 $form.controls.add($pictureBox)
 
@@ -492,8 +494,6 @@ $labelsourcefiles.Location         = New-Object System.Drawing.Point($form_lefta
 $labelsourcefiles.Size             = New-Object System.Drawing.Size(240,20)
 $labelsourcefiles.Text             = $text_loadfilesfrom
 $labelsourcefiles.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
-#$labelsourcefiles.Anchor           = "Top,Left"
-
 
 $gui_filesource                 = New-Object System.Windows.Forms.Combobox
 $gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 440),5)
@@ -505,7 +505,6 @@ $gui_filesource.Anchor          = "Top,Right"
 [void] $gui_filesource.Items.Add($text_nofilesource)  
 
 $gui_filesource.SelectedItem = $default_filesfrom
-
 
 ## Configure the ListView
 $sourcefiles                        = New-Object System.Windows.Forms.ListView
@@ -632,8 +631,6 @@ $gui_browsetemplate.add_click({
 $templates                          = New-Object System.Windows.Forms.DataGridView
 $templates.Location                 = New-Object System.Drawing.Point($form_leftalign,30)
 $templates.Size                     = New-Object System.Drawing.Size(580,230)
-#$templates.AutoSize                 = $true 
-#$templates.FullRowSelect = $True
 $templates.AutoResizeColumns(2)
 $templates.Anchor                   = "Left,Right,Top,Bottom"
 $templates.BackgroundColor          = "White"
@@ -761,8 +758,6 @@ $form.CancelButton                          = $gui_cancelButton
 
 $gui_panel.Controls.Add($gui_help)
 $gui_panel.Controls.Add($CheckIfTrados)
-
-
 $gui_panel.Controls.Add($gui_okButton)
 $gui_panel.Controls.Add($gui_cancelButton)
 $gui_panel.Show()
@@ -790,10 +785,7 @@ if ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
 Write-Output "[INPUT] Got: $PROJECTNAME"
 
 
-
-
-#================================================================================================================================================================
-#==============================================================
+#====================================================================================================================================================================
 #                     Processing Le input                     =
 #==============================================================
 
@@ -911,6 +903,22 @@ if ($CheckIfCreateOutlookFolder.Checked)
     Write-Output "[CREATE] Folder in Outlook"
     [void]$ns.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("02_ONGOING JOBS").Folders.Add($PROJECTNAME)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1155,21 +1163,21 @@ if ($CheckIfTrados.Checked)
 # OK NOW WE WORK
 if ($CheckIfOpenExplorer.Checked )
 {
-Write-Output "Starting Explorer..."
-start-process explorer "$BASEFOLDER"
+    Write-Output "Starting Explorer..."
+    start-process explorer "$BASEFOLDER"
 }
 
 
 if ($CheckIfNotify.Checked )
 {
-        # Have a NICE NOTIFICATION THIS IS BALLERS
-        # WOOOOHOOOO
-        $objNotifyIcon                      = New-Object System.Windows.Forms.NotifyIcon
-        #$objNotifyIcon.Icon = "M:\4_BE\06_General information\Stella\Skrivanek-Rocketlaunch\assets\Rocketlaunch-Icon.ico"  
-        $objNotifyIcon.Icon                 = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
-        $objNotifyIcon.BalloonTipTitle      = "Fertig!"
-        $objNotifyIcon.BalloonTipIcon       = "Info"
-#        $objNotifyIcon.BalloonTipText       = -join("Fertig !")
-        $objNotifyIcon.Visible              = $True
-        $objNotifyIcon.ShowBalloonTip(10000)
+    # Have a NICE NOTIFICATION THIS IS BALLERS
+    # WOOOOHOOOO
+    $objNotifyIcon                      = New-Object System.Windows.Forms.NotifyIcon
+    #$objNotifyIcon.Icon = "M:\4_BE\06_General information\Stella\Skrivanek-Rocketlaunch\assets\Rocketlaunch-Icon.ico"  
+    $objNotifyIcon.Icon                 = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
+    $objNotifyIcon.BalloonTipTitle      = "Fertig!"
+    $objNotifyIcon.BalloonTipIcon       = "Info"
+#   $objNotifyIcon.BalloonTipText       = -join("Fertig !")
+    $objNotifyIcon.Visible              = $True
+    $objNotifyIcon.ShowBalloonTip(10000)
 }
