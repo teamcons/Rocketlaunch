@@ -158,9 +158,9 @@ $stream = [System.IO.MemoryStream]::new($iconBytes, 0, $iconBytes.Length)
 
 
 
-#==============================================================
+#===================================================
 #                GUI - About Dialog                =
-#==============================================================
+#===================================================
 
 
 
@@ -175,38 +175,33 @@ Add-Type -AssemblyName System.Drawing
 [void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
 
-$GUI_Form_MoreStuff = New-Object System.Windows.Forms.Form
-$GUI_Form_MoreStuff.StartPosition = "CenterScreen"
-$GUI_Form_MoreStuff.Topmost = $true
-$GUI_Form_MoreStuff.Size = "400,450"
-$GUI_Form_MoreStuff.FormBorderStyle = "FixedSingle"
-$GUI_Form_MoreStuff.MaximizeBox = $false
+$GUI_Form_MoreStuff                     = New-Object System.Windows.Forms.Form
+$GUI_Form_MoreStuff.Text                = $APPNAME
+$GUI_Form_MoreStuff.Icon                = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
 
-$FormTabControl = New-object System.Windows.Forms.TabControl 
-$FormTabControl.Size = "365,400" 
-$FormTabControl.Left = 10 
-$FormTabControl.Top = 5 
+$GUI_Form_MoreStuff.StartPosition       = "CenterScreen"
+$GUI_Form_MoreStuff.Topmost             = $true
+$GUI_Form_MoreStuff.Size                = "400,450"
+$GUI_Form_MoreStuff.FormBorderStyle     = "FixedSingle"
+$GUI_Form_MoreStuff.MaximizeBox         = $false
+
+$FormTabControl                         = New-object System.Windows.Forms.TabControl 
+$FormTabControl.Size                    = "365,400" 
+$FormTabControl.Left                    = 10 
+$FormTabControl.Top                     = 5 
 
 #$FormTabControl.Dock = "Fill" 
 $GUI_Form_MoreStuff.Controls.Add($FormTabControl)
 
 
 
-###############################################################################################
+####################################
 
 
 $GUI_Tab_Settings = New-object System.Windows.Forms.Tabpage
 $GUI_Tab_Settings.Name = "Erweitert" 
 $GUI_Tab_Settings.Text = "Erweiterte Einstellungen" 
 $GUI_Tab_Settings.UseVisualStyleBackColor = $True 
-
-#################
-
-[bool]$default_createshortcut       = $true
-[bool]$default_createoutlookfolder  = $true
-#[bool]$default_movesourcemail       = $true
-[bool]$default_openexplorer         = $true
-[bool]$default_notifywhenfinished   = $true
 
 # Label above input
 $moresettingstitle                     = New-Object System.Windows.Forms.Label
@@ -248,9 +243,6 @@ $helptitle.Top                 = 180
 $helptitle.Text                = "Help"
 $helptitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
 
-
-
-
 $getthedoc                 = New-Object System.Windows.Forms.Button
 $getthedoc.Size            = New-Object System.Drawing.Size (180,30)
 $getthedoc.Left            = $form_leftalign
@@ -259,20 +251,16 @@ $getthedoc.Text            = "Download latest manual version"
 $getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
 
 $GUI_More_Close                               = New-Object System.Windows.Forms.Button
-$GUI_More_Close.Location                      = New-Object System.Drawing.Point(($form_leftalign + 330),10)
+$GUI_More_Close.Location                      = New-Object System.Drawing.Point(($form_leftalign ),140)
 $GUI_More_Close.Size                          = New-Object System.Drawing.Size(120,25)
 $GUI_More_Close.Text                          = $text_OK
 $GUI_More_Close.UseVisualStyleBackColor       = $True
-$GUI_More_Close.Anchor                        = "Bottom,Right"
-#$gui_okButton.BackColor                     = ”Green”
-#$gui_okButton.ForeColor                     = ”White”
-$GUI_More_Close.DialogResult                  = [System.Windows.Forms.DialogResult]::OK
+#$GUI_More_Close.DialogResult                  = [System.Windows.Forms.DialogResult]::OK
 $GUI_Form_MoreStuff.AcceptButton                          = $GUI_More_Close
 
 
 $GUI_Tab_Settings.Controls.Add($moresettingstitle)
-
-$GUI_Tab_Settings.Controls.Add($GUI_More_Close)
+#$GUI_Tab_Settings.Controls.Add($GUI_More_Close)
 $GUI_Tab_Settings.Controls.Add($CheckIfShortcut)
 $GUI_Tab_Settings.Controls.Add($CheckIfCreateOutlookFolder)
 $GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)
@@ -905,22 +893,20 @@ foreach ($folder in ($templates.Rows[$templates.CurrentCell.RowIndex].Cells | Se
         # Next folder get next number
         [int]$foldernumber = $foldernumber + 1 
     }
-
-
 }
 
 
 
 
 # PIN TO EXPLORER
-if ($default_createshortcut -eq $true)
+if ($CheckIfCreateExplorerQuickAccess.Checked)
 {
     Write-Output "[CREATE] Shortcut in File explorer"
     $o = new-object -com shell.application
     $o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
 }
 
-if ($default_createoutlookfolder -eq $true)
+if ($CheckIfCreateOutlookFolder.Checked)
 {
     Write-Output "[CREATE] Folder in Outlook"
     [void]$ns.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("02_ONGOING JOBS").Folders.Add($PROJECTNAME)
@@ -929,9 +915,9 @@ if ($default_createoutlookfolder -eq $true)
 
 
 
-#==================================================
-#                      BONUS                      =
-#==================================================
+#======================================================================================================================================================================
+#                      POSTPROCESSING                      =
+#===========================================================
 
 
 
@@ -1149,7 +1135,7 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
 
 
 # If user asked for trados, start it and fill what we can
-if ($CheckIfTrados.CheckState.ToString() -eq "Checked")
+if ($CheckIfTrados.Checked)
 {
 	Write-Output "Starting Trados Studio..."
     # May not be where expected
@@ -1167,14 +1153,14 @@ if ($CheckIfTrados.CheckState.ToString() -eq "Checked")
 
 
 # OK NOW WE WORK
-if ($default_openexplorer -eq $true )
+if ($CheckIfOpenExplorer.Checked )
 {
 Write-Output "Starting Explorer..."
 start-process explorer "$BASEFOLDER"
 }
 
 
-if ($default_notifywhenfinished -eq $true )
+if ($CheckIfNotify.Checked )
 {
         # Have a NICE NOTIFICATION THIS IS BALLERS
         # WOOOOHOOOO
