@@ -485,7 +485,6 @@ $panel_sourcefile.Height        = 50
 $panel_sourcefile.Top           = 10
 $panel_sourcefile.Left          = 0
 $panel_sourcefile.BackColor     = "White" #'Green'
-#$panel_sourcefile.Anchor        = "Left,Top,Right,Bottom"
 $panel_sourcefile.Dock          = "Fill"
 
 # Label above input
@@ -527,6 +526,10 @@ $sourcefiles.View                   = [System.Windows.Forms.View]::Details
 # For each email, we look attachments and count the ones with supported formats
 # We are not interested in junk like image001.jpg etc... which is signatures and stuff
 
+#workflow superfast
+#{
+
+
 $allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
 foreach ($mail in $allmails)
 {
@@ -560,6 +563,9 @@ foreach ($mail in $allmails)
     } # End of adding goodmail
 
 } # End of looking for emails with attachments
+
+
+#}
 
 
 # Add the ListView to the Form
