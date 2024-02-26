@@ -50,7 +50,7 @@ $stream = [System.IO.MemoryStream]::new($iconBytes, 0, $iconBytes.Length)
 #================
 #= INITIAL WORK =
 
-[int]$form_leftalign = 15
+[int]$form_leftalign = 10
 
 # Imports
 Add-Type -AssemblyName System.Windows.Forms
@@ -61,15 +61,14 @@ Add-Type -AssemblyName System.Drawing
 $ApplicationForm = New-Object System.Windows.Forms.Form
 $ApplicationForm.StartPosition = "CenterScreen"
 $ApplicationForm.Topmost = $false 
-$ApplicationForm.Size = "450,540"
+$ApplicationForm.Size = "440,540"
 $ApplicationForm.FormBorderStyle = "FixedSingle"
 $ApplicationForm.MaximizeBox = $false
 
 $FormTabControl = New-object System.Windows.Forms.TabControl 
-$FormTabControl.Size = "450,480" 
-$FormTabControl.Left = 15 
-$FormTabControl.Top = 10 
-$FormTabControl.Dock = "Fill" 
+$FormTabControl.Size = "415,460" 
+$FormTabControl.Left = 5 
+#$FormTabControl.Dock = "Fill" 
 $ApplicationForm.Controls.Add($FormTabControl)
 
 
@@ -111,57 +110,82 @@ $Tab3.Text = "Über..."
 
 # FANCY ICON
 $applogo             = new-object Windows.Forms.PictureBox
-$applogo.Location    = New-Object System.Drawing.Point(175,50)
 $img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
 $applogo.Width       = 64
 $applogo.Height      = 64
 $applogo.Image       = $img;
+$applogo.Location    = New-Object System.Drawing.Point(188,50)
 
 # Label above input
-$abouttitle                  = New-Object System.Windows.Forms.Label
-$abouttitle.Size             = New-Object System.Drawing.Size(200,20)
-$abouttitle.Left              = ($form_leftalign + 100)
-$abouttitle.Top              = 140
-$abouttitle.Text             = "-Rocketlaunch!"
-$abouttitle.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 16, [System.Drawing.FontStyle]::Bold)
+$abouttitle                     = New-Object System.Windows.Forms.Label
+$abouttitle.Size                = New-Object System.Drawing.Size(200,20)
+$abouttitle.Left                = ($form_leftalign + 120)
+$abouttitle.Top                 = 130
+$abouttitle.Text                = "-Rocketlaunch!"
+$abouttitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 16, [System.Drawing.FontStyle]::Bold)
 
 # Label above input
-$abouttext                  = New-Object System.Windows.Forms.Label
-$abouttext.Size             = New-Object System.Drawing.Size(400,100)
-$abouttext.Left              = ($form_leftalign + 20)
-$abouttext.Top              = 170
-$abouttext.Text             = "Start new projects, very very quickly !
-Made with love by Stella - <stella.menier@gmx.de>
-For Skrivanek GmbH"
+$aboutsubtitle                     = New-Object System.Windows.Forms.Label
+$aboutsubtitle.Size                = New-Object System.Drawing.Size(400,20)
+$aboutsubtitle.Left                = ($form_leftalign + 55)
+$aboutsubtitle.Top                 = 165
+$aboutsubtitle.Text                = "Start new projects, but very very quickly !"
+$aboutsubtitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Italic)
+
+# Label above input
+$abouttext                      = New-Object System.Windows.Forms.TextBox
+$abouttext.Size                 = New-Object System.Drawing.Size(440,100)
+$abouttext.Left                 = ($form_leftalign + 40)
+$abouttext.Top                  = 210
+$abouttext.Width                = 300
+$abouttext.ReadOnly             = $true
+$abouttext.BackColor            = "White"
+$abouttext.Multiline            = $true
+$abouttext.TextAlign            = "Center"
+$abouttext.Text                 = "Made with love by Stella, for Skrivanek GmbH
+Built with Powershell, compiled with PS2EXE"
 $abouttext.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
 
 
+[int]$buttonalign = 400
+
 $gotogithub                 = New-Object System.Windows.Forms.Button
 $gotogithub.Size            = New-Object System.Drawing.Size (120,30)
-$gotogithub.Left            = ($form_leftalign + 5)
-$gotogithub.Top             = 300
+$gotogithub.Left            = ($form_leftalign)
+$gotogithub.Top             = $buttonalign
 $gotogithub.Text            = "Project repository"
 $gotogithub.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch"} )
 
 $gotolicense                 = New-Object System.Windows.Forms.Button
 $gotolicense.Size            = New-Object System.Drawing.Size (120,30)
-$gotolicense.Left            = ($form_leftalign + 135)
-$gotolicense.Top             = 300
+$gotolicense.Left            = ($form_leftalign + 130)
+$gotolicense.Top             = $buttonalign
 $gotolicense.Text            = "GPL v3 Licence"
 $gotolicense.Add_Click( {start-process "https://www.gnu.org/licenses/gpl-3.0.html"})
 
+
 $sendmeamail                 = New-Object System.Windows.Forms.Button
 $sendmeamail.Size            = New-Object System.Drawing.Size (120,30)
-$sendmeamail.Left            = ($form_leftalign + 265)
-$sendmeamail.Top             = 300
-$sendmeamail.Text            = "Send me sushis"
+$sendmeamail.Left            = ($form_leftalign + 260)
+$sendmeamail.Top             = $buttonalign
+$sendmeamail.Text            = "Send me feedback"
 $sendmeamail.Add_Click( {start-process "mailto:stella.menier@gmx.de"})
+
+$supportme                 = New-Object System.Windows.Forms.Button
+$supportme.Size            = New-Object System.Drawing.Size (380,30)
+$supportme.Left            = ($form_leftalign)
+$supportme.Top             = ($buttonalign - 40)
+$supportme.Text            = "Support me ! Proceeds goes to meds, sushis, lego"
+$supportme.Add_Click( {start-process "https://ko-fi.com/teamcons"})
+
 
 
 $Tab3.Controls.Add($abouttitle)
+$Tab3.Controls.Add($aboutsubtitle)
 $Tab3.Controls.Add($applogo)
 $Tab3.Controls.Add($abouttext)
 $Tab3.Controls.Add($gotogithub)
+$Tab3.Controls.Add($supportme)
 $Tab3.Controls.Add($gotolicense)
 $Tab3.Controls.Add($sendmeamail)
 $FormTabControl.Controls.Add($Tab3)
