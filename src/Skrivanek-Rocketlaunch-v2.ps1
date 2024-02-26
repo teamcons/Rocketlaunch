@@ -97,7 +97,7 @@ Github Repo öffnen ?"
 [bool]$default_createoutlookfolder  = $true
 [bool]$default_movesourcemail       = $true
 [bool]$default_openexplorer         = $true
-
+[bool]$default_notifywhenfinished   = $true
 
 
 #========================================
@@ -340,7 +340,7 @@ foreach ($mail in $allmails)
             [int]$CountGoodAttachments += 1
 
         }   # End of each mails
-        else {echo (-join("NOTMATCH:",$attach.FileName)) }  
+        #else {echo (-join("NOTMATCH:",$attach.FileName)) }  
     } #End of checking attachments
 
     # we found one with attachment !
@@ -589,6 +589,23 @@ if ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
 Write-Output "[INPUT] Got: $PROJECTNAME"
 
 
+###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG
+Write-Output "DEBUG"
+Write-Output "IS CORRECT ?"
+
+#$templates.Rows[$templates.CurrentCell.RowIndex].Cells
+
+
+
+#foreach ($folder in ($templates.Rows[$templates.CurrentCell.RowIndex].Cells | Select-Object -Skip 1 ) )
+#{
+#    echo $folder.Value
+
+#}
+
+
+#exit
+###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG
 
 
 
@@ -668,12 +685,6 @@ if (!(Test-Path $BASEFOLDER -PathType Container)) {
 $BASEFOLDER = -join($BASEFOLDER,"\",$PROJECTNAME)
 
 
-###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG
-#Write-Output "DEBUG"
-#Write-Output "IS CORRECT ?"
-#exit
-###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG
-
 
 Write-Output "[CREATE] Base folder: $BASEFOLDER"
 New-Item -ItemType Directory -Path "$BASEFOLDER"
@@ -683,21 +694,28 @@ New-Item -ItemType Directory -Path "$BASEFOLDER"
 
 # CREATE ALLLLL THE FOLDERS
 # Skip the first element cuz no
-foreach ($folder in ($templates.Rows[$templates.CurrentCell.RowIndex].Cells.Value | Select-Object -Skip 1 ) )
+foreach ($folder in ($templates.Rows[$templates.CurrentCell.RowIndex].Cells | Select-Object -Skip 1 ) )
 {
+    echo $folder
+    if ($folder.Value )
+    {
+        #Append folder number at start, construct full path
+        [string]$newfolder = -join("0",$foldernumber,"_",$folder.Value)
+        [string]$newfolder = -join($BASEFOLDER,'\',$newfolder)
 
-    #Append folder number at start, construct full path
-    [string]$newfolder = -join("0",$foldernumber,"_",$folder.text)
-    [string]$newfolder = Join-Path $BASEFOLDER $newfolder
+        # Say what we do, do it
+        Write-Output "[CREATE] folder: $newfolder"
+        New-Item -ItemType Directory -Path $newfolder
 
-    # Say what we do, do it
-    Write-Output "[CREATE] folder: $BASEFOLDER\$folder"
-    New-Item -ItemType Directory -Path $newfolder
+        # Next folder get next number
+        [int]$foldernumber = $foldernumber + 1 
+    }
 
-    # Next folder get next number
-    [int]$foldernumber += 1 
 
 }
+
+
+
 
 # PIN TO EXPLORER
 if ($default_createshortcut -eq $true)
@@ -710,7 +728,7 @@ if ($default_createshortcut -eq $true)
 if ($default_createoutlookfolder -eq $true)
 {
     Write-Output "[CREATE] Folder in Outlook"
-    $ns.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("02_ONGOING JOBS").Folders.Add($PROJECTNAME)
+    [void]$ns.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("02_ONGOING JOBS").Folders.Add($PROJECTNAME)
 }
 
 
@@ -733,24 +751,26 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
     # CHECK WE HAVE THE MINIMUM FOLDERS
     # BECAUSE WE DONT KNOW WHAT TEMPLATE USER USED
     # IF THE STANDARD MINIMUM ISNT THERE, JUST USE BASE FOLDER INSTEAD
-    if (Test-Path "$BASEFOLDER\00_info\" -PathType Container)
+<#     if (Test-Path "$BASEFOLDER\00_info\" -PathType Container)
     {
             Write-Output "Has Info"
-            [string]$INFO = "$BASEFOLDER\00_info\"
+            [string]$INFO = "$BASEFOLDER\00_info"
     }
     else
     {
-            [string]$INFO = "$BASEFOLDER\"
+            [string]$INFO = "$BASEFOLDER"
     }
     if (Test-Path "$BASEFOLDER\01_orig\" -PathType Container)
     {
             Write-Output "Has Orig"
-            [string]$ORIG = "$BASEFOLDER\01_orig\"
+            [string]$ORIG = "$BASEFOLDER\01_orig"
     }
     else
     {
-            [string]$ORIG = "$BASEFOLDER\"
-    }
+            [string]$ORIG = "$BASEFOLDER"
+    } #>
+    [string]$INFO = "$BASEFOLDER\00_info"
+    [string]$ORIG = "$BASEFOLDER\01_orig"
 
     if ($gui_filesource.SelectedItem -match $text_from_Outlook )
     {
@@ -792,7 +812,7 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
 
     
 
-    # ONLY IF ANALYSIS WISHED
+<#     # ONLY IF ANALYSIS WISHED
     if ($CheckIfAnalysis.CheckState.ToString() -eq "Checked")
     {
         # Need to use Word
@@ -808,7 +828,7 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
         $ANALYSIS = -join($DIRCODE,"_Analyse_Rocketlaunch.csv")
         Write-Output "sep=;" | Out-File -FilePath "$INFO\$ANALYSIS"
         Write-Output "Datei;Wörterzahl" | Out-File -FilePath "$INFO\$ANALYSIS" -Append 
-     }    
+     }     #>
 
 
 
@@ -820,8 +840,10 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
     # PROCESS EACH SOURCE FILE
     # Rename and move file
     # Add count to total count and CSV
-    foreach ($file in (Get-ChildItem -Path $ORIG))
+    # Ignore structure folders
+    foreach ($file in (Get-ChildItem -Path "$ORIG" -Exclude "^[0-9][0-9]_" ))
     {
+        echo "$ORIG"
         $newname = -join($DIRCODE,"_",$file.BaseName,"_orig",$file.Extension)
         Write-Output "[RENAME] As $newname"
         Rename-Item -Path $file.FullName -Newname "$newname"
@@ -877,11 +899,10 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
             $filecontent.Close()
         } #>
 
-
     } # End of loop processing all source file
 
     
-    
+   <#  
     # ONLY IF ANALYSIS WISHED
     if ($CheckIfAnalysis.CheckState.ToString() -eq "Checked")
     {
@@ -918,7 +939,7 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
         $objNotifyIcon.BalloonTipText       = -join("Die Wortzahl (",$totalcount,"w) können Sie über Strng+V einfügen ;)")
         $objNotifyIcon.Visible              = $True
         $objNotifyIcon.ShowBalloonTip(10000)
-    } # End of Cleanup analysis
+    } # End of Cleanup analysis #>
    
 
     
@@ -955,4 +976,19 @@ if ($default_openexplorer -eq $true )
 {
 Write-Output "Starting Explorer..."
 start-process explorer "$BASEFOLDER"
+}
+
+
+if ($default_notifywhenfinished -eq $true )
+{
+        # Have a NICE NOTIFICATION THIS IS BALLERS
+        # WOOOOHOOOO
+        $objNotifyIcon                      = New-Object System.Windows.Forms.NotifyIcon
+        #$objNotifyIcon.Icon = "M:\4_BE\06_General information\Stella\Skrivanek-Rocketlaunch\assets\Rocketlaunch-Icon.ico"  
+        $objNotifyIcon.Icon                 = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
+        $objNotifyIcon.BalloonTipTitle      = "Fertig!"
+        $objNotifyIcon.BalloonTipIcon       = "Info"
+#        $objNotifyIcon.BalloonTipText       = -join("Fertig !")
+        $objNotifyIcon.Visible              = $True
+        $objNotifyIcon.ShowBalloonTip(10000)
 }
