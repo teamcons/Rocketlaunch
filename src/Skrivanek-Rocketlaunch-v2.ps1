@@ -54,88 +54,96 @@ Write-Output "[STARTUP] Getting all variables in place"
 #========================================
 # Localization
 
-[string]$text_projectname           = "Ein neues Projekt anlegen:"
-[string]$text_doanalysis            = "Analyse machen ? (Langsam)"
-[string]$text_opentrados            = "Trados?"
+function init_text
+{
 
-[string]$text_loadfilesfrom         = 'Ausgangsdatei aus Quelle'
-[string]$text_columns_Subject         = 'Betreff'
-[string]$text_columns_Sendername         = 'Von'
-[string]$text_columns_Attachments         = 'Dateien'
+    # UI
+    [string]$text_projectname               = "Bereit zum Start!"
+    [string]$text_doanalysis                = "Analyse machen ? (Langsam)"
+    [string]$text_opentrados                = "Trados?"
 
-[string]$text_from_Outlook          = "In Outlook"
-[string]$text_from_Downloads        = "In Downloads"
-[string]$text_nofilesource          = "Keine Ausgangsdatei"
+    [string]$text_loadfilesfrom             = 'Ausgangsdatei aus Quelle'
+    [string]$text_columns_Subject           = 'Betreff'
+    [string]$text_columns_Sendername        = 'Von'
+    [string]$text_columns_Attachments       = 'Dateien'
 
-[string]$text_usewhichtemplate      = 'Welche Projektvorlage soll verwendet werden?'
-[string]$text_loadtemplate          = "Laden..."
-[string]$text_help                  = "Hilfe"
-[string]$text_OK                    = "Los!"
-[string]$text_Cancel                = "Nö"
+    [string]$text_from_Outlook              = "In Outlook"
+    [string]$text_from_Downloads            = "In Downloads"
+    [string]$text_nofilesource              = "Keine Ausgangsdatei"
 
+    [string]$text_usewhichtemplate          = 'Welche Projektvorlage soll verwendet werden?'
+    [string]$text_loadtemplate              = "Laden..."
+    [string]$text_help                      = "Hilfe"
+    [string]$text_OK                        = "Los!"
+    [string]$text_Cancel                    = "Nö"
 
-[string]$text_about = "-Rocketlaunch! V2.0
-Neue Projekte erstellen, sehr sehr schnell
-AGPL-3.0 Stella Ménier - stella.menier@gmx.de
+    [string]$text_about = "-Rocketlaunch! V2.0
+    Neue Projekte erstellen, sehr sehr schnell
+    AGPL-3.0 Stella Ménier - stella.menier@gmx.de
 
-Github Repo öffnen ?"
+    Github Repo öffnen ?"
 
-[string]$GITHUB_LINK = "https://github.com/teamcons/Skrivanek-Rocketlaunch"
-
-
+    [string]$GITHUB_LINK = "https://github.com/teamcons/Skrivanek-Rocketlaunch"
+}
 
 #========================================
 # Defaults
 
-[string]$default_filesfrom          = $text_from_Outlook
-[string]$default_fromdisk           = "$env:USERPROFILE\Downloads\"
-[bool]$default_doanalysis           = $false
-[bool]$default_opentrados           = $true
-
-[bool]$default_createshortcut       = $true
-[bool]$default_createoutlookfolder  = $true
-[bool]$default_movesourcemail       = $true
-[bool]$default_openexplorer         = $true
-[bool]$default_notifywhenfinished   = $true
+function init_values {
+    [string]$default_filesfrom          = $text_from_Outlook
+    [string]$default_fromdisk           = "$env:USERPROFILE\Downloads\"
+    [bool]$default_opentrados           = $true
+    [bool]$default_createshortcut       = $true
+    [bool]$default_createoutlookfolder  = $true
+    [bool]$default_movesourcemail       = $true
+    [bool]$default_openexplorer         = $true
+    [bool]$default_notifywhenfinished   = $true
+}
 
 
 #========================================
 # Outlook Capabilities
 
-Write-Output "[STARTUP] Outlook Capabilities"
-$OL                         = New-Object -ComObject OUTLOOK.APPLICATION
-$ns                         = $OL.GETNAMESPACE("MAPI")
-$date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'
-$filter                     = "[ReceivedTime] >= '$date'"
-$allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
 
+function init_outlook_backend
+{
+    Write-Output "[STARTUP] Outlook Capabilities"
+    $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
+    $ns                         = $OL.GETNAMESPACE("MAPI")
+    $date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'
+    $filter                     = "[ReceivedTime] >= '$date'"
+    $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
+}
 
-# TRADOS. TODO: MORE FLEXIBLE
-#[string]$NEWPROJECTICON     = "C:\Program Files (x86)\Trados\Trados Studio\Studio17\StudioTips\de\00_WelcomeFlow\NewProject.ico"
-
-
+init_text
+init_values
+init_outlook_backend
 
 #==========================================
 # Try to predict what next number would be 
 # Catch: have at least first part of code
-Write-Output "[STARTUP] Dircode prediction"
-try
-{
-    # 
-    Set-Location $ROOTSTRUCTURE
-    Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)   
-    $PREDICT_CODE                =  (Get-ChildItem -Directory | Select-Object -Last 1).Name.Substring(5,4)
-    [int]$PREDICT_CODE                =  [int]$PREDICT_CODE + 1
-    [bool]$CODE_PREDICTED       = $true
-    #[string]$PREDICT_CODE   =  -join($YEAR,"-",$PREDICT_CODE,"_")
-    Write-Output "[PREDICTED] Next is $PREDICT_CODE"
-}
-catch
-{
-    [bool]$CODE_PREDICTED       = $false
-    #$PREDICT_CODE = -join($YEAR,"-")
-}
 
+function dircode_prediction
+{
+    Write-Output "[STARTUP] Dircode prediction"
+    try
+    {
+        # 
+        Set-Location $ROOTSTRUCTURE
+        Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)   
+        $PREDICT_CODE                =  (Get-ChildItem -Directory | Select-Object -Last 1).Name.Substring(5,4)
+        [int]$PREDICT_CODE                =  [int]$PREDICT_CODE + 1
+        [bool]$CODE_PREDICTED       = $true
+        #[string]$PREDICT_CODE   =  -join($YEAR,"-",$PREDICT_CODE,"_")
+        Write-Output "[PREDICTED] Next is $PREDICT_CODE"
+    }
+    catch
+    {
+        [bool]$CODE_PREDICTED       = $false
+        #$PREDICT_CODE = -join($YEAR,"-")
+    }
+}
+dircode_prediction
 
 #================================
 # Project icon in Base 64
@@ -266,7 +274,7 @@ $GUI_Form_MoreStuff.AcceptButton                          = $GUI_More_Close
 
 $GUI_Tab_Settings.Controls.Add($moresettingstitle)
 #$GUI_Tab_Settings.Controls.Add($GUI_More_Close)
-$GUI_Tab_Settings.Controls.Add($CheckIfShortcut)
+$GUI_Tab_Settings.Controls.Add($CheckIfCreateExplorerQuickAccess)
 $GUI_Tab_Settings.Controls.Add($CheckIfCreateOutlookFolder)
 $GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)
 $GUI_Tab_Settings.Controls.Add($CheckIfNotify)
@@ -368,15 +376,8 @@ $GUI_Tab_About.Controls.Add($gotogithub)
 $GUI_Tab_About.Controls.Add($supportme)
 $GUI_Tab_About.Controls.Add($gotolicense)
 $GUI_Tab_About.Controls.Add($sendmeamail)
+
 $FormTabControl.Controls.Add($GUI_Tab_About)
-
-
-# Initlize the form
-#$GUI_Form_MoreStuff.Add_Shown({$GUI_Form_MoreStuff.Activate()})
-
-
-
-
 
 
 
@@ -918,17 +919,6 @@ if ($CheckIfCreateOutlookFolder.Checked)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 #======================================================================================================================================================================
 #                      POSTPROCESSING                      =
 #===========================================================
@@ -946,24 +936,6 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
     # CHECK WE HAVE THE MINIMUM FOLDERS
     # BECAUSE WE DONT KNOW WHAT TEMPLATE USER USED
     # IF THE STANDARD MINIMUM ISNT THERE, JUST USE BASE FOLDER INSTEAD
-<#     if (Test-Path "$BASEFOLDER\00_info\" -PathType Container)
-    {
-            Write-Output "Has Info"
-            [string]$INFO = "$BASEFOLDER\00_info"
-    }
-    else
-    {
-            [string]$INFO = "$BASEFOLDER"
-    }
-    if (Test-Path "$BASEFOLDER\01_orig\" -PathType Container)
-    {
-            Write-Output "Has Orig"
-            [string]$ORIG = "$BASEFOLDER\01_orig"
-    }
-    else
-    {
-            [string]$ORIG = "$BASEFOLDER"
-    } #>
     [string]$INFO = "$BASEFOLDER\00_info"
     [string]$ORIG = "$BASEFOLDER\01_orig"
 
@@ -1004,27 +976,6 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
              Move-Item -Path $file -Destination $ORIG
          }
     } # End of user load themselves
-
-    
-
-<#     # ONLY IF ANALYSIS WISHED
-    if ($CheckIfAnalysis.CheckState.ToString() -eq "Checked")
-    {
-        # Need to use Word
-        $word           = New-Object -ComObject Word.Application 
-        $excel          = New-Object -ComObject Excel.Application 
-        $powerpoint     = New-Object -ComObject Powerpoint.Application 
-        $word.Visible   = $false 
-        $excel.Visible  = $false 
-        $powerpoint.Visible = $false 
-        [int]$totalcount = 0
-  
-        # Create the CSV
-        $ANALYSIS = -join($DIRCODE,"_Analyse_Rocketlaunch.csv")
-        Write-Output "sep=;" | Out-File -FilePath "$INFO\$ANALYSIS"
-        Write-Output "Datei;Wörterzahl" | Out-File -FilePath "$INFO\$ANALYSIS" -Append 
-     }     #>
-
 
 
     # Before processing each source file,
@@ -1095,50 +1046,6 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
         } #>
 
     } # End of loop processing all source file
-
-    
-   <#  
-    # ONLY IF ANALYSIS WISHED
-    if ($CheckIfAnalysis.CheckState.ToString() -eq "Checked")
-    {
-        # Wont need Word anymore
-        $word.Quit()
-        $excel.Quit()
-        $powerpoint.Quit()
-    
-        # Finish CSV file, 
-        Write-Output "SUMME;$totalcount" | Out-File -FilePath "$INFO\$ANALYSIS" -Append
-
-        # and create shortcut to it in orig for quick access
-        # name has the totalcount for quicker overview
-        #Write-Output "[CREATE] Shortcute to Analysis"
-        #shortcutname    = -join("$totalcount","w","lnk")
-        #$WshShell       = New-Object -comObject WScript.Shell
-        #$Shortcut       = $WshShell.CreateShortcut("$ORIG\$shortcutname")
-        #$Shortcut.TargetPath = "$INFO\$ANALYSIS"
-        #$Shortcut.Save()
-
-
-        # Clipboard
-        Set-Clipboard -Value $totalcount
-        Write-Output "[ACTION] Set clipboard to $totalcount"
-
-   
-        # Have a NICE NOTIFICATION THIS IS BALLERS
-        # WOOOOHOOOO
-        $objNotifyIcon                      = New-Object System.Windows.Forms.NotifyIcon
-        #$objNotifyIcon.Icon = "M:\4_BE\06_General information\Stella\Skrivanek-Rocketlaunch\assets\Rocketlaunch-Icon.ico"  
-        $objNotifyIcon.Icon                 = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
-        $objNotifyIcon.BalloonTipTitle      = "Wortzahl Zur Zwischenablage hinzugefügt!"
-        $objNotifyIcon.BalloonTipIcon       = "Info"
-        $objNotifyIcon.BalloonTipText       = -join("Die Wortzahl (",$totalcount,"w) können Sie über Strng+V einfügen ;)")
-        $objNotifyIcon.Visible              = $True
-        $objNotifyIcon.ShowBalloonTip(10000)
-    } # End of Cleanup analysis #>
-   
-
-    
-
 
 } # End of If we have source files
 
