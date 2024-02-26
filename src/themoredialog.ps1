@@ -60,20 +60,20 @@ Add-Type -AssemblyName System.Drawing
 [void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
 
-$ApplicationForm = New-Object System.Windows.Forms.Form
-$ApplicationForm.StartPosition = "CenterScreen"
-$ApplicationForm.Topmost = $false 
-$ApplicationForm.Size = "400,490"
-$ApplicationForm.FormBorderStyle = "FixedSingle"
-$ApplicationForm.MaximizeBox = $false
+$GUI_Form_MoreStuff = New-Object System.Windows.Forms.Form
+$GUI_Form_MoreStuff.StartPosition = "CenterScreen"
+$GUI_Form_MoreStuff.Topmost = $true
+$GUI_Form_MoreStuff.Size = "400,450"
+$GUI_Form_MoreStuff.FormBorderStyle = "FixedSingle"
+$GUI_Form_MoreStuff.MaximizeBox = $false
 
 $FormTabControl = New-object System.Windows.Forms.TabControl 
-$FormTabControl.Size = "365,440" 
+$FormTabControl.Size = "365,400" 
 $FormTabControl.Left = 10 
 $FormTabControl.Top = 5 
 
 #$FormTabControl.Dock = "Fill" 
-$ApplicationForm.Controls.Add($FormTabControl)
+$GUI_Form_MoreStuff.Controls.Add($FormTabControl)
 
 
 
@@ -133,14 +133,15 @@ $helptitle.Top                 = 180
 $helptitle.Text                = "Help"
 $helptitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
 
-# https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/docs/Manual%20-%20Rocketlaunch.docx
+
+
 
 $getthedoc                 = New-Object System.Windows.Forms.Button
-$getthedoc.Size            = New-Object System.Drawing.Size (120,20)
+$getthedoc.Size            = New-Object System.Drawing.Size (180,30)
 $getthedoc.Left            = $form_leftalign
 $getthedoc.Top             = 210
 $getthedoc.Text            = "Download latest manual version"
-$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/docs/Manual%20-%20Rocketlaunch.docx"})
+$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
 
 
 
@@ -155,19 +156,13 @@ $GUI_Tab_Settings.Controls.Add($getthedoc)
 $FormTabControl.Controls.Add($GUI_Tab_Settings)
 
 
-
-
-
-
-
-
 ###############################################################################################
 
 
 $GUI_Tab_About = New-object System.Windows.Forms.Tabpage
 $GUI_Tab_About.UseVisualStyleBackColor = $True 
-$GUI_Tab_About.Name = "Uber" 
-$GUI_Tab_About.Text = "Uber" 
+$GUI_Tab_About.Name = "About" 
+$GUI_Tab_About.Text = "Wer hats gemacht" 
 
 
 # FANCY ICON
@@ -181,24 +176,24 @@ $applogo.Location    = New-Object System.Drawing.Point(148,20)
 # Label above input
 $abouttitle                     = New-Object System.Windows.Forms.Label
 $abouttitle.Size                = New-Object System.Drawing.Size(280,20)
-$abouttitle.Left                = ($form_leftalign + 90)
-$abouttitle.Top                 = 90
+$abouttitle.Left                = ($form_leftalign + 95)
+$abouttitle.Top                 = 95
 $abouttitle.Text                = "-Rocketlaunch!"
-$abouttitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 14, [System.Drawing.FontStyle]::Bold)
+$abouttitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 13, [System.Drawing.FontStyle]::Bold)
 
 # Label above input
 $aboutsubtitle                     = New-Object System.Windows.Forms.Label
 $aboutsubtitle.Size                = New-Object System.Drawing.Size(360,20)
-$aboutsubtitle.Left                = ($form_leftalign + 50)
+$aboutsubtitle.Left                = ($form_leftalign + 55)
 $aboutsubtitle.Top                 = 120
 $aboutsubtitle.Text                = "Start new projects, but very very quickly !"
-$aboutsubtitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Italic)
+$aboutsubtitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Italic)
 
 # Label above input
 $abouttext                      = New-Object System.Windows.Forms.TextBox
 $abouttext.Size                 = New-Object System.Drawing.Size(260,130)
 $abouttext.Left                 = ($form_leftalign + 40)
-$abouttext.Top                  = 155
+$abouttext.Top                  = 150
 $abouttext.ReadOnly             = $true
 $abouttext.BackColor            = "White"
 $abouttext.Multiline            = $true
@@ -258,5 +253,5 @@ $FormTabControl.Controls.Add($GUI_Tab_About)
 
 
 # Initlize the form
-$ApplicationForm.Add_Shown({$ApplicationForm.Activate()})
-[void] $ApplicationForm.ShowDialog()
+#$GUI_Form_MoreStuff.Add_Shown({$GUI_Form_MoreStuff.Activate()})
+[void] $GUI_Form_MoreStuff.ShowDialog()

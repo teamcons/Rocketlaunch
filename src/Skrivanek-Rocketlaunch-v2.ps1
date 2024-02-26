@@ -159,6 +159,236 @@ $stream = [System.IO.MemoryStream]::new($iconBytes, 0, $iconBytes.Length)
 
 
 #==============================================================
+#                GUI - About Dialog                =
+#==============================================================
+
+
+
+#================
+#= INITIAL WORK =
+
+[int]$form_leftalign = 10
+
+# Imports
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+[void] [System.Windows.Forms.Application]::EnableVisualStyles() 
+
+
+$GUI_Form_MoreStuff = New-Object System.Windows.Forms.Form
+$GUI_Form_MoreStuff.StartPosition = "CenterScreen"
+$GUI_Form_MoreStuff.Topmost = $true
+$GUI_Form_MoreStuff.Size = "400,450"
+$GUI_Form_MoreStuff.FormBorderStyle = "FixedSingle"
+$GUI_Form_MoreStuff.MaximizeBox = $false
+
+$FormTabControl = New-object System.Windows.Forms.TabControl 
+$FormTabControl.Size = "365,400" 
+$FormTabControl.Left = 10 
+$FormTabControl.Top = 5 
+
+#$FormTabControl.Dock = "Fill" 
+$GUI_Form_MoreStuff.Controls.Add($FormTabControl)
+
+
+
+###############################################################################################
+
+
+$GUI_Tab_Settings = New-object System.Windows.Forms.Tabpage
+$GUI_Tab_Settings.Name = "Erweitert" 
+$GUI_Tab_Settings.Text = "Erweiterte Einstellungen" 
+$GUI_Tab_Settings.UseVisualStyleBackColor = $True 
+
+#################
+
+[bool]$default_createshortcut       = $true
+[bool]$default_createoutlookfolder  = $true
+#[bool]$default_movesourcemail       = $true
+[bool]$default_openexplorer         = $true
+[bool]$default_notifywhenfinished   = $true
+
+# Label above input
+$moresettingstitle                     = New-Object System.Windows.Forms.Label
+$moresettingstitle.Size                = New-Object System.Drawing.Size(300,20)
+$moresettingstitle.Left                = $form_leftalign
+$moresettingstitle.Top                 = 20
+$moresettingstitle.Text                = "Erweiterte Einstellungen"
+$moresettingstitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
+
+$CheckIfCreateExplorerQuickAccess                = New-Object System.Windows.Forms.CheckBox        
+$CheckIfCreateExplorerQuickAccess.Location       = New-Object System.Drawing.Point($form_leftalign,50)
+$CheckIfCreateExplorerQuickAccess.Size           = New-Object System.Drawing.Size(400,20)
+$CheckIfCreateExplorerQuickAccess.Text           = "Create a quick access shortcut in Explorer ?"
+$CheckIfCreateExplorerQuickAccess.Checked        = $default_createshortcut
+
+$CheckIfCreateOutlookFolder                = New-Object System.Windows.Forms.CheckBox        
+$CheckIfCreateOutlookFolder.Location       = New-Object System.Drawing.Point($form_leftalign,80)
+$CheckIfCreateOutlookFolder.Size           = New-Object System.Drawing.Size(400,20)
+$CheckIfCreateOutlookFolder.Text           = "Create a folder in Outlook ?"
+$CheckIfCreateOutlookFolder.Checked        = $default_createoutlookfolder
+
+$CheckIfOpenExplorer                = New-Object System.Windows.Forms.CheckBox        
+$CheckIfOpenExplorer.Location       = New-Object System.Drawing.Point($form_leftalign,110)
+$CheckIfOpenExplorer.Size           = New-Object System.Drawing.Size(400,20)
+$CheckIfOpenExplorer.Text           = "Open newly created folder when finished ?"
+$CheckIfOpenExplorer.Checked        = $default_openexplorer
+
+$CheckIfNotify                = New-Object System.Windows.Forms.CheckBox        
+$CheckIfNotify.Location       = New-Object System.Drawing.Point($form_leftalign,140)
+$CheckIfNotify.Size           = New-Object System.Drawing.Size(400,20)
+$CheckIfNotify.Text           = "Send a notification when done ?"
+$CheckIfNotify.Checked        = $default_notifywhenfinished
+
+# Label above input
+$helptitle                     = New-Object System.Windows.Forms.Label
+$helptitle.Size                = New-Object System.Drawing.Size(300,20)
+$helptitle.Left                = $form_leftalign
+$helptitle.Top                 = 180
+$helptitle.Text                = "Help"
+$helptitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
+
+
+
+
+$getthedoc                 = New-Object System.Windows.Forms.Button
+$getthedoc.Size            = New-Object System.Drawing.Size (180,30)
+$getthedoc.Left            = $form_leftalign
+$getthedoc.Top             = 210
+$getthedoc.Text            = "Download latest manual version"
+$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
+
+$GUI_More_Close                               = New-Object System.Windows.Forms.Button
+$GUI_More_Close.Location                      = New-Object System.Drawing.Point(($form_leftalign + 330),10)
+$GUI_More_Close.Size                          = New-Object System.Drawing.Size(120,25)
+$GUI_More_Close.Text                          = $text_OK
+$GUI_More_Close.UseVisualStyleBackColor       = $True
+$GUI_More_Close.Anchor                        = "Bottom,Right"
+#$gui_okButton.BackColor                     = ”Green”
+#$gui_okButton.ForeColor                     = ”White”
+$GUI_More_Close.DialogResult                  = [System.Windows.Forms.DialogResult]::OK
+$GUI_Form_MoreStuff.AcceptButton                          = $GUI_More_Close
+
+
+$GUI_Tab_Settings.Controls.Add($moresettingstitle)
+
+$GUI_Tab_Settings.Controls.Add($GUI_More_Close)
+$GUI_Tab_Settings.Controls.Add($CheckIfShortcut)
+$GUI_Tab_Settings.Controls.Add($CheckIfCreateOutlookFolder)
+$GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)
+$GUI_Tab_Settings.Controls.Add($CheckIfNotify)
+$GUI_Tab_Settings.Controls.Add($helptitle)
+$GUI_Tab_Settings.Controls.Add($getthedoc)
+$FormTabControl.Controls.Add($GUI_Tab_Settings)
+
+
+###############################################################################################
+
+
+$GUI_Tab_About = New-object System.Windows.Forms.Tabpage
+$GUI_Tab_About.UseVisualStyleBackColor = $True 
+$GUI_Tab_About.Name = "About" 
+$GUI_Tab_About.Text = "Wer hats gemacht" 
+
+
+# FANCY ICON
+$applogo             = new-object Windows.Forms.PictureBox
+$img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
+$applogo.Width       = 64
+$applogo.Height      = 64
+$applogo.Image       = $img;
+$applogo.Location    = New-Object System.Drawing.Point(148,20)
+
+# Label above input
+$abouttitle                     = New-Object System.Windows.Forms.Label
+$abouttitle.Size                = New-Object System.Drawing.Size(280,20)
+$abouttitle.Left                = ($form_leftalign + 95)
+$abouttitle.Top                 = 95
+$abouttitle.Text                = "-Rocketlaunch!"
+$abouttitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 13, [System.Drawing.FontStyle]::Bold)
+
+# Label above input
+$aboutsubtitle                     = New-Object System.Windows.Forms.Label
+$aboutsubtitle.Size                = New-Object System.Drawing.Size(360,20)
+$aboutsubtitle.Left                = ($form_leftalign + 55)
+$aboutsubtitle.Top                 = 120
+$aboutsubtitle.Text                = "Start new projects, but very very quickly !"
+$aboutsubtitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Italic)
+
+# Label above input
+$abouttext                      = New-Object System.Windows.Forms.TextBox
+$abouttext.Size                 = New-Object System.Drawing.Size(260,130)
+$abouttext.Left                 = ($form_leftalign + 40)
+$abouttext.Top                  = 150
+$abouttext.ReadOnly             = $true
+$abouttext.BackColor            = "White"
+$abouttext.Multiline            = $true
+$abouttext.TextAlign            = "Center"
+$abouttext.Text                 = "Made with love by Stella, for Skrivanek GmbH
+
+I hope you find it useful !
+I am no developer, i studied economics, ive got no clue of those geek things.
+
+Version 2.0.somethingsomething
+2024 Stella Ménier, under GNU GPL v3"
+$abouttext.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
+
+
+[int]$buttonalign = 340
+
+$gotogithub                 = New-Object System.Windows.Forms.Button
+$gotogithub.Size            = New-Object System.Drawing.Size (100,30)
+$gotogithub.Left            = ($form_leftalign)
+$gotogithub.Top             = $buttonalign
+$gotogithub.Text            = "Project repository"
+$gotogithub.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch"} )
+
+$gotolicense                 = New-Object System.Windows.Forms.Button
+$gotolicense.Size            = New-Object System.Drawing.Size (100,30)
+$gotolicense.Left            = ($form_leftalign + 120)
+$gotolicense.Top             = $buttonalign
+$gotolicense.Text            = "GPL v3 Licence"
+$gotolicense.Add_Click( {start-process "https://www.gnu.org/licenses/gpl-3.0.html"})
+
+
+$sendmeamail                 = New-Object System.Windows.Forms.Button
+$sendmeamail.Size            = New-Object System.Drawing.Size (100,30)
+$sendmeamail.Left            = ($form_leftalign + 240)
+$sendmeamail.Top             = $buttonalign
+$sendmeamail.Text            = "Send me feedback"
+$sendmeamail.Add_Click( {start-process "mailto:stella.menier@gmx.de"})
+
+$supportme                 = New-Object System.Windows.Forms.Button
+$supportme.Size            = New-Object System.Drawing.Size (340,30)
+$supportme.Left            = ($form_leftalign)
+$supportme.Top             = ($buttonalign - 40)
+$supportme.Text            = "Support me ! Proceeds goes to meds, sushis, lego"
+$supportme.Add_Click( {start-process "https://ko-fi.com/teamcons"})
+
+
+
+$GUI_Tab_About.Controls.Add($abouttitle)
+$GUI_Tab_About.Controls.Add($aboutsubtitle)
+$GUI_Tab_About.Controls.Add($applogo)
+$GUI_Tab_About.Controls.Add($abouttext)
+$GUI_Tab_About.Controls.Add($gotogithub)
+$GUI_Tab_About.Controls.Add($supportme)
+$GUI_Tab_About.Controls.Add($gotolicense)
+$GUI_Tab_About.Controls.Add($sendmeamail)
+$FormTabControl.Controls.Add($GUI_Tab_About)
+
+
+# Initlize the form
+#$GUI_Form_MoreStuff.Add_Shown({$GUI_Form_MoreStuff.Activate()})
+
+
+
+
+
+
+
+
+#==============================================================
 #                GUI - Ask the Right Questions                =
 #==============================================================
 
@@ -256,23 +486,8 @@ else
 }
 
 
-<# # Check if count words ?
-$CheckIfAnalysis                = New-Object System.Windows.Forms.CheckBox        
-$CheckIfAnalysis.Location       = New-Object System.Drawing.Point(($form_leftalign + 400),30)
-$CheckIfAnalysis.Size           = New-Object System.Drawing.Size(200,20)
-$CheckIfAnalysis.Text           = $text_doanalysis
-$CheckIfAnalysis.Checked        = $default_doanalysis
-$CheckIfAnalysis.Anchor         = "Top,Right"
-$form.Controls.Add($CheckIfAnalysis) #>
-
-# Old location
-#$CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 425),60)
-
-
 #===================
 #= SOURCE FILES    =
-
-
 
 $panel_sourcefile = New-Object System.Windows.Forms.Panel
 $panel_sourcefile.Width         = 625
@@ -516,9 +731,7 @@ $gui_help.Size              = New-Object System.Drawing.Size(120,25)
 $gui_help.Text              = $text_help
 $gui_help.UseVisualStyleBackColor = $True
 $gui_help.Anchor            = "Left, Bottom"
-$gui_help.add_click({
-    [System.Windows.Forms.MessageBox]::Show("Frag Stella" , $APPNAME)
-})
+$gui_help.add_click({$GUI_Form_MoreStuff.ShowDialog()})
 #[void]$form.Controls.Add($gui_help)
 
 
@@ -588,24 +801,6 @@ if ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
     }
 Write-Output "[INPUT] Got: $PROJECTNAME"
 
-
-###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG
-Write-Output "DEBUG"
-Write-Output "IS CORRECT ?"
-
-#$templates.Rows[$templates.CurrentCell.RowIndex].Cells
-
-
-
-#foreach ($folder in ($templates.Rows[$templates.CurrentCell.RowIndex].Cells | Select-Object -Skip 1 ) )
-#{
-#    echo $folder.Value
-
-#}
-
-
-#exit
-###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG###########################DEBUG
 
 
 
