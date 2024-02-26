@@ -12,14 +12,16 @@ Write-Output "[STARTUP] Getting all variables in place"
 #========================================
 # Defaults
 
-[string]$default_filesfrom          = $text_from_Outlook
+
+[string]$default_fromdisk           = "$env:USERPROFILE\Downloads\"
 [bool]$default_doanalysis           = $false
-[bool]$default_opentrados           = $true
 
 [bool]$default_createshortcut       = $true
 [bool]$default_createoutlookfolder  = $true
 [bool]$default_movesourcemail       = $true
 [bool]$default_openexplorer         = $true
+[bool]$default_notifywhenfinished   = $true
+
 
 #================================
 # Project icon in Base 64
@@ -61,51 +63,111 @@ Add-Type -AssemblyName System.Drawing
 $ApplicationForm = New-Object System.Windows.Forms.Form
 $ApplicationForm.StartPosition = "CenterScreen"
 $ApplicationForm.Topmost = $false 
-$ApplicationForm.Size = "440,540"
+$ApplicationForm.Size = "400,490"
 $ApplicationForm.FormBorderStyle = "FixedSingle"
 $ApplicationForm.MaximizeBox = $false
 
 $FormTabControl = New-object System.Windows.Forms.TabControl 
-$FormTabControl.Size = "415,460" 
-$FormTabControl.Left = 5 
+$FormTabControl.Size = "365,440" 
+$FormTabControl.Left = 10 
+$FormTabControl.Top = 5 
+
 #$FormTabControl.Dock = "Fill" 
 $ApplicationForm.Controls.Add($FormTabControl)
 
 
 
-$Tab1 = New-object System.Windows.Forms.Tabpage
-$Tab1.Name = "Erweitert" 
-$Tab1.Text = "Erweitere einstellungen" 
-$Tab1.UseVisualStyleBackColor = $True 
-$FormTabControl.Controls.Add($Tab1)
+###############################################################################################
+
+
+$GUI_Tab_Settings = New-object System.Windows.Forms.Tabpage
+$GUI_Tab_Settings.Name = "Erweitert" 
+$GUI_Tab_Settings.Text = "Erweiterte Einstellungen" 
+$GUI_Tab_Settings.UseVisualStyleBackColor = $True 
 
 #################
 
-$textBox1 = New-Object System.Windows.Forms.TextBox
-$textBox1.Location = New-Object System.Drawing.Point(10,70) ### Location of the text box
-$textBox1.Size = New-Object System.Drawing.Size(200,50) ### Size of the text box
-$textBox1.Multiline = $false ### Allows multiple lines of data
-$textBox1.Font = New-Object System.Drawing.Font("Consolas",10,[System.Drawing.FontStyle]::Regular)
-$textBox1.ReadOnly=$false
-$Tab1.Controls.Add($textBox1)
+[bool]$default_createshortcut       = $true
+[bool]$default_createoutlookfolder  = $true
+#[bool]$default_movesourcemail       = $true
+[bool]$default_openexplorer         = $true
+[bool]$default_notifywhenfinished   = $true
+
+# Label above input
+$moresettingstitle                     = New-Object System.Windows.Forms.Label
+$moresettingstitle.Size                = New-Object System.Drawing.Size(300,20)
+$moresettingstitle.Left                = $form_leftalign
+$moresettingstitle.Top                 = 20
+$moresettingstitle.Text                = "Erweiterte Einstellungen"
+$moresettingstitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
+
+$CheckIfCreateExplorerQuickAccess                = New-Object System.Windows.Forms.CheckBox        
+$CheckIfCreateExplorerQuickAccess.Location       = New-Object System.Drawing.Point($form_leftalign,50)
+$CheckIfCreateExplorerQuickAccess.Size           = New-Object System.Drawing.Size(400,20)
+$CheckIfCreateExplorerQuickAccess.Text           = "Create a quick access shortcut in Explorer ?"
+$CheckIfCreateExplorerQuickAccess.Checked        = $default_createshortcut
+
+$CheckIfCreateOutlookFolder                = New-Object System.Windows.Forms.CheckBox        
+$CheckIfCreateOutlookFolder.Location       = New-Object System.Drawing.Point($form_leftalign,80)
+$CheckIfCreateOutlookFolder.Size           = New-Object System.Drawing.Size(400,20)
+$CheckIfCreateOutlookFolder.Text           = "Create a folder in Outlook ?"
+$CheckIfCreateOutlookFolder.Checked        = $default_createoutlookfolder
+
+$CheckIfOpenExplorer                = New-Object System.Windows.Forms.CheckBox        
+$CheckIfOpenExplorer.Location       = New-Object System.Drawing.Point($form_leftalign,110)
+$CheckIfOpenExplorer.Size           = New-Object System.Drawing.Size(400,20)
+$CheckIfOpenExplorer.Text           = "Open newly created folder when finished ?"
+$CheckIfOpenExplorer.Checked        = $default_openexplorer
+
+$CheckIfNotify                = New-Object System.Windows.Forms.CheckBox        
+$CheckIfNotify.Location       = New-Object System.Drawing.Point($form_leftalign,140)
+$CheckIfNotify.Size           = New-Object System.Drawing.Size(400,20)
+$CheckIfNotify.Text           = "Send a notification when done ?"
+$CheckIfNotify.Checked        = $default_notifywhenfinished
+
+# Label above input
+$helptitle                     = New-Object System.Windows.Forms.Label
+$helptitle.Size                = New-Object System.Drawing.Size(300,20)
+$helptitle.Left                = $form_leftalign
+$helptitle.Top                 = 180
+$helptitle.Text                = "Help"
+$helptitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
+
+# https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/docs/Manual%20-%20Rocketlaunch.docx
+
+$getthedoc                 = New-Object System.Windows.Forms.Button
+$getthedoc.Size            = New-Object System.Drawing.Size (120,20)
+$getthedoc.Left            = $form_leftalign
+$getthedoc.Top             = 210
+$getthedoc.Text            = "Download latest manual version"
+$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/docs/Manual%20-%20Rocketlaunch.docx"})
 
 
-###################
-
-$Tab2 = New-object System.Windows.Forms.Tabpage
-#$Tab2.DataBindings.DefaultDataSourceUpdateMode = 0 
-$Tab2.UseVisualStyleBackColor = $True 
-$Tab2.Name = "Tab2" 
-$Tab2.Text = "Hilfe" 
-$FormTabControl.Controls.Add($Tab2)
 
 
-###################
+$GUI_Tab_Settings.Controls.Add($moresettingstitle)
+$GUI_Tab_Settings.Controls.Add($CheckIfShortcut)
+$GUI_Tab_Settings.Controls.Add($CheckIfCreateOutlookFolder)
+$GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)
+$GUI_Tab_Settings.Controls.Add($CheckIfNotify)
+$GUI_Tab_Settings.Controls.Add($helptitle)
+$GUI_Tab_Settings.Controls.Add($getthedoc)
+$FormTabControl.Controls.Add($GUI_Tab_Settings)
 
-$Tab3 = New-object System.Windows.Forms.Tabpage
-$Tab3.UseVisualStyleBackColor = $True 
-$Tab3.Name = "Uber" 
-$Tab3.Text = "Über..." 
+
+
+
+
+
+
+
+###############################################################################################
+
+
+$GUI_Tab_About = New-object System.Windows.Forms.Tabpage
+$GUI_Tab_About.UseVisualStyleBackColor = $True 
+$GUI_Tab_About.Name = "Uber" 
+$GUI_Tab_About.Text = "Uber" 
 
 
 # FANCY ICON
@@ -114,65 +176,69 @@ $img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).
 $applogo.Width       = 64
 $applogo.Height      = 64
 $applogo.Image       = $img;
-$applogo.Location    = New-Object System.Drawing.Point(188,50)
+$applogo.Location    = New-Object System.Drawing.Point(148,20)
 
 # Label above input
 $abouttitle                     = New-Object System.Windows.Forms.Label
-$abouttitle.Size                = New-Object System.Drawing.Size(200,20)
-$abouttitle.Left                = ($form_leftalign + 120)
-$abouttitle.Top                 = 130
+$abouttitle.Size                = New-Object System.Drawing.Size(280,20)
+$abouttitle.Left                = ($form_leftalign + 90)
+$abouttitle.Top                 = 90
 $abouttitle.Text                = "-Rocketlaunch!"
-$abouttitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 16, [System.Drawing.FontStyle]::Bold)
+$abouttitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 14, [System.Drawing.FontStyle]::Bold)
 
 # Label above input
 $aboutsubtitle                     = New-Object System.Windows.Forms.Label
-$aboutsubtitle.Size                = New-Object System.Drawing.Size(400,20)
-$aboutsubtitle.Left                = ($form_leftalign + 55)
-$aboutsubtitle.Top                 = 165
+$aboutsubtitle.Size                = New-Object System.Drawing.Size(360,20)
+$aboutsubtitle.Left                = ($form_leftalign + 50)
+$aboutsubtitle.Top                 = 120
 $aboutsubtitle.Text                = "Start new projects, but very very quickly !"
-$aboutsubtitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Italic)
+$aboutsubtitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Italic)
 
 # Label above input
 $abouttext                      = New-Object System.Windows.Forms.TextBox
-$abouttext.Size                 = New-Object System.Drawing.Size(440,100)
+$abouttext.Size                 = New-Object System.Drawing.Size(260,130)
 $abouttext.Left                 = ($form_leftalign + 40)
-$abouttext.Top                  = 210
-$abouttext.Width                = 300
+$abouttext.Top                  = 155
 $abouttext.ReadOnly             = $true
 $abouttext.BackColor            = "White"
 $abouttext.Multiline            = $true
 $abouttext.TextAlign            = "Center"
 $abouttext.Text                 = "Made with love by Stella, for Skrivanek GmbH
-Built with Powershell, compiled with PS2EXE"
-$abouttext.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
+
+I hope you find it useful !
+I am no developer, i studied economics, ive got no clue of those geek things.
+
+Version 2.0.somethingsomething
+2024 Stella Ménier, under GNU GPL v3"
+$abouttext.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
 
 
-[int]$buttonalign = 400
+[int]$buttonalign = 340
 
 $gotogithub                 = New-Object System.Windows.Forms.Button
-$gotogithub.Size            = New-Object System.Drawing.Size (120,30)
+$gotogithub.Size            = New-Object System.Drawing.Size (100,30)
 $gotogithub.Left            = ($form_leftalign)
 $gotogithub.Top             = $buttonalign
 $gotogithub.Text            = "Project repository"
 $gotogithub.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch"} )
 
 $gotolicense                 = New-Object System.Windows.Forms.Button
-$gotolicense.Size            = New-Object System.Drawing.Size (120,30)
-$gotolicense.Left            = ($form_leftalign + 130)
+$gotolicense.Size            = New-Object System.Drawing.Size (100,30)
+$gotolicense.Left            = ($form_leftalign + 120)
 $gotolicense.Top             = $buttonalign
 $gotolicense.Text            = "GPL v3 Licence"
 $gotolicense.Add_Click( {start-process "https://www.gnu.org/licenses/gpl-3.0.html"})
 
 
 $sendmeamail                 = New-Object System.Windows.Forms.Button
-$sendmeamail.Size            = New-Object System.Drawing.Size (120,30)
-$sendmeamail.Left            = ($form_leftalign + 260)
+$sendmeamail.Size            = New-Object System.Drawing.Size (100,30)
+$sendmeamail.Left            = ($form_leftalign + 240)
 $sendmeamail.Top             = $buttonalign
 $sendmeamail.Text            = "Send me feedback"
 $sendmeamail.Add_Click( {start-process "mailto:stella.menier@gmx.de"})
 
 $supportme                 = New-Object System.Windows.Forms.Button
-$supportme.Size            = New-Object System.Drawing.Size (380,30)
+$supportme.Size            = New-Object System.Drawing.Size (340,30)
 $supportme.Left            = ($form_leftalign)
 $supportme.Top             = ($buttonalign - 40)
 $supportme.Text            = "Support me ! Proceeds goes to meds, sushis, lego"
@@ -180,15 +246,15 @@ $supportme.Add_Click( {start-process "https://ko-fi.com/teamcons"})
 
 
 
-$Tab3.Controls.Add($abouttitle)
-$Tab3.Controls.Add($aboutsubtitle)
-$Tab3.Controls.Add($applogo)
-$Tab3.Controls.Add($abouttext)
-$Tab3.Controls.Add($gotogithub)
-$Tab3.Controls.Add($supportme)
-$Tab3.Controls.Add($gotolicense)
-$Tab3.Controls.Add($sendmeamail)
-$FormTabControl.Controls.Add($Tab3)
+$GUI_Tab_About.Controls.Add($abouttitle)
+$GUI_Tab_About.Controls.Add($aboutsubtitle)
+$GUI_Tab_About.Controls.Add($applogo)
+$GUI_Tab_About.Controls.Add($abouttext)
+$GUI_Tab_About.Controls.Add($gotogithub)
+$GUI_Tab_About.Controls.Add($supportme)
+$GUI_Tab_About.Controls.Add($gotolicense)
+$GUI_Tab_About.Controls.Add($sendmeamail)
+$FormTabControl.Controls.Add($GUI_Tab_About)
 
 
 # Initlize the form
