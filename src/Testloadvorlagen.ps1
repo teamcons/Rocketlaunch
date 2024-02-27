@@ -16,7 +16,15 @@ else
 }
 
 
-$detectedtemplate = (Import-Csv -Delimiter $TEMPLATEDELIMITER -Path (-join($ScriptPath,"\",$TEMPLATE))  -Header "Name","00","01","02","03","04","05","06","07","08","09" | Format-Table)
 
-
-echo $detectedtemplate.Rows
+try {
+    $detectedtemplate = (Import-Csv -Delimiter $TEMPLATEDELIMITER -Path (-join($ScriptPath,"\",$TEMPLATE))  -Header "Name","00","01","02","03","04","05","06","07","08","09")
+    foreach ($row in $detectedtemplate)
+    {
+        $templates.Rows.Add($row."Name",$row."00",$row."01",$row."02",$row."03",$row."04",$row."05",$row."06",$row."07",$row."08",$row."09");
+    }
+}
+catch {
+    Write-Output "[ERROR] Cannot load templates, falling back to default"
+    $templates.Rows.Add("Minimal","info","orig");
+}

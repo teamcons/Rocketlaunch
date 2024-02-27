@@ -684,30 +684,31 @@ $templates.AllowUserToResizeRows    = $false
 
 $templates.ColumnCount = 10
 $templates.AutoGenerateColumns = $true
-[int]$folder_spacing = 75
+[int]$folder_spacing = 80
 
 $templates.Columns[0].Name = "Vorlage"
 $templates.Columns[0].Width = 120
+
+
 for ($i=1; $i -lt $templates.ColumnCount ; $i++)
 {
     $templates.Columns[$i].Name = -join("0",$i)
     $templates.Columns[$i].Width = $folder_spacing
 }
 
-
-$templates.Rows.Add("Minimal","info","orig");
-$templates.Rows.Add("Standard TEP","info","orig","trados","to trans","from trans","to proof","from proof","to client");
-$templates.Rows.Add("Full TEP","info","orig","trados","to TEP","from TEP","to client");
-$templates.Rows.Add("Nür Überprüfung","info","orig","corrected","to client");
-$templates.Rows.Add("Sworn Translation","info","orig","to client");
-$templates.Rows.Add("Astrid Special","info","orig","studio","trans","proof","to client");
-$templates.Rows.Add("Acolad","info","orig","MemoQ","to client");
-$templates.Rows.Add("Production","info");
-$templates.Rows.Add("Pizza Margherita","Tomaten","Mozarrella","Basilikum","Oliven");
-
+try {
+    $detectedtemplate = (Import-Csv -Delimiter $TEMPLATEDELIMITER -Path (-join($ScriptPath,"\",$TEMPLATE))  -Header "Name","00","01","02","03","04","05","06","07","08","09")
+    foreach ($row in $detectedtemplate)
+    {
+        $templates.Rows.Add($row."Name",$row."00",$row."01",$row."02",$row."03",$row."04",$row."05",$row."06",$row."07",$row."08",$row."09");
+    }
+}
+catch {
+    Write-Output "[ERROR] Cannot load templates, falling back to default"
+    $templates.Rows.Add("Minimal","info","orig");
+}
 
 $templates.Rows[0].Selected = $true #.Selected = $true
-
 
 $panel_template.Controls.Add($labeltemplate)
 #$panel_template.Controls.Add($gui_browsetemplate)
