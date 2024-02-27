@@ -220,7 +220,7 @@ $stream = [System.IO.MemoryStream]::new($iconBytes, 0, $iconBytes.Length)
 #================
 #= INITIAL WORK =
 
-[int]$form_leftalign = 10
+[int]$form_leftalign = 5
 
 # Imports
 Add-Type -AssemblyName System.Windows.Forms
@@ -234,7 +234,7 @@ $GUI_Form_MoreStuff.Icon                = [System.Drawing.Icon]::FromHandle(([Sy
 
 $GUI_Form_MoreStuff.StartPosition       = "CenterScreen"
 $GUI_Form_MoreStuff.Topmost             = $true
-$GUI_Form_MoreStuff.Size                = "360,420"
+$GUI_Form_MoreStuff.Size                = "340,420"
 $GUI_Form_MoreStuff.FormBorderStyle     = "FixedSingle"
 $GUI_Form_MoreStuff.MaximizeBox         = $false
 
@@ -300,9 +300,9 @@ $getthedoc.Text            = $text_settings_getthedoc
 $getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
 
 $askme                 = New-Object System.Windows.Forms.Button
-$askme.Size            = New-Object System.Drawing.Size (180,30)
-$askme.Left            = $form_leftalign
-$askme.Top             = 250
+$askme.Size            = New-Object System.Drawing.Size (120,30)
+$askme.Left            = ($form_leftalign + 190)
+$askme.Top             = 210
 $askme.Text            = $text_settings_askme
 $askme.Add_Click( {start-process "Mailto:stella.menier@gmx.de"})
 
@@ -343,7 +343,7 @@ $img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).
 $applogo.Width       = 64
 $applogo.Height      = 64
 $applogo.Image       = $img;
-$applogo.Location    = New-Object System.Drawing.Point(138,20)
+$applogo.Location    = New-Object System.Drawing.Point(128,20)
 
 # Label above input
 $abouttitle                     = New-Object System.Windows.Forms.Label
@@ -356,15 +356,15 @@ $abouttitle.Font                = New-Object System.Drawing.Font('Microsoft Sans
 # Label above input
 $aboutsubtitle                     = New-Object System.Windows.Forms.Label
 $aboutsubtitle.Size                = New-Object System.Drawing.Size(360,20)
-$aboutsubtitle.Left                = ($form_leftalign + 45)
+$aboutsubtitle.Left                = ($form_leftalign + 40)
 $aboutsubtitle.Top                 = 120
 $aboutsubtitle.Text                = $text_aboutsubtitle
 $aboutsubtitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Italic)
 
 # Label above input
 $abouttext                      = New-Object System.Windows.Forms.TextBox
-$abouttext.Size                 = New-Object System.Drawing.Size(260,140)
-$abouttext.Left                 = ($form_leftalign + 30)
+$abouttext.Size                 = New-Object System.Drawing.Size(255,155)
+$abouttext.Left                 = ($form_leftalign + 25)
 $abouttext.Top                  = 150
 $abouttext.ReadOnly             = $true
 $abouttext.BackColor            = "White"
@@ -385,7 +385,7 @@ $gotogithub.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Roc
 
 $gotolicense                    = New-Object System.Windows.Forms.Button
 $gotolicense.Size               = New-Object System.Drawing.Size (100,25)
-$gotolicense.Left               = ($form_leftalign + 110)
+$gotolicense.Left               = ($form_leftalign + 105)
 $gotolicense.Top                = $buttonalign
 $gotolicense.Text               = $text_about_button_licence
 $gotolicense.Add_Click( {start-process "https://www.gnu.org/licenses/gpl-3.0.html"})
@@ -393,7 +393,7 @@ $gotolicense.Add_Click( {start-process "https://www.gnu.org/licenses/gpl-3.0.htm
 
 $supportme                      = New-Object System.Windows.Forms.Button
 $supportme.Size                 = New-Object System.Drawing.Size (100,25)
-$supportme.Left                 = ($form_leftalign + 220)
+$supportme.Left                 = ($form_leftalign + 210)
 $supportme.Top                  = $buttonalign
 $supportme.Text                 = $text_about_button_support
 $supportme.Add_Click( {start-process "https://ko-fi.com/teamcons"})
@@ -435,7 +435,7 @@ Add-Type -AssemblyName System.Drawing
 
 $form                   = New-Object System.Windows.Forms.Form
 $form.Text              = $APPNAME
-$form.Size              = New-Object System.Drawing.Size(825,($form_verticalalign + 85 ))
+$form.Size              = New-Object System.Drawing.Size(775,($form_verticalalign + 85 ))
 $form.MinimumSize       = New-Object System.Drawing.Size(500,($form_verticalalign + 40 ))
 #$form.MaximumSize       = New-Object System.Drawing.Size(750,550)
 #$form.AutoSize          = $true
@@ -512,7 +512,7 @@ else
 #= SOURCE FILES    =
 
 $panel_sourcefile = New-Object System.Windows.Forms.Panel
-$panel_sourcefile.Width         = 825
+$panel_sourcefile.Width         = 775
 $panel_sourcefile.Top           = 25
 $panel_sourcefile.Height        = 200
 $panel_sourcefile.Left          = 0
@@ -527,7 +527,7 @@ $labelsourcefiles.Text             = $text_loadfilesfrom
 $labelsourcefiles.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
 
 $gui_filesource                 = New-Object System.Windows.Forms.Combobox
-$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 640),5)
+$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 590),5)
 $gui_filesource.Size            = New-Object System.Drawing.Size(140,20)
 $gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 $gui_filesource.Anchor          = "Top,Right"
@@ -540,9 +540,7 @@ $gui_filesource.SelectedItem = $default_filesfrom
 ## Configure the ListView
 $sourcefiles                        = New-Object System.Windows.Forms.ListView
 $sourcefiles.Location               = New-Object System.Drawing.Size($form_leftalign,30) 
-$sourcefiles.Size                   = New-Object System.Drawing.Size(580,160) 
-$sourcefiles.Width                  = 780 #$form.ClientRectangle.Width
-$sourcefiles.Height                 = 160 # $Form.ClientRectangle.Height
+$sourcefiles.Size                   = New-Object System.Drawing.Size(730,160) 
 $sourcefiles.FullRowSelect          = $True
 $sourcefiles.HideSelection          = $false
 $sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
@@ -634,7 +632,7 @@ $panel_sourcefile.Show()
 #= LIST OF TEMPLATES =
 
 $panel_template                         = New-Object System.Windows.Forms.Panel
-$panel_template.Width                   = 825
+$panel_template.Width                   = 775
 $panel_template.Height                  = 100
 $panel_template.Top                     = 260
 $panel_template.Left                    = 0
@@ -668,7 +666,7 @@ $gui_browsetemplate.add_click({
 
 $templates                          = New-Object System.Windows.Forms.DataGridView
 $templates.Location                 = New-Object System.Drawing.Point($form_leftalign,30)
-$templates.Size                     = New-Object System.Drawing.Size(780,70)
+$templates.Size                     = New-Object System.Drawing.Size(730,70)
 $templates.AutoResizeColumns(2)
 $templates.Anchor                   = "Left,Right,Top,Bottom"
 $templates.BackgroundColor          = "White"
@@ -734,7 +732,7 @@ $Split = New-Object System.Windows.Forms.SplitContainer
 $Split.Anchor                       = "Left,Bottom,Top,Right"
 $Split.Top                          = 90
 $Split.Height                       = ($form_verticalalign - 100 )
-$Split.Width                        = 825
+$Split.Width                        = 775
 $Split.Orientation                  = "Horizontal"
 #$Split.BackColor                    = "LightBlue"
 $Split.SplitterDistance             = 190
@@ -755,7 +753,7 @@ $form.Controls.Add($Split)
 $gui_panel = New-Object System.Windows.Forms.Panel
 $gui_panel.Left = 0
 $gui_panel.Top = ($form_verticalalign)
-$gui_panel.Width = 825
+$gui_panel.Width = 775
 $gui_panel.Height = 50
 $gui_panel.BackColor = '241,241,241'
 $gui_panel.Anchor = "Left,Bottom,Right"
@@ -782,7 +780,7 @@ $CheckIfTrados.Anchor           = "Top,Left"
 
 
 $gui_okButton                               = New-Object System.Windows.Forms.Button
-$gui_okButton.Location                      = New-Object System.Drawing.Point(($form_leftalign + 530),10)
+$gui_okButton.Location                      = New-Object System.Drawing.Point(($form_leftalign + 480),10)
 $gui_okButton.Size                          = New-Object System.Drawing.Size(120,25)
 $gui_okButton.Text                          = $text_OK
 $gui_okButton.UseVisualStyleBackColor       = $True
@@ -794,7 +792,7 @@ $form.AcceptButton                          = $gui_okButton
 #[void]$form.Controls.Add($gui_okButton)
 
 $gui_cancelButton                           = New-Object System.Windows.Forms.Button
-$gui_cancelButton.Location                  = New-Object System.Drawing.Point(($form_leftalign + 660),10)
+$gui_cancelButton.Location                  = New-Object System.Drawing.Point(($form_leftalign + 610),10)
 $gui_cancelButton.Size                      = New-Object System.Drawing.Size(120,25)
 $gui_cancelButton.Text                      = $text_Cancel
 $gui_cancelButton.UseVisualStyleBackColor   = $True
