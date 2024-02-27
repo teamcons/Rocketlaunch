@@ -54,8 +54,8 @@ Write-Output "[STARTUP] Getting all variables in place"
 #========================================
 # Localization
 
-function init_text
-{
+#function init_text
+#{
 
     # UI
     [string]$text_projectname               = "Bereit zum Start!"
@@ -84,12 +84,12 @@ function init_text
     Github Repo öffnen ?"
 
     [string]$GITHUB_LINK = "https://github.com/teamcons/Skrivanek-Rocketlaunch"
-}
+#}
 
 #========================================
 # Defaults
 
-function init_values {
+#function init_values {
     [string]$default_filesfrom          = $text_from_Outlook
     [string]$default_fromdisk           = "$env:USERPROFILE\Downloads\"
     [bool]$default_opentrados           = $true
@@ -98,26 +98,28 @@ function init_values {
     [bool]$default_movesourcemail       = $true
     [bool]$default_openexplorer         = $true
     [bool]$default_notifywhenfinished   = $true
-}
+#}
 
 
 #========================================
 # Outlook Capabilities
 
 
-function init_outlook_backend
-{
+#function init_outlook_backend
+#{
     Write-Output "[STARTUP] Outlook Capabilities"
     $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
     $ns                         = $OL.GETNAMESPACE("MAPI")
     $date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'
     $filter                     = "[ReceivedTime] >= '$date'"
     $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
-}
+#}
 
-init_text
+<# init_text
 init_values
-init_outlook_backend
+init_outlook_backend #>
+
+
 
 #==========================================
 # Try to predict what next number would be 
