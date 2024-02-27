@@ -105,6 +105,35 @@ init_outlook_backend
 #                GUI - About Dialog                =
 #===================================================
 
+#function init_outlook_backend
+#{
+    Write-Output "[STARTUP] Outlook Capabilities"
+    $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
+    $ns                         = $OL.GETNAMESPACE("MAPI")
+    $date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'
+    $filter                     = "[ReceivedTime] >= '$date'"
+    $global:allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
+#}
+
+function load_template{
+    param (  
+        [System.Windows.Forms.DataGridView]$GRID,
+        [string]$FILE)
+    try {
+        $detectedtemplate = (Import-Csv -Delimiter $TEMPLATEDELIMITER -Path $FILE -Header "Name","00","01","02","03","04","05","06","07","08","09")
+        foreach ($row in $detectedtemplate)
+        {
+            [void]$GRID.Rows.Add($row."Name",$row."00",$row."01",$row."02",$row."03",$row."04",$row."05",$row."06",$row."07",$row."08",$row."09");
+        }
+    }
+    catch {
+        Write-Output "[ERROR] Cannot load templates, falling back to default"
+        $GRID.Rows.Add("Minimal","info","orig");
+    }
+    return $GRID
+
+}
+
 
 
 #================
@@ -116,7 +145,7 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 [void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
-Import-Module $ScriptPath/ui.ps1
+Import-Module $ScriptPath/ui.ps1 #-Prefix "Gui"
 $GUI_Form_MoreStuff = build_about_gui
 
 
@@ -270,6 +299,8 @@ $sourcefiles.View                   = [System.Windows.Forms.View]::Details
 $allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
 foreach ($mail in $allmails)
 {
+    echo $mail.SenderName
+
     [bool]$AddToGoodMails = $false
     [int]$CountGoodAttachments = 0
     foreach ( $attach in $mail.Attachments ) 
@@ -413,10 +444,10 @@ for ($i=1; $i -lt $templates.ColumnCount ; $i++)
 #$templatefile = -join($ScriptPath,"\",$TEMPLATE)
 #$templates = load_template $templates $templatefile
 
-$templates.Rows.Add("Minimal","info","orig");
-$templates.Rows.Add("Standard TEP","info","orig","trados","to trans","from trans","to proof","from proof","to client")
-$templates.Rows.Add("Full TEP","info","orig","to TEP","from TEP","To client")
-$templates.Rows.Add("Acolad","info","orig","MemoQ","To client")
+[void]$templates.Rows.Add("Minimal","info","orig");
+[void]$templates.Rows.Add("Standard TEP","info","orig","trados","to trans","from trans","to proof","from proof","to client")
+[void]$templates.Rows.Add("Full TEP","info","orig","to TEP","from TEP","To client")
+[void]$templates.Rows.Add("Acolad","info","orig","MemoQ","To client")
 
 $templates.Rows[0].Selected = $true #.Selected = $true
 
