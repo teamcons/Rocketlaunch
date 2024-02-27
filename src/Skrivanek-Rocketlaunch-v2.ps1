@@ -74,41 +74,7 @@ init_text
 init_defaults
 
 Import-Module $ScriptPath/internals.ps1
-
-
-#========================================
-# Outlook Capabilities
-
-
-#function init_outlook_backend
-#{
-    Write-Output "[STARTUP] Outlook Capabilities"
-    $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
-    $ns                         = $OL.GETNAMESPACE("MAPI")
-    $date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'
-    $filter                     = "[ReceivedTime] >= '$date'"
-    $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
-#}
-
-function load_template{
-    param (  
-        [System.Windows.Forms.DataGridView]$GRID,
-        [string]$FILE)
-    try {
-        $detectedtemplate = (Import-Csv -Delimiter $TEMPLATEDELIMITER -Path $FILE -Header "Name","00","01","02","03","04","05","06","07","08","09")
-        foreach ($row in $detectedtemplate)
-        {
-            [void]$GRID.Rows.Add($row."Name",$row."00",$row."01",$row."02",$row."03",$row."04",$row."05",$row."06",$row."07",$row."08",$row."09");
-        }
-    }
-    catch {
-        Write-Output "[ERROR] Cannot load templates, falling back to default"
-        $GRID.Rows.Add("Minimal","info","orig");
-    }
-    return $GRID
-
-}
-
+init_outlook_backend
 
 
 #==========================================
@@ -152,6 +118,8 @@ Add-Type -AssemblyName System.Drawing
 
 Import-Module $ScriptPath/ui.ps1
 $GUI_Form_MoreStuff = build_about_gui
+
+
 
 
 #==============================================================
