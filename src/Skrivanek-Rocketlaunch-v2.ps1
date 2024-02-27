@@ -78,7 +78,7 @@ echo $detectedtemplate
 #{
 
     ### MAIN UI
-    [string]$text_projectname               = "Bereit zum Start!"
+    [string]$text_projectname               = "Projekt bereit zum Abflug!"
     [string]$text_doanalysis                = "Analyse machen ? (Langsam)"
     [string]$text_opentrados                = "Trados?"
 
@@ -87,6 +87,7 @@ echo $detectedtemplate
     [string]$text_columns_Subject           = 'Betreff'
     [string]$text_columns_Sendername        = 'Von'
     [string]$text_columns_Attachments       = 'Dateien'
+    [string]$text_columns_time              = 'Ankunft'
     [string]$text_from_Outlook              = "In Outlook"
     [string]$text_from_Downloads            = "In Downloads"
     [string]$text_nofilesource              = "Keine Ausgangsdatei"
@@ -436,13 +437,11 @@ Add-Type -AssemblyName System.Drawing
 $form                   = New-Object System.Windows.Forms.Form
 $form.Text              = $APPNAME
 $form.Size              = New-Object System.Drawing.Size(775,($form_verticalalign + 85 ))
-$form.MinimumSize       = New-Object System.Drawing.Size(500,($form_verticalalign + 40 ))
+$form.MinimumSize       = New-Object System.Drawing.Size(500,180)
 #$form.MaximumSize       = New-Object System.Drawing.Size(750,550)
 #$form.AutoSize          = $true
 #$form.AutoScale         = $true
 $form.Font              = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
-
-
 $form.StartPosition     = 'CenterScreen'
 #$form.FormBorderStyle   = 'FixedDialog'
 $form.Topmost           = $True
@@ -454,22 +453,21 @@ $form.Icon              = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bit
 
 # FANCY ICON
 $pictureBox             = new-object Windows.Forms.PictureBox
-$pictureBox.Location    = New-Object System.Drawing.Point($form_leftalign,20)
+$pictureBox.Location    = New-Object System.Drawing.Point($form_leftalign,15)
 $pictureBox.Anchor      = "Left,Top"
 $img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
 $pictureBox.Width       = 64
 $pictureBox.Height      = 64
 $pictureBox.Image       = $img;
-
 $form.controls.add($pictureBox)
 
 # LABEL AND TEXT
 # Label above input
 $label                  = New-Object System.Windows.Forms.Label
-$label.Location         = New-Object System.Drawing.Point(($form_leftalign + 80),30)
-$label.Size             = New-Object System.Drawing.Size(240,20)
+$label.Location         = New-Object System.Drawing.Point(($form_leftalign + 80),25)
+$label.Size             = New-Object System.Drawing.Size(300,30)
 $label.AutoSize         = $true
-$label.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Bold)
+$label.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 14, [System.Drawing.FontStyle]::Bold)
 $label.Text             = $text_projectname
 $label.Anchor           = "Left,Top"
 $form.Controls.Add($label)
@@ -477,9 +475,10 @@ $form.Controls.Add($label)
 # Input box
 $gui_year                  = New-Object System.Windows.Forms.Label
 $gui_year.Location         = New-Object System.Drawing.Point(($form_leftalign + 80),63)
-$gui_year.Size             = New-Object System.Drawing.Size(18,20)
+$gui_year.Size             = New-Object System.Drawing.Size(20,20)
+$gui_year.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
 $gui_year.AutoSize         = $true
-$gui_year.Text             = -join($YEAR,"-")
+$gui_year.Text             = -join($YEAR," -")
 $gui_year.Anchor           = "Left,Top"
 $form.Controls.Add($gui_year)
 
@@ -487,7 +486,7 @@ $form.Controls.Add($gui_year)
 if ($CODE_PREDICTED -eq $true)
 {
     $gui_code                 = New-Object System.Windows.Forms.Combobox
-    $gui_code.Location       = New-Object System.Drawing.Point(($form_leftalign + 116),60)
+    $gui_code.Location       = New-Object System.Drawing.Point(($form_leftalign + 124),60)
     $gui_code.Size           = New-Object System.Drawing.Size(170,30)    
     [void] $gui_code.Items.Add( -join($PREDICT_CODE,"_") )  
     [void] $gui_code.Items.Add( -join(($PREDICT_CODE + 1),"_") )  
@@ -500,7 +499,7 @@ if ($CODE_PREDICTED -eq $true)
 else
 {
     $gui_code                = New-Object System.Windows.Forms.TextBox
-    $gui_code.Location       = New-Object System.Drawing.Point(($form_leftalign + 112),60)
+    $gui_code.Location       = New-Object System.Drawing.Point(($form_leftalign + 123),60)
     $gui_code.Size           = New-Object System.Drawing.Size(170,30)
     $gui_code.Text           = ""
     $form.Controls.Add($gui_code)
@@ -548,8 +547,8 @@ $sourcefiles.View                   = [System.Windows.Forms.View]::Details
 
 [void]$sourcefiles.Columns.Add($text_columns_Subject,300)
 [void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
-#$sourcefiles.Columns.Add("Empfangen",100)
 [void]$sourcefiles.Columns.Add($text_columns_Attachments,70)
+[void]$sourcefiles.Columns.Add($text_columns_time,100)
 
 
 # Look for emails with attachments
@@ -588,6 +587,7 @@ foreach ($mail in $allmails)
         $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($mail.Subject)
         [void]$sourcefilesItem.Subitems.Add($mail.SenderName)
         [void]$sourcefilesItem.Subitems.Add($CountGoodAttachments)
+        [void]$sourcefilesItem.Subitems.Add($mail.ReceivedTime.ToString("HH:mm"))
         [void]$sourcefiles.Items.Add($sourcefilesItem)
         $goodmailindex += 1
     } # End of adding goodmail
@@ -601,19 +601,28 @@ foreach ($mail in $allmails)
 # Add the ListView to the Form
 try { 
     $sourcefiles.Items[0].Selected = $true 
+}
+catch {
+    Write-Output "No mail with relevant attach !"
+}
+
+try { 
+    $allgoodmails.Item(0).SenderEmailAddress -match "@(?<content>.*).com"
     
-    <# $allgoodmails[$sourcefiles.FocusedItem.Index].SenderEmailAddress -match "@(?<content>.*).com"
-    $attempt_at_companyname         = $matches["content"]
+    #$attempt_at_companyname         = $matches["content"]
     $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
     echo $attempt_at_companyname
     [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
     [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
     [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
-    [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )   #>
+    [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )
 }
 catch {
-    Write-Output "No mail with relevant attach !"
+    Write-Output "Messy email !"
 }
+
+
+
 
 
 $panel_sourcefile.Controls.Add($labelsourcefiles)
@@ -637,7 +646,6 @@ $panel_template.Height                  = 100
 $panel_template.Top                     = 260
 $panel_template.Left                    = 0
 $panel_template.BackColor               = "White" #'Red'
-#$panel_template.Anchor = "Left,Right,Top,Bottom"
 $panel_template.Dock = "Fill"
 
 
@@ -703,10 +711,6 @@ $templates.Rows.Add("Acolad","info","orig","MemoQ","to client");
 $templates.Rows.Add("Production","info");
 $templates.Rows.Add("Pizza Margherita","Tomaten","Mozarrella","Basilikum","Oliven");
 
-
-
-
-
 # ## LOAD FROM CSV HERE
 #$datasource =  New-Object System.Windows.Forms.BindingSource 
 #$datasource.DataSource = $detectedtemplate 
@@ -723,10 +727,6 @@ $panel_template.Controls.Add($labeltemplate)
 $panel_template.Controls.Add($templates)
 $panel_template.Show()
 
-#[void]$form.Controls.Add($labeltemplate)
-#[void]$form.Controls.Add($gui_browsetemplate)
-#[void]$form.Controls.Add($templates)
-
 
 $Split = New-Object System.Windows.Forms.SplitContainer
 $Split.Anchor                       = "Left,Bottom,Top,Right"
@@ -734,7 +734,7 @@ $Split.Top                          = 90
 $Split.Height                       = ($form_verticalalign - 100 )
 $Split.Width                        = 775
 $Split.Orientation                  = "Horizontal"
-#$Split.BackColor                    = "LightBlue"
+$Split.BackColor                    = "LightBlue"
 $Split.SplitterDistance             = 190
 
 #$form.Controls.Add($panel_template)
