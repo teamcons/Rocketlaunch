@@ -54,8 +54,7 @@ Write-Output "[STARTUP] Getting all variables in place"
 [string]$TEMPLATEDELIMITER               = ";"
 
 
-
-<# if ($MyInvocation.MyCommand.CommandType -eq "ExternalScript")
+if ($MyInvocation.MyCommand.CommandType -eq "ExternalScript")
 { 
    $ScriptPath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition 
 }
@@ -64,11 +63,6 @@ else
    $ScriptPath = Split-Path -Parent -Path ([Environment]::GetCommandLineArgs()[0]) 
    if (!$ScriptPath){ $ScriptPath = "." } 
 }
-
-
-$detectedtemplate = (Import-Csv -Delimiter $TEMPLATEDELIMITER -Path (-join($ScriptPath,"\",$TEMPLATE))  -Header "Name","00","01","02","03","04","05","06","07","08","09" | Format-Table)
-echo $detectedtemplate
- #>
 
 
 #========================================
@@ -710,13 +704,6 @@ $templates.Rows.Add("Astrid Special","info","orig","studio","trans","proof","to 
 $templates.Rows.Add("Acolad","info","orig","MemoQ","to client");
 $templates.Rows.Add("Production","info");
 $templates.Rows.Add("Pizza Margherita","Tomaten","Mozarrella","Basilikum","Oliven");
-
-# ## LOAD FROM CSV HERE
-#$datasource =  New-Object System.Windows.Forms.BindingSource 
-#$datasource.DataSource = $detectedtemplate 
-#$templates.DataSource = $datasource
-#exit
-
 
 
 $templates.Rows[0].Selected = $true #.Selected = $true
