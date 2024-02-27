@@ -68,70 +68,20 @@ else
 #========================================
 # Localization
 
-#function init_text
-#{
 
-    ### MAIN UI
-    [string]$text_projectname               = "Projekt bereit zum Abflug!"
-    [string]$text_doanalysis                = "Analyse machen ? (Langsam)"
-    [string]$text_opentrados                = "Trados?"
-
-    # Listview
-    [string]$text_loadfilesfrom             = 'Ausgangsdatei aus Quelle'
-    [string]$text_columns_Subject           = 'Betreff'
-    [string]$text_columns_Sendername        = 'Von'
-    [string]$text_columns_Attachments       = 'Dateien'
-    [string]$text_columns_time              = 'Ankunft'
-    [string]$text_from_Outlook              = "In Outlook"
-    [string]$text_from_Downloads            = "In Downloads"
-    [string]$text_nofilesource              = "Keine Ausgangsdatei"
-
-    # Datagridview, templates
-    [string]$text_usewhichtemplate          = 'Welche Projektvorlage soll verwendet werden?'
-    [string]$text_loadtemplate              = "Laden..."
-    [string]$text_help                      = "Hilfe"
-    [string]$text_OK                        = "Los!"
-    [string]$text_Cancel                    = "Nö"
-
-
-    ### Settings tab
-    [string]$text_settingstag                   = "Erweiterte Einstellungen" 
-    [string]$text_settings_ExplorerQuickAccess  = "Create a quick access shortcut in Explorer ?"
-    [string]$text_settings_OutlookFolder        = "Create a folder in Outlook ?"
-    [string]$text_settings_OpenExplorer         = "Open newly created folder when finished ?"
-    [string]$text_settings_Notify               = "Send a notification when done ?"
-    [string]$text_settings_helptitle            = "Help"
-    [string]$text_settings_getthedoc            = "Download latest manual version"
-    [string]$text_settings_askme                = "Ask me"
-    
-
-    ### ABOUT TAB
-    [string]$text_abouttab              = "Stella!" 
-    [string]$text_aboutsubtitle         = "Start new projects, but very very quickly !"
-    [string]$text_abouttext             = "Made with love by Stella, for Skrivanek GmbH
-
-I hope you find it useful !
-I am no developer, i studied economics, ive got no clue of those geek things.
-
-Version 2.0.somethingsomething
-2024 Stella Ménier, under GNU GPL v3"
-    [string]$text_about_button_repo     = "Project repo"
-    [string]$text_about_button_licence  = "Licence"
-    [string]$text_about_button_support  = "Support me!"
-#}
 
 #========================================
 # Defaults
 
 #function init_values {
-    [string]$default_filesfrom          = $text_from_Outlook
-    [string]$default_fromdisk           = "$env:USERPROFILE\Downloads\"
-    [bool]$default_opentrados           = $true
-    [bool]$default_createshortcut       = $true
-    [bool]$default_createoutlookfolder  = $true
-    [bool]$default_movesourcemail       = $true
-    [bool]$default_openexplorer         = $true
-    [bool]$default_notifywhenfinished   = $true
+    [string]$global:default_filesfrom          = $text_from_Outlook
+    [string]$global:default_fromdisk           = "$env:USERPROFILE\Downloads\"
+    [bool]$global:default_opentrados           = $true
+    [bool]$global:default_createshortcut       = $true
+    [bool]$global:default_createoutlookfolder  = $true
+    [bool]$global:default_movesourcemail       = $true
+    [bool]$global:default_openexplorer         = $true
+    [bool]$global:default_notifywhenfinished   = $true
 #}
 
 
@@ -152,6 +102,25 @@ Version 2.0.somethingsomething
 <# init_text
 init_values
 init_outlook_backend #>
+
+function load_template{
+    param (  
+        [System.Windows.Forms.DataGridView]$GRID,
+        [string]$FILE)
+    try {
+        $detectedtemplate = (Import-Csv -Delimiter $TEMPLATEDELIMITER -Path $FILE -Header "Name","00","01","02","03","04","05","06","07","08","09")
+        foreach ($row in $detectedtemplate)
+        {
+            [void]$GRID.Rows.Add($row."Name",$row."00",$row."01",$row."02",$row."03",$row."04",$row."05",$row."06",$row."07",$row."08",$row."09");
+        }
+    }
+    catch {
+        Write-Output "[ERROR] Cannot load templates, falling back to default"
+        $GRID.Rows.Add("Minimal","info","orig");
+    }
+    return $GRID
+
+}
 
 
 
@@ -657,14 +626,18 @@ $labeltemplate.Anchor                   = "Left,Top"
 
 
 $gui_browsetemplate                   = New-Object System.Windows.Forms.Button
-$gui_browsetemplate.Left              = ($form_leftalign + 480)
+$gui_browsetemplate.Left              = ($form_leftalign + 630)
 $gui_browsetemplate.Top               = 5
 $gui_browsetemplate.Size              = New-Object System.Drawing.Size(100,25)
 $gui_browsetemplate.Text              = $text_loadtemplate
 $gui_browsetemplate.Anchor            = "Right,Top"
-$gui_browsetemplate.add_click({
-    [System.Windows.Forms.MessageBox]::Show("Nein." , $APPNAME)
-})
+$gui_browsetemplate.add_click({ 
+    $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog -Property @{
+                                                                                InitialDirectory = [Environment]::GetFolderPath('Desktop')
+                                                                            }
+    $file = $FileBrowser.ShowDialog()    
+    $templates = load_template $templates $file
+    $templates.Refresh()})
 
 $templates                          = New-Object System.Windows.Forms.DataGridView
 $templates.Location                 = New-Object System.Drawing.Point($form_leftalign,30)
@@ -679,34 +652,26 @@ $templates.SelectionMode            = "FullRowSelect"
 $templates.RowHeadersVisible        = $false
 $templates.MultiSelect              = $false
 $templates.AllowUserToResizeRows    = $false
-
-
-
 $templates.ColumnCount = 10
 $templates.AutoGenerateColumns = $true
-[int]$folder_spacing = 80
 
+[int]$folder_spacing = 80
 $templates.Columns[0].Name = "Vorlage"
 $templates.Columns[0].Width = 120
-
-
 for ($i=1; $i -lt $templates.ColumnCount ; $i++)
 {
     $templates.Columns[$i].Name = -join("0",$i)
     $templates.Columns[$i].Width = $folder_spacing
 }
 
-try {
-    $detectedtemplate = (Import-Csv -Delimiter $TEMPLATEDELIMITER -Path (-join($ScriptPath,"\",$TEMPLATE))  -Header "Name","00","01","02","03","04","05","06","07","08","09")
-    foreach ($row in $detectedtemplate)
-    {
-        $templates.Rows.Add($row."Name",$row."00",$row."01",$row."02",$row."03",$row."04",$row."05",$row."06",$row."07",$row."08",$row."09");
-    }
-}
-catch {
-    Write-Output "[ERROR] Cannot load templates, falling back to default"
-    $templates.Rows.Add("Minimal","info","orig");
-}
+
+#$templatefile = -join($ScriptPath,"\",$TEMPLATE)
+#$templates = load_template $templates $templatefile
+
+$templates.Rows.Add("Minimal","info","orig");
+$templates.Rows.Add("Standard TEP","info","orig","trados","to trans","from trans","to proof","from proof","to client")
+$templates.Rows.Add("Full TEP","info","orig","to TEP","from TEP","To client")
+$templates.Rows.Add("Acolad","info","orig","MemoQ","To client")
 
 $templates.Rows[0].Selected = $true #.Selected = $true
 
@@ -725,13 +690,8 @@ $Split.Orientation                  = "Horizontal"
 $Split.BackColor                    = "LightBlue"
 $Split.SplitterDistance             = 190
 
-#$form.Controls.Add($panel_template)
-#$form.Controls.Add($panel_sourcefile)
-
-
 $Split.Panel1.Controls.Add($panel_sourcefile)
 $Split.Panel2.Controls.Add($panel_template)
-
 $form.Controls.Add($Split)
 
 
