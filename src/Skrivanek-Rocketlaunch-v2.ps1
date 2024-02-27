@@ -50,6 +50,26 @@ Write-Output "[STARTUP] Getting all variables in place"
 [regex]$CODEPATTERN         = -join($YEAR,"-[0-9]")
 [string]$YEAR               = get-date –f yyyy
 
+[string]$TEMPLATE               = "vorlagen.csv"
+[string]$TEMPLATEDELIMITER               = ";"
+
+
+
+<# if ($MyInvocation.MyCommand.CommandType -eq "ExternalScript")
+{ 
+   $ScriptPath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition 
+}
+else
+{ 
+   $ScriptPath = Split-Path -Parent -Path ([Environment]::GetCommandLineArgs()[0]) 
+   if (!$ScriptPath){ $ScriptPath = "." } 
+}
+
+
+$detectedtemplate = (Import-Csv -Delimiter $TEMPLATEDELIMITER -Path (-join($ScriptPath,"\",$TEMPLATE))  -Header "Name","00","01","02","03","04","05","06","07","08","09" | Format-Table)
+echo $detectedtemplate
+ #>
+
 
 #========================================
 # Localization
@@ -101,7 +121,7 @@ I am no developer, i studied economics, ive got no clue of those geek things.
 Version 2.0.somethingsomething
 2024 Stella Ménier, under GNU GPL v3"
     [string]$text_about_button_repo     = "Project repo"
-    [string]$text_about_button_licence  = "GNU GPL v3"
+    [string]$text_about_button_licence  = "Licence"
     [string]$text_about_button_support  = "Support me!"
 #}
 
@@ -410,12 +430,12 @@ Add-Type -AssemblyName System.Drawing
 
 
 [int]$form_leftalign = 15
-[int]$form_verticalalign = 500
+[int]$form_verticalalign = 600
 
 
 $form                   = New-Object System.Windows.Forms.Form
 $form.Text              = $APPNAME
-$form.Size              = New-Object System.Drawing.Size(625,($form_verticalalign + 85 ))
+$form.Size              = New-Object System.Drawing.Size(825,($form_verticalalign + 85 ))
 $form.MinimumSize       = New-Object System.Drawing.Size(500,($form_verticalalign + 40 ))
 #$form.MaximumSize       = New-Object System.Drawing.Size(750,550)
 #$form.AutoSize          = $true
@@ -492,9 +512,9 @@ else
 #= SOURCE FILES    =
 
 $panel_sourcefile = New-Object System.Windows.Forms.Panel
-$panel_sourcefile.Width         = 625
-$panel_sourcefile.Height        = 50
-$panel_sourcefile.Top           = 10
+$panel_sourcefile.Width         = 825
+$panel_sourcefile.Top           = 25
+$panel_sourcefile.Height        = 200
 $panel_sourcefile.Left          = 0
 $panel_sourcefile.BackColor     = "White" #'Green'
 $panel_sourcefile.Dock          = "Fill"
@@ -507,7 +527,7 @@ $labelsourcefiles.Text             = $text_loadfilesfrom
 $labelsourcefiles.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
 
 $gui_filesource                 = New-Object System.Windows.Forms.Combobox
-$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 440),5)
+$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 640),5)
 $gui_filesource.Size            = New-Object System.Drawing.Size(140,20)
 $gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 $gui_filesource.Anchor          = "Top,Right"
@@ -520,9 +540,9 @@ $gui_filesource.SelectedItem = $default_filesfrom
 ## Configure the ListView
 $sourcefiles                        = New-Object System.Windows.Forms.ListView
 $sourcefiles.Location               = New-Object System.Drawing.Size($form_leftalign,30) 
-$sourcefiles.Size                   = New-Object System.Drawing.Size(580,10) 
-$sourcefiles.Width                  = 580 #$form.ClientRectangle.Width
-$sourcefiles.Height                 = 10 # $Form.ClientRectangle.Height
+$sourcefiles.Size                   = New-Object System.Drawing.Size(580,160) 
+$sourcefiles.Width                  = 780 #$form.ClientRectangle.Width
+$sourcefiles.Height                 = 160 # $Form.ClientRectangle.Height
 $sourcefiles.FullRowSelect          = $True
 $sourcefiles.HideSelection          = $false
 $sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
@@ -614,9 +634,9 @@ $panel_sourcefile.Show()
 #= LIST OF TEMPLATES =
 
 $panel_template                         = New-Object System.Windows.Forms.Panel
-$panel_template.Width                   = 625
-$panel_template.Height                  = 260
-$panel_template.Top                     = 300
+$panel_template.Width                   = 825
+$panel_template.Height                  = 100
+$panel_template.Top                     = 260
 $panel_template.Left                    = 0
 $panel_template.BackColor               = "White" #'Red'
 #$panel_template.Anchor = "Left,Right,Top,Bottom"
@@ -648,49 +668,60 @@ $gui_browsetemplate.add_click({
 
 $templates                          = New-Object System.Windows.Forms.DataGridView
 $templates.Location                 = New-Object System.Drawing.Point($form_leftalign,30)
-$templates.Size                     = New-Object System.Drawing.Size(580,230)
+$templates.Size                     = New-Object System.Drawing.Size(780,70)
 $templates.AutoResizeColumns(2)
 $templates.Anchor                   = "Left,Right,Top,Bottom"
 $templates.BackgroundColor          = "White"
-$templates.GridColor                = "LightBlue"
+#$templates.GridColor                = "LightBlue"
+$templates.GridColor                = "White"
 $templates.CellBorderStyle          = "SingleHorizontal"
 $templates.SelectionMode            = "FullRowSelect"
 $templates.RowHeadersVisible        = $false
 $templates.MultiSelect              = $false
+$templates.AllowUserToResizeRows    = $false
+
+
 
 $templates.ColumnCount = 10
+$templates.AutoGenerateColumns = $true
 [int]$folder_spacing = 75
 
 $templates.Columns[0].Name = "Vorlage"
-$templates.Columns[0].Width = 140
+$templates.Columns[0].Width = 120
+for ($i=1; $i -lt $templates.ColumnCount ; $i++)
+{
+    $templates.Columns[$i].Name = -join("0",$i)
+    $templates.Columns[$i].Width = $folder_spacing
+}
 
-$templates.Columns[1].Name = "00"
-$templates.Columns[1].Width = $folder_spacing
-$templates.Columns[2].Name = "00"
-$templates.Columns[2].Width = $folder_spacing
-$templates.Columns[3].Name = "00"
-$templates.Columns[3].Width = $folder_spacing
-$templates.Columns[4].Name = "00"
-$templates.Columns[4].Width = $folder_spacing
-$templates.Columns[5].Name = "00"
-$templates.Columns[5].Width = $folder_spacing
-$templates.Columns[6].Name = "00"
-$templates.Columns[6].Width = $folder_spacing
-$templates.Columns[7].Name = "00"
-$templates.Columns[7].Width = $folder_spacing
+
+$templates.Rows.Add("Minimal","info","orig");
+$templates.Rows.Add("Standard TEP","info","orig","trados","to trans","from trans","to proof","from proof","to client");
+$templates.Rows.Add("Full TEP","info","orig","trados","to TEP","from TEP","to client");
+$templates.Rows.Add("Nür Überprüfung","info","orig","corrected","to client");
+$templates.Rows.Add("Sworn Translation","info","orig","to client");
+$templates.Rows.Add("Astrid Special","info","orig","studio","trans","proof","to client");
+$templates.Rows.Add("Acolad","info","orig","MemoQ","to client");
+$templates.Rows.Add("Production","info");
+$templates.Rows.Add("Pizza Margherita","Tomaten","Mozarrella","Basilikum","Oliven");
+
+
+
 
 
 # ## LOAD FROM CSV HERE
+#$datasource =  New-Object System.Windows.Forms.BindingSource 
+#$datasource.DataSource = $detectedtemplate 
+#$templates.DataSource = $datasource
+#exit
 
-$templates.Rows.Add("Minimal","info","orig");
-#$templates.Rows[0].HeaderCell.Value = "Minimal"
 
-$templates.Rows[0].Selected = $true
 
+$templates.Rows[0].Selected = $true #.Selected = $true
 
 
 $panel_template.Controls.Add($labeltemplate)
-$panel_template.Controls.Add($gui_browsetemplate)
+#$panel_template.Controls.Add($gui_browsetemplate)
 $panel_template.Controls.Add($templates)
 $panel_template.Show()
 
@@ -702,10 +733,11 @@ $panel_template.Show()
 $Split = New-Object System.Windows.Forms.SplitContainer
 $Split.Anchor                       = "Left,Bottom,Top,Right"
 $Split.Top                          = 90
-$Split.Height                       = ($form_verticalalign - 100)
-$Split.Width                        = 625
+$Split.Height                       = ($form_verticalalign - 100 )
+$Split.Width                        = 825
 $Split.Orientation                  = "Horizontal"
-$Split.BackColor                  = "LightBlue"
+#$Split.BackColor                    = "LightBlue"
+$Split.SplitterDistance             = 190
 
 #$form.Controls.Add($panel_template)
 #$form.Controls.Add($panel_sourcefile)
@@ -723,7 +755,7 @@ $form.Controls.Add($Split)
 $gui_panel = New-Object System.Windows.Forms.Panel
 $gui_panel.Left = 0
 $gui_panel.Top = ($form_verticalalign)
-$gui_panel.Width = 625
+$gui_panel.Width = 825
 $gui_panel.Height = 50
 $gui_panel.BackColor = '241,241,241'
 $gui_panel.Anchor = "Left,Bottom,Right"
@@ -750,7 +782,7 @@ $CheckIfTrados.Anchor           = "Top,Left"
 
 
 $gui_okButton                               = New-Object System.Windows.Forms.Button
-$gui_okButton.Location                      = New-Object System.Drawing.Point(($form_leftalign + 330),10)
+$gui_okButton.Location                      = New-Object System.Drawing.Point(($form_leftalign + 530),10)
 $gui_okButton.Size                          = New-Object System.Drawing.Size(120,25)
 $gui_okButton.Text                          = $text_OK
 $gui_okButton.UseVisualStyleBackColor       = $True
@@ -762,7 +794,7 @@ $form.AcceptButton                          = $gui_okButton
 #[void]$form.Controls.Add($gui_okButton)
 
 $gui_cancelButton                           = New-Object System.Windows.Forms.Button
-$gui_cancelButton.Location                  = New-Object System.Drawing.Point(($form_leftalign + 460),10)
+$gui_cancelButton.Location                  = New-Object System.Drawing.Point(($form_leftalign + 660),10)
 $gui_cancelButton.Size                      = New-Object System.Drawing.Size(120,25)
 $gui_cancelButton.Text                      = $text_Cancel
 $gui_cancelButton.UseVisualStyleBackColor   = $True

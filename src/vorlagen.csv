@@ -1,8 +1,9 @@
-﻿Minimal;info;01_orig;;;;;;
-Translation, Editing, Proofreading;info;01_orig;02_trados;03_to trans;04_from trans;05_to proof;06_from proof;07_to client
-TEP + In-House Check;info;01_orig;02_trados;03_to TEP;04_from TEP;05_to client;;
-Sworn Translation;info;01_orig;02_to client;;;;;
-Nur Proofreading;info;01_orig;02_to proof;03_to client;;;;
-MemoQ;info;01_orig;02_MemoQ;03_to client;;;;
+﻿Minimal;info;orig;;;;;;
+Standard TEP;info;orig;trados;to trans;from trans;to proof;from proof;to client
+TEP;info;orig;trados;to TEP;from TEP;to client;;
+Sworn Translation;info;orig;to client;;;;;
+Nur Proofreading;info;orig;to proof;to client;;;;
+MemoQ;info;orig;MemoQ;to client;;;;
 Production;info;;;;;;;
-Astrid Style;info;01_orig;02_trados;03_trans;04_proof;05_to client;;
+Astrid Style;info;orig;trados;trans;proof;to client;;
+Pizza Margherita;Tomatensauce;Mozzarella;Basilikum;OlivenÖl;;;;
