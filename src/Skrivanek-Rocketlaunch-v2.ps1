@@ -74,7 +74,7 @@ init_text
 init_defaults
 
 Import-Module $ScriptPath/internals.ps1
-init_outlook_backend
+#init_outlook_backend
 
 
 #==========================================
@@ -758,57 +758,6 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
         $newname = -join($DIRCODE,"_",$file.BaseName,"_orig",$file.Extension)
         Write-Output "[RENAME] As $newname"
         Rename-Item -Path $file.FullName -Newname "$newname"
-
-        
-        <# # ONLY IF ANALYSIS WISHED
-        if ($CheckIfAnalysis.CheckState.ToString() -eq "Checked")
-        {
-            # Use different backend depending on what needed
-            # Each time, check the extension to know what we deal with
-            if ("$newname" -match ".[doc|docx]" )
-            {
-                # OPEN IN WORD, PROCESS COUNT
-                $filecontent = $word.Documents.Open("$ORIG\$newname")
-                [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Word.WdStatistic]::wdStatisticWords)
-            }
-            elseif ("$newname" -match ".[xls|xlsx]" )
-            {
-                # OPEN IN EXCEL, PROCESS COUNT
-                $filecontent = $excel.Documents.Open("$ORIG\$newname")
-                [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Excel.WdStatistic]::wdStatisticWords)
-            }
-            elseif ("$newname" -match ".[ppt|pptx]" )
-            {
-                # OPEN IN POWRPOINT, PROCESS COUNT
-                $filecontent = $powerpoint.Documents.Open("$ORIG\$newname")
-                [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Powerpoint.WdStatistic]::wdStatisticWords)
-            }
-            elseif ("$newname" -match ".pdf" )
-            {
-                # COUNT WORDS IN PDF FILE
-                [int]$wordcount = (Get-Content "$ORIG\$newname" | Measure-Object –Word).Words
-            }
-
-            elseif ("$newname" -match ".[txt|csv]" )
-            {
-                # COUNT WORDS IN TXT FILE
-                [int]$wordcount = (Get-Content "$ORIG\$newname" | Measure-Object –Word).Words
-            }
-            else
-            {
-                # IDK
-                [int]$wordcount = 0
-            }
-        
-            # USE THE WORDCOUNT
-            [int]$totalcount += $wordcount
-            Write-Output "Wordcount: $wordcount"
-            Write-Output "$newname;$wordcount" | Out-File -FilePath "$INFO\$ANALYSIS" -Append 
-
-
-            #CLOSE FILE
-            $filecontent.Close()
-        } #>
 
     } # End of loop processing all source file
 
