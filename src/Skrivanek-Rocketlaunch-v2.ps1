@@ -7,17 +7,7 @@
 #
 # Usage: powershell.exe -executionpolicy bypass -file ".\Rocketlaunch.ps1"
 # Usage: Compiled form, just double-click.
-#
-#
-#----------------STEPS----------------
-#
-# Initialization
-# GUI
-# Processing Input
-# Build the project
-# Bonus
-#
-#-------------------------------------
+
 
 
 #===============================================
@@ -39,31 +29,12 @@ Write-Output ""
 
 
 #========================================
-# Get all important variables in place 
-
-Write-Output "[STARTUP] Getting all variables in place"
-[string]$APPNAME            = "-Rocketlaunch!"
-
-# Load templates from a csv in same place as executable
-#[string]$LOAD_TEMPLATES_FROM = $MyInvocation.MyCommand.Path
-[string]$ROOTSTRUCTURE      = "M:\9_JOBS_XTRF\"
-[regex]$CODEPATTERN         = -join($YEAR,"-[0-9]")
-[string]$YEAR               = get-date –f yyyy
-
-
-
 # Grab script location in a way that is compatible with PS2EXE
 if ($MyInvocation.MyCommand.CommandType -eq "ExternalScript")
-{ 
-    $global:ScriptPath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition 
-}
+    { $global:ScriptPath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition }
 else
-{ 
-    $global:ScriptPath = Split-Path -Parent -Path ([Environment]::GetCommandLineArgs()[0]) 
-    if (!$ScriptPath){ $global:ScriptPath = "." } 
-}
-
-
+    {$global:ScriptPath = Split-Path -Parent -Path ([Environment]::GetCommandLineArgs()[0]) 
+    if (!$ScriptPath){ $global:ScriptPath = "." } }
 
 
 #========================================
@@ -123,13 +94,17 @@ Import-Module $ScriptPath/ui.ps1
     
 
 
-# Add the ListView to the Form
+
+
+
+# If theres something, define a default selected
 try { 
     $sourcefiles.Items[0].Selected = $true 
 }
 catch {
     Write-Output "No mail with relevant attach !"
 }
+
 
 # We can pre-fill company name too !
 try { 
