@@ -17,20 +17,7 @@ $global:iconBytes = [Convert]::FromBase64String($iconBase64)
 
 # initialize a Memory stream holding the bytes
 $global:stream = [System.IO.MemoryStream]::new($iconBytes, 0, $iconBytes.Length)
-
 # This way we can draw icons without having any external file
-
-
-
-
-
-# Start outlook, grab the good shit
-
-#function init_outlook_backend
-#{
-
-
-
 
 function load_template{
     param (  
@@ -60,3 +47,7 @@ function get_company_name
         $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
         return [string]$attempt_at_companyname
 }
+
+
+
+

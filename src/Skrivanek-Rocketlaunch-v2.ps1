@@ -43,22 +43,6 @@ else
 # Catch: have at least first part of code
 Write-Output "[STARTUP] Dircode prediction"
 
-try
-{
-    # 
-    Set-Location $ROOTSTRUCTURE
-    Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)   
-    $PREDICT_CODE                =  (Get-ChildItem -Directory | Select-Object -Last 1).Name.Substring(5,4)
-    [int]$global:PREDICT_CODE                =  [int]$PREDICT_CODE + 1
-    [bool]$global:CODE_PREDICTED       = $true
-    #[string]$PREDICT_CODE   =  -join($YEAR,"-",$PREDICT_CODE,"_")
-    Write-Output "[PREDICTED] Next is $PREDICT_CODE"
-}
-catch
-{
-    [bool]$global:CODE_PREDICTED       = $false
-    #$PREDICT_CODE = -join($YEAR,"-")
-}
 
 
 
@@ -66,8 +50,6 @@ catch
 # Get all resources
 Import-Module $ScriptPath/text.ps1
 Import-Module $ScriptPath/defaults.ps1
-init_defaults
-
 Import-Module $ScriptPath/internals.ps1
 Import-Module $ScriptPath/ui.ps1 
 
@@ -82,7 +64,9 @@ Write-Output "[STARTUP] Outlook Capabilities"
 $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
 $ns                         = $OL.GETNAMESPACE("MAPI")
 $date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'
-$filter                     = "[ReceivedTime] >= '$date' And [FlagStatus] = 1"
+$filter                     = "[ReceivedTime] >= '$date'"
+
+#$filter                     = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"
 #$filter                     = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
 $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
 
@@ -136,28 +120,6 @@ try {
 catch {
     Write-Output "No mail with relevant attach !"
 }
-
-
-# We can pre-fill company name too !
-try { 
-
-    # If its an email, get the company name out of it
-    $allgoodmails.Item(0).SenderEmailAddress -match "@(?<content>).*"
-    $attempt_at_companyname         = $matches[0].trim("@").split(".")[0]
-    $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
-    [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
-    [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
-    [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
-    [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )
-}
-catch {
-    Write-Output "Messy email !"
-    [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_")
-    [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_")  
-    [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_")  
-    [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_")
-}
-    
 
 
 
