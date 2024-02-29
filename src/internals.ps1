@@ -35,19 +35,26 @@ function load_template{
         $GRID.Rows.Add("Minimal","info","orig");
     }
     return $GRID
+}
 
+function Get-CompanyName {
+    param([string]$mailadress)
+    $mailadress -match "@(?<content>).*"
+    $attempt_at_companyname         = $matches[0].trim("@").split(".")[0]
+    $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
+    return $attempt_at_companyname
 }
 
 
-function get_company_name
-{
-        param([string]$email)
-        [void]$email -match "@(?<content>).*"
-        $attempt_at_companyname         = $matches[0].trim("@").split(".")[0]
-        $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
-        return [string]$attempt_at_companyname
+
+function Predict-StructCode {
+ 
+    Set-Location $ROOTSTRUCTURE
+    Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)   
+    $PREDICT_CODE                               =  (Get-ChildItem -Directory | Select-Object -Last 1).Name.Substring(5,4)
+    [int]$PREDICT_CODE                   =  [int]$PREDICT_CODE + 1
+    [bool]$global:CODE_PREDICTED                = $true
+  
+    return $PREDICT_CODE
+    #$PREDICT_CODE = -join($YEAR,"-")
 }
-
-
-
-

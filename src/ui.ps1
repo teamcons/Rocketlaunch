@@ -265,6 +265,15 @@ $gui_year.Text             = -join($YEAR," -")
 $gui_year.Anchor           = "Left,Top"
 $GUI_Form_MainWindow.Controls.Add($gui_year)
 
+
+$global:gui_code                    = New-Object System.Windows.Forms.Combobox
+$gui_code.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 124),60)
+$gui_code.Size                      = New-Object System.Drawing.Size(250,30)    
+$GUI_Form_MainWindow.Controls.Add($gui_code)    
+$GUI_Form_MainWindow.Add_Shown({$gui_code.Select()})
+
+
+
 #===================
 #= SOURCE FILES    =
 
@@ -337,8 +346,6 @@ $labeltemplate.Size                     = New-Object System.Drawing.Size(300,20)
 $labeltemplate.MinimumSize              = New-Object System.Drawing.Size(300,20)
 $labeltemplate.MaximumSize              = New-Object System.Drawing.Size(300,20)
 $labeltemplate.Anchor                   = "Left,Top"
-
-
 
 $gui_browsetemplate                   = New-Object System.Windows.Forms.Button
 $gui_browsetemplate.Left              = ($GUI_Form_MainWindow_leftalign + 630)
@@ -482,91 +489,4 @@ $gui_panel.Show()
 
 
 
-
-
-
-
-
-
-# We can pre-fill company name too !
-try { 
-    # If its an email, get the company name out of it
-    $allgoodmails.Item(0).SenderEmailAddress -match "@(?<content>).*"
-    $attempt_at_companyname         = $matches[0].trim("@").split(".")[0]
-    $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
-}
-catch {
-    Write-Output "Messy email !"
-    $attempt_at_companyname         = ""
-}
-[string]$gui_code.Items.Add(-join($PREDICT_CODE,"_",$attempt_at_companyname ))
-[string]$gui_code.Items.Add(-join(($PREDICT_CODE + 1),"_",$attempt_at_companyname ))  
-[string]$gui_code.Items.Add(-join(($PREDICT_CODE + 2),"_",$attempt_at_companyname ) ) 
-[string]$gui_code.Items.Add(-join(($PREDICT_CODE + 3),"_",$attempt_at_companyname ))
-
-
-
-
-try
-{
-    # 
-    Set-Location $ROOTSTRUCTURE
-    Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)   
-    $PREDICT_CODE                               =  (Get-ChildItem -Directory | Select-Object -Last 1).Name.Substring(5,4)
-    [int]$global:PREDICT_CODE                   =  [int]$PREDICT_CODE + 1
-    [bool]$global:CODE_PREDICTED                = $true
-    #[string]$PREDICT_CODE   =  -join($YEAR,"-",$PREDICT_CODE,"_")
-    Write-Output "[PREDICTED] Next is $PREDICT_CODE"
-}
-catch
-{
-    [bool]$global:CODE_PREDICTED       = $false
-    #$PREDICT_CODE = -join($YEAR,"-")
-}
-
-
-
-
-
-# If we have a predicted code we have a numerical value and can offer next codes
-echo "CODE"
-$CODE_PREDICTED
-if ($CODE_PREDICTED -eq $true)
-{
-    $global:gui_code                 = New-Object System.Windows.Forms.Combobox
-    $gui_code.Location       = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 124),60)
-    $gui_code.Size           = New-Object System.Drawing.Size(250,30)    
-    [void] $gui_code.Items.Add( -join($PREDICT_CODE,"_") )  
-    [void] $gui_code.Items.Add( -join(($PREDICT_CODE + 1),"_") )  
-    [void] $gui_code.Items.Add( -join(($PREDICT_CODE + 2),"_") )  
-    [void] $gui_code.Items.Add( -join(($PREDICT_CODE + 3),"_") )  
-    $gui_code.SelectedItem = $gui_code.Items[0]
-    $GUI_Form_MainWindow.Controls.Add($gui_code)    
-    $GUI_Form_MainWindow.Add_Shown({$gui_code.Select()})
-}
-else
-{
-    $gui_code                = New-Object System.Windows.Forms.TextBox
-    $gui_code.Location       = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 123),60)
-    $gui_code.Size           = New-Object System.Drawing.Size(250,30)
-    $gui_code.Text           = ""
-    $GUI_Form_MainWindow.Controls.Add($gui_code)
-    $GUI_Form_MainWindow.Add_Shown({$gui_code.Select()})
-}
-
-# We can pre-fill company name too !
-try { 
-    # If its an email, get the company name out of it
-    $allgoodmails.Item(0).SenderEmailAddress -match "@(?<content>).*"
-    $attempt_at_companyname         = $matches[0].trim("@").split(".")[0]
-    $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
-}
-catch {
-    Write-Output "Messy email !"
-    $attempt_at_companyname         = ""
-}
-[string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
-[string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )
-[string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname ) 
-[string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )
 

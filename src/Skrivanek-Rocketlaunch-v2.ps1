@@ -65,15 +65,12 @@ $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
 $ns                         = $OL.GETNAMESPACE("MAPI")
 $date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'
 $filter                     = "[ReceivedTime] >= '$date'"
-
 #$filter                     = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"
 #$filter                     = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
 $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
 
 
 [bool]$StopSearching = $false
-
-
     $allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
 
     foreach ($mail in $allmails)
@@ -121,6 +118,30 @@ catch {
     Write-Output "No mail with relevant attach !"
 }
 
+
+
+
+# If we have a predicted code we have a numerical value and can offer next codes
+
+
+function Add-Info-To-Combobox{
+    param($combobox)
+
+    echo no
+
+}
+
+[int]$PREDICT_CODE = (Predict-StructCode)[-1] 
+[String]$FirstSelectionMail = (Get-CompanyName $allgoodmails.Item(0).SenderName)
+
+$PREDICT_CODE
+$FirstSelectionMail
+[string]$gui_code.Items.Add(-join($PREDICT_CODE,"_",$FirstSelectionMail ))
+[string]$gui_code.Items.Add(-join(($PREDICT_CODE + 1),"_",$FirstSelectionMail ))  
+[string]$gui_code.Items.Add(-join(($PREDICT_CODE + 2),"_",$FirstSelectionMail ) ) 
+[string]$gui_code.Items.Add(-join(($PREDICT_CODE + 3),"_",$FirstSelectionMail ))
+
+$gui_code.SelectedItem = $gui_code.Items[0]
 
 
 
