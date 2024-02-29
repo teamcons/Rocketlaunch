@@ -51,13 +51,7 @@ Write-Output "[STARTUP] Dircode prediction"
 
 #function init_outlook_backend
 #{
-    Write-Output "[STARTUP] Outlook Capabilities"
-    $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
-    $ns                         = $OL.GETNAMESPACE("MAPI")
-    $date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'
-    $filter                     = "[ReceivedTime] >= '$date'"
-    $global:allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
-#}
+
 
 
 

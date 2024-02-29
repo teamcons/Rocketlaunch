@@ -46,13 +46,22 @@ Import-Module $ScriptPath/ui.ps1
 
 
 
-#==============================================================
-#                GUI - Ask the Right Questions                =
-#==============================================================
-
 # Look for emails with attachments
 # For each email, we look attachments and count the ones with supported formats
 # We are not interested in junk like image001.jpg etc... which is signatures and stuff
+
+
+Write-Output "[STARTUP] Outlook Capabilities"
+$OL                         = New-Object -ComObject OUTLOOK.APPLICATION
+$ns                         = $OL.GETNAMESPACE("MAPI")
+$date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'
+$filter                     = "[ReceivedTime] >= '$date' And [FlagStatus] = 1"
+#$filter                     = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
+$allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
+
+
+[bool]$StopSearching = $false
+
 
     $allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
 
@@ -92,10 +101,6 @@ Import-Module $ScriptPath/ui.ps1
     } # End of looking for emails with attachments
     
     
-
-
-
-
 
 # If theres something, define a default selected
 try { 
