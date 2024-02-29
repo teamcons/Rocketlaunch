@@ -86,3 +86,12 @@ function load_template{
 }
 
 
+function get_company_name
+{
+        param([string]$email)
+        [void]$email -match "@(?<content>).*"
+        $attempt_at_companyname         = $matches[0].trim("@").split(".")[0]
+        $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
+
+        return [string]$attempt_at_companyname
+}

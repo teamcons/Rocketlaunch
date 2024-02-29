@@ -84,9 +84,9 @@ Import-Module $ScriptPath/ui.ps1
 # We are not interested in junk like image001.jpg etc... which is signatures and stuff
 
     $allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
+
     foreach ($mail in $allmails)
     {
-        echo $mail.SenderName
     
         [bool]$AddToGoodMails = $false
         [int]$CountGoodAttachments = 0
@@ -121,41 +121,47 @@ Import-Module $ScriptPath/ui.ps1
     } # End of looking for emails with attachments
     
     
-    #}
+
+
+# Add the ListView to the Form
+try { 
+    $sourcefiles.Items[0].Selected = $true 
+}
+catch {
+    Write-Output "No mail with relevant attach !"
+}
+
+# We can pre-fill company name too !
+try { 
+
+    # If its an email, get the company name out of it
+    $allgoodmails.Item(0).SenderEmailAddress -match "@(?<content>).*"
+    $attempt_at_companyname         = $matches[0].trim("@").split(".")[0]
+    $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
+    [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
+    [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
+    [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
+    [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )
+}
+catch {
+    Write-Output "Messy email !"
+    [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_")
+    [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_")  
+    [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_")  
+    [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_")
+}
     
-    
-    # Add the ListView to the Form
-    try { 
-        $sourcefiles.Items[0].Selected = $true 
-    }
-    catch {
-        Write-Output "No mail with relevant attach !"
-    }
-    
-    try { 
-        $allgoodmails.Item(0).SenderEmailAddress -match "@(?<content>.*).com"
-        
-        #$attempt_at_companyname         = $matches["content"]
-        $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
-        echo $attempt_at_companyname
-        [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
-        [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
-        [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
-        [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )
-    }
-    catch {
-        Write-Output "Messy email !"
-    }
-    
 
 
 
 
 
 
-#==============================================================
-#                     Processing Le input                     =
-#==============================================================
+    #==============================================================
+    #                                                             =
+    #                     Processing Le input                     =
+    #                                                             =
+    #==============================================================
 
 
 $result = $GUI_Form_MainWindow.ShowDialog()
