@@ -37,10 +37,37 @@ else
     if (!$ScriptPath){ $global:ScriptPath = "." } }
 
 
+    
+#==========================================
+# Try to predict what next number would be 
+# Catch: have at least first part of code
+Write-Output "[STARTUP] Dircode prediction"
+
+try
+{
+    # 
+    Set-Location $ROOTSTRUCTURE
+    Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)   
+    $PREDICT_CODE                =  (Get-ChildItem -Directory | Select-Object -Last 1).Name.Substring(5,4)
+    [int]$global:PREDICT_CODE                =  [int]$PREDICT_CODE + 1
+    [bool]$global:CODE_PREDICTED       = $true
+    #[string]$PREDICT_CODE   =  -join($YEAR,"-",$PREDICT_CODE,"_")
+    Write-Output "[PREDICTED] Next is $PREDICT_CODE"
+}
+catch
+{
+    [bool]$global:CODE_PREDICTED       = $false
+    #$PREDICT_CODE = -join($YEAR,"-")
+}
+
+
+
 #========================================
 # Get all resources
 Import-Module $ScriptPath/text.ps1
 Import-Module $ScriptPath/defaults.ps1
+init_defaults
+
 Import-Module $ScriptPath/internals.ps1
 Import-Module $ScriptPath/ui.ps1 
 

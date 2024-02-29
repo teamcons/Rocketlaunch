@@ -1,4 +1,4 @@
-
+﻿
         #===================================================
         #                GUI - About Dialog                =
         #===================================================
@@ -268,9 +268,9 @@ $GUI_Form_MainWindow.Controls.Add($gui_year)
 # If we have a predicted code we have a numerical value and can offer next codes
 if ($CODE_PREDICTED -eq $true)
 {
-    $gui_code                 = New-Object System.Windows.Forms.Combobox
+    $global:gui_code                 = New-Object System.Windows.Forms.Combobox
     $gui_code.Location       = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 124),60)
-    $gui_code.Size           = New-Object System.Drawing.Size(400,30)    
+    $gui_code.Size           = New-Object System.Drawing.Size(250,30)    
     [void] $gui_code.Items.Add( -join($PREDICT_CODE,"_") )  
     [void] $gui_code.Items.Add( -join(($PREDICT_CODE + 1),"_") )  
     [void] $gui_code.Items.Add( -join(($PREDICT_CODE + 2),"_") )  
@@ -283,7 +283,7 @@ else
 {
     $gui_code                = New-Object System.Windows.Forms.TextBox
     $gui_code.Location       = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 123),60)
-    $gui_code.Size           = New-Object System.Drawing.Size(400,30)
+    $gui_code.Size           = New-Object System.Drawing.Size(250,30)
     $gui_code.Text           = ""
     $GUI_Form_MainWindow.Controls.Add($gui_code)
     $GUI_Form_MainWindow.Add_Shown({$gui_code.Select()})

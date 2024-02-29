@@ -1,4 +1,4 @@
-
+﻿
     ### MAIN UI
     [string]$global:text_projectname               = "Projekt bereit zum Abflug!"
     [string]$global:text_doanalysis                = "Analyse machen ? (Langsam)"
