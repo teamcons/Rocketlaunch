@@ -1,5 +1,3 @@
-function init_text
-{
 
     ### MAIN UI
     [string]$global:text_projectname               = "Projekt bereit zum Abflug!"
@@ -48,4 +46,3 @@ Version 2.0.somethingsomething
     [string]$global:text_about_button_repo     = "Project repo"
     [string]$global:text_about_button_licence  = "Licence"
     [string]$global:text_about_button_support  = "Support me!"
-}

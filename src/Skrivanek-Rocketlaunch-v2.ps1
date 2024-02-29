@@ -50,104 +50,28 @@ Write-Output "[STARTUP] Getting all variables in place"
 [regex]$CODEPATTERN         = -join($YEAR,"-[0-9]")
 [string]$YEAR               = get-date –f yyyy
 
-[string]$TEMPLATE               = "vorlagen.csv"
-[string]$TEMPLATEDELIMITER               = ";"
 
 
+# Grab script location in a way that is compatible with PS2EXE
 if ($MyInvocation.MyCommand.CommandType -eq "ExternalScript")
 { 
-   $ScriptPath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition 
+    $global:ScriptPath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition 
 }
 else
 { 
-   $ScriptPath = Split-Path -Parent -Path ([Environment]::GetCommandLineArgs()[0]) 
-   if (!$ScriptPath){ $ScriptPath = "." } 
+    $global:ScriptPath = Split-Path -Parent -Path ([Environment]::GetCommandLineArgs()[0]) 
+    if (!$ScriptPath){ $global:ScriptPath = "." } 
 }
+
+
 
 
 #========================================
-# Localization
+# Get all resources
 Import-Module $ScriptPath/text.ps1
 Import-Module $ScriptPath/defaults.ps1
-
-init_text
-init_defaults
-
 Import-Module $ScriptPath/internals.ps1
-#init_outlook_backend
-
-
-#==========================================
-# Try to predict what next number would be 
-# Catch: have at least first part of code
-
-
-    Write-Output "[STARTUP] Dircode prediction"
-    try
-    {
-        # 
-        Set-Location $ROOTSTRUCTURE
-        Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)   
-        $PREDICT_CODE                =  (Get-ChildItem -Directory | Select-Object -Last 1).Name.Substring(5,4)
-        [int]$PREDICT_CODE                =  [int]$PREDICT_CODE + 1
-        [bool]$CODE_PREDICTED       = $true
-        #[string]$PREDICT_CODE   =  -join($YEAR,"-",$PREDICT_CODE,"_")
-        Write-Output "[PREDICTED] Next is $PREDICT_CODE"
-    }
-    catch
-    {
-        [bool]$CODE_PREDICTED       = $false
-        #$PREDICT_CODE = -join($YEAR,"-")
-    }
-
-
-#==============================================================================================================================================================================
-#                GUI - About Dialog                =
-#===================================================
-
-#function init_outlook_backend
-#{
-    Write-Output "[STARTUP] Outlook Capabilities"
-    $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
-    $ns                         = $OL.GETNAMESPACE("MAPI")
-    $date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'
-    $filter                     = "[ReceivedTime] >= '$date'"
-    $global:allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
-#}
-
-function load_template{
-    param (  
-        [System.Windows.Forms.DataGridView]$GRID,
-        [string]$FILE)
-    try {
-        $detectedtemplate = (Import-Csv -Delimiter $TEMPLATEDELIMITER -Path $FILE -Header "Name","00","01","02","03","04","05","06","07","08","09")
-        foreach ($row in $detectedtemplate)
-        {
-            [void]$GRID.Rows.Add($row."Name",$row."00",$row."01",$row."02",$row."03",$row."04",$row."05",$row."06",$row."07",$row."08",$row."09");
-        }
-    }
-    catch {
-        Write-Output "[ERROR] Cannot load templates, falling back to default"
-        $GRID.Rows.Add("Minimal","info","orig");
-    }
-    return $GRID
-
-}
-
-
-
-#================
-#= INITIAL WORK =
-
-
-# Imports
-Add-Type -AssemblyName System.Windows.Forms
-Add-Type -AssemblyName System.Drawing
-[void] [System.Windows.Forms.Application]::EnableVisualStyles() 
-
-Import-Module $ScriptPath/ui.ps1 #-Prefix "Gui"
-$GUI_Form_MoreStuff = build_about_gui
-
+Import-Module $ScriptPath/ui.ps1 
 
 
 
@@ -155,394 +79,86 @@ $GUI_Form_MoreStuff = build_about_gui
 #                GUI - Ask the Right Questions                =
 #==============================================================
 
-
-
-#================
-#= INITIAL WORK =
-
-
-# Imports
-Add-Type -AssemblyName System.Windows.Forms
-Add-Type -AssemblyName System.Drawing
-[void] [System.Windows.Forms.Application]::EnableVisualStyles() 
-
-
-[int]$form_leftalign = 15
-[int]$form_verticalalign = 600
-
-
-$form                   = New-Object System.Windows.Forms.Form
-$form.Text              = $APPNAME
-$form.Size              = New-Object System.Drawing.Size(775,($form_verticalalign + 85 ))
-$form.MinimumSize       = New-Object System.Drawing.Size(500,180)
-#$form.MaximumSize       = New-Object System.Drawing.Size(750,550)
-#$form.AutoSize          = $true
-#$form.AutoScale         = $true
-$form.Font              = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
-$form.StartPosition     = 'CenterScreen'
-#$form.FormBorderStyle   = 'FixedDialog'
-$form.Topmost           = $True
-$form.BackColor         = "White"
-$form.Icon              = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
-
-#==============
-#= INPUT TEXT =
-
-# FANCY ICON
-$pictureBox             = new-object Windows.Forms.PictureBox
-$pictureBox.Location    = New-Object System.Drawing.Point($form_leftalign,15)
-$pictureBox.Anchor      = "Left,Top"
-$img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
-$pictureBox.Width       = 64
-$pictureBox.Height      = 64
-$pictureBox.Image       = $img;
-$form.controls.add($pictureBox)
-
-# LABEL AND TEXT
-# Label above input
-$label                  = New-Object System.Windows.Forms.Label
-$label.Location         = New-Object System.Drawing.Point(($form_leftalign + 80),25)
-$label.Size             = New-Object System.Drawing.Size(300,30)
-$label.AutoSize         = $true
-$label.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 14, [System.Drawing.FontStyle]::Bold)
-$label.Text             = $text_projectname
-$label.Anchor           = "Left,Top"
-$form.Controls.Add($label)
-
-# Input box
-$gui_year                  = New-Object System.Windows.Forms.Label
-$gui_year.Location         = New-Object System.Drawing.Point(($form_leftalign + 80),63)
-$gui_year.Size             = New-Object System.Drawing.Size(20,20)
-$gui_year.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
-$gui_year.AutoSize         = $true
-$gui_year.Text             = -join($YEAR," -")
-$gui_year.Anchor           = "Left,Top"
-$form.Controls.Add($gui_year)
-
-# If we have a predicted code we have a numerical value and can offer next codes
-if ($CODE_PREDICTED -eq $true)
-{
-    $gui_code                 = New-Object System.Windows.Forms.Combobox
-    $gui_code.Location       = New-Object System.Drawing.Point(($form_leftalign + 124),60)
-    $gui_code.Size           = New-Object System.Drawing.Size(170,30)    
-    [void] $gui_code.Items.Add( -join($PREDICT_CODE,"_") )  
-    [void] $gui_code.Items.Add( -join(($PREDICT_CODE + 1),"_") )  
-    [void] $gui_code.Items.Add( -join(($PREDICT_CODE + 2),"_") )  
-    [void] $gui_code.Items.Add( -join(($PREDICT_CODE + 3),"_") )  
-    $gui_code.SelectedItem = $gui_code.Items[0]
-    $form.Controls.Add($gui_code)    
-    $form.Add_Shown({$gui_code.Select()})
-}
-else
-{
-    $gui_code                = New-Object System.Windows.Forms.TextBox
-    $gui_code.Location       = New-Object System.Drawing.Point(($form_leftalign + 123),60)
-    $gui_code.Size           = New-Object System.Drawing.Size(170,30)
-    $gui_code.Text           = ""
-    $form.Controls.Add($gui_code)
-    $form.Add_Shown({$gui_code.Select()})
-}
-
-
-#===================
-#= SOURCE FILES    =
-
-$panel_sourcefile = New-Object System.Windows.Forms.Panel
-$panel_sourcefile.Width         = 775
-$panel_sourcefile.Top           = 25
-$panel_sourcefile.Height        = 200
-$panel_sourcefile.Left          = 0
-$panel_sourcefile.BackColor     = "White" #'Green'
-$panel_sourcefile.Dock          = "Fill"
-
-# Label above input
-$labelsourcefiles                  = New-Object System.Windows.Forms.Label
-$labelsourcefiles.Location         = New-Object System.Drawing.Point($form_leftalign,10)
-$labelsourcefiles.Size             = New-Object System.Drawing.Size(240,20)
-$labelsourcefiles.Text             = $text_loadfilesfrom
-$labelsourcefiles.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
-
-$gui_filesource                 = New-Object System.Windows.Forms.Combobox
-$gui_filesource.Location        = New-Object System.Drawing.Point(($form_leftalign + 590),5)
-$gui_filesource.Size            = New-Object System.Drawing.Size(140,20)
-$gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
-$gui_filesource.Anchor          = "Top,Right"
-[void] $gui_filesource.Items.Add($text_from_Outlook) 
-[void] $gui_filesource.Items.Add($text_from_Downloads)   
-[void] $gui_filesource.Items.Add($text_nofilesource)  
-
-$gui_filesource.SelectedItem = $default_filesfrom
-
-## Configure the ListView
-$sourcefiles                        = New-Object System.Windows.Forms.ListView
-$sourcefiles.Location               = New-Object System.Drawing.Size($form_leftalign,30) 
-$sourcefiles.Size                   = New-Object System.Drawing.Size(730,160) 
-$sourcefiles.FullRowSelect          = $True
-$sourcefiles.HideSelection          = $false
-$sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
-$sourcefiles.View                   = [System.Windows.Forms.View]::Details
-
-[void]$sourcefiles.Columns.Add($text_columns_Subject,300)
-[void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
-[void]$sourcefiles.Columns.Add($text_columns_Attachments,70)
-[void]$sourcefiles.Columns.Add($text_columns_time,100)
-
-
 # Look for emails with attachments
 # For each email, we look attachments and count the ones with supported formats
 # We are not interested in junk like image001.jpg etc... which is signatures and stuff
 
-#workflow superfast
-#{
-
-
-$allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
-foreach ($mail in $allmails)
-{
-    echo $mail.SenderName
-
-    [bool]$AddToGoodMails = $false
-    [int]$CountGoodAttachments = 0
-    foreach ( $attach in $mail.Attachments ) 
+    $allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
+    foreach ($mail in $allmails)
     {
-        #echo $attach.FileName
-        if ($attach.FileName -match  ".(pdf|doc|docx|xls|xlsx|ppt|pptx|xml|idml|csv|txt|zip)" )
-        {
-            echo (-join("MATCH:",$attach.FileName))
-            $AddToGoodMails = $true
-            [int]$CountGoodAttachments += 1
-
-        }   # End of each mails
-        #else {echo (-join("NOTMATCH:",$attach.FileName)) }  
-    } #End of checking attachments
-
-    # we found one with attachment !
-    if ($AddToGoodMails -eq $true)
-    {
-        # Currently observed one is a good one
-        $allgoodmails.Add($mail)
-
-        # Add to da list
-        $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($mail.Subject)
-        [void]$sourcefilesItem.Subitems.Add($mail.SenderName)
-        [void]$sourcefilesItem.Subitems.Add($CountGoodAttachments)
-        [void]$sourcefilesItem.Subitems.Add($mail.ReceivedTime.ToString("HH:mm"))
-        [void]$sourcefiles.Items.Add($sourcefilesItem)
-        $goodmailindex += 1
-    } # End of adding goodmail
-
-} # End of looking for emails with attachments
-
-
-#}
-
-
-# Add the ListView to the Form
-try { 
-    $sourcefiles.Items[0].Selected = $true 
-}
-catch {
-    Write-Output "No mail with relevant attach !"
-}
-
-try { 
-    $allgoodmails.Item(0).SenderEmailAddress -match "@(?<content>.*).com"
+        echo $mail.SenderName
     
-    #$attempt_at_companyname         = $matches["content"]
-    $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
-    echo $attempt_at_companyname
-    [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
-    [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
-    [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
-    [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )
-}
-catch {
-    Write-Output "Messy email !"
-}
+        [bool]$AddToGoodMails = $false
+        [int]$CountGoodAttachments = 0
+        foreach ( $attach in $mail.Attachments ) 
+        {
+            #echo $attach.FileName
+            if ($attach.FileName -match  ".(pdf|doc|docx|xls|xlsx|ppt|pptx|xml|idml|csv|txt|zip)" )
+            {
+                echo (-join("MATCH:",$attach.FileName))
+                $AddToGoodMails = $true
+                [int]$CountGoodAttachments += 1
+    
+            }   # End of each mails
+            #else {echo (-join("NOTMATCH:",$attach.FileName)) }  
+        } #End of checking attachments
+    
+        # we found one with attachment !
+        if ($AddToGoodMails -eq $true)
+        {
+            # Currently observed one is a good one
+            $allgoodmails.Add($mail)
+    
+            # Add to da list
+            $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($mail.Subject)
+            [void]$sourcefilesItem.Subitems.Add($mail.SenderName)
+            [void]$sourcefilesItem.Subitems.Add($CountGoodAttachments)
+            [void]$sourcefilesItem.Subitems.Add($mail.ReceivedTime.ToString("HH:mm"))
+            [void]$sourcefiles.Items.Add($sourcefilesItem)
+            $goodmailindex += 1
+        } # End of adding goodmail
+    
+    } # End of looking for emails with attachments
+    
+    
+    #}
+    
+    
+    # Add the ListView to the Form
+    try { 
+        $sourcefiles.Items[0].Selected = $true 
+    }
+    catch {
+        Write-Output "No mail with relevant attach !"
+    }
+    
+    try { 
+        $allgoodmails.Item(0).SenderEmailAddress -match "@(?<content>.*).com"
+        
+        #$attempt_at_companyname         = $matches["content"]
+        $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
+        echo $attempt_at_companyname
+        [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$attempt_at_companyname )
+        [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$attempt_at_companyname )  
+        [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$attempt_at_companyname )  
+        [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$attempt_at_companyname )
+    }
+    catch {
+        Write-Output "Messy email !"
+    }
+    
 
 
 
 
 
-$panel_sourcefile.Controls.Add($labelsourcefiles)
-$panel_sourcefile.Controls.Add($gui_filesource)
-$panel_sourcefile.Controls.Add($sourcefiles)
-$panel_sourcefile.Show()
 
-#$form.Controls.Add($labelsourcefiles)
-#$form.Controls.Add($gui_filesource)
-#$form.Controls.Add($sourcefiles)
+#==============================================================
+#                     Processing Le input                     =
+#==============================================================
 
 
-
-
-#=====================
-#= LIST OF TEMPLATES =
-
-$panel_template                         = New-Object System.Windows.Forms.Panel
-$panel_template.Width                   = 775
-$panel_template.Height                  = 100
-$panel_template.Top                     = 260
-$panel_template.Left                    = 0
-$panel_template.BackColor               = "White" #'Red'
-$panel_template.Dock = "Fill"
-
-
-# Label and button
-$labeltemplate                          = New-Object System.Windows.Forms.Label
-$labeltemplate.Text                     = $text_usewhichtemplate
-$labeltemplate.Font                     = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
-$labeltemplate.Left                     = $form_leftalign
-$labeltemplate.Top                      = 10
-$labeltemplate.Size                     = New-Object System.Drawing.Size(300,20)
-$labeltemplate.MinimumSize              = New-Object System.Drawing.Size(300,20)
-$labeltemplate.MaximumSize              = New-Object System.Drawing.Size(300,20)
-$labeltemplate.Anchor                   = "Left,Top"
-
-
-
-$gui_browsetemplate                   = New-Object System.Windows.Forms.Button
-$gui_browsetemplate.Left              = ($form_leftalign + 630)
-$gui_browsetemplate.Top               = 5
-$gui_browsetemplate.Size              = New-Object System.Drawing.Size(100,25)
-$gui_browsetemplate.Text              = $text_loadtemplate
-$gui_browsetemplate.Anchor            = "Right,Top"
-$gui_browsetemplate.add_click({ 
-    $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog -Property @{
-                                                                                InitialDirectory = [Environment]::GetFolderPath('Desktop')
-                                                                            }
-    $file = $FileBrowser.ShowDialog()    
-    $templates = load_template $templates $file
-    $templates.Refresh()})
-
-$templates                          = New-Object System.Windows.Forms.DataGridView
-$templates.Location                 = New-Object System.Drawing.Point($form_leftalign,30)
-$templates.Size                     = New-Object System.Drawing.Size(730,70)
-$templates.AutoResizeColumns(2)
-$templates.Anchor                   = "Left,Right,Top,Bottom"
-$templates.BackgroundColor          = "White"
-#$templates.GridColor                = "LightBlue"
-$templates.GridColor                = "White"
-$templates.CellBorderStyle          = "SingleHorizontal"
-$templates.SelectionMode            = "FullRowSelect"
-$templates.RowHeadersVisible        = $false
-$templates.MultiSelect              = $false
-$templates.AllowUserToResizeRows    = $false
-$templates.ColumnCount = 10
-$templates.AutoGenerateColumns = $true
-
-[int]$folder_spacing = 80
-$templates.Columns[0].Name = "Vorlage"
-$templates.Columns[0].Width = 120
-for ($i=1; $i -lt $templates.ColumnCount ; $i++)
-{
-    $templates.Columns[$i].Name = -join("0",$i)
-    $templates.Columns[$i].Width = $folder_spacing
-}
-
-
-#$templatefile = -join($ScriptPath,"\",$TEMPLATE)
-#$templates = load_template $templates $templatefile
-
-[void]$templates.Rows.Add("Minimal","info","orig");
-[void]$templates.Rows.Add("Standard TEP","info","orig","trados","to trans","from trans","to proof","from proof","to client")
-[void]$templates.Rows.Add("Full TEP","info","orig","to TEP","from TEP","To client")
-[void]$templates.Rows.Add("Acolad","info","orig","MemoQ","To client")
-
-$templates.Rows[0].Selected = $true #.Selected = $true
-
-$panel_template.Controls.Add($labeltemplate)
-#$panel_template.Controls.Add($gui_browsetemplate)
-$panel_template.Controls.Add($templates)
-$panel_template.Show()
-
-
-$Split = New-Object System.Windows.Forms.SplitContainer
-$Split.Anchor                       = "Left,Bottom,Top,Right"
-$Split.Top                          = 90
-$Split.Height                       = ($form_verticalalign - 100 )
-$Split.Width                        = 775
-$Split.Orientation                  = "Horizontal"
-$Split.BackColor                    = "LightBlue"
-$Split.SplitterDistance             = 190
-
-$Split.Panel1.Controls.Add($panel_sourcefile)
-$Split.Panel2.Controls.Add($panel_template)
-$form.Controls.Add($Split)
-
-
-#====================
-#= OKCANCEL BUTTONS =
-
-$gui_panel = New-Object System.Windows.Forms.Panel
-$gui_panel.Left = 0
-$gui_panel.Top = ($form_verticalalign)
-$gui_panel.Width = 775
-$gui_panel.Height = 50
-$gui_panel.BackColor = '241,241,241'
-$gui_panel.Anchor = "Left,Bottom,Right"
-
-$gui_help                   = New-Object System.Windows.Forms.Button
-$gui_help.Location          = New-Object System.Drawing.Point(($form_leftalign),10)
-$gui_help.Size              = New-Object System.Drawing.Size(120,25)
-$gui_help.Text              = $text_help
-$gui_help.UseVisualStyleBackColor = $True
-$gui_help.Anchor            = "Left, Bottom"
-$gui_help.add_click({$GUI_Form_MoreStuff.ShowDialog()})
-#[void]$form.Controls.Add($gui_help)
-
-
-# Check if start new trados project
-$CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox        
-$CheckIfTrados.Location         = New-Object System.Drawing.Point(($form_leftalign + 130),12)
-$CheckIfTrados.Size             = New-Object System.Drawing.Size(70,20)
-$CheckIfTrados.Text             = $text_opentrados
-$CheckIfTrados.Checked          = $default_opentrados
-$CheckIfTrados.Anchor           = "Top,Left"
-#[void]$form.Controls.Add($CheckIfTrados)
-
-
-
-$gui_okButton                               = New-Object System.Windows.Forms.Button
-$gui_okButton.Location                      = New-Object System.Drawing.Point(($form_leftalign + 480),10)
-$gui_okButton.Size                          = New-Object System.Drawing.Size(120,25)
-$gui_okButton.Text                          = $text_OK
-$gui_okButton.UseVisualStyleBackColor       = $True
-$gui_okButton.Anchor                        = "Bottom,Right"
-#$gui_okButton.BackColor                     = ”Green”
-#$gui_okButton.ForeColor                     = ”White”
-$gui_okButton.DialogResult                  = [System.Windows.Forms.DialogResult]::OK
-$form.AcceptButton                          = $gui_okButton
-#[void]$form.Controls.Add($gui_okButton)
-
-$gui_cancelButton                           = New-Object System.Windows.Forms.Button
-$gui_cancelButton.Location                  = New-Object System.Drawing.Point(($form_leftalign + 610),10)
-$gui_cancelButton.Size                      = New-Object System.Drawing.Size(120,25)
-$gui_cancelButton.Text                      = $text_Cancel
-$gui_cancelButton.UseVisualStyleBackColor   = $True
-$gui_cancelButton.Anchor                    = "Bottom, Right"
-#$gui_cancelButton.BackColor                  = ”Red”
-#$gui_cancelButton.ForeColor                  = ”White”
-$gui_cancelButton.DialogResult              = [System.Windows.Forms.DialogResult]::Cancel
-$form.CancelButton                          = $gui_cancelButton
-#[void]$form.Controls.Add($gui_cancelButton)
-
-
-$gui_panel.Controls.Add($gui_help)
-$gui_panel.Controls.Add($CheckIfTrados)
-$gui_panel.Controls.Add($gui_okButton)
-$gui_panel.Controls.Add($gui_cancelButton)
-$gui_panel.Show()
-
-[void]$form.Controls.Add($gui_panel)
-
-
-
-#==============
-#= WRAP IT UP =
-
-
-$result = $form.ShowDialog()
+$result = $GUI_Form_MainWindow.ShowDialog()
 
 [string]$PROJECTNAME        = $gui_code.Text 
 $PROJECTTEMPLATE            = $templates.SelectedItems.Text
@@ -556,10 +172,6 @@ if ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
     }
 Write-Output "[INPUT] Got: $PROJECTNAME"
 
-
-#====================================================================================================================================================================
-#                     Processing Le input                     =
-#==============================================================
 
 
 # Empty, so go on with what was initially predicted
@@ -662,25 +274,6 @@ foreach ($folder in ($templates.Rows[$templates.CurrentCell.RowIndex].Cells | Se
 
 
 
-# PIN TO EXPLORER
-if ($CheckIfCreateExplorerQuickAccess.Checked)
-{
-    Write-Output "[CREATE] Shortcut in File explorer"
-    $o = new-object -com shell.application
-    $o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
-}
-
-if ($CheckIfCreateOutlookFolder.Checked)
-{
-    Write-Output "[CREATE] Folder in Outlook"
-    [void]$ns.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("02_ONGOING JOBS").Folders.Add($PROJECTNAME)
-}
-
-
-
-
-
-
 
 
 
@@ -688,11 +281,33 @@ if ($CheckIfCreateOutlookFolder.Checked)
 #                      POSTPROCESSING                      =
 #===========================================================
 
+# PIN TO EXPLORER
+
+echo "CheckIfCreateExplorerQuickAccess.Checked"
+$CheckIfCreateExplorerQuickAccess.Checked
+
+if ($true )
+{
+    Write-Output "[CREATE] Shortcut in File explorer"
+    $o = new-object -com shell.application
+    $o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
+}
+
+echo "$CheckIfCreateOutlookFolder.Checked"
+$CheckIfCreateOutlookFolder.Checked
+if ($true)
+{
+    Write-Output "[CREATE] Folder in Outlook"
+    [string]$Username = $Env:UserName.split(".")[0]
+    $TextInfo = (Get-Culture).TextInfo
+    [string]$Username = $TextInfo.ToTitleCase($Username)
+    [void]$ns.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("02_ONGOING JOBS").Folders.Item($Username).Folders.Add($PROJECTNAME)
+}
+
 
 
 #==========================
 #= INCLUDE ORIGINAL FILES =
-
 
 # If user asked to include source files, include those in new folder, with naming conventions
 if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
@@ -717,9 +332,6 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
 
             }
         } # End of attachment processing
-
-
-
 
     } # End of process outlook inclusion
     elseif ($gui_filesource.SelectedItem -match $text_from_Downloads )
@@ -747,7 +359,7 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
     # Deal with the archives first
     Write-Output "Extracting all archives..."
     Get-ChildItem -Path $ORIG -Filter *.zip | Expand-Archive -DestinationPath $ORIG
-
+    echo ok
     # PROCESS EACH SOURCE FILE
     # Rename and move file
     # Add count to total count and CSV
@@ -788,12 +400,16 @@ if ($CheckIfTrados.Checked)
 
 
 # OK NOW WE WORK
-if ($CheckIfOpenExplorer.Checked )
+echo "CheckIfOpenExplorer.Checked"
+$CheckIfOpenExplorer.Checked
+if ($true )
 {
     Write-Output "Starting Explorer..."
     start-process explorer "$BASEFOLDER"
 }
 
+echo "CheckIfOpenExplorer.Checked"
+$CheckIfOpenExplorer.Checked
 
 if ($CheckIfNotify.Checked )
 {
