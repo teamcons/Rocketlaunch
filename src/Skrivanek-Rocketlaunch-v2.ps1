@@ -38,12 +38,6 @@ else
 
 
     
-#==========================================
-# Try to predict what next number would be 
-# Catch: have at least first part of code
-Write-Output "[STARTUP] Dircode prediction"
-
-
 
 
 #========================================
@@ -118,24 +112,14 @@ catch {
     Write-Output "No mail with relevant attach !"
 }
 
-
-
-
-# If we have a predicted code we have a numerical value and can offer next codes
-
-
 function Add-Info-To-Combobox{
     param($combobox)
-
     echo no
-
 }
 
 [int]$PREDICT_CODE = (Predict-StructCode)[-1] 
-[String]$FirstSelectionMail = (Get-CompanyName $allgoodmails.Item(0).SenderName)
+[String]$FirstSelectionMail = (Get-CompanyName $allgoodmails.Item(0).SenderEmailAddress)[-1]
 
-$PREDICT_CODE
-$FirstSelectionMail
 [string]$gui_code.Items.Add(-join($PREDICT_CODE,"_",$FirstSelectionMail ))
 [string]$gui_code.Items.Add(-join(($PREDICT_CODE + 1),"_",$FirstSelectionMail ))  
 [string]$gui_code.Items.Add(-join(($PREDICT_CODE + 2),"_",$FirstSelectionMail ) ) 
@@ -157,72 +141,22 @@ $gui_code.SelectedItem = $gui_code.Items[0]
 $result = $GUI_Form_MainWindow.ShowDialog()
 
 [string]$PROJECTNAME        = $gui_code.Text 
-$PROJECTTEMPLATE            = $templates.SelectedItems.Text
+
 
 # Cancel culture
 # Close if cancel
 if ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
-    {
-        Write-Output "[INPUT] Got Cancel. Aw. Exit."
-        exit
-    }
+    { Write-Output "[INPUT] Got Cancel. Aw. Exit." ; exit }
+
+
+
 Write-Output "[INPUT] Got: $PROJECTNAME"
 
+# Make sure we have clean input
+$PROJECTNAME = (Get-CleanifiedCodename $PROJECTNAME)[-1]
+echo $PROJECTNAME
 
-
-# Empty, so go on with what was initially predicted
-if ("$PROJECTNAME" -notmatch "^[0-9]" )
-{
-
-    $PROJECTNAME = -join($PREDICT_CODE,$PROJECTNAME)
-    Write-Output "Its words. Now: $PROJECTNAME"
-}
-
-# Remove invalid character, just in case
-$PROJECTNAME = $PROJECTNAME.Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
-Write-Output "Removed invalid. Now: $PROJECTNAME"
-
-
-# is it missing zeros
-if ($PROJECTNAME -match "^[0-9][0-9][0-9]")
-{
-    $PROJECTNAME = -join("0",$PROJECTNAME)
-    Write-Output "Missing first zero. Now: $PROJECTNAME"
-
-}
-elseif ($PROJECTNAME -match "^[0-9][0-9]")
-{
-    $PROJECTNAME = -join("00",$PROJECTNAME)
-    Write-Output "Missing two zero. Now: $PROJECTNAME"
-}
-elseif ($PROJECTNAME -match "^[0-9]")
-{
-    $PROJECTNAME = -join("000",$PROJECTNAME)
-    Write-Output "Missing three zero. Now: $PROJECTNAME"
-}
-
-# Add year
-$PROJECTNAME = -join($YEAR,"-",$PROJECTNAME)
-
-
-
-
-##### Ultimate check
-try { $DIRCODE = $PROJECTNAME.SubString(0, 9) }
-catch {
-	$ERRORTEXT="Projektcode ist unpassend !!!
-Format: 20[0-9][0-9]\-[0-9][0-9][0-9][0-9] + Name
-Angegeben: $PROJECTCODE"
-
-	$btn = [System.Windows.Forms.MessageBoxButtons]::OK
-	$ico = [System.Windows.Forms.MessageBoxIcon]::Information
-
-	Add-Type -AssemblyName System.Windows.Forms 
-	[void] [System.Windows.Forms.MessageBox]::Show($ERRORTEXT,$APPNAME,$btn,$ico)
-
-exit }
-
-
+exit
 
 #==============================================================
 #                      Build The Project                      =
@@ -266,11 +200,6 @@ foreach ($folder in ($templates.Rows[$templates.CurrentCell.RowIndex].Cells | Se
         [int]$foldernumber = $foldernumber + 1 
     }
 }
-
-
-
-
-
 
 
 #======================================================================================================================================================================

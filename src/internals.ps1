@@ -46,7 +46,8 @@ function Get-CompanyName {
 }
 
 
-
+#==========================================
+# Try to predict what next number would be 
 function Predict-StructCode {
  
     Set-Location $ROOTSTRUCTURE
@@ -57,4 +58,67 @@ function Predict-StructCode {
   
     return $PREDICT_CODE
     #$PREDICT_CODE = -join($YEAR,"-")
+}
+
+
+
+
+
+
+function Get-CleanifiedCodename {
+    param([string]$PROJECTNAME)
+    
+# Empty, so go on with what was initially predicted
+if ("$PROJECTNAME" -notmatch "^[0-9]" )
+{
+
+    $PROJECTNAME = -join($PREDICT_CODE,$PROJECTNAME)
+    Write-Output "Its words. Now: $PROJECTNAME"
+}
+
+# Remove invalid character, just in case
+$PROJECTNAME = $PROJECTNAME.Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
+Write-Output "Removed invalid. Now: $PROJECTNAME"
+
+
+# is it missing zeros
+if ($PROJECTNAME -match "^[0-9][0-9][0-9]")
+{
+    $PROJECTNAME = -join("0",$PROJECTNAME)
+    Write-Output "Missing first zero. Now: $PROJECTNAME"
+
+}
+elseif ($PROJECTNAME -match "^[0-9][0-9]")
+{
+    $PROJECTNAME = -join("00",$PROJECTNAME)
+    Write-Output "Missing two zero. Now: $PROJECTNAME"
+}
+elseif ($PROJECTNAME -match "^[0-9]")
+{
+    $PROJECTNAME = -join("000",$PROJECTNAME)
+    Write-Output "Missing three zero. Now: $PROJECTNAME"
+}
+
+# Add year
+$PROJECTNAME = -join($YEAR,"-",$PROJECTNAME)
+
+
+
+
+##### Ultimate check
+try { $DIRCODE = $PROJECTNAME.SubString(0, 9) }
+catch {
+	$ERRORTEXT="Projektcode ist unpassend !!!
+Format: 20[0-9][0-9]\-[0-9][0-9][0-9][0-9] + Name
+Angegeben: $PROJECTCODE"
+	$btn = [System.Windows.Forms.MessageBoxButtons]::OK
+	$ico = [System.Windows.Forms.MessageBoxIcon]::Information
+	Add-Type -AssemblyName System.Windows.Forms 
+	[void] [System.Windows.Forms.MessageBox]::Show($ERRORTEXT,$APPNAME,$btn,$ico)
+exit }
+
+
+    # ok
+    return $PROJECTNAME
+
 }
