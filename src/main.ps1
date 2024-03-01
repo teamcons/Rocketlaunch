@@ -10,9 +10,9 @@
 
 
 
-#===============================================
-#                Initialization                =
-#===============================================
+        #===============================================
+        #                Initialization                =
+        #===============================================
 
 
 #========================================
@@ -62,11 +62,9 @@ Import-Module $ScriptPath/outlook-backend.ps1
 
 
 
-    #==============================================================
-    #                                                             =
-    #                     Processing Le input                     =
-    #                                                             =
-    #==============================================================
+        #=====================================
+        #                MAIN                =
+        #=====================================
 
 
 # Interface defined in the ui module
@@ -77,9 +75,19 @@ $result = $GUI_Form_MainWindow.ShowDialog()
 if ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
     { Write-Output "[INPUT] Got Cancel. Aw. Exit." ; exit }
 
-
 [string]$PROJECTNAME        = $gui_code.Text 
 Write-Output "[INPUT] Got: $PROJECTNAME"
+
+
+
+
+
+
+        #=================================================
+        #                Process Le Input                =
+        #=================================================
+
+
 
 # Make sure we have clean input
 [string]$PROJECTNAME                = (Get-CleanifiedCodename $PROJECTNAME)[-1]
@@ -89,47 +97,25 @@ Write-Output "[INPUT] Got: $PROJECTNAME"
 Write-Output "[ACTION] Create base folder: $BASEFOLDER"
 New-Item -ItemType Directory -Path "$BASEFOLDER"
 
-
-
 # CREATE ALLLLL THE FOLDERS
 # Get selected element
 # Skip the first element cuz no
-$selectedrow = $templates.CurrentCell.RowIndex
-$allfolderstocreate = ($templates.Rows[$selectedrow].Cells | Select-Object -Skip 1 )
-
-# Count folder number
-[int]$foldernumber = 0
-
-foreach ($folder in $allfolderstocreate )
-{
-    if ($folder.Value )
-    {
-        #Append folder number at start, construct full path
-        [string]$newfolder = -join("0",$foldernumber,"_",$folder.Value)
-        [string]$newfolder = -join($BASEFOLDER,'\',$newfolder)
-
-        # Say what we do, do it
-        Write-Output "[CREATE] folder: $newfolder"
-        New-Item -ItemType Directory -Path $newfolder
-
-        # Next folder get next number
-        [int]$foldernumber = $foldernumber + 1 
-    }
-}
-
-
-#======================================================================================================================================================================
-#                      POSTPROCESSING                      =
-#===========================================================
+$selectedrow                        = $templates.CurrentCell.RowIndex
+$allfolderstocreate                 = ($templates.Rows[$selectedrow].Cells | Select-Object -Skip 1 )
+Create-AllFolders $BASEFOLDER $allfolderstocreate
 
 # PIN TO EXPLORER
-
+# TODO : Respect settings
 Create-QuickAccess $BASEFOLDER
+
+# Outlook folder
+# TODO : Respect settings
 Create-OutlookFolder $PROJECTNAME $ns
+
+
 
 #==========================
 #= INCLUDE ORIGINAL FILES =
-
 # If user asked to include source files, include those in new folder, with naming conventions
 if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
 {
@@ -202,12 +188,14 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
 
 
 # If user asked for trados, start it and fill what we can
+# TODO : Respect settings
 if ($CheckIfTrados.Checked)
 {
     Start-TradosProject $PROJECTNAME
 }
 
 # OK NOW WE WORK
+# TODO : Respect settings
 start-process explorer "$BASEFOLDER"
 
 

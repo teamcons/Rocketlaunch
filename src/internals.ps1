@@ -136,7 +136,38 @@ function Rebuild-Tree{
 
 
 
+#================================================================
+# Build the project at specified place
+# Takes path to folder where to create, and an iterable with everything
 
+function Create-AllFolders
+{   param(
+        [string]$basefolder,
+        $tablewithfolders)
+
+    # Count folder number
+    [int]$foldernumber = 0
+
+    foreach ($folder in $allfolderstocreate )
+    {
+        if ($folder.Value )
+        {
+            #Append folder number at start, construct full path
+            [string]$newfolder = -join("0",$foldernumber,"_",$folder.Value)
+            [string]$newfolder = -join($BASEFOLDER,'\',$newfolder)
+
+            # Say what we do, do it
+            Write-Output "[CREATE] folder: $newfolder"
+            New-Item -ItemType Directory -Path $newfolder
+
+            # Next folder get next number
+            [int]$foldernumber = $foldernumber + 1 
+        }
+    }
+
+
+
+}
 
 
 
