@@ -81,25 +81,21 @@ if ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
 [string]$PROJECTNAME        = $gui_code.Text 
 Write-Output "[INPUT] Got: $PROJECTNAME"
 
-
 # Make sure we have clean input
 [string]$PROJECTNAME                = (Get-CleanifiedCodename $PROJECTNAME)[-1]
 [string]$BASEFOLDER                 = (Rebuild-Tree $PROJECTNAME)[-1]
 
-#====================================================================================================
-echo $PROJECTNAME
-#exit
-#====================================================================================================
-
-
-Write-Output "[CREATE] Base folder: $BASEFOLDER"
+# Create project folder
+Write-Output "[ACTION] Create base folder: $BASEFOLDER"
 New-Item -ItemType Directory -Path "$BASEFOLDER"
 
 
 
 # CREATE ALLLLL THE FOLDERS
+# Get selected element
 # Skip the first element cuz no
-$allfolderstocreate = ($templates.Rows[$templates.CurrentCell.RowIndex].Cells | Select-Object -Skip 1 )
+$selectedrow = $templates.CurrentCell.RowIndex
+$allfolderstocreate = ($templates.Rows[$selectedrow].Cells | Select-Object -Skip 1 )
 
 # Count folder number
 [int]$foldernumber = 0
