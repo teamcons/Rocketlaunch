@@ -140,23 +140,18 @@ $gui_code.SelectedItem = $gui_code.Items[0]
 
 $result = $GUI_Form_MainWindow.ShowDialog()
 
-[string]$PROJECTNAME        = $gui_code.Text 
-
-
-# Cancel culture
-# Close if cancel
+# Cancel culture : Close if cancel
 if ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
     { Write-Output "[INPUT] Got Cancel. Aw. Exit." ; exit }
 
 
-
+[string]$PROJECTNAME        = $gui_code.Text 
 Write-Output "[INPUT] Got: $PROJECTNAME"
 
 # Make sure we have clean input
-$PROJECTNAME = (Get-CleanifiedCodename $PROJECTNAME)[-1]
+$PROJECTNAME                = (Get-CleanifiedCodename $PROJECTNAME)[-1]
 echo $PROJECTNAME
 
-exit
 
 #==============================================================
 #                      Build The Project                      =
@@ -345,7 +340,7 @@ if ($CheckIfNotify.Checked )
     $objNotifyIcon.Icon                 = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
     $objNotifyIcon.BalloonTipTitle      = "Fertig!"
     $objNotifyIcon.BalloonTipIcon       = "Info"
-#   $objNotifyIcon.BalloonTipText       = -join("Fertig !")
+   $objNotifyIcon.BalloonTipText       = "Fertig !"
     $objNotifyIcon.Visible              = $True
     $objNotifyIcon.ShowBalloonTip(10000)
 }
