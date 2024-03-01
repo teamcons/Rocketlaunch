@@ -309,6 +309,7 @@ $sourcefiles.Location               = New-Object System.Drawing.Size($GUI_Form_M
 $sourcefiles.Size                   = New-Object System.Drawing.Size(730,160) 
 $sourcefiles.FullRowSelect          = $True
 $sourcefiles.HideSelection          = $false
+$sourcefiles.SelectedItem.BackColor              = "LightBlue"
 $sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
 $sourcefiles.View                   = [System.Windows.Forms.View]::Details
 
@@ -367,7 +368,7 @@ $templates.Size                     = New-Object System.Drawing.Size(730,70)
 $templates.AutoResizeColumns(2)
 $templates.Anchor                   = "Left,Right,Top,Bottom"
 $templates.BackgroundColor          = "White"
-#$templates.GridColor                = "LightBlue"
+$templates.BackColor                = "LightBlue"
 $templates.GridColor                = "White"
 $templates.CellBorderStyle          = "SingleHorizontal"
 $templates.SelectionMode            = "FullRowSelect"

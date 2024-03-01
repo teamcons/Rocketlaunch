@@ -5,6 +5,21 @@
 # We are not interested in junk like image001.jpg etc... which is signatures and stuff
 
 
+# Folder in outlook
+function Create-OutlookFolder {
+    param(
+        [string]$foldername,
+        $namespace
+    )
+    Write-Output "[CREATE] Folder in Outlook"
+    [string]$Username = $Env:UserName.split(".")[0]
+    $TextInfo = (Get-Culture).TextInfo
+    [string]$Username = $TextInfo.ToTitleCase($Username)
+    $namespace.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("02_ONGOING JOBS").Folders.Item($Username).Folders.Add($PROJECTNAME)
+}
+
+
+
 Write-Output "[STARTUP] Outlook Capabilities"
 $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
 $ns                         = $OL.GETNAMESPACE("MAPI")

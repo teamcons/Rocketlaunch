@@ -158,18 +158,7 @@ foreach ($folder in ($templates.Rows[$templates.CurrentCell.RowIndex].Cells | Se
 # PIN TO EXPLORER
 
 Create-QuickAccess $BASEFOLDER
-
-
-if ($true)
-{
-    Write-Output "[CREATE] Folder in Outlook"
-    [string]$Username = $Env:UserName.split(".")[0]
-    $TextInfo = (Get-Culture).TextInfo
-    [string]$Username = $TextInfo.ToTitleCase($Username)
-    [void]$ns.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("02_ONGOING JOBS").Folders.Item($Username).Folders.Add($PROJECTNAME)
-}
-
-
+Create-OutlookFolder $PROJECTNAME $ns
 
 #==========================
 #= INCLUDE ORIGINAL FILES =
@@ -242,50 +231,18 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
 
 
 
-#==========================
-#= START A TRADOS PROJECT =
+
 
 
 # If user asked for trados, start it and fill what we can
 if ($CheckIfTrados.Checked)
 {
-	Write-Output "Starting Trados Studio..."
-    # May not be where expected
-    try {
-        Set-Location "C:\Program Files (x86)\Trados\Trados Studio\Studio17"
-        }
-    catch { 
-        $TRADOSDIR = (Get-ChildItem -Path "C:\Program Files (x86)" -Filter *.sdlproj -Recurse -ErrorAction SilentlyContinue -Force -File).Directory.FullName
-        Write-Output "[DETECTED] Trados in $TRADOSDIR"
-        Set-Location $TRADOSDIR
-        }
-
-    .\SDLTradosStudio.exe /createProject /name $PROJECTNAME
+    Start-TradosProject $PROJECTNAME
 }
-
 
 # OK NOW WE WORK
-echo "CheckIfOpenExplorer.Checked"
-$CheckIfOpenExplorer.Checked
-if ($true )
-{
-    Write-Output "Starting Explorer..."
-    start-process explorer "$BASEFOLDER"
-}
+start-process explorer "$BASEFOLDER"
 
-echo "CheckIfOpenExplorer.Checked"
-$CheckIfOpenExplorer.Checked
 
-if ($CheckIfNotify.Checked )
-{
-    # Have a NICE NOTIFICATION THIS IS BALLERS
-    # WOOOOHOOOO
-    $objNotifyIcon                      = New-Object System.Windows.Forms.NotifyIcon
-    #$objNotifyIcon.Icon = "M:\4_BE\06_General information\Stella\Skrivanek-Rocketlaunch\assets\Rocketlaunch-Icon.ico"  
-    $objNotifyIcon.Icon                 = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
-    $objNotifyIcon.BalloonTipTitle      = "Fertig!"
-    $objNotifyIcon.BalloonTipIcon       = "Info"
-   $objNotifyIcon.BalloonTipText       = "Fertig !"
-    $objNotifyIcon.Visible              = $True
-    $objNotifyIcon.ShowBalloonTip(10000)
-}
+
+
