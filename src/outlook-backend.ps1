@@ -28,6 +28,12 @@ $filter                     = "[ReceivedTime] >= '$date'"
 $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
 
 
+
+
+
+
+#### GET RELEVANT MAILSSSS
+
 [bool]$StopSearching = $false
     $allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
 

@@ -68,6 +68,8 @@ Import-Module $ScriptPath/outlook-backend.ps1
     #                                                             =
     #==============================================================
 
+
+# Interface defined in the ui module
 Write-Output "[START] Show main window"
 $result = $GUI_Form_MainWindow.ShowDialog()
 
@@ -82,33 +84,28 @@ Write-Output "[INPUT] Got: $PROJECTNAME"
 
 # Make sure we have clean input
 [string]$PROJECTNAME                = (Get-CleanifiedCodename $PROJECTNAME)[-1]
-
-
-
-
-
-[string]$BASEFOLDER = Rebuild-Tree $PROJECTNAME
-
-
+[string]$BASEFOLDER                 = (Rebuild-Tree $PROJECTNAME)[-1]
 
 #====================================================================================================
 echo $PROJECTNAME
-echo $BASEFOLDER
-exit
+#exit
 #====================================================================================================
 
 
 Write-Output "[CREATE] Base folder: $BASEFOLDER"
 New-Item -ItemType Directory -Path "$BASEFOLDER"
 
-# Count folder number
-[int]$foldernumber = 0 
+
 
 # CREATE ALLLLL THE FOLDERS
 # Skip the first element cuz no
-foreach ($folder in ($templates.Rows[$templates.CurrentCell.RowIndex].Cells | Select-Object -Skip 1 ) )
+$allfolderstocreate = ($templates.Rows[$templates.CurrentCell.RowIndex].Cells | Select-Object -Skip 1 )
+
+# Count folder number
+[int]$foldernumber = 0
+
+foreach ($folder in $allfolderstocreate )
 {
-    echo $folder
     if ($folder.Value )
     {
         #Append folder number at start, construct full path

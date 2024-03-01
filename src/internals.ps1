@@ -1,5 +1,7 @@
 ﻿
-
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+[void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
 #================================================================
 function load_template{
@@ -100,7 +102,7 @@ if ($PROJECTNAME -match "^[0-9][0-9][0-9]")
 #================================================================
 # Rebuilt the whole tree
 # Take a valid project name
-Rebuild-Tree{
+function Rebuild-Tree{
     param([string]$projectname)
 
     # Check if correct, as wrong input could be real bad
