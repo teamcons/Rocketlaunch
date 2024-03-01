@@ -42,15 +42,23 @@ else
 
 #========================================
 # Get all resources
+Write-Output "[START] Loading text"
 Import-Module $ScriptPath/text.ps1
+Write-Output "[START] Loading defaults"
+
 Import-Module $ScriptPath/defaults.ps1
+Write-Output "[START] Loading icon"
+
+Import-Module $ScriptPath/bigstring.ps1
+Write-Output "[START] Loading internal functions"
+
 Import-Module $ScriptPath/internals.ps1
+
+Write-Output "[START] Loading graphical user interface"
 Import-Module $ScriptPath/ui.ps1 
 
+Write-Output "[START] Loading Outlook capabilities"
 Import-Module $ScriptPath/outlook-backend.ps1 
-
-
-
 
 
 
@@ -60,7 +68,7 @@ Import-Module $ScriptPath/outlook-backend.ps1
     #                                                             =
     #==============================================================
 
-
+Write-Output "[START] Show main window"
 $result = $GUI_Form_MainWindow.ShowDialog()
 
 # Cancel culture : Close if cancel
@@ -70,55 +78,21 @@ if ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
 
 [string]$PROJECTNAME        = $gui_code.Text 
 Write-Output "[INPUT] Got: $PROJECTNAME"
-echo $PROJECTNAME
+
 
 # Make sure we have clean input
-$PROJECTNAME                = (Get-CleanifiedCodename $PROJECTNAME)[-1]
+[string]$PROJECTNAME                = (Get-CleanifiedCodename $PROJECTNAME)[-1]
+
+
+
+
+
+[string]$BASEFOLDER = Rebuild-Tree $PROJECTNAME
+
+
+
+#====================================================================================================
 echo $PROJECTNAME
-
-
-##### Ultimate check
-try { $DIRCODE = $PROJECTNAME.SubString(0, 9) }
-catch {
-	$ERRORTEXT="Projektcode ist unpassend !!!
-Format: 20[0-9][0-9]\-[0-9][0-9][0-9][0-9] + Name
-Angegeben: $PROJECTCODE"
-	$btn = [System.Windows.Forms.MessageBoxButtons]::OK
-	$ico = [System.Windows.Forms.MessageBoxIcon]::Information
-	Add-Type -AssemblyName System.Windows.Forms 
-	[void] [System.Windows.Forms.MessageBox]::Show($ERRORTEXT,$APPNAME,$btn,$ico)
-exit }
-# ok
-#    return $PROJECTNAME
-
-
-
-
-#==============================================================
-#                      Build The Project                      =
-#==============================================================
-# REBUILT THE WHOLE TREE
-# Its in... year, underscore
-$BASEFOLDER     = -join($ROOTSTRUCTURE,$DIRCODE.Substring(0,4),"_")
-$BASEFOLDER     = -join($BASEFOLDER,$DIRCODE.Substring(5,2),"00-",$DIRCODE.Substring(5,2),"99")
-
-#====================================================================================================
-echo $BASEFOLDER
-exit
-#====================================================================================================
-
-
-
-
-# If the folder with project numbers in range do not exist, just create it lol
-if (!(Test-Path $BASEFOLDER -PathType Container)) {
-    Write-Output "[CREATE] Range folder in tree: $BASEFOLDER"
-    New-Item -ItemType Directory -Force -Path "$BASEFOLDER"
-}
-$BASEFOLDER = -join($BASEFOLDER,"\",$PROJECTNAME)
-
-
-#====================================================================================================
 echo $BASEFOLDER
 exit
 #====================================================================================================

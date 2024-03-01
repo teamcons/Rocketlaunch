@@ -19,8 +19,6 @@ function Create-OutlookFolder {
 }
 
 
-
-Write-Output "[STARTUP] Outlook Capabilities"
 $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
 $ns                         = $OL.GETNAMESPACE("MAPI")
 $date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'

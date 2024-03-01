@@ -309,9 +309,13 @@ $sourcefiles.Location               = New-Object System.Drawing.Size($GUI_Form_M
 $sourcefiles.Size                   = New-Object System.Drawing.Size(730,160) 
 $sourcefiles.FullRowSelect          = $True
 $sourcefiles.HideSelection          = $false
-$sourcefiles.SelectedItem.BackColor              = "LightBlue"
 $sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
 $sourcefiles.View                   = [System.Windows.Forms.View]::Details
+
+#$sourcefiles.UseCustomSelectionColors = $true;
+#$sourcefiles.HighlightBackgroundColor = "LightBlue"
+#$sourcefiles.UnfocusedHighlightBackgroundColor = "LightBlue"
+
 
 [void]$sourcefiles.Columns.Add($text_columns_Subject,300)
 [void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
