@@ -12,7 +12,7 @@ Add-Type -AssemblyName System.Drawing
 
 [int]$GUI_Form_MainWindow_leftalign = 5
 
-$global:GUI_Form_MoreStuff                     = New-Object System.Windows.Forms.Form
+$script:GUI_Form_MoreStuff                     = New-Object System.Windows.Forms.Form
 $GUI_Form_MoreStuff.Text                = $APPNAME
 $GUI_Form_MoreStuff.Icon                = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
 
@@ -217,7 +217,7 @@ $GUI_Form_MainWindowTabControl.Controls.Add($GUI_Tab_About)
 [int]$GUI_Form_MainWindow_verticalalign = 600
 
 
-$global:GUI_Form_MainWindow                   = New-Object System.Windows.Forms.Form
+$script:GUI_Form_MainWindow                   = New-Object System.Windows.Forms.Form
 $GUI_Form_MainWindow.Text              = $APPNAME
 $GUI_Form_MainWindow.Size              = New-Object System.Drawing.Size(775,($GUI_Form_MainWindow_verticalalign + 85 ))
 $GUI_Form_MainWindow.MinimumSize       = New-Object System.Drawing.Size(500,180)
@@ -266,7 +266,7 @@ $gui_year.Anchor           = "Left,Top"
 $GUI_Form_MainWindow.Controls.Add($gui_year)
 
 
-$global:gui_code                    = New-Object System.Windows.Forms.Combobox
+$script:gui_code                    = New-Object System.Windows.Forms.Combobox
 $gui_code.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 124),60)
 $gui_code.Size                      = New-Object System.Drawing.Size(250,30)    
 $GUI_Form_MainWindow.Controls.Add($gui_code)    
@@ -392,10 +392,12 @@ for ($i=1; $i -lt $templates.ColumnCount ; $i++)
 
 [void]$templates.Rows.Add("Minimal","info","orig");
 [void]$templates.Rows.Add("Standard TEP","info","orig","trados","to trans","from trans","to proof","from proof","to client")
-[void]$templates.Rows.Add("Full TEP","info","orig","to TEP","from TEP","to client")
-[void]$templates.Rows.Add("Acolad","info","orig","MemoQ","To client")
+[void]$templates.Rows.Add("Full TEP","info","orig","trados","to TEP","from TEP","to client")
+[void]$templates.Rows.Add("Acolad-MemoQ","info","orig","MemoQ","To client")
 [void]$templates.Rows.Add("Proofreading only","info","orig","from proof","to client")
 [void]$templates.Rows.Add("Sworn Translation","info","orig","to client")
+[void]$templates.Rows.Add("Astrid Special","info","orig","studio","trans","proof","to client")
+[void]$templates.Rows.Add("Pizza Margherita","Tomate","Mozzarella","Basilikum","Oliven")
 
 
 $templates.Rows[0].Selected = $true #.Selected = $true

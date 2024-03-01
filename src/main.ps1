@@ -47,85 +47,8 @@ Import-Module $ScriptPath/defaults.ps1
 Import-Module $ScriptPath/internals.ps1
 Import-Module $ScriptPath/ui.ps1 
 
+Import-Module $ScriptPath/outlook-backend.ps1 
 
-
-# Look for emails with attachments
-# For each email, we look attachments and count the ones with supported formats
-# We are not interested in junk like image001.jpg etc... which is signatures and stuff
-
-
-Write-Output "[STARTUP] Outlook Capabilities"
-$OL                         = New-Object -ComObject OUTLOOK.APPLICATION
-$ns                         = $OL.GETNAMESPACE("MAPI")
-$date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'
-$filter                     = "[ReceivedTime] >= '$date'"
-#$filter                     = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"
-#$filter                     = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
-$allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
-
-
-[bool]$StopSearching = $false
-    $allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
-
-    foreach ($mail in $allmails)
-    {
-    
-        [bool]$AddToGoodMails = $false
-        [int]$CountGoodAttachments = 0
-        foreach ( $attach in $mail.Attachments ) 
-        {
-            #echo $attach.FileName
-            if ($attach.FileName -match  ".(pdf|doc|docx|xls|xlsx|ppt|pptx|xml|idml|csv|txt|zip)" )
-            {
-                echo (-join("MATCH:",$attach.FileName))
-                $AddToGoodMails = $true
-                [int]$CountGoodAttachments += 1
-    
-            }   # End of each mails
-            #else {echo (-join("NOTMATCH:",$attach.FileName)) }  
-        } #End of checking attachments
-    
-        # we found one with attachment !
-        if ($AddToGoodMails -eq $true)
-        {
-            # Currently observed one is a good one
-            $allgoodmails.Add($mail)
-    
-            # Add to da list
-            $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($mail.Subject)
-            [void]$sourcefilesItem.Subitems.Add($mail.SenderName)
-            [void]$sourcefilesItem.Subitems.Add($CountGoodAttachments)
-            [void]$sourcefilesItem.Subitems.Add($mail.ReceivedTime.ToString("HH:mm"))
-            [void]$sourcefiles.Items.Add($sourcefilesItem)
-            $goodmailindex += 1
-        } # End of adding goodmail
-    
-    } # End of looking for emails with attachments
-    
-    
-
-# If theres something, define a default selected
-try { 
-    $sourcefiles.Items[0].Selected = $true 
-}
-catch {
-    Write-Output "No mail with relevant attach !"
-}
-
-function Add-Info-To-Combobox{
-    param($combobox)
-    echo no
-}
-
-[int]$PREDICT_CODE = (Predict-StructCode)[-1] 
-[String]$FirstSelectionMail = (Get-CompanyName $allgoodmails.Item(0).SenderEmailAddress)[-1]
-
-[string]$gui_code.Items.Add(-join($PREDICT_CODE,"_",$FirstSelectionMail ))
-[string]$gui_code.Items.Add(-join(($PREDICT_CODE + 1),"_",$FirstSelectionMail ))  
-[string]$gui_code.Items.Add(-join(($PREDICT_CODE + 2),"_",$FirstSelectionMail ) ) 
-[string]$gui_code.Items.Add(-join(($PREDICT_CODE + 3),"_",$FirstSelectionMail ))
-
-$gui_code.SelectedItem = $gui_code.Items[0]
 
 
 
@@ -147,10 +70,28 @@ if ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
 
 [string]$PROJECTNAME        = $gui_code.Text 
 Write-Output "[INPUT] Got: $PROJECTNAME"
+echo $PROJECTNAME
 
 # Make sure we have clean input
 $PROJECTNAME                = (Get-CleanifiedCodename $PROJECTNAME)[-1]
 echo $PROJECTNAME
+
+
+##### Ultimate check
+try { $DIRCODE = $PROJECTNAME.SubString(0, 9) }
+catch {
+	$ERRORTEXT="Projektcode ist unpassend !!!
+Format: 20[0-9][0-9]\-[0-9][0-9][0-9][0-9] + Name
+Angegeben: $PROJECTCODE"
+	$btn = [System.Windows.Forms.MessageBoxButtons]::OK
+	$ico = [System.Windows.Forms.MessageBoxIcon]::Information
+	Add-Type -AssemblyName System.Windows.Forms 
+	[void] [System.Windows.Forms.MessageBox]::Show($ERRORTEXT,$APPNAME,$btn,$ico)
+exit }
+# ok
+#    return $PROJECTNAME
+
+
 
 
 #==============================================================
@@ -161,6 +102,14 @@ echo $PROJECTNAME
 $BASEFOLDER     = -join($ROOTSTRUCTURE,$DIRCODE.Substring(0,4),"_")
 $BASEFOLDER     = -join($BASEFOLDER,$DIRCODE.Substring(5,2),"00-",$DIRCODE.Substring(5,2),"99")
 
+#====================================================================================================
+echo $BASEFOLDER
+exit
+#====================================================================================================
+
+
+
+
 # If the folder with project numbers in range do not exist, just create it lol
 if (!(Test-Path $BASEFOLDER -PathType Container)) {
     Write-Output "[CREATE] Range folder in tree: $BASEFOLDER"
@@ -168,6 +117,11 @@ if (!(Test-Path $BASEFOLDER -PathType Container)) {
 }
 $BASEFOLDER = -join($BASEFOLDER,"\",$PROJECTNAME)
 
+
+#====================================================================================================
+echo $BASEFOLDER
+exit
+#====================================================================================================
 
 
 Write-Output "[CREATE] Base folder: $BASEFOLDER"
@@ -203,18 +157,9 @@ foreach ($folder in ($templates.Rows[$templates.CurrentCell.RowIndex].Cells | Se
 
 # PIN TO EXPLORER
 
-echo "CheckIfCreateExplorerQuickAccess.Checked"
-$CheckIfCreateExplorerQuickAccess.Checked
+Create-QuickAccess $BASEFOLDER
 
-if ($true )
-{
-    Write-Output "[CREATE] Shortcut in File explorer"
-    $o = new-object -com shell.application
-    $o.Namespace($BASEFOLDER).Self.InvokeVerb("pintohome")
-}
 
-echo "$CheckIfCreateOutlookFolder.Checked"
-$CheckIfCreateOutlookFolder.Checked
 if ($true)
 {
     Write-Output "[CREATE] Folder in Outlook"
