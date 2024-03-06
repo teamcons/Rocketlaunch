@@ -23,7 +23,7 @@ Write-Output "================================"
 
 Write-Output ""
 Write-Output "For Skrivanek GmbH - Start new projects really, really quick!"
-Write-Output "CC0 Stella Ménier, Project manager Skrivanek BELGIUM - <stella.menier@gmx.de>"
+Write-Output "GPL-3.0 Stella Ménier, Project manager Skrivanek BELGIUM - <stella.menier@gmx.de>"
 Write-Output ""
 Write-Output ""
 
@@ -50,9 +50,10 @@ Import-Module $ScriptPath/outlook-backend.ps1
 
 
 
-        #=====================================
-        #                MAIN                =
-        #=====================================
+
+        #=======================================================
+        #                Display User Interface                =
+        #=======================================================
 
 
 # Interface defined in the ui module
@@ -63,10 +64,10 @@ $result = $GUI_Form_MainWindow.ShowDialog()
 if ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
     { Write-Output "[INPUT] Got Cancel. Aw. Exit." ; exit }
 
+
+
 [string]$PROJECTNAME        = $gui_code.Text 
 Write-Output "[INPUT] Got: $PROJECTNAME"
-
-
 
 
 
@@ -102,26 +103,24 @@ Create-OutlookFolder $PROJECTNAME $ns
 
 
 
+        #=======================================================
+        #                Include Original Files                =
+        #=======================================================
 
 
 
-#==========================
-#= INCLUDE ORIGINAL FILES =
 # If user asked to include source files, include those in new folder, with naming conventions
 if ($gui_filesource.SelectedItem -notmatch $text_nofilesource)
 {
 
-    # CHECK WE HAVE THE MINIMUM FOLDERS
-    # BECAUSE WE DONT KNOW WHAT TEMPLATE USER USED
+    # CHECK WE HAVE THE MINIMUM FOLDERS BECAUSE WE DONT KNOW WHAT TEMPLATE USER USED
     # IF THE STANDARD MINIMUM ISNT THERE, JUST USE BASE FOLDER INSTEAD
     [string]$INFO = -join($BASEFOLDER,"\",(Get-ChildItem -Path "$BASEFOLDER" -Filter "00_*" | Select-Object -First 1).Name)
     [string]$ORIG = -join($BASEFOLDER,"\",(Get-ChildItem -Path "$BASEFOLDER" -Filter "01_*" | Select-Object -First 1).Name)
-    # it is awkward, but it is just "BASEFOLDER" if there is no 00 or 01 folders
 
-    # Source files
+
     #if ($gui_filesource.SelectedItem -match $text_from_Outlook )
-    #{
-    #} # End of process outlook inclusion
+    #{#} # End of process outlook inclusion
 
     # Check which text has the combobox to decide how to handle this.
     switch ($gui_filesource.SelectedItem) {
