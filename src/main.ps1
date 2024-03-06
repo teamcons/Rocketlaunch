@@ -107,10 +107,10 @@ Create-OutlookFolder $PROJECTNAME $ns
         #                Include Original Files                =
         #=======================================================
 
-
+$gui_filesource.SelectedItem
 
 # If user asked to include source files, include those in new folder, with naming conventions
-if ($gui_filesource.SelectedItem -notmatch $text_nofilesource)
+if (!$gui_filesource.SelectedItem.ToString() -eq $text_nofilesource)
 {
 
     # CHECK WE HAVE THE MINIMUM FOLDERS BECAUSE WE DONT KNOW WHAT TEMPLATE USER USED
