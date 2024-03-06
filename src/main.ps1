@@ -174,7 +174,7 @@ if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
     foreach ($file in (Get-ChildItem -Path "$ORIG" -Exclude "^[0-9][0-9]_" ))
     {
         echo "$ORIG"
-        $newname = -join($DIRCODE,"_",$file.BaseName,"_orig",$file.Extension)
+        $newname = -join($PROJECTNAME.Substring(0,8),"_",$file.BaseName,"_orig",$file.Extension)
         Write-Output "[RENAME] As $newname"
         Rename-Item -Path $file.FullName -Newname "$newname"
 
