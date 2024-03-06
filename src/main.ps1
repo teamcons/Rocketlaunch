@@ -162,6 +162,7 @@ if ($CheckIfTrados.Checked)
 start-process explorer "$BASEFOLDER"
 
 
+echo "STATE"
 $CheckIfCreateExplorerQuickAccess.Checked
 $CheckIfCreateOutlookFolder.Checked
 $CheckIfOpenExplorer.Checked

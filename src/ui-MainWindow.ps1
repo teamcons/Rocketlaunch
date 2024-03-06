@@ -213,7 +213,7 @@ $templates.Columns[0].Name = "Vorlage"
 $templates.Columns[0].Width = 120
 for ($i=1; $i -lt $templates.ColumnCount ; $i++)
 {
-    $templates.Columns[$i].Name = -join("0",$i)
+    $templates.Columns[$i].Name = -join("0",($i - 1))
     $templates.Columns[$i].Width = $folder_spacing
 }
 

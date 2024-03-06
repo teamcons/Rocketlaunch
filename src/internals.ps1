@@ -194,7 +194,6 @@ function Rename-Source
     # Ignore structure folders
     foreach ($file in (Get-ChildItem -Path $path -Exclude "^[0-9][0-9]_" ))
     {
-        echo "$ORIG"
         $newname = -join($projectcode,"_",$file.BaseName,$orig,$file.Extension)
         Write-Output "[RENAME] As $newname"
         Rename-Item -Path $file.FullName -Newname "$newname"
