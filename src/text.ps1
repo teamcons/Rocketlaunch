@@ -1,4 +1,8 @@
 ﻿
+
+Write-Output "[START] Loading text"
+
+
     ### MAIN UI
     [string]$global:text_projectname               = "Projekt bereit zum Abflug!"
     [string]$global:text_doanalysis                = "Analyse machen ? (Langsam)"
@@ -12,9 +16,11 @@
     [string]$global:text_columns_Attachments       = 'Dateien'
     [string]$global:text_columns_time              = 'Ankunft'
     [string]$global:text_from_Outlook              = "In Outlook"
-    [string]$global:text_from_Downloads            = "In Downloads"
-    [string]$global:text_nofilesource              = "Keine Ausgangsdatei"
+    [string]$global:text_from_Downloads            = "(TODO) In Downloads"
+    [string]$global:text_DragNDrop                 = "(TODO) Drag&Drop"
+    [string]$global:text_nofilesource              = "(TODO) Keine Ausgangsdatei"
 
+    
     # Datagridview, templates
     [string]$global:text_usewhichtemplate          = 'Welche Projektvorlage soll verwendet werden?'
     [string]$global:text_loadtemplate              = "Laden..."

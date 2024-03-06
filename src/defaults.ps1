@@ -2,6 +2,8 @@
 #========================================
 # Get all important variables in place 
 
+Write-Output "[START] Loading defaults"
+
 
     #Write-Output "[STARTUP] Getting all variables in place"
     [string]$script:APPNAME                         = "-Rocketlaunch!"

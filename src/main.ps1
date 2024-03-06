@@ -37,27 +37,15 @@ else
     if (!$ScriptPath){ $global:ScriptPath = "." } }
 
 
-    
-
-
 #========================================
 # Get all resources
-Write-Output "[START] Loading text"
+
 Import-Module $ScriptPath/text.ps1
-Write-Output "[START] Loading defaults"
-
 Import-Module $ScriptPath/defaults.ps1
-Write-Output "[START] Loading icon"
-
 Import-Module $ScriptPath/bigstring.ps1
-Write-Output "[START] Loading internal functions"
-
 Import-Module $ScriptPath/internals.ps1
-
-Write-Output "[START] Loading graphical user interface"
-Import-Module $ScriptPath/ui.ps1 
-
-Write-Output "[START] Loading Outlook capabilities"
+Import-Module $ScriptPath/ui-MainWindow.ps1 
+Import-Module $ScriptPath/ui-SettingsDialog.ps1 
 Import-Module $ScriptPath/outlook-backend.ps1 
 
 
@@ -98,8 +86,7 @@ Write-Output "[ACTION] Create base folder: $BASEFOLDER"
 New-Item -ItemType Directory -Path "$BASEFOLDER"
 
 # CREATE ALLLLL THE FOLDERS
-# Get selected element
-# Skip the first element cuz no
+# Get selected element. Skip the first element cuz no
 $selectedrow                        = $templates.CurrentCell.RowIndex
 $allfolderstocreate                 = ($templates.Rows[$selectedrow].Cells | Select-Object -Skip 1 )
 Create-AllFolders $BASEFOLDER $allfolderstocreate
@@ -114,76 +101,54 @@ Create-OutlookFolder $PROJECTNAME $ns
 
 
 
+
+
+
+
 #==========================
 #= INCLUDE ORIGINAL FILES =
 # If user asked to include source files, include those in new folder, with naming conventions
-if ($gui_filesource.SelectedItems.Text -notmatch $text_nofilesource)
+if ($gui_filesource.SelectedItem -notmatch $text_nofilesource)
 {
 
     # CHECK WE HAVE THE MINIMUM FOLDERS
     # BECAUSE WE DONT KNOW WHAT TEMPLATE USER USED
     # IF THE STANDARD MINIMUM ISNT THERE, JUST USE BASE FOLDER INSTEAD
-    [string]$INFO = "$BASEFOLDER\00_info"
-    [string]$ORIG = "$BASEFOLDER\01_orig"
+    [string]$INFO = -join($BASEFOLDER,"\",(Get-ChildItem -Path "$BASEFOLDER" -Filter "00_*" | Select-Object -First 1).Name)
+    [string]$ORIG = -join($BASEFOLDER,"\",(Get-ChildItem -Path "$BASEFOLDER" -Filter "01_*" | Select-Object -First 1).Name)
+    # it is awkward, but it is just "BASEFOLDER" if there is no 00 or 01 folders
 
-    if ($gui_filesource.SelectedItem -match $text_from_Outlook )
-    {
-        Write-Output "[DETECTED] Get source files from email"
-        $sourcemail = $allgoodmails[$sourcefiles.SelectedItems.Index]
-        foreach ($attachment in $sourcemail.Attachments)
-        {
-            if ($attachment.FileName -notmatch "^image[0-9][0-9][0-9]")
-            {
-                Write-Output (-join($ORIG,"\",$attachment.FileName))
-                $attachment.SaveAsFile( -join($ORIG,"\",$attachment.FileName) )
+    # Source files
+    #if ($gui_filesource.SelectedItem -match $text_from_Outlook )
+    #{
+    #} # End of process outlook inclusion
 
-            }
-        } # End of attachment processing
-
-    } # End of process outlook inclusion
-    elseif ($gui_filesource.SelectedItem -match $text_from_Downloads )
-    {
-         Write-Output "[DETECTED] Load source files"
-         # Grab source files
-         $load_files = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
-             InitialDirectory    = $default_fromdisk
-             Multiselect         = $true
-             Title               = $APPNAME
-         }
-         $null = $load_files.ShowDialog()
-         Write-Output "[INPUT] Got:"
-         Write-Output $SOURCEFILES.FileNames
-
-         foreach ($file in $load_files)
-         {
-             Write-Output "Moving $file"
-             Move-Item -Path $file -Destination $ORIG
-         }
-    } # End of user load themselves
+    # Check which text has the combobox to decide how to handle this.
+    switch ($gui_filesource.SelectedItem) {
+        $text_from_Outlook {
+            Write-Host "Saving from outlook"
+            Save-OutlookAttach $allgoodmails[$sourcefiles.SelectedItems.Index] $ORIG
+        }
+        $text_from_Downloads {
+            Write-Host "From Downloads, not implemented yet !"
+        }
+        $text_DragNDrop {
+            Write-Host "From DragNDrop, not implemented yet !"
+        }
+        $text_nofilesource {
+            Write-Host "No source - THIS SHOULD HAVE BEEN FILTERED OUT BY IF"
+        }
+        default {
+            Write-Host "IDK"
+        }
+    }
 
 
-    # Before processing each source file,
-    # Deal with the archives first
-    Write-Output "Extracting all archives..."
-    Get-ChildItem -Path $ORIG -Filter *.zip | Expand-Archive -DestinationPath $ORIG
-    echo ok
-    # PROCESS EACH SOURCE FILE
-    # Rename and move file
-    # Add count to total count and CSV
-    # Ignore structure folders
-    foreach ($file in (Get-ChildItem -Path "$ORIG" -Exclude "^[0-9][0-9]_" ))
-    {
-        echo "$ORIG"
-        $newname = -join($PROJECTNAME.Substring(0,8),"_",$file.BaseName,"_orig",$file.Extension)
-        Write-Output "[RENAME] As $newname"
-        Rename-Item -Path $file.FullName -Newname "$newname"
+    # Make sure everything saved is named as we need it
+    Rename-Source $ORIG $PROJECTNAME.Substring(0,8) "_orig"
 
-    } # End of loop processing all source file
 
 } # End of If we have source files
-
-
-
 
 
 

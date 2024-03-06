@@ -1,4 +1,7 @@
 ﻿
+Write-Output "[START] Loading internal functions"
+
+
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 [void] [System.Windows.Forms.Application]::EnableVisualStyles() 
@@ -169,6 +172,37 @@ function Create-AllFolders
 
 }
 
+
+
+
+#================================================================
+# Takes a directory
+# Expands archives in it
+# Rename all files with project code and orig
+function Rename-Source
+{
+    param([string]$path,
+            [string]$projectcode,
+            [string]$orig)
+
+    # Before processing each source file,
+    # Deal with the archives first
+    Write-Output "Extracting all archives..."
+    Get-ChildItem -Path $path -Filter *.zip | Expand-Archive -DestinationPath $path
+
+    # Rename each file with code and "_orig"
+    # Ignore structure folders
+    foreach ($file in (Get-ChildItem -Path $path -Exclude "^[0-9][0-9]_" ))
+    {
+        echo "$ORIG"
+        $newname = -join($projectcode,"_",$file.BaseName,$orig,$file.Extension)
+        Write-Output "[RENAME] As $newname"
+        Rename-Item -Path $file.FullName -Newname "$newname"
+
+    } # End of loop processing all source file
+
+
+}
 
 
 

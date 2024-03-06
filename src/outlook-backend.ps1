@@ -4,6 +4,7 @@
 # For each email, we look attachments and count the ones with supported formats
 # We are not interested in junk like image001.jpg etc... which is signatures and stuff
 
+Write-Output "[START] Loading Outlook capabilities"
 
 # Folder in outlook
 function Create-OutlookFolder {
@@ -18,6 +19,46 @@ function Create-OutlookFolder {
     $namespace.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("02_ONGOING JOBS").Folders.Item($Username).Folders.Add($PROJECTNAME)
 }
 
+# Takes a mail, takes a destination, put every relevant attach there (ignore signatures and similar BS)
+function Save-OutlookAttach {
+    param($mail,$destination)
+
+    foreach ($attachment in $mail.Attachments)
+    {
+        if ($attachment.FileName -notmatch "^image[0-9][0-9][0-9]")
+        {
+            Write-Output (-join($destination,"\",$attachment.FileName))
+            $attachment.SaveAsFile( -join($destination,"\",$attachment.FileName) )
+
+        }
+    } # End of attachment processing
+
+}
+
+<#     elseif ($gui_filesource.SelectedItem -match $text_from_Downloads )
+    {
+         Write-Output "[DETECTED] Load source files"
+         # Grab source files
+         $load_files = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
+             InitialDirectory    = $default_fromdisk
+             Multiselect         = $true
+             Title               = $APPNAME
+         }
+         $null = $load_files.ShowDialog()
+         Write-Output "[INPUT] Got:"
+         Write-Output $SOURCEFILES.FileNames
+
+         foreach ($file in $load_files)
+         {
+             Write-Output "Moving $file"
+             Move-Item -Path $file -Destination $ORIG
+         }
+    } # End of user load themselves #>
+
+
+
+
+
 
 $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
 $ns                         = $OL.GETNAMESPACE("MAPI")
@@ -26,8 +67,6 @@ $filter                     = "[ReceivedTime] >= '$date'"
 #$filter                     = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"
 #$filter                     = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
 $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
-
-
 
 
 
