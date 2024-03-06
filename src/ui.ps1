@@ -220,7 +220,7 @@ $GUI_Form_MainWindowTabControl.Controls.Add($GUI_Tab_About)
 $script:GUI_Form_MainWindow                   = New-Object System.Windows.Forms.Form
 $GUI_Form_MainWindow.Text              = $APPNAME
 $GUI_Form_MainWindow.Size              = New-Object System.Drawing.Size(775,($GUI_Form_MainWindow_verticalalign + 85 ))
-$GUI_Form_MainWindow.MinimumSize       = New-Object System.Drawing.Size(500,180)
+$GUI_Form_MainWindow.MinimumSize       = New-Object System.Drawing.Size(500,170)
 #$GUI_Form_MainWindow.MaximumSize       = New-Object System.Drawing.Size(750,550)
 #$GUI_Form_MainWindow.AutoSize          = $true
 #$GUI_Form_MainWindow.AutoScale         = $true
@@ -234,42 +234,70 @@ $GUI_Form_MainWindow.Icon              = [System.Drawing.Icon]::FromHandle(([Sys
 #==============
 #= INPUT TEXT =
 
+$panel_top = New-Object System.Windows.Forms.Panel
+$panel_top.Width         = 775
+$panel_top.Top           = 0
+$panel_top.Height        = 88
+$panel_top.Left          = 0
+$panel_top.BackColor     = "LightBlue" #'Ti'
+#$panel_top.ForeColor     = "White" #'Ti'
+$panel_top.Dock          = "Top"
+
+
 # FANCY ICON
 $pictureBox             = new-object Windows.Forms.PictureBox
-$pictureBox.Location    = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,15)
+$pictureBox.Location    = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,12)
 $pictureBox.Anchor      = "Left,Top"
 $img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
 $pictureBox.Width       = 64
 $pictureBox.Height      = 64
 $pictureBox.Image       = $img;
-$GUI_Form_MainWindow.controls.add($pictureBox)
+$panel_top.controls.add($pictureBox)
 
 # LABEL AND TEXT
 # Label above input
 $label                  = New-Object System.Windows.Forms.Label
-$label.Location         = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 80),25)
+$label.Location         = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 80),12)
 $label.Size             = New-Object System.Drawing.Size(300,30)
 $label.AutoSize         = $true
-$label.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 14, [System.Drawing.FontStyle]::Bold)
+$label.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 17, [System.Drawing.FontStyle]::Bold)
 $label.Text             = $text_projectname
 $label.Anchor           = "Left,Top"
-$GUI_Form_MainWindow.Controls.Add($label)
+$panel_top.Controls.Add($label)
+
+
 
 # Input box
 $gui_year                  = New-Object System.Windows.Forms.Label
-$gui_year.Location         = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 80),63)
+$gui_year.Location         = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 80),52)
 $gui_year.Size             = New-Object System.Drawing.Size(20,20)
-$gui_year.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
+$gui_year.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
 $gui_year.AutoSize         = $true
 $gui_year.Text             = -join($YEAR," -")
 $gui_year.Anchor           = "Left,Top"
-$GUI_Form_MainWindow.Controls.Add($gui_year)
+$panel_top.Controls.Add($gui_year)
 
 
 $script:gui_code                    = New-Object System.Windows.Forms.Combobox
-$gui_code.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 124),60)
-$gui_code.Size                      = New-Object System.Drawing.Size(250,30)    
-$GUI_Form_MainWindow.Controls.Add($gui_code)    
+$gui_code.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),50)
+$gui_code.Size                      = New-Object System.Drawing.Size(210,30)    
+$panel_top.Controls.Add($gui_code)    
+
+# Topmost according to whether checked or not
+$gui_keepontop                           = New-Object System.Windows.Forms.Checkbox
+#$gui_keepontop.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 365),52)
+$gui_keepontop.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 350),52)
+$gui_keepontop.Size                      = New-Object System.Drawing.Size(160,20)
+$gui_keepontop.Text                      = $text_keepontop
+$gui_keepontop.UseVisualStyleBackColor   = $True
+$gui_keepontop.Checked                   = $GUI_Form_MainWindow.Topmost
+$gui_keepontop.Anchor                    = "Top, Left"
+$gui_keepontop.Add_Click({$GUI_Form_MainWindow.Topmost = $gui_keepontop.Checked})
+#$panel_top.Controls.Add($gui_keepontop)
+
+$panel_top.Controls.Add($gui_keepontop)    
+
+$GUI_Form_MainWindow.Controls.Add($panel_top)
 $GUI_Form_MainWindow.Add_Shown({$gui_code.Select()})
 
 
@@ -311,6 +339,7 @@ $sourcefiles.FullRowSelect          = $True
 $sourcefiles.HideSelection          = $false
 $sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
 $sourcefiles.View                   = [System.Windows.Forms.View]::Details
+$sourcefiles.BorderStyle            = "FixedSingle"
 
 #$sourcefiles.UseCustomSelectionColors = $true;
 #$sourcefiles.HighlightBackgroundColor = "LightBlue"
@@ -374,6 +403,8 @@ $templates.Anchor                   = "Left,Right,Top,Bottom"
 $templates.BackgroundColor          = "White"
 $templates.BackColor                = "LightBlue"
 $templates.GridColor                = "White"
+$templates.BorderStyle              = "FixedSingle"
+
 $templates.CellBorderStyle          = "SingleHorizontal"
 $templates.SelectionMode            = "FullRowSelect"
 $templates.RowHeadersVisible        = $false

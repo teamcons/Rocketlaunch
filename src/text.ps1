@@ -3,6 +3,7 @@
     [string]$global:text_projectname               = "Projekt bereit zum Abflug!"
     [string]$global:text_doanalysis                = "Analyse machen ? (Langsam)"
     [string]$global:text_opentrados                = "Trados?"
+    [string]$global:text_keepontop                 = "Über alle Fenster"
 
     # Listview
     [string]$global:text_loadfilesfrom             = 'Ausgangsdatei aus Quelle'
@@ -17,7 +18,7 @@
     # Datagridview, templates
     [string]$global:text_usewhichtemplate          = 'Welche Projektvorlage soll verwendet werden?'
     [string]$global:text_loadtemplate              = "Laden..."
-    [string]$global:text_help                      = "Hilfe"
+    [string]$global:text_help                      = "Mehr"
     [string]$global:text_OK                        = "Los!"
     [string]$global:text_Cancel                    = "Nö"
 
