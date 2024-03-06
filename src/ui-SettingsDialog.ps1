@@ -12,9 +12,9 @@ Add-Type -AssemblyName System.Drawing
 
 [int]$GUI_Form_MainWindow_leftalign = 5
 
-$script:GUI_Form_MoreStuff                     = New-Object System.Windows.Forms.Form
-$GUI_Form_MoreStuff.Text                = $APPNAME
-$GUI_Form_MoreStuff.Icon                = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
+$script:GUI_Form_MoreStuff              = New-Object System.Windows.Forms.Form
+$GUI_Form_MoreStuff.Text                = -join($APPNAME," - ",$text_aboutsubtitle)
+$GUI_Form_MoreStuff.Icon                = $icon
 
 $GUI_Form_MoreStuff.StartPosition       = "CenterScreen"
 $GUI_Form_MoreStuff.Topmost             = $true
@@ -118,10 +118,9 @@ $GUI_Tab_About.Text = $text_abouttab
 
 # FANCY ICON
 $applogo             = new-object Windows.Forms.PictureBox
-$img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
 $applogo.Width       = 64
 $applogo.Height      = 64
-$applogo.Image       = $img;
+$applogo.Image       = $icon
 $applogo.Location    = New-Object System.Drawing.Point(128,20)
 
 # Label above input
