@@ -153,7 +153,6 @@ if ($gui_filesource.SelectedItem -notmatch $text_nofilesource)
 
 
 # If user asked for trados, start it and fill what we can
-# TODO : Respect settings
 if ($CheckIfTrados.Checked)
 {
     Start-TradosProject $PROJECTNAME
@@ -162,6 +161,13 @@ if ($CheckIfTrados.Checked)
 # OK NOW WE WORK
 # TODO : Respect settings
 start-process explorer "$BASEFOLDER"
+
+
+$CheckIfCreateExplorerQuickAccess.Checked
+$CheckIfCreateOutlookFolder.Checked
+$CheckIfOpenExplorer.Checked
+$CheckIfNotify.Checked
+
 
 
 

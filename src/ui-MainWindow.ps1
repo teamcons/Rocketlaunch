@@ -24,12 +24,8 @@ $script:GUI_Form_MainWindow                   = New-Object System.Windows.Forms.
 $GUI_Form_MainWindow.Text              = $APPNAME
 $GUI_Form_MainWindow.Size              = New-Object System.Drawing.Size(775,($GUI_Form_MainWindow_verticalalign + 85 ))
 $GUI_Form_MainWindow.MinimumSize       = New-Object System.Drawing.Size(500,170)
-#$GUI_Form_MainWindow.MaximumSize       = New-Object System.Drawing.Size(750,550)
-#$GUI_Form_MainWindow.AutoSize          = $true
-#$GUI_Form_MainWindow.AutoScale         = $true
 $GUI_Form_MainWindow.Font              = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
 $GUI_Form_MainWindow.StartPosition     = 'CenterScreen'
-#$GUI_Form_MainWindow.FormBorderStyle   = 'FixedDialog'
 $GUI_Form_MainWindow.Topmost           = $True
 $GUI_Form_MainWindow.BackColor         = "White"
 $GUI_Form_MainWindow.Icon              = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
@@ -55,7 +51,7 @@ $img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).
 $pictureBox.Width       = 64
 $pictureBox.Height      = 64
 $pictureBox.Image       = $img;
-$panel_top.controls.add($pictureBox)
+
 
 # LABEL AND TEXT
 # Label above input
@@ -66,9 +62,6 @@ $label.AutoSize         = $true
 $label.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 17, [System.Drawing.FontStyle]::Bold)
 $label.Text             = $text_projectname
 $label.Anchor           = "Left,Top"
-$panel_top.Controls.Add($label)
-
-
 
 # Input box
 $gui_year                  = New-Object System.Windows.Forms.Label
@@ -78,13 +71,11 @@ $gui_year.Font             = New-Object System.Drawing.Font('Microsoft Sans Seri
 $gui_year.AutoSize         = $true
 $gui_year.Text             = -join($YEAR," -")
 $gui_year.Anchor           = "Left,Top"
-$panel_top.Controls.Add($gui_year)
-
 
 $script:gui_code                    = New-Object System.Windows.Forms.Combobox
 $gui_code.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),50)
 $gui_code.Size                      = New-Object System.Drawing.Size(210,30)    
-$panel_top.Controls.Add($gui_code)    
+
 
 # Topmost according to whether checked or not
 $gui_keepontop                           = New-Object System.Windows.Forms.Checkbox
@@ -98,6 +89,11 @@ $gui_keepontop.Anchor                    = "Top, Left"
 $gui_keepontop.Add_Click({$GUI_Form_MainWindow.Topmost = $gui_keepontop.Checked})
 #$panel_top.Controls.Add($gui_keepontop)
 
+
+$panel_top.controls.add($pictureBox)
+$panel_top.Controls.Add($label)
+$panel_top.Controls.Add($gui_year)
+$panel_top.Controls.Add($gui_code)    
 $panel_top.Controls.Add($gui_keepontop)    
 
 $GUI_Form_MainWindow.Controls.Add($panel_top)
@@ -108,7 +104,7 @@ $GUI_Form_MainWindow.Add_Shown({$gui_code.Select()})
 #===================
 #= SOURCE FILES    =
 
-$panel_sourcefile = New-Object System.Windows.Forms.Panel
+$panel_sourcefile               = New-Object System.Windows.Forms.Panel
 $panel_sourcefile.Width         = 775
 $panel_sourcefile.Top           = 25
 $panel_sourcefile.Height        = 200
@@ -143,12 +139,7 @@ $sourcefiles.FullRowSelect          = $True
 $sourcefiles.HideSelection          = $false
 $sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
 $sourcefiles.View                   = [System.Windows.Forms.View]::Details
-$sourcefiles.BorderStyle            = "None"
-
-#$sourcefiles.UseCustomSelectionColors = $true;
-#$sourcefiles.HighlightBackgroundColor = "LightBlue"
-#$sourcefiles.UnfocusedHighlightBackgroundColor = "LightBlue"
-
+$sourcefiles.BorderStyle            = "FixedSingle"
 
 [void]$sourcefiles.Columns.Add($text_columns_Subject,300)
 [void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
@@ -158,7 +149,6 @@ $sourcefiles.BorderStyle            = "None"
 $panel_sourcefile.Controls.Add($labelsourcefiles)
 $panel_sourcefile.Controls.Add($gui_filesource)
 $panel_sourcefile.Controls.Add($sourcefiles)
-$panel_sourcefile.Show()
 
 
 
@@ -207,7 +197,7 @@ $templates.Anchor                   = "Left,Right,Top,Bottom"
 $templates.BackgroundColor          = "White"
 $templates.BackColor                = "LightBlue"
 $templates.GridColor                = "White"
-$templates.BorderStyle              = "None"
+$templates.BorderStyle              = "FixedSingle"
 
 $templates.CellBorderStyle          = "SingleHorizontal"
 $templates.SelectionMode            = "FullRowSelect"
