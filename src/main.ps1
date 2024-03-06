@@ -93,12 +93,19 @@ $allfolderstocreate                 = ($templates.Rows[$selectedrow].Cells | Sel
 Create-AllFolders $BASEFOLDER $allfolderstocreate
 
 # PIN TO EXPLORER
-# TODO : Respect settings
-Create-QuickAccess $BASEFOLDER
+if ($CheckIfCreateExplorerQuickAccess.Checked)
+{
+    Create-QuickAccess $BASEFOLDER
+}
 
 # Outlook folder
-# TODO : Respect settings
-Create-OutlookFolder $PROJECTNAME $ns
+if ($CheckIfCreateOutlookFolder.Checked)
+{
+    Create-OutlookFolder $PROJECTNAME $ns
+}
+
+
+
 
 
 
@@ -107,7 +114,7 @@ Create-OutlookFolder $PROJECTNAME $ns
         #                Include Original Files                =
         #=======================================================
 
-$gui_filesource.SelectedItem
+
 
 # If user asked to include source files, include those in new folder, with naming conventions
 if (!$gui_filesource.SelectedItem.ToString() -eq $text_nofilesource)
@@ -138,14 +145,12 @@ if (!$gui_filesource.SelectedItem.ToString() -eq $text_nofilesource)
             Write-Host "No source - THIS SHOULD HAVE BEEN FILTERED OUT BY IF"
         }
         default {
-            Write-Host "IDK"
+            Write-Host -join ("IDK, WTF IS ",$gui_filesource.SelectedItem)
         }
     }
 
-
     # Make sure everything saved is named as we need it
     Rename-Source $ORIG $PROJECTNAME.Substring(0,8) "_orig"
-
 
 } # End of If we have source files
 
@@ -158,17 +163,13 @@ if ($CheckIfTrados.Checked)
 }
 
 # OK NOW WE WORK
-# TODO : Respect settings
-start-process explorer "$BASEFOLDER"
+if ($CheckIfOpenExplorer.Checked)
+{
+    start-process explorer "$BASEFOLDER"
+}
 
 
-echo "STATE"
-$CheckIfCreateExplorerQuickAccess.Checked
-$CheckIfCreateOutlookFolder.Checked
-$CheckIfOpenExplorer.Checked
-$CheckIfNotify.Checked
-
-
-
-
-
+if ($CheckIfNotify.Checked)
+{
+    Notify-Send (-join($PROJECTNAME,$text_NotifyTitle)) $text_NotifyText
+}

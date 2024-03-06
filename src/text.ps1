@@ -20,14 +20,14 @@ Write-Output "[START] Loading text"
     [string]$global:text_DragNDrop                 = "(TODO) Drag&Drop"
     [string]$global:text_nofilesource              = "(TODO) Keine Ausgangsdatei"
 
-    
     # Datagridview, templates
     [string]$global:text_usewhichtemplate          = 'Welche Projektvorlage soll verwendet werden?'
     [string]$global:text_loadtemplate              = "Laden..."
     [string]$global:text_help                      = "Mehr"
     [string]$global:text_OK                        = "Los!"
     [string]$global:text_Cancel                    = "Nö"
-
+    [string]$global:text_NotifyTitle               = "ist bereit"
+    [string]$global:text_NotifyText                = "Projekt würde erstellt als erwünscht"
 
     ### Settings tab
     [string]$global:text_settingstag                   = "Erweiterte Einstellungen" 
@@ -39,11 +39,11 @@ Write-Output "[START] Loading text"
     [string]$global:text_settings_getthedoc            = "Download latest manual version"
     [string]$global:text_settings_askme                = "Ask me"
     
-
     ### ABOUT TAB
     [string]$global:text_abouttab              = "Stella!" 
     [string]$global:text_aboutsubtitle         = "Start new projects, but very very quickly !"
-    [string]$global:text_abouttext             = "Made with love by Stella, for Skrivanek GmbH
+    [string]$global:text_abouttext             = "Made with love by Stella,
+for her work at Skrivanek GmbH
 
 I hope you find it useful !
 I am no developer, i studied economics, ive got no clue of those geek things.
