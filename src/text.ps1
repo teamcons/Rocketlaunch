@@ -18,7 +18,7 @@ Write-Output "[START] Loading text"
     [string]$global:text_from_Outlook              = "In Outlook"
     [string]$global:text_from_Downloads            = "(TODO) In Downloads"
     [string]$global:text_DragNDrop                 = "(TODO) Drag&Drop"
-    [string]$global:text_nofilesource              = "(TODO) Keine Ausgangsdatei"
+    [string]$global:text_nofilesource              = "Keine Ausgangsdatei"
 
     # Datagridview, templates
     [string]$global:text_usewhichtemplate          = 'Welche Projektvorlage soll verwendet werden?'
