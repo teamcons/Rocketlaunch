@@ -38,7 +38,7 @@ $panel_top.Width         = 775
 $panel_top.Top           = 0
 $panel_top.Height        = 88
 $panel_top.Left          = 0
-$panel_top.BackColor     = "LightBlue" #'Ti'
+$panel_top.BackColor     = "Orange" #'Ti'
 #$panel_top.ForeColor     = "White" #'Ti'
 $panel_top.Dock          = "Top"
 
