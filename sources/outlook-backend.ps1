@@ -84,7 +84,7 @@ $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").It
         foreach ( $attach in $mail.Attachments ) 
         {
             #echo $attach.FileName
-            if ($attach.FileName -match  ".(pdf|doc|docx|xls|xlsx|ppt|pptx|xml|idml|csv|txt|zip)" )
+            if ($attach.FileName -match  ".(pdf|doc|docx|xls|xlsx|ppt|pptx|xml|idml|csv|txt|zip|sdlppx)" )
             {
                 echo (-join("MATCH:",$attach.FileName))
                 $AddToGoodMails = $true

@@ -15,6 +15,8 @@ Write-Output "[START] Loading defaults"
     [string]$script:TEMPLATE                        = "vorlagen.csv"
     [string]$script:TEMPLATEDELIMITER               = ';'
     
+    [string]$script:supported_filetypes               = $text_from_Outlook
+
     [string]$script:default_filesfrom               = $text_from_Outlook
     #[string]$global:default_fromdisk                = '$env:USERPROFILE\Downloads'
     [bool]$script:default_opentrados                = $true
