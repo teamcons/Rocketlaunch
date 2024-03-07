@@ -1,5 +1,5 @@
 ps2exe `
--inputFile ..\src\Skrivanek-Rocketlaunch-v2.ps1 `
+-inputFile ..\sources\Skrivanek-Rocketlaunch-v2.ps1 `
 -iconFile ..\assets\Rocketlaunch-Icon.ico `
 -noConsole `
 -noOutput `
