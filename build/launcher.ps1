@@ -15,4 +15,7 @@ else
     if (!$ScriptPath){ $global:ScriptPath = "." } }
 
 
-powershell.exe -executionpolicy bypass -WindowStyle hidden -file $ScriptPath\sources\main.ps1
+powershell.exe `
+-executionpolicy bypass -WindowStyle hidden `
+-file $ScriptPath\sources\main.ps1 `
+3>&1 2>&1 > $ScriptPath\rocketlaunch.log
