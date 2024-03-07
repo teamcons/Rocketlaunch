@@ -59,21 +59,21 @@ function Predict-StructCode {
 function Get-CleanifiedCodename {
     param([string]$PROJECTNAME)
     
-# Empty, so go on with what was initially predicted
-if ("$PROJECTNAME" -notmatch "^[0-9]" )
-{
+    # Empty, so go on with what was initially predicted
+    if ("$PROJECTNAME" -notmatch "^[0-9]" )
+    {
 
-    $PROJECTNAME = -join($PREDICT_CODE,$PROJECTNAME)
-    Write-Output "Its words. Now: $PROJECTNAME"
-}
+        $PROJECTNAME = -join($PREDICT_CODE,$PROJECTNAME)
+        Write-Output "Its words. Now: $PROJECTNAME"
+    }
 
-# Remove invalid character, just in case
-$PROJECTNAME = $PROJECTNAME.Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
-#Write-Output "Removed invalid. Now: $PROJECTNAME"
+    # Remove invalid character, just in case
+    $PROJECTNAME = $PROJECTNAME.Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
+    #Write-Output "Removed invalid. Now: $PROJECTNAME"
 
 
-# is it missing zeros
-if ($PROJECTNAME -match "^[0-9][0-9][0-9]")
+    # is it missing zeros
+    if ($PROJECTNAME -match "^[0-9][0-9][0-9]")
     {
         $PROJECTNAME = -join("0",$PROJECTNAME)
         #Write-Output "Missing first zero. Now: $PROJECTNAME"
@@ -223,6 +223,11 @@ function Notify-Send
     $objNotifyIcon.BalloonTipText           = $text
     $objNotifyIcon.Visible                  = $True
     $objNotifyIcon.ShowBalloonTip(10000)
+
+    $objNotifyIcon.Visible                  = $False
+    $objNotifyIcon.Icon.Dispose();
+    $objNotifyIcon.Dispose();
+
 }
 
 

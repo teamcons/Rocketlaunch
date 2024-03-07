@@ -26,8 +26,7 @@ Write-Output "[START] Loading text"
     [string]$global:text_help                      = "Mehr"
     [string]$global:text_OK                        = "Los!"
     [string]$global:text_Cancel                    = "Nö"
-    [string]$global:text_NotifyTitle               = "ist bereit"
-    [string]$global:text_NotifyText                = "Projekt würde erstellt als erwünscht"
+    [string]$global:text_NotifyText                = "Projekt ist bereit !"
 
     ### Settings tab
     [string]$global:text_settingstag                   = "Erweiterte Einstellungen" 
