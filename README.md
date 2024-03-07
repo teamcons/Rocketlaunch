@@ -5,7 +5,7 @@ A program for our job, to create new projects, in the right place, super super q
 On the technical aspect, it is a Powershell script, written in imperative style, using Windows.Forms as GUI and compiled into PS2EXE. 
 Its bound to have some ugly and some clever code.
 
-
+It does :
 Load the last few emails with attachments from Outlook
 Load folder structure from templates
 Create in the appropriate structure the folders,
@@ -15,14 +15,13 @@ As we charge by the word, count words in Word, Powerpoint, PDF, TXT, create an a
 As we work in Trados Studio, pre-fill and start the New Project assistant
 
 <div align="center">
-    <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/img/Screenshot App.png" /></td>
+    <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/images/Screenshot App.png" /></td>
 </div>
 
 
 # TODO
 -Choose whether to get source files from emails, Downloads folder, or None. Listview for the two latters, with icons
 -Load for real from a CSV, and a button to load others. Also icons.
--Have the Help button do something
 -Drag N Drop
 
 
