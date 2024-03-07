@@ -29,15 +29,22 @@ Write-Output "[START] Loading text"
     [string]$global:text_NotifyText                = "Projekt ist bereit !"
 
     ### Settings tab
-    [string]$global:text_settingstag                   = "Erweiterte Einstellungen" 
+    [string]$global:text_settingstag                   = "Erweiterte Einstellungen"
+    [string]$global:text_settingsnota                   = "Nota Bene: They are not saved!"
+
     [string]$global:text_settings_ExplorerQuickAccess  = "Create a quick access shortcut in Explorer ?"
     [string]$global:text_settings_OutlookFolder        = "Create a folder in Outlook ?"
+    [string]$global:text_settings_ExpandArchives          = "Expand archives ? (NOT DONE)"
+    [string]$global:text_settings_Countwords          = "Count Words ? (NOT DONE)"
     [string]$global:text_settings_OpenExplorer         = "Open newly created folder when finished ?"
     [string]$global:text_settings_Notify               = "Send a notification when done ?"
     [string]$global:text_settings_helptitle            = "Help"
     [string]$global:text_settings_getthedoc            = "Download latest manual version"
     [string]$global:text_settings_askme                = "Ask me"
     
+    [string]$global:text_settings_close                        = "Yeah, ok"
+
+
     ### ABOUT TAB
     [string]$global:text_abouttab              = "Stella!" 
     [string]$global:text_aboutsubtitle         = "Start new projects, but very very quickly !"

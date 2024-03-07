@@ -41,26 +41,50 @@ $moresettingstitle.Top                 = 10
 $moresettingstitle.Text                = $text_settingstag
 $moresettingstitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
 
+$moresettingsnota                     = New-Object System.Windows.Forms.Label
+$moresettingsnota.Size                = New-Object System.Drawing.Size(300,20)
+$moresettingsnota.Left                = $GUI_Form_MainWindow_leftalign
+$moresettingsnota.Top                 = 25
+$moresettingsnota.Text                = $text_settingsnota
+$moresettingsnota.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 7, [System.Drawing.FontStyle]::Italic)
+
+
 $CheckIfCreateExplorerQuickAccess                = New-Object System.Windows.Forms.CheckBox        
-$CheckIfCreateExplorerQuickAccess.Location       = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,40)
+$CheckIfCreateExplorerQuickAccess.Location       = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,60)
 $CheckIfCreateExplorerQuickAccess.Size           = New-Object System.Drawing.Size(400,20)
 $CheckIfCreateExplorerQuickAccess.Text           = $text_settings_ExplorerQuickAccess
 $CheckIfCreateExplorerQuickAccess.Checked        = $default_createshortcut
 
 $CheckIfCreateOutlookFolder                = New-Object System.Windows.Forms.CheckBox        
-$CheckIfCreateOutlookFolder.Location       = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,70)
+$CheckIfCreateOutlookFolder.Location       = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,90)
 $CheckIfCreateOutlookFolder.Size           = New-Object System.Drawing.Size(400,20)
 $CheckIfCreateOutlookFolder.Text           = $text_settings_OutlookFolder
 $CheckIfCreateOutlookFolder.Checked        = $default_createoutlookfolder
 
+
+
+$CheckIfExpandArchives                = New-Object System.Windows.Forms.CheckBox        
+$CheckIfExpandArchives.Location       = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,120)
+$CheckIfExpandArchives.Size           = New-Object System.Drawing.Size(400,20)
+$CheckIfExpandArchives.Text           = $text_settings_ExpandArchives
+$CheckIfExpandArchives.Checked        = $default_expandarchives
+
+
+$CheckIfCountWords                = New-Object System.Windows.Forms.CheckBox        
+$CheckIfCountWords.Location       = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,150)
+$CheckIfCountWords.Size           = New-Object System.Drawing.Size(400,20)
+$CheckIfCountWords.Text           = $text_settings_Countwords
+$CheckIfCountWords.Checked        = $default_countwords
+
+
 $CheckIfOpenExplorer                = New-Object System.Windows.Forms.CheckBox        
-$CheckIfOpenExplorer.Location       = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,100)
+$CheckIfOpenExplorer.Location       = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,180)
 $CheckIfOpenExplorer.Size           = New-Object System.Drawing.Size(400,20)
 $CheckIfOpenExplorer.Text           = $text_settings_OpenExplorer
 $CheckIfOpenExplorer.Checked        = $default_openexplorer
 
 $CheckIfNotify                = New-Object System.Windows.Forms.CheckBox        
-$CheckIfNotify.Location       = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,130)
+$CheckIfNotify.Location       = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,210)
 $CheckIfNotify.Size           = New-Object System.Drawing.Size(400,20)
 $CheckIfNotify.Text           = $text_settings_Notify
 $CheckIfNotify.Checked        = $default_notifywhenfinished
@@ -68,38 +92,37 @@ $CheckIfNotify.Checked        = $default_notifywhenfinished
 $helptitle                     = New-Object System.Windows.Forms.Label
 $helptitle.Size                = New-Object System.Drawing.Size(300,20)
 $helptitle.Left                = $GUI_Form_MainWindow_leftalign
-$helptitle.Top                 = 180
+$helptitle.Top                 = 280
 $helptitle.Text                = $text_settings_helptitle
 $helptitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
 
 $getthedoc                 = New-Object System.Windows.Forms.Button
 $getthedoc.Size            = New-Object System.Drawing.Size (180,30)
 $getthedoc.Left            = $GUI_Form_MainWindow_leftalign
-$getthedoc.Top             = 210
+$getthedoc.Top             = 310
 $getthedoc.Text            = $text_settings_getthedoc
 $getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
 
 $askme                 = New-Object System.Windows.Forms.Button
 $askme.Size            = New-Object System.Drawing.Size (120,30)
 $askme.Left            = ($GUI_Form_MainWindow_leftalign + 190)
-$askme.Top             = 210
+$askme.Top             = 310
 $askme.Text            = $text_settings_askme
 $askme.Add_Click( {start-process "Mailto:stella.menier@gmx.de"})
-
 
 $GUI_More_Close                               = New-Object System.Windows.Forms.Button
 $GUI_More_Close.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign ),140)
 $GUI_More_Close.Size                          = New-Object System.Drawing.Size(120,25)
-$GUI_More_Close.Text                          = $text_OK
+$GUI_More_Close.Text                          = $text_close_settings
 $GUI_More_Close.UseVisualStyleBackColor       = $True
-#$GUI_More_Close.DialogResult                  = [System.Windows.Forms.DialogResult]::OK
-$GUI_Form_MoreStuff.AcceptButton                          = $GUI_More_Close
-
 
 $GUI_Tab_Settings.Controls.Add($moresettingstitle)
+$GUI_Tab_Settings.Controls.Add($moresettingsnota)
 #$GUI_Tab_Settings.Controls.Add($GUI_More_Close)
 $GUI_Tab_Settings.Controls.Add($CheckIfCreateExplorerQuickAccess)
 $GUI_Tab_Settings.Controls.Add($CheckIfCreateOutlookFolder)
+$GUI_Tab_Settings.Controls.Add($CheckIfExpandArchives)
+$GUI_Tab_Settings.Controls.Add($CheckIfCountWords)
 $GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)
 $GUI_Tab_Settings.Controls.Add($CheckIfNotify)
 $GUI_Tab_Settings.Controls.Add($helptitle)

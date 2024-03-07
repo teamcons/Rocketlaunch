@@ -185,11 +185,6 @@ function Rename-Source
             [string]$projectcode,
             [string]$orig)
 
-    # Before processing each source file,
-    # Deal with the archives first
-    Write-Output "Extracting all archives..."
-    Get-ChildItem -Path $path -Filter *.zip | Expand-Archive -DestinationPath $path
-
     # Rename each file with code and "_orig"
     # Ignore structure folders
     foreach ($file in (Get-ChildItem -Path $path -Exclude "^[0-9][0-9]_" ))
@@ -231,6 +226,9 @@ function Notify-Send
 }
 
 
+
+
+#================================================================
 # Add a folder to File Explorer QuickAccess
 # Takes a path to a folder
 function Create-QuickAccess
