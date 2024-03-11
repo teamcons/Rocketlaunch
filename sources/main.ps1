@@ -46,9 +46,57 @@ Import-Module $ScriptPath/outlook-backend.ps1
 
 
 
+
+####################
+$Datatable_Emails = New-Object System.Data.DataTable
+
+$newcol = New-Object system.Data.DataColumn $text_columns_Subject,([string]);
+$Datatable_Emails.columns.add($newcol)  
+
+$newcol = New-Object system.Data.DataColumn $text_columns_Sendername,([string])
+$Datatable_Emails.columns.add($newcol)  
+
+$newcol = New-Object system.Data.DataColumn $text_columns_Attachments,([int])
+$Datatable_Emails.columns.add($newcol)  
+
+$newcol = New-Object system.Data.DataColumn $text_columns_time,([int])
+$Datatable_Emails.columns.add($newcol)  
+
+
+
+####################
+$Datatable_FilesInDownloads = New-Object System.Data.DataTable
+
+$newcol = New-Object system.Data.DataColumn "Checked",([bool]);
+$Datatable_FilesInDownloads.columns.add($newcol)  
+
+$newcol = New-Object system.Data.DataColumn $text_columns_DL_File,([string]);
+$Datatable_FilesInDownloads.columns.add($newcol)  
+
+$newcol = New-Object system.Data.DataColumn $text_columns_DL_LastWrite,([string])
+$Datatable_FilesInDownloads.columns.add($newcol)  
+
+
+####################
+$Datatable_FilesDragNDrop = New-Object System.Data.DataTable
+
+$newcol = New-Object system.Data.DataColumn "Checked",([bool]);
+$Datatable_FilesDragNDrop.columns.add($newcol)  
+
+$newcol = New-Object system.Data.DataColumn $text_columns_DL_File,([string]);
+$Datatable_FilesDragNDrop.columns.add($newcol)  
+
+$newcol = New-Object system.Data.DataColumn $text_columns_DD_Path,([string])
+$Datatable_FilesDragNDrop.columns.add($newcol)  
+
+
+
+
+
         #=======================================================
         #                Display User Interface                =
         #=======================================================
+
 
 
 

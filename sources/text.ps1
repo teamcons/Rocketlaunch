@@ -25,8 +25,12 @@ Write-Output "[START] Loading text"
     [string]$global:text_columns_DL_File           = 'Datei'
     [string]$global:text_columns_DL_LastWrite      = 'LastWrite'
 
-
+    # DRAG N DROP
     [string]$global:text_DragNDrop                 = "(TODO) Drag&Drop"
+    [string]$global:text_columns_DD_Path            = 'Path'
+
+
+    # NONE WITH LEFT BEEF
     [string]$global:text_nofilesource              = "Keine Ausgangsdatei"
 
     [string]$global:text_label_from_Outlook              = "Ansicht: Alle E-Mails mit Anhang seit dem Vortag, 17:30 Uhr"

@@ -227,7 +227,7 @@ function Load-RecentDownloads
     [void]$datagridview.Columns.Add($text_columns_DL_LastWrite,200)
     
     # Get Info
-    $folder = $env:USERPROFILE\Downloads
+    $folder = '$env:USERPROFILE\Downloads'
     $recentfiles = (Get-Childitem $folder * -Recurse | Where-Object {$_.LastWriteTime -gt (Get-Date).Date })
 
     # Repopulate
