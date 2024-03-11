@@ -200,6 +200,16 @@ function Rename-Source
 
 
 
+function Get-RecentDownloads
+{
+    $recent = (Get-Childitem $folder * -Recurse | Where-Object {$_.LastWriteTime -gt (Get-Date).Date })
+
+    return $recent
+
+}
+
+
+
 
 #================================================================
 # Send a notification. Yes, im used to Linux

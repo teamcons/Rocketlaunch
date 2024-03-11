@@ -6,6 +6,8 @@
 
 Write-Output "[START] Loading Outlook capabilities"
 
+
+#================================================================
 # Folder in outlook
 function Create-OutlookFolder {
     param(
@@ -19,6 +21,8 @@ function Create-OutlookFolder {
     $namespace.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("02_ONGOING JOBS").Folders.Item($Username).Folders.Add($PROJECTNAME)
 }
 
+
+#================================================================
 # Takes a mail, takes a destination, put every relevant attach there (ignore signatures and similar BS)
 function Save-OutlookAttach {
     param($mail,$destination)
@@ -33,7 +37,7 @@ function Save-OutlookAttach {
         }
     } # End of attachment processing
 
-}
+} # End of function
 
 <#     elseif ($gui_filesource.SelectedItem -match $text_from_Downloads )
     {
@@ -56,6 +60,9 @@ function Save-OutlookAttach {
     } # End of user load themselves #>
 
 
+
+#================================================================
+# If yesterday was sunday, it was, in fact, friday all along.
 function Get-LastBusinessDay
 {
     #Day of the week
@@ -76,19 +83,13 @@ function Get-LastBusinessDay
 
 
 
-$OL                         = New-Object -ComObject OUTLOOK.APPLICATION
-$ns                         = $OL.GETNAMESPACE("MAPI")
-$date                       = (Get-LastBusinessDay)[-1]
-$filter                     = "[ReceivedTime] >= '$date'"
-#$filter                     = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"
-#$filter                     = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
-$allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
 
-
+#================================================================
 #### GET RELEVANT MAILSSSS
-
-[bool]$StopSearching = $false
-    $allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
+function Load-RelevantMails
+{
+    [bool]$StopSearching = $false
+    $script:allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
 
     foreach ($mail in $allmails)
     {
@@ -127,9 +128,31 @@ $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").It
     
     
 
-
+} # End of function Load-RelevantMails
     
 
+
+
+
+
+
+
+#================================================================
+
+$OL                         = New-Object -ComObject OUTLOOK.APPLICATION
+$ns                         = $OL.GETNAMESPACE("MAPI")
+$date                       = (Get-LastBusinessDay)[-1]
+$filter                     = "[ReceivedTime] >= '$date'"
+#$filter                     = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"
+#$filter                     = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
+$allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
+
+
+
+
+Load-RelevantMails
+
+#================================================================
 # If theres something, define a default selected
 try { 
     $sourcefiles.Items[0].Selected = $true 
@@ -138,10 +161,6 @@ catch {
     Write-Output "No mail with relevant attach !"
 }
 
-function Add-Info-To-Combobox{
-    param($combobox)
-    echo no
-}
 
 [int]$PREDICT_CODE = (Predict-StructCode)[-1] 
 [String]$FirstSelectionMail = (Get-CompanyName $allgoodmails.Item(0).SenderEmailAddress)[-1]
