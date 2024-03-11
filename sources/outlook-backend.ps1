@@ -71,10 +71,10 @@ function Get-LastBusinessDay
     
     if ( (Get-Date -UFormat "%u") -eq 1 )
     {
-        $date = Get-Date (Get-Date).AddDays(-3) -Format 'dd/MM/yyyy 17:30'
+        $date = (Get-Date (Get-Date).AddDays(-3) -Format 'dd/MM/yyyy 17:30')
     }
     else {
-        $date = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy 17:30'
+        $date = (Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy 17:30')
     }
     
     return $date    
@@ -88,6 +88,16 @@ function Get-LastBusinessDay
 #### GET RELEVANT MAILSSSS
 function Load-RelevantMails
 {
+
+
+    [void]$sourcefiles.Columns.Add($text_columns_Subject,300)
+    [void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
+    [void]$sourcefiles.Columns.Add($text_columns_Attachments,70)
+    [void]$sourcefiles.Columns.Add($text_columns_time,100)
+    
+
+
+
     [bool]$StopSearching = $false
     $script:allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
 
@@ -119,7 +129,7 @@ function Load-RelevantMails
             $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($mail.Subject)
             [void]$sourcefilesItem.Subitems.Add($mail.SenderName)
             [void]$sourcefilesItem.Subitems.Add($CountGoodAttachments)
-            [void]$sourcefilesItem.Subitems.Add($mail.ReceivedTime.ToString("HH:mm"))
+            [void]$sourcefilesItem.Subitems.Add( (Get-Date -Date $mail.ReceivedTime -UFormat "%A, %H:%M").ToString() )
             [void]$sourcefiles.Items.Add($sourcefilesItem)
             $goodmailindex += 1
         } # End of adding goodmail
@@ -141,7 +151,7 @@ function Load-RelevantMails
 
 $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
 $ns                         = $OL.GETNAMESPACE("MAPI")
-$date                       = (Get-LastBusinessDay)[-1]
+$date                       = Get-LastBusinessDay
 $filter                     = "[ReceivedTime] >= '$date'"
 #$filter                     = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"
 #$filter                     = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
