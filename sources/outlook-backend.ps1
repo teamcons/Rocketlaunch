@@ -56,19 +56,33 @@ function Save-OutlookAttach {
     } # End of user load themselves #>
 
 
-
+function Get-LastBusinessDay
+{
+    #Day of the week
+    # Sonntag = 0, Samstag = 6
+    # If we are monday, grab emails starting last friday
+    
+    if ( (Get-Date -UFormat "%u") -eq 1 )
+    {
+        $date = Get-Date (Get-Date).AddDays(-3) -Format 'dd/MM/yyyy 17:30'
+    }
+    else {
+        $date = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy 17:30'
+    }
+    
+    return $date    
+}
+    
 
 
 
 $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
 $ns                         = $OL.GETNAMESPACE("MAPI")
-$date                       = Get-Date (Get-Date).AddDays(-1) -Format 'dd/MM/yyyy HH:mm'
+$date                       = (Get-LastBusinessDay)[-1]
 $filter                     = "[ReceivedTime] >= '$date'"
 #$filter                     = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"
 #$filter                     = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
 $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
-
-
 
 
 #### GET RELEVANT MAILSSSS
