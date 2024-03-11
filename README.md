@@ -15,7 +15,7 @@ As we charge by the word, count words in Word, Powerpoint, PDF, TXT, create an a
 As we work in Trados Studio, pre-fill and start the New Project assistant
 
 <div align="center">
-    <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/images/Screenshot App.png" /></td>
+    <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/images/Screenshot.png" /></td>
 </div>
 
 
