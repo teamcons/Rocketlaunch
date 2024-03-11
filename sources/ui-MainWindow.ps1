@@ -115,7 +115,7 @@ $panel_sourcefile.Dock          = "Fill"
 # Label above input
 $labelsourcefiles                  = New-Object System.Windows.Forms.Label
 $labelsourcefiles.Location         = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,10)
-$labelsourcefiles.Size             = New-Object System.Drawing.Size(240,20)
+$labelsourcefiles.Size             = New-Object System.Drawing.Size(450,20)
 $labelsourcefiles.Text             = $text_loadfilesfrom
 $labelsourcefiles.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
 
@@ -130,6 +130,23 @@ $gui_filesource.Anchor          = "Top,Right"
 [void] $gui_filesource.Items.Add($text_nofilesource)  
 
 $gui_filesource.SelectedItem = $default_filesfrom
+$gui_filesource.Add_SelectedIndexChanged({
+    switch ($gui_filesource.SelectedItem ) {
+        $text_from_Outlook {
+                            $labelsourcefiles.Text = $text_label_from_Outlook }
+
+        $text_from_Downloads {
+                            $labelsourcefiles.Text = $text_label_from_Downloads }
+
+        $text_DragNDrop {
+                            $labelsourcefiles.Text = $text_label_DragNDrop }
+                            
+        $text_nofilesource {
+                            $labelsourcefiles.Text = $text_label_nofilesource }
+    }
+})
+
+
 
 ## Configure the ListView
 $sourcefiles                        = New-Object System.Windows.Forms.ListView

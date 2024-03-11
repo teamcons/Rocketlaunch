@@ -15,10 +15,19 @@ Write-Output "[START] Loading text"
     [string]$global:text_columns_Sendername        = 'Von'
     [string]$global:text_columns_Attachments       = 'Dateien'
     [string]$global:text_columns_time              = 'Ankunft'
+
     [string]$global:text_from_Outlook              = "In Outlook"
     [string]$global:text_from_Downloads            = "(TODO) In Downloads"
     [string]$global:text_DragNDrop                 = "(TODO) Drag&Drop"
     [string]$global:text_nofilesource              = "Keine Ausgangsdatei"
+
+    [string]$global:text_label_from_Outlook              = "Alle E-Mails mit Anhang seit dem Vortag, 17:30 Uhr"
+    [string]$global:text_label_from_Downloads            = "Alle Dateien, die seit heute 9:00 Uhr heruntergeladen wurden"
+    [string]$global:text_label_DragNDrop                 = "Alle in der Rasteransicht abgelegten Dateien einbeziehen"
+    [string]$global:text_label_nofilesource              = "Keine Ausgangsdatei einbeziehen"
+
+
+
 
     # Datagridview, templates
     [string]$global:text_usewhichtemplate          = 'Welche Projektvorlage soll verwendet werden?'
