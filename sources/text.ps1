@@ -11,13 +11,21 @@ Write-Output "[START] Loading text"
 
     # Listview
     [string]$global:text_loadfilesfrom             = 'Ausgangsdatei aus Quelle'
+
+
+    # OUTLOOK
+    [string]$global:text_from_Outlook              = "In Outlook"
     [string]$global:text_columns_Subject           = 'Betreff'
     [string]$global:text_columns_Sendername        = 'Von'
     [string]$global:text_columns_Attachments       = 'Dateien'
     [string]$global:text_columns_time              = 'Ankunft'
 
-    [string]$global:text_from_Outlook              = "In Outlook"
+    # DOWNLOADS
     [string]$global:text_from_Downloads            = "(TODO) In Downloads"
+    [string]$global:text_columns_DL_File           = 'Datei'
+    [string]$global:text_columns_DL_LastWrite      = 'LastWrite'
+
+
     [string]$global:text_DragNDrop                 = "(TODO) Drag&Drop"
     [string]$global:text_nofilesource              = "Keine Ausgangsdatei"
 
