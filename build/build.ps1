@@ -7,7 +7,7 @@ else
 
 
 ps2exe `
--inputFile $ScriptPath\launcher.ps1 `
+-inputFile $ScriptPath\..\main.ps1 `
 -iconFile $ScriptPath\..\assets\Rocketlaunch-Icon.ico `
 -noConsole `
 -noOutput `

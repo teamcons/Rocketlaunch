@@ -51,7 +51,7 @@ $moresettingsnota.Font                = New-Object System.Drawing.Font('Microsof
 
 $CheckIfCreateExplorerQuickAccess                       = New-Object System.Windows.Forms.CheckBox        
 $CheckIfCreateExplorerQuickAccess.Left                  = $GUI_Form_MainWindow_leftalign
-$CheckIfCreateExplorerQuickAccess.Top                   = 60
+$CheckIfCreateExplorerQuickAccess.Top                   = 50
 $CheckIfCreateExplorerQuickAccess.Size                  = New-Object System.Drawing.Size(400,20)
 $CheckIfCreateExplorerQuickAccess.Text                  = $text_settings_ExplorerQuickAccess
 $CheckIfCreateExplorerQuickAccess.Checked               = $default_createshortcut
@@ -106,32 +106,32 @@ $CheckIfCloseAfter.Checked                              = $default_closeafter
 
 
 #####################
-$helptitle                     = New-Object System.Windows.Forms.Label
-$helptitle.Size                = New-Object System.Drawing.Size(300,20)
-$helptitle.Left                = $GUI_Form_MainWindow_leftalign
-$helptitle.Top                 = 280
-$helptitle.Text                = $text_settings_helptitle
-$helptitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
+$helptitle                                              = New-Object System.Windows.Forms.Label
+$helptitle.Size                                         = New-Object System.Drawing.Size(300,20)
+$helptitle.Left                                         = $GUI_Form_MainWindow_leftalign
+$helptitle.Top                                          = 280
+$helptitle.Text                                         = $text_settings_helptitle
+$helptitle.Font                                         = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
 
-$getthedoc                 = New-Object System.Windows.Forms.Button
-$getthedoc.Size            = New-Object System.Drawing.Size (180,25)
-$getthedoc.Left            = $GUI_Form_MainWindow_leftalign
-$getthedoc.Top             = 310
-$getthedoc.Text            = $text_settings_getthedoc
+$getthedoc                                              = New-Object System.Windows.Forms.Button
+$getthedoc.Size                                         = New-Object System.Drawing.Size (180,25)
+$getthedoc.Left                                         = $GUI_Form_MainWindow_leftalign
+$getthedoc.Top                                          = 310
+$getthedoc.Text                                         = $text_settings_getthedoc
 #$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
 $getthedoc.Add_Click( {start-process '$ScriptPath\documentation\Rocketlaunch Manual.docx' } )
 
-$askme                 = New-Object System.Windows.Forms.Button
-$askme.Size            = New-Object System.Drawing.Size (120,25)
-$askme.Left            = ($GUI_Form_MainWindow_leftalign + 185)
-$askme.Top             = 310
-$askme.Text            = $text_settings_askme
+$askme                                                  = New-Object System.Windows.Forms.Button
+$askme.Text                                             = $text_settings_askme
+$askme.Size                                             = New-Object System.Drawing.Size (120,25)
+$askme.Left                                             = ($GUI_Form_MainWindow_leftalign + 185)
+$askme.Top                                              = 310
 $askme.Add_Click( {start-process "Mailto:stella.menier@gmx.de"})
 
 $GUI_More_Close                               = New-Object System.Windows.Forms.Button
+$GUI_More_Close.Text                          = $text_close_settings
 $GUI_More_Close.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign ),140)
 $GUI_More_Close.Size                          = New-Object System.Drawing.Size(120,25)
-$GUI_More_Close.Text                          = $text_close_settings
 $GUI_More_Close.UseVisualStyleBackColor       = $True
 
 $GUI_Tab_Settings.Controls.Add($moresettingstitle)
@@ -159,30 +159,31 @@ $GUI_Tab_About.Text = $text_abouttab
 
 
 # FANCY ICON
-$applogo             = new-object Windows.Forms.PictureBox
-$applogo.Width       = 64
-$applogo.Height      = 64
-$applogo.Image       = $icon
-$applogo.Location    = New-Object System.Drawing.Point(128,20)
+$applogo                        = new-object Windows.Forms.PictureBox
+$applogo.Width                  = 64
+$applogo.Height                 = $applogo.Width
+$applogo.Image                  = $icon
+$applogo.Location               = New-Object System.Drawing.Point(128,20)
 
 # Label above input
 $abouttitle                     = New-Object System.Windows.Forms.Label
+$abouttitle.Text                = "-Rocketlaunch!"
 $abouttitle.Size                = New-Object System.Drawing.Size(280,20)
 $abouttitle.Left                = ($GUI_Form_MainWindow_leftalign + 85)
 $abouttitle.Top                 = 95
-$abouttitle.Text                = "-Rocketlaunch!"
 $abouttitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 13, [System.Drawing.FontStyle]::Bold)
 
 # Label above input
-$aboutsubtitle                     = New-Object System.Windows.Forms.Label
-$aboutsubtitle.Size                = New-Object System.Drawing.Size(360,20)
-$aboutsubtitle.Left                = ($GUI_Form_MainWindow_leftalign + 40)
-$aboutsubtitle.Top                 = 120
-$aboutsubtitle.Text                = $text_aboutsubtitle
-$aboutsubtitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Italic)
+$aboutsubtitle                  = New-Object System.Windows.Forms.Label
+$aboutsubtitle.Text             = $text_aboutsubtitle
+$aboutsubtitle.Size             = New-Object System.Drawing.Size(360,20)
+$aboutsubtitle.Left             = ($GUI_Form_MainWindow_leftalign + 40)
+$aboutsubtitle.Top              = 120
+$aboutsubtitle.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Italic)
 
 # Label above input
 $abouttext                      = New-Object System.Windows.Forms.TextBox
+$abouttext.Text                 = $text_abouttext
 $abouttext.Size                 = New-Object System.Drawing.Size(255,155)
 $abouttext.Left                 = ($GUI_Form_MainWindow_leftalign + 25)
 $abouttext.Top                  = 150
@@ -190,7 +191,6 @@ $abouttext.ReadOnly             = $true
 $abouttext.BackColor            = "White"
 $abouttext.Multiline            = $true
 $abouttext.TextAlign            = "Center"
-$abouttext.Text                 = $text_abouttext
 $abouttext.Font                 = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
 
 

@@ -55,11 +55,9 @@ Write-Output "[START] Loading text"
 
     [string]$global:text_settings_ExplorerQuickAccess  = "Create a quick access shortcut in Explorer ?"
     [string]$global:text_settings_OutlookFolder        = "Create a folder in Outlook ?"
-    [string]$global:text_settings_ExpandArchives          = "Expand archives ? (NOT DONE)"
     [string]$global:text_settings_Countwords          = "Count Words ? (NOT DONE)"
     [string]$global:text_settings_OpenExplorer         = "Open newly created folder when finished ?"
     [string]$global:text_settings_Notify               = "Send a notification when done ?"
-
     [string]$global:text_settings_CloseAfter               = "Programm nach der Erstellung verlassen?"
 
     [string]$global:text_settings_helptitle            = "Help"

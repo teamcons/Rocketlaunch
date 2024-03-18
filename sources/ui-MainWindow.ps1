@@ -20,15 +20,15 @@
 [int]$GUI_Form_MainWindow_verticalalign = 600
 
 
-$script:GUI_Form_MainWindow                   = New-Object System.Windows.Forms.Form
-$GUI_Form_MainWindow.Text              = -join($APPNAME," - ",$text_aboutsubtitle)
-$GUI_Form_MainWindow.Size              = New-Object System.Drawing.Size(775,($GUI_Form_MainWindow_verticalalign + 85 ))
-$GUI_Form_MainWindow.MinimumSize       = New-Object System.Drawing.Size(500,170)
-$GUI_Form_MainWindow.Font              = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
-$GUI_Form_MainWindow.StartPosition     = 'CenterScreen'
-$GUI_Form_MainWindow.Topmost           = $True
-$GUI_Form_MainWindow.BackColor         = "White"
-$GUI_Form_MainWindow.Icon              = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
+$script:GUI_Form_MainWindow                     = New-Object System.Windows.Forms.Form
+$GUI_Form_MainWindow.Text                       = -join($APPNAME," - ",$text_aboutsubtitle)
+$GUI_Form_MainWindow.Size                       = New-Object System.Drawing.Size(775,($GUI_Form_MainWindow_verticalalign + 85 ))
+$GUI_Form_MainWindow.MinimumSize                = New-Object System.Drawing.Size(500,170)
+$GUI_Form_MainWindow.Font                       = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
+$GUI_Form_MainWindow.StartPosition              = 'CenterScreen'
+$GUI_Form_MainWindow.Topmost                    = $default_ontop
+$GUI_Form_MainWindow.BackColor                  = "White"
+$GUI_Form_MainWindow.Icon                       = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
 
 #==============
 #= INPUT TEXT =

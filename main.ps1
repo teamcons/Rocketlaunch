@@ -34,13 +34,13 @@ else
 #========================================
 # Get all resources
 
-Import-Module $ScriptPath/text.ps1
-Import-Module $ScriptPath/defaults.ps1
-Import-Module $ScriptPath/bigstring.ps1
-Import-Module $ScriptPath/internals.ps1
-Import-Module $ScriptPath/ui-MainWindow.ps1 
-Import-Module $ScriptPath/ui-SettingsDialog.ps1 
-Import-Module $ScriptPath/outlook-backend.ps1 
+Import-Module $ScriptPath/sources/text.ps1
+Import-Module $ScriptPath/sources/defaults.ps1
+Import-Module $ScriptPath/sources/bigstring.ps1
+Import-Module $ScriptPath/sources/internals.ps1
+Import-Module $ScriptPath/sources/ui-MainWindow.ps1 
+Import-Module $ScriptPath/sources/ui-SettingsDialog.ps1 
+Import-Module $ScriptPath/sources/outlook-backend.ps1 
 
 
 
@@ -189,7 +189,7 @@ if ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource)
 
 
     # Before processing each source file, deal with the archives first
-    if ($CheckIfExpandArchives.Checked) { Get-ChildItem -Path $ORIG -Filter *.zip | Expand-Archive -DestinationPath $ORIG }
+    Get-ChildItem -Path $ORIG -Filter *.zip | Expand-Archive -DestinationPath $ORIG
    
 
     # Make sure everything saved is named as we need it
