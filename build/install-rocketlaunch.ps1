@@ -30,8 +30,8 @@ Copy-Item -Path $ScriptPath\sources -Destination $NEWPLACE -Force -Recurse
 Copy-Item -Path $ScriptPath\assets -Destination $NEWPLACE -Force -Recurse
 Copy-Item -Path $ScriptPath\documentation -Destination $NEWPLACE -Force -Recurse
 
-Copy-Item -Path $ScriptPath\LICENSE -Destination $NEWPLACE -Force
-Copy-Item -Path $ScriptPath\README.md -Destination $NEWPLACE -Force
+Copy-Item -Path $ScriptPath\LICENSE -Destination $NEWPLACE\documentation -Force
+Copy-Item -Path $ScriptPath\README.md -Destination $NEWPLACE\documentation -Force
 Copy-Item -Path $ScriptPath\"Start Rocketlaunch.exe" -Destination $NEWPLACE -Force
 
 
