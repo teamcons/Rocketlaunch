@@ -44,9 +44,9 @@ $moresettingstitle.Font                = New-Object System.Drawing.Font('Microso
 $moresettingsnota                     = New-Object System.Windows.Forms.Label
 $moresettingsnota.Size                = New-Object System.Drawing.Size(300,20)
 $moresettingsnota.Left                = $GUI_Form_MainWindow_leftalign
-$moresettingsnota.Top                 = 30
+$moresettingsnota.Top                 = 33
 $moresettingsnota.Text                = $text_settingsnota
-$moresettingsnota.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 7, [System.Drawing.FontStyle]::Italic)
+$moresettingsnota.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Italic)
 
 
 $CheckIfCreateExplorerQuickAccess                = New-Object System.Windows.Forms.CheckBox        
@@ -89,6 +89,19 @@ $CheckIfNotify.Size           = New-Object System.Drawing.Size(400,20)
 $CheckIfNotify.Text           = $text_settings_Notify
 $CheckIfNotify.Checked        = $default_notifywhenfinished
 
+
+
+
+
+$CheckIfCloseAfter                = New-Object System.Windows.Forms.CheckBox        
+$CheckIfCloseAfter.Location       = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,210)
+$CheckIfCloseAfter.Size           = New-Object System.Drawing.Size(400,20)
+$CheckIfCloseAfter.Text           = $text_settings_CloseAfter
+$CheckIfCloseAfter.Checked        = $default_closeafter
+
+
+
+#####################
 $helptitle                     = New-Object System.Windows.Forms.Label
 $helptitle.Size                = New-Object System.Drawing.Size(300,20)
 $helptitle.Left                = $GUI_Form_MainWindow_leftalign
@@ -97,7 +110,7 @@ $helptitle.Text                = $text_settings_helptitle
 $helptitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
 
 $getthedoc                 = New-Object System.Windows.Forms.Button
-$getthedoc.Size            = New-Object System.Drawing.Size (180,30)
+$getthedoc.Size            = New-Object System.Drawing.Size (180,25)
 $getthedoc.Left            = $GUI_Form_MainWindow_leftalign
 $getthedoc.Top             = 310
 $getthedoc.Text            = $text_settings_getthedoc
@@ -105,7 +118,7 @@ $getthedoc.Text            = $text_settings_getthedoc
 $getthedoc.Add_Click( {start-process '$ScriptPath\..\documentation\Rocketlaunch Manual.docx' } )
 
 $askme                 = New-Object System.Windows.Forms.Button
-$askme.Size            = New-Object System.Drawing.Size (120,30)
+$askme.Size            = New-Object System.Drawing.Size (120,25)
 $askme.Left            = ($GUI_Form_MainWindow_leftalign + 190)
 $askme.Top             = 310
 $askme.Text            = $text_settings_askme

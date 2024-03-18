@@ -42,7 +42,7 @@ Write-Output "[START] Loading text"
 
 
     # Datagridview, templates
-    [string]$global:text_usewhichtemplate          = 'Welche Projektvorlage soll verwendet werden?'
+    [string]$global:text_usewhichtemplate          = 'Welche Projektvorlage soll verwendet werden? (Tipp: Sie können den Namen eines Ordners durch Doppelklicken ändern)'
     [string]$global:text_loadtemplate              = "Laden..."
     [string]$global:text_help                      = "Mehr"
     [string]$global:text_OK                        = "Los!"
@@ -59,11 +59,14 @@ Write-Output "[START] Loading text"
     [string]$global:text_settings_Countwords          = "Count Words ? (NOT DONE)"
     [string]$global:text_settings_OpenExplorer         = "Open newly created folder when finished ?"
     [string]$global:text_settings_Notify               = "Send a notification when done ?"
+
+    [string]$global:text_settings_CloseAfter               = "Programm nach der Erstellung verlassen?"
+
     [string]$global:text_settings_helptitle            = "Help"
     [string]$global:text_settings_getthedoc            = "Open documentation"
     [string]$global:text_settings_askme                = "Ask me"
-    
-    [string]$global:text_settings_close                        = "Yeah, ok"
+
+    [string]$global:text_settings_close                = "Yeah, ok"
 
 
     ### ABOUT TAB

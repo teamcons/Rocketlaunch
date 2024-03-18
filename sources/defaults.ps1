@@ -26,7 +26,7 @@ Write-Output "[START] Loading defaults"
     [bool]$script:default_movesourcemail            = $true
     [bool]$script:default_openexplorer              = $true
     [bool]$script:default_notifywhenfinished        = $true
-
+    [bool]$script:default_closeafter                = $false
 
     [bool]$script:default_countwords                = $false
     [bool]$script:default_restart                   = $false
