@@ -8,7 +8,7 @@ else
 
 ps2exe `
 -inputFile $ScriptPath\install-rocketlaunch.ps1 `
--iconFile $ScriptPath\..\assets\Rocketlaunch-Icon.ico `
+-iconFile $ScriptPath\..\assets\icon.ico `
 -noConsole `
 -noOutput `
 -exitOnCancel `
@@ -19,4 +19,4 @@ ps2exe `
 -copyright "GNU GPL-3.0 Stella <stella.menier@gmx.de>" `
 -version 2.0 `
 -Verbose `
--outputFile $ScriptPath\..\Install-Rocketlaunch.exe
+-outputFile $ScriptPath\..\"Install Rocketlaunch.exe"
