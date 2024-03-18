@@ -19,4 +19,4 @@ ps2exe `
 -copyright "GNU GPL-3.0 Stella <stella.menier@gmx.de>" `
 -version 2.0 `
 -Verbose `
--outputFile $ScriptPath\..\Start-Rocketlaunch.exe
+-outputFile $ScriptPath\..\"Start Rocketlaunch.exe"
