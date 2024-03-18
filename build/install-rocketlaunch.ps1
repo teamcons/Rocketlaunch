@@ -48,7 +48,7 @@ function Create-Shortcut {
 
 
 # Path to executable
-$EXE = -join($WHERE,"\",$DIRNAME,"\Start-Rocketlaunch.exe")
+$EXE = -join($WHERE,"\",$DIRNAME,"\Start Rocketlaunch.exe")
 
 # Lets fight Ganon
 $LINK = -join($WHERE,"\Start-Rocketlaunch.lnk")
