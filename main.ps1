@@ -34,9 +34,14 @@ else
 #========================================
 # Get all resources
 
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+[void] [System.Windows.Forms.Application]::EnableVisualStyles() 
+$script:icon = New-Object system.drawing.icon $ScriptPath\assets\icon.ico
+
 Import-Module $ScriptPath/sources/text.ps1
 Import-Module $ScriptPath/sources/defaults.ps1
-Import-Module $ScriptPath/sources/bigstring.ps1
+#Import-Module $ScriptPath/sources/bigstring.ps1
 Import-Module $ScriptPath/sources/internals.ps1
 Import-Module $ScriptPath/sources/ui-MainWindow.ps1 
 Import-Module $ScriptPath/sources/ui-SettingsDialog.ps1 

@@ -51,7 +51,7 @@ $moresettingsnota.Font                = New-Object System.Drawing.Font('Microsof
 
 $CheckIfCreateExplorerQuickAccess                       = New-Object System.Windows.Forms.CheckBox        
 $CheckIfCreateExplorerQuickAccess.Left                  = $GUI_Form_MainWindow_leftalign
-$CheckIfCreateExplorerQuickAccess.Top                   = 50
+$CheckIfCreateExplorerQuickAccess.Top                   = 55
 $CheckIfCreateExplorerQuickAccess.Size                  = New-Object System.Drawing.Size(400,20)
 $CheckIfCreateExplorerQuickAccess.Text                  = $text_settings_ExplorerQuickAccess
 $CheckIfCreateExplorerQuickAccess.Checked               = $default_createshortcut
@@ -164,6 +164,9 @@ $applogo.Width                  = 64
 $applogo.Height                 = $applogo.Width
 $applogo.Image                  = $icon
 $applogo.Location               = New-Object System.Drawing.Point(128,20)
+
+#$img                    = (get-item $ScriptPath\assets\icon-mini.ico)
+#$pictureBox.Image       = [system.drawing.image]::FromFile($img)
 
 # Label above input
 $abouttitle                     = New-Object System.Windows.Forms.Label

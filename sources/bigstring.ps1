@@ -23,6 +23,7 @@ $script:stream = [System.IO.MemoryStream]::new($iconBytes, 0, $iconBytes.Length)
 # This way we can draw icons without having any external file
 
 $script:icon = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
+#$script:icon = New-Object system.drawing.icon $ScriptPath\assets\icon.ico
 
 
 

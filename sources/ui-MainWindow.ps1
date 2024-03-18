@@ -28,7 +28,7 @@ $GUI_Form_MainWindow.Font                       = New-Object System.Drawing.Font
 $GUI_Form_MainWindow.StartPosition              = 'CenterScreen'
 $GUI_Form_MainWindow.Topmost                    = $default_ontop
 $GUI_Form_MainWindow.BackColor                  = "White"
-$GUI_Form_MainWindow.Icon                       = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
+$GUI_Form_MainWindow.Icon                       = $icon
 
 #==============
 #= INPUT TEXT =
@@ -47,11 +47,11 @@ $panel_top.Dock          = "Top"
 $pictureBox             = new-object Windows.Forms.PictureBox
 $pictureBox.Location    = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,12)
 $pictureBox.Anchor      = "Left,Top"
-$img = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($stream).GetHIcon()))
 $pictureBox.Width       = 64
 $pictureBox.Height      = 64
-$pictureBox.Image       = $img;
-
+#$img                    = (get-item $ScriptPath\assets\icon-mini.ico)
+#$pictureBox.Image       = [system.drawing.image]::FromFile($img)
+$pictureBox.Image       = $icon
 
 # LABEL AND TEXT
 # Label above input
