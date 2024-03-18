@@ -49,9 +49,9 @@ $pictureBox.Location    = New-Object System.Drawing.Point($GUI_Form_MainWindow_l
 $pictureBox.Anchor      = "Left,Top"
 $pictureBox.Width       = 64
 $pictureBox.Height      = 64
-#$img                    = (get-item $ScriptPath\assets\icon-mini.ico)
-#$pictureBox.Image       = [system.drawing.image]::FromFile($img)
-$pictureBox.Image       = $icon
+$img                    = (get-item $ScriptPath\assets\icon-mini.ico)
+$pictureBox.Image       = [system.drawing.image]::FromFile($img)
+#$pictureBox.Image       = $icon
 
 # LABEL AND TEXT
 # Label above input

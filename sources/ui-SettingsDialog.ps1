@@ -162,7 +162,10 @@ $GUI_Tab_About.Text = $text_abouttab
 $applogo                        = new-object Windows.Forms.PictureBox
 $applogo.Width                  = 64
 $applogo.Height                 = $applogo.Width
-$applogo.Image                  = $icon
+#$applogo.Image                  = $icon
+$img                    = (get-item $ScriptPath\assets\icon-mini.ico)
+$applogo.Image       = [system.drawing.image]::FromFile($img)
+
 $applogo.Location               = New-Object System.Drawing.Point(128,20)
 
 #$img                    = (get-item $ScriptPath\assets\icon-mini.ico)
