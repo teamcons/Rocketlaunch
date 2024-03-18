@@ -17,8 +17,20 @@ $DIRNAME = $(Get-Item $ScriptPath).Name
 
 
 
+
 # Copy the whole folder there
-Copy-Item -Path $ScriptPath -Destination $WHERE
+$NEWPLACE = New-Item -Path $WHERE -Name $DIRNAME -ItemType Directory
+$NEWPLACE = $NEWPLACE.FullName
+
+Copy-Item -Path $ScriptPath\sources -Destination $NEWPLACE -Force -Recurse
+Copy-Item -Path $ScriptPath\assets -Destination $NEWPLACE -Force -Recurse
+Copy-Item -Path $ScriptPath\documentation -Destination $NEWPLACE -Force -Recurse
+
+Copy-Item -Path $ScriptPath\LICENSE -Destination $NEWPLACE -Force
+Copy-Item -Path $ScriptPath\README.md -Destination $NEWPLACE -Force
+Copy-Item -Path $ScriptPath\Start-Rocketlaunch.exe -Destination $NEWPLACE -Force
+
+
 
 
 # Define how to create shortcuts
@@ -36,10 +48,10 @@ function Create-Shortcut {
 
 
 # Path to executable
-$EXE = -join($WHERE,"\",$DIRNAME,"\Start.Rocketlaunch.exe")
+$EXE = -join($WHERE,"\",$DIRNAME,"\Start-Rocketlaunch.exe")
 
 # Lets fight Ganon
-$LINK = -join($WHERE,"\Start.Rocketlaunch.lnk")
+$LINK = -join($WHERE,"\Start-Rocketlaunch.lnk")
 
 # Create link to exe
 Create-Shortcut -TargetPath $EXE -ShortcutPath $LINK
