@@ -44,7 +44,7 @@ $moresettingstitle.Font                = New-Object System.Drawing.Font('Microso
 $moresettingsnota                     = New-Object System.Windows.Forms.Label
 $moresettingsnota.Size                = New-Object System.Drawing.Size(300,20)
 $moresettingsnota.Left                = $GUI_Form_MainWindow_leftalign
-$moresettingsnota.Top                 = 25
+$moresettingsnota.Top                 = 30
 $moresettingsnota.Text                = $text_settingsnota
 $moresettingsnota.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 7, [System.Drawing.FontStyle]::Italic)
 
@@ -101,7 +101,8 @@ $getthedoc.Size            = New-Object System.Drawing.Size (180,30)
 $getthedoc.Left            = $GUI_Form_MainWindow_leftalign
 $getthedoc.Top             = 310
 $getthedoc.Text            = $text_settings_getthedoc
-$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
+#$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
+$getthedoc.Add_Click( {start-process '$ScriptPath\..\documentation\Rocketlaunch Manual.docx' } )
 
 $askme                 = New-Object System.Windows.Forms.Button
 $askme.Size            = New-Object System.Drawing.Size (120,30)
@@ -175,7 +176,7 @@ $abouttext.Text                 = $text_abouttext
 $abouttext.Font                 = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
 
 
-[int]$buttonalign = 320
+[int]$buttonalign = 325
 
 $gotogithub                     = New-Object System.Windows.Forms.Button
 $gotogithub.Size                = New-Object System.Drawing.Size (100,25)

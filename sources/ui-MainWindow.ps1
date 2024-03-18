@@ -237,7 +237,7 @@ for ($i=1; $i -lt $templates.ColumnCount ; $i++)
 [void]$templates.Rows.Add("Minimal","info","orig");
 [void]$templates.Rows.Add("Standard TEP","info","orig","trados","to trans","from trans","to proof","from proof","to client")
 [void]$templates.Rows.Add("Full TEP","info","orig","trados","to TEP","from TEP","to client")
-[void]$templates.Rows.Add("Acolad-MemoQ","info","orig","MemoQ","To client")
+[void]$templates.Rows.Add("Acolad-MemoQ","info","orig","MemoQ","to client")
 [void]$templates.Rows.Add("Proofreading only","info","orig","from proof","to client")
 [void]$templates.Rows.Add("Sworn Translation","info","orig","to client")
 [void]$templates.Rows.Add("Astrid Special","info","orig","studio","trans","proof","to client")

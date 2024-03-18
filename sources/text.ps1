@@ -60,7 +60,7 @@ Write-Output "[START] Loading text"
     [string]$global:text_settings_OpenExplorer         = "Open newly created folder when finished ?"
     [string]$global:text_settings_Notify               = "Send a notification when done ?"
     [string]$global:text_settings_helptitle            = "Help"
-    [string]$global:text_settings_getthedoc            = "Download latest manual version"
+    [string]$global:text_settings_getthedoc            = "Open documentation"
     [string]$global:text_settings_askme                = "Ask me"
     
     [string]$global:text_settings_close                        = "Yeah, ok"
