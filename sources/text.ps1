@@ -42,7 +42,7 @@ Write-Output "[START] Loading text"
 
 
     # Datagridview, templates
-    [string]$global:text_usewhichtemplate          = 'Welche Projektvorlage soll verwendet werden? (Tipp: Sie können den Namen eines Ordners durch Doppelklicken ändern)'
+    [string]$global:text_usewhichtemplate          = 'Welche Projektvorlage verwenden? (Tipp: Namen eines Ordners durch Doppelklicken ändern)'
     [string]$global:text_loadtemplate              = "Laden..."
     [string]$global:text_help                      = "Mehr"
     [string]$global:text_OK                        = "Los!"

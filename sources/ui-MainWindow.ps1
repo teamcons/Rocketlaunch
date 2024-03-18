@@ -183,9 +183,7 @@ $labeltemplate.Text                     = $text_usewhichtemplate
 $labeltemplate.Font                     = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
 $labeltemplate.Left                     = $GUI_Form_MainWindow_leftalign
 $labeltemplate.Top                      = 10
-$labeltemplate.Size                     = New-Object System.Drawing.Size(300,20)
-$labeltemplate.MinimumSize              = New-Object System.Drawing.Size(300,20)
-$labeltemplate.MaximumSize              = New-Object System.Drawing.Size(300,20)
+$labeltemplate.Size                     = New-Object System.Drawing.Size(600,20)
 $labeltemplate.Anchor                   = "Left,Top"
 
 $gui_browsetemplate                   = New-Object System.Windows.Forms.Button

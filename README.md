@@ -24,6 +24,10 @@ As we work in Trados Studio, pre-fill and start the New Project assistant
 -Load for real from a CSV, and a button to load others. Also icons.
 -Drag N Drop
 
+# CODE PHILOSOPHY
+
+Dont bother user: minimal feedback and input, sane defaults, minimal buttons
+Offer what may be needed as settings
 
 
 # BUILD
@@ -38,7 +42,14 @@ If there is no EXE in that folder, do right-click on "build.ps1", "Execute with 
 
 # INSTALL
 
-None required. Just run the EXE in "release" or PS script in "src"
+So this may be a bit weird
+main.ps1 pulls everything it needs in the sources/ folder. Thats where its all split up.
+You can simply run "main.ps1", and it will take care of things
+
+a script in the build/ folder creates a "Start Rocketlaunch" executable, because it looks more pro and better in the taskbar
+to be even more pro and all, there is an installer, in build/, or at the root folder, whose job is just copying everything needed into the desktop, create a link, notify you
+it cannot pin a shortcut to taskbar, because microsoft actively discourages doing that.
+
 Because of the way this is built, your antivirus may be unhappy. The Windows Defender thingy also sometimes moves away the exe into some quarantine folder.
 
 
