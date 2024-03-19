@@ -1,5 +1,4 @@
-﻿#================================================================================================================================
-
+﻿
 
 
         #===============================================
@@ -19,15 +18,17 @@ else
 #========================================
 # Get all resources
 
+# Allow having a fancing GUI
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 [void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
-# Tools
+# Load assets
 $script:icon                = New-Object system.drawing.icon $ScriptPath\assets\icon.ico
 $script:templatefile        = -join($ScriptPath,"\documentation\Project templates.csv")
 $script:image               = [system.drawing.image]::FromFile((get-item $ScriptPath\assets\icon-mini.ico))
 
+# Load everything we need
 Import-Module $ScriptPath/sources/text.ps1
 Import-Module $ScriptPath/sources/defaults.ps1
 Import-Module $ScriptPath/sources/internals.ps1
@@ -73,15 +74,10 @@ $newcol = New-Object system.Data.DataColumn $text_columns_DD_Path,([string]); $D
 
 #========================================
 # Interface defined in the ui module
-Write-Output "[START] Show main window"
-$result = $GUI_Form_MainWindow.ShowDialog()
+Write-Output "[START] Show main window"; $result = $GUI_Form_MainWindow.ShowDialog()
 
 # Cancel culture : Close if cancel
 if ($result -eq [System.Windows.Forms.DialogResult]::Cancel) { Write-Output "[INPUT] Got Cancel. Aw. Exit." ; exit }
-
-# penis
-[string]$PROJECTNAME = $gui_code.Text ; Write-Output "[INPUT] Got: $PROJECTNAME"
-
 
 
 
@@ -92,6 +88,7 @@ if ($result -eq [System.Windows.Forms.DialogResult]::Cancel) { Write-Output "[IN
 
 #========================================
 # Make sure we have clean input
+[string]$PROJECTNAME                = $gui_code.Text ; Write-Output "[INPUT] Got: $PROJECTNAME"
 [string]$PROJECTNAME                = (Get-CleanifiedCodename $PROJECTNAME)[-1]
 [string]$BASEFOLDER                 = (Rebuild-Tree $PROJECTNAME)[-1]
 
@@ -99,10 +96,11 @@ if ($result -eq [System.Windows.Forms.DialogResult]::Cancel) { Write-Output "[IN
 Write-Output "[ACTION] Create base folder: $BASEFOLDER"
 New-Item -ItemType Directory -Path "$BASEFOLDER"
 
-# CREATE ALLLLL THE FOLDERS
 # Get selected element. Skip the first element cuz no
 $selectedrow                        = $templates.CurrentCell.RowIndex
 $allfolderstocreate                 = ($templates.Rows[$selectedrow].Cells | Select-Object -Skip 1 )
+
+# CREATE ALLLLL THE FOLDERS
 Create-AllFolders $BASEFOLDER $allfolderstocreate
 
 
@@ -126,9 +124,6 @@ if ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource)
     [string]$ORIG = -join($BASEFOLDER,"\",(Get-ChildItem -Path "$BASEFOLDER" -Filter "01_*" | Select-Object -First 1).Name)
 
 
-    #if ($gui_filesource.SelectedItem -match $text_from_Outlook )
-    #{#} # End of process outlook inclusion
-
     # Check which text has the combobox to decide how to handle this.
     switch ($gui_filesource.SelectedItem) {
         $text_from_Outlook {
@@ -147,7 +142,7 @@ if ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource)
         default {
             Write-Host -join ("IDK, WTF IS ",$gui_filesource.SelectedItem)
         }
-    }
+    } # End of Switch Case
 
     # Before processing each source file, deal with the archives first
     # Just expand all archives
@@ -169,19 +164,19 @@ if ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource)
 
 
 #========================================
-# PIN TO EXPLORER
-if ($CheckIfCreateExplorerQuickAccess.Checked) { Create-QuickAccess $BASEFOLDER }
+# Pin to quick access in explorer
+if ($CheckIfCreateExplorerQuickAccess.Checked)  { Create-QuickAccess $BASEFOLDER }
 
-# Outlook folder
-if ($CheckIfCreateOutlookFolder.Checked) { Create-OutlookFolder $PROJECTNAME $ns }
+# Create a folder in outlook
+if ($CheckIfCreateOutlookFolder.Checked)        { Create-OutlookFolder $PROJECTNAME $ns }
 
-# If user asked for trados, start it and fill what we can
-if ($CheckIfTrados.Checked) { Start-TradosProject $PROJECTNAME }
+# Start trados project creator and fill what we can
+if ($CheckIfTrados.Checked)                     { Start-TradosProject $PROJECTNAME }
 
-# OK NOW WE WORK
-if ($CheckIfOpenExplorer.Checked) { start-process explorer "$BASEFOLDER" }
+# Open explorer if its wanted
+if ($CheckIfOpenExplorer.Checked)               { start-process explorer "$BASEFOLDER" }
 
 # Yeah i redid a Linux command deal with it
-if ($CheckIfNotify.Checked) { Notify-Send $PROJECTNAME $text_NotifyText }
+if ($CheckIfNotify.Checked)                     { Notify-Send $PROJECTNAME $text_NotifyText }
 
 
