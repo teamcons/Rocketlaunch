@@ -141,9 +141,22 @@ function Load-RelevantMails
 
 
 
+#================================================================
+# If theres something, define a default selected
 
+function Adapt-Prediction {
 
+    [int]$selected                      = $sourcefiles.SelectedIndex
+    [string]$email                      = $allgoodmails[$selected].SenderEmailAddress
+    [string]$FirstSelectionMail         = (Get-CompanyName $email)[-1]
 
+    [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$FirstSelectionMail )
+    [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$FirstSelectionMail )
+    [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$FirstSelectionMail )
+    [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$FirstSelectionMail )
+    [string]$gui_code.Items[4] = -join(($PREDICT_CODE + 4),"_",$FirstSelectionMail )
+
+}
 
 #================================================================
 
@@ -156,26 +169,10 @@ $filter                     = "[ReceivedTime] >= '$date'"
 $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
 
 
-
-
 Load-RelevantMails
+try     {$sourcefiles.Items[0].Selected = $true ;}
+catch   {Write-Output "No mail with relevant attach !"}
 
-#================================================================
-# If theres something, define a default selected
-try { 
-    $sourcefiles.Items[0].Selected = $true 
-}
-catch {
-    Write-Output "No mail with relevant attach !"
-}
+[int]$script:PREDICT_CODE           = (Predict-StructCode)[-1] 
+Adapt-Prediction
 
-
-[int]$PREDICT_CODE = (Predict-StructCode)[-1] 
-[String]$FirstSelectionMail = (Get-CompanyName $allgoodmails.Item(0).SenderEmailAddress)[-1]
-
-[string]$gui_code.Items.Add(-join($PREDICT_CODE,"_",$FirstSelectionMail ))
-[string]$gui_code.Items.Add(-join(($PREDICT_CODE + 1),"_",$FirstSelectionMail ))  
-[string]$gui_code.Items.Add(-join(($PREDICT_CODE + 2),"_",$FirstSelectionMail ) ) 
-[string]$gui_code.Items.Add(-join(($PREDICT_CODE + 3),"_",$FirstSelectionMail ))
-
-$gui_code.SelectedItem = $gui_code.Items[0]

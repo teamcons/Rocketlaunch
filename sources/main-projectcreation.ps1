@@ -1,11 +1,4 @@
 
-
-
-
-
-
-
-
 # Everything. All Of it. All at once.
 function Main-ProjectCreation {
 

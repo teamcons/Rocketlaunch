@@ -78,6 +78,13 @@ $gui_year.Anchor           = "Left,Top"
 $script:gui_code                    = New-Object System.Windows.Forms.Combobox
 $gui_code.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),50)
 $gui_code.Size                      = New-Object System.Drawing.Size(210,30)    
+[void]$gui_code.Items.Add("")
+[void]$gui_code.Items.Add("")
+[void]$gui_code.Items.Add("")
+[void]$gui_code.Items.Add("")
+[void]$gui_code.Items.Add("")
+$gui_code.SelectedItem              = $gui_code.Items[0]
+
 
 
 # Topmost according to whether checked or not
@@ -169,6 +176,18 @@ $sourcefiles.HideSelection          = $false
 $sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
 $sourcefiles.View                   = [System.Windows.Forms.View]::Details
 $sourcefiles.BorderStyle            = "FixedSingle"
+#$sourcefiles.Add_Click({Adapt-Prediction})
+
+
+
+$sourcefiles_ItemSelectionChanged={
+    echo "ADAPT"
+    #Adapt-Prediction
+}
+$sourcefiles.Add_Mouseclick({echo "MOUSE"})
+$sourcefiles.Add_MouseUp({echo "MOUSE UP"})
+$sourcefiles.Add_Click($sourcefiles_ItemSelectionChanged)
+$sourcefiles.Add_SelectedIndexChanged({echo "CHANGED"})
 
 
 $panel_sourcefile.Controls.Add($sourcefile_refreshButton)
