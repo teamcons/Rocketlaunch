@@ -15,12 +15,14 @@ Add-Type -AssemblyName System.Drawing
 $script:GUI_Form_MoreStuff              = New-Object System.Windows.Forms.Form
 $GUI_Form_MoreStuff.Text                = -join($APPNAME," - ",$text_aboutsubtitle)
 $GUI_Form_MoreStuff.Icon                = $icon
-
 $GUI_Form_MoreStuff.StartPosition       = "CenterScreen"
 $GUI_Form_MoreStuff.Topmost             = $true
 $GUI_Form_MoreStuff.Size                = "340,420"
 $GUI_Form_MoreStuff.FormBorderStyle     = "FixedSingle"
 $GUI_Form_MoreStuff.MaximizeBox         = $false
+
+# Allow input to window for TextBoxes, etc
+[System.Windows.Forms.Integration.ElementHost]::EnableModelessKeyboardInterop($GUI_Form_MoreStuff)
 
 $GUI_Form_MainWindowTabControl                         = New-object System.Windows.Forms.TabControl 
 $GUI_Form_MainWindowTabControl.Dock = "Fill" 
