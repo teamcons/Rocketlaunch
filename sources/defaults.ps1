@@ -14,8 +14,6 @@ Write-Output "[START] Loading defaults"
     [string]$script:YEAR                            = get-date –f yyyy
     [regex]$script:CODEPATTERN                      = -join($YEAR,"-[0-9]")
 
-    [string]$script:TEMPLATEFILE                        = "Project templates.csv"
-    [string]$script:LOAD_TEMPLATES_FROM             = -join($ScriptPath,"\documentation")
     [string]$script:TEMPLATEDELIMITER               = ';'
     
     [string]$script:supported_filetypes               = $text_from_Outlook

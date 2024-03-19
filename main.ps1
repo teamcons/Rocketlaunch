@@ -8,19 +8,6 @@
 
 
 #========================================
-# Fancy !
-Write-Output "  ================================"
-Write-Output "  =        -ROCKETLAUNCH!        ="
-Write-Output "  ================================"
-
-Write-Output ""
-Write-Output "For Skrivanek GmbH - Start new projects, but very very quickly !"
-Write-Output "GPL-3.0 Stella Ménier, Project manager Skrivanek BELGIUM - <stella.menier@gmx.de>"
-Write-Output ""
-Write-Output ""
-
-
-#========================================
 # Grab script location in a way that is compatible with PS2EXE
 if ($MyInvocation.MyCommand.CommandType -eq "ExternalScript")
     { $global:ScriptPath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition }
@@ -29,70 +16,50 @@ else
     if (!$ScriptPath){ $global:ScriptPath = "." } }
 
 
-
-
 #========================================
 # Get all resources
 
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 [void] [System.Windows.Forms.Application]::EnableVisualStyles() 
-$script:icon = New-Object system.drawing.icon $ScriptPath\assets\icon.ico
+
+# Tools
+$script:icon                = New-Object system.drawing.icon $ScriptPath\assets\icon.ico
+$script:templatefile        = -join($ScriptPath,"\documentation\Project templates.csv")
+$script:image               = [system.drawing.image]::FromFile((get-item $ScriptPath\assets\icon-mini.ico))
 
 Import-Module $ScriptPath/sources/text.ps1
 Import-Module $ScriptPath/sources/defaults.ps1
-#Import-Module $ScriptPath/sources/bigstring.ps1
 Import-Module $ScriptPath/sources/internals.ps1
 Import-Module $ScriptPath/sources/ui-MainWindow.ps1 
 Import-Module $ScriptPath/sources/ui-SettingsDialog.ps1 
 Import-Module $ScriptPath/sources/outlook-backend.ps1 
 
+# Create an application context for it to all run within.
+# This helps with responsiveness, especially when clicking Exit.
+#$appContext = New-Object System.Windows.Forms.ApplicationContext
+#[void][System.Windows.Forms.Application]::Run($appContext)
 
-
-
-
-
-####################
+#========================================
+# Create the Emails table
 $Datatable_Emails = New-Object System.Data.DataTable
+$newcol = New-Object system.Data.DataColumn $text_columns_Subject,([string]); $Datatable_Emails.columns.add($newcol)  
+$newcol = New-Object system.Data.DataColumn $text_columns_Sendername,([string]); $Datatable_Emails.columns.add($newcol)  
+$newcol = New-Object system.Data.DataColumn $text_columns_Attachments,([int]); $Datatable_Emails.columns.add($newcol)  
+$newcol = New-Object system.Data.DataColumn $text_columns_time,([int]); $Datatable_Emails.columns.add($newcol)  
 
-$newcol = New-Object system.Data.DataColumn $text_columns_Subject,([string]);
-$Datatable_Emails.columns.add($newcol)  
-
-$newcol = New-Object system.Data.DataColumn $text_columns_Sendername,([string])
-$Datatable_Emails.columns.add($newcol)  
-
-$newcol = New-Object system.Data.DataColumn $text_columns_Attachments,([int])
-$Datatable_Emails.columns.add($newcol)  
-
-$newcol = New-Object system.Data.DataColumn $text_columns_time,([int])
-$Datatable_Emails.columns.add($newcol)  
-
-
-
-####################
+# Create the Files In Downloads table
 $Datatable_FilesInDownloads = New-Object System.Data.DataTable
-
-$newcol = New-Object system.Data.DataColumn "Checked",([bool]);
-$Datatable_FilesInDownloads.columns.add($newcol)  
-
-$newcol = New-Object system.Data.DataColumn $text_columns_DL_File,([string]);
-$Datatable_FilesInDownloads.columns.add($newcol)  
-
-$newcol = New-Object system.Data.DataColumn $text_columns_DL_LastWrite,([string])
-$Datatable_FilesInDownloads.columns.add($newcol)  
+$newcol = New-Object system.Data.DataColumn "Checked",([bool]); $Datatable_FilesInDownloads.columns.add($newcol)  
+$newcol = New-Object system.Data.DataColumn $text_columns_DL_File,([string]); $Datatable_FilesInDownloads.columns.add($newcol)  
+$newcol = New-Object system.Data.DataColumn $text_columns_DL_LastWrite,([string]); $Datatable_FilesInDownloads.columns.add($newcol)  
 
 
-####################
+# Create the Files DragNDrop table
 $Datatable_FilesDragNDrop = New-Object System.Data.DataTable
-
-$newcol = New-Object system.Data.DataColumn "Checked",([bool]);
-$Datatable_FilesDragNDrop.columns.add($newcol)  
-
-$newcol = New-Object system.Data.DataColumn $text_columns_DL_File,([string]);
-$Datatable_FilesDragNDrop.columns.add($newcol)  
-
-$newcol = New-Object system.Data.DataColumn $text_columns_DD_Path,([string])
-$Datatable_FilesDragNDrop.columns.add($newcol)  
+$newcol = New-Object system.Data.DataColumn "Checked",([bool]); $Datatable_FilesDragNDrop.columns.add($newcol)  
+$newcol = New-Object system.Data.DataColumn $text_columns_DL_File,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)  
+$newcol = New-Object system.Data.DataColumn $text_columns_DD_Path,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)  
 
 
 
@@ -104,20 +71,16 @@ $Datatable_FilesDragNDrop.columns.add($newcol)
 
 
 
-
 #========================================
 # Interface defined in the ui module
 Write-Output "[START] Show main window"
 $result = $GUI_Form_MainWindow.ShowDialog()
 
 # Cancel culture : Close if cancel
-if ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
-    { Write-Output "[INPUT] Got Cancel. Aw. Exit." ; exit }
-
+if ($result -eq [System.Windows.Forms.DialogResult]::Cancel) { Write-Output "[INPUT] Got Cancel. Aw. Exit." ; exit }
 
 # penis
-[string]$PROJECTNAME        = $gui_code.Text 
-Write-Output "[INPUT] Got: $PROJECTNAME"
+[string]$PROJECTNAME = $gui_code.Text ; Write-Output "[INPUT] Got: $PROJECTNAME"
 
 
 
@@ -142,11 +105,6 @@ $selectedrow                        = $templates.CurrentCell.RowIndex
 $allfolderstocreate                 = ($templates.Rows[$selectedrow].Cells | Select-Object -Skip 1 )
 Create-AllFolders $BASEFOLDER $allfolderstocreate
 
-# PIN TO EXPLORER
-if ($CheckIfCreateExplorerQuickAccess.Checked) { Create-QuickAccess $BASEFOLDER }
-
-# Outlook folder
-if ($CheckIfCreateOutlookFolder.Checked) { Create-OutlookFolder $PROJECTNAME $ns }
 
 
 
@@ -191,21 +149,32 @@ if ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource)
         }
     }
 
-
-
     # Before processing each source file, deal with the archives first
+    # Just expand all archives
     Get-ChildItem -Path $ORIG -Filter *.zip | Expand-Archive -DestinationPath $ORIG
    
-
     # Make sure everything saved is named as we need it
+    # Convention is to have Projectcode-File_orig.fileext
     Rename-Source $ORIG $PROJECTNAME.Substring(0,9) "_orig"
-
-
 
 } # End of If we have source files
 
 
+
+
+
+        #===============================================
+        #                POSTPROCESSING                =
+        #===============================================
+
+
 #========================================
+# PIN TO EXPLORER
+if ($CheckIfCreateExplorerQuickAccess.Checked) { Create-QuickAccess $BASEFOLDER }
+
+# Outlook folder
+if ($CheckIfCreateOutlookFolder.Checked) { Create-OutlookFolder $PROJECTNAME $ns }
+
 # If user asked for trados, start it and fill what we can
 if ($CheckIfTrados.Checked) { Start-TradosProject $PROJECTNAME }
 
@@ -216,7 +185,3 @@ if ($CheckIfOpenExplorer.Checked) { start-process explorer "$BASEFOLDER" }
 if ($CheckIfNotify.Checked) { Notify-Send $PROJECTNAME $text_NotifyText }
 
 
-# Create an application context for it to all run within.
-# This helps with responsiveness, especially when clicking Exit.
-#$appContext = New-Object System.Windows.Forms.ApplicationContext
-#[void][System.Windows.Forms.Application]::Run($appContext)

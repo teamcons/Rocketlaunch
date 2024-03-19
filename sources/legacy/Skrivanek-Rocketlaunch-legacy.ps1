@@ -27,14 +27,12 @@
 
 
 # Fancy !
-Write-Output "================================"
-Write-Output "=        -ROCKETLAUNCH!        ="
-Write-Output "================================"
-
+Write-Output "  ================================"
+Write-Output "  =        -ROCKETLAUNCH!        ="
+Write-Output "  ================================"
 Write-Output ""
-Write-Output "For Skrivanek GmbH - Start new projects really, really quick!"
-Write-Output "CC0 Stella Ménier, Project manager Skrivanek BELGIUM - <stella.menier@gmx.de>"
-Write-Output "Git: https://github.com/teamcons/Skrivanek-Rocketlaunch"
+Write-Output "For Skrivanek GmbH - Start new projects, but very very quickly !"
+Write-Output "GPL-3.0 Stella Ménier, Project manager Skrivanek BELGIUM - <stella.menier@gmx.de>"
 Write-Output ""
 Write-Output ""
 

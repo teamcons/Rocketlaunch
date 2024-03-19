@@ -49,8 +49,7 @@ $pictureBox.Location    = New-Object System.Drawing.Point($GUI_Form_MainWindow_l
 $pictureBox.Anchor      = "Left,Top"
 $pictureBox.Width       = 64
 $pictureBox.Height      = 64
-$img                    = (get-item $ScriptPath\assets\icon-mini.ico)
-$pictureBox.Image       = [system.drawing.image]::FromFile($img)
+$pictureBox.Image       = $image
 #$pictureBox.Image       = $icon
 
 # LABEL AND TEXT
@@ -104,26 +103,26 @@ $GUI_Form_MainWindow.Add_Shown({$gui_code.Select()})
 #===================
 #= SOURCE FILES    =
 
-$panel_sourcefile               = New-Object System.Windows.Forms.Panel
-$panel_sourcefile.Width         = 775
-$panel_sourcefile.Top           = 25
-$panel_sourcefile.Height        = 200
-$panel_sourcefile.Left          = 0
-$panel_sourcefile.BackColor     = "White" #'Green'
-$panel_sourcefile.Dock          = "Fill"
+$panel_sourcefile                       = New-Object System.Windows.Forms.Panel
+$panel_sourcefile.Width                 = 775
+$panel_sourcefile.Top                   = 25
+$panel_sourcefile.Height                = 200
+$panel_sourcefile.Left                  = 0
+$panel_sourcefile.BackColor             = "White" #'Green'
+$panel_sourcefile.Dock                  = "Fill"
 
 # Label above input
-$labelsourcefiles                  = New-Object System.Windows.Forms.Label
-$labelsourcefiles.Location         = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,10)
-$labelsourcefiles.Size             = New-Object System.Drawing.Size(450,20)
-$labelsourcefiles.Text             = $text_loadfilesfrom
-$labelsourcefiles.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
+$labelsourcefiles                       = New-Object System.Windows.Forms.Label
+$labelsourcefiles.Text                  = $text_label_from_Outlook
+$labelsourcefiles.Font                  = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
+$labelsourcefiles.Location              = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,10)
+$labelsourcefiles.Size                  = New-Object System.Drawing.Size(450,20)
 
-$script:gui_filesource                 = New-Object System.Windows.Forms.Combobox
-$gui_filesource.Location        = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 590),5)
-$gui_filesource.Size            = New-Object System.Drawing.Size(140,20)
-$gui_filesource.DropDownStyle   = [System.Windows.Forms.ComboBoxStyle]::DropDownList
-$gui_filesource.Anchor          = "Top,Right"
+$script:gui_filesource                  = New-Object System.Windows.Forms.Combobox
+$gui_filesource.Location                = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 590),5)
+$gui_filesource.Size                    = New-Object System.Drawing.Size(140,20)
+$gui_filesource.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
+$gui_filesource.Anchor                  = "Top,Right"
 [void] $gui_filesource.Items.Add($text_from_Outlook) 
 [void] $gui_filesource.Items.Add($text_from_Downloads)
 [void] $gui_filesource.Items.Add($text_DragNDrop)      
@@ -229,7 +228,7 @@ for ($i=1; $i -lt $templates.ColumnCount ; $i++)
 }
 
 
-$templatefile = -join($LOAD_TEMPLATES_FROM,"\",$TEMPLATEFILE)
+
 $templates = load_template $templates $templatefile
 
 <# [void]$templates.Rows.Add("Minimal","info","orig");
