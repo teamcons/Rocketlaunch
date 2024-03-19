@@ -4,8 +4,21 @@
 
 
 
+
+
 # Everything. All Of it. All at once.
 function Main-ProjectCreation {
+
+
+#Import-Module $ScriptPath\modules\PoshTaskbarItem
+#$ti = New-TaskbarItem -Title 'Countdown'
+#Show-TaskbarItem $ti
+
+#Set-TaskbarItemProgressIndicator $ti -Progress 1 -State Paused
+
+
+
+
 
     #=================================================
     #                Process Le Input                =
@@ -36,6 +49,8 @@ Create-AllFolders $BASEFOLDER $allfolderstocreate
     #=======================================================
     #                Include Original Files                =
     #=======================================================
+
+
 
 
 #========================================
@@ -87,6 +102,7 @@ Rename-Source $ORIG $PROJECTNAME.Substring(0,9) "_orig"
     #===============================================
     #                POSTPROCESSING                =
     #===============================================
+
 
 
 #========================================

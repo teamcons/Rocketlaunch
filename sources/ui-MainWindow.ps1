@@ -24,7 +24,7 @@ $script:GUI_Form_MainWindow                     = New-Object System.Windows.Form
 $GUI_Form_MainWindow.Text                       = -join($APPNAME," - ",$text_aboutsubtitle)
 $GUI_Form_MainWindow.Size                       = New-Object System.Drawing.Size(775,($GUI_Form_MainWindow_verticalalign + 85 ))
 $GUI_Form_MainWindow.MinimumSize                = New-Object System.Drawing.Size(500,170)
-$GUI_Form_MainWindow.Font                       = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
+$GUI_Form_MainWindow.Font                       = New-Object System.Drawing.Font('Calibri', 9, [System.Drawing.FontStyle]::Regular)
 $GUI_Form_MainWindow.StartPosition              = 'CenterScreen'
 $GUI_Form_MainWindow.Topmost                    = $default_ontop
 $GUI_Form_MainWindow.BackColor                  = "White"
@@ -63,7 +63,7 @@ $label                  = New-Object System.Windows.Forms.Label
 $label.Location         = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 80),12)
 $label.Size             = New-Object System.Drawing.Size(300,30)
 $label.AutoSize         = $true
-$label.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 17, [System.Drawing.FontStyle]::Bold)
+$label.Font             = New-Object System.Drawing.Font('Calibri', 17, [System.Drawing.FontStyle]::Bold)
 $label.Text             = $text_projectname
 $label.Anchor           = "Left,Top"
 
@@ -71,7 +71,7 @@ $label.Anchor           = "Left,Top"
 $gui_year                  = New-Object System.Windows.Forms.Label
 $gui_year.Location         = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 80),52)
 $gui_year.Size             = New-Object System.Drawing.Size(20,20)
-$gui_year.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
+$gui_year.Font             = New-Object System.Drawing.Font('Calibri', 11, [System.Drawing.FontStyle]::Regular)
 $gui_year.AutoSize         = $true
 $gui_year.Text             = -join($YEAR," -")
 $gui_year.Anchor           = "Left,Top"
@@ -119,7 +119,7 @@ $panel_sourcefile.Dock                  = "Fill"
 # Label above input
 $labelsourcefiles                       = New-Object System.Windows.Forms.Label
 $labelsourcefiles.Text                  = $text_label_from_Outlook
-$labelsourcefiles.Font                  = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
+$labelsourcefiles.Font                  = New-Object System.Drawing.Font('Calibri', 10, [System.Drawing.FontStyle]::Regular)
 $labelsourcefiles.Location              = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,10)
 $labelsourcefiles.Size                  = New-Object System.Drawing.Size(450,20)
 
@@ -184,7 +184,7 @@ $panel_template.Dock = "Fill"
 # Label and button
 $labeltemplate                          = New-Object System.Windows.Forms.Label
 $labeltemplate.Text                     = $text_usewhichtemplate
-$labeltemplate.Font                     = New-Object System.Drawing.Font('Microsoft Sans Serif', 10, [System.Drawing.FontStyle]::Regular)
+$labeltemplate.Font                     = New-Object System.Drawing.Font('Calibri', 10, [System.Drawing.FontStyle]::Regular)
 $labeltemplate.Left                     = $GUI_Form_MainWindow_leftalign
 $labeltemplate.Top                      = 10
 $labeltemplate.Size                     = New-Object System.Drawing.Size(600,20)
