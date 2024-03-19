@@ -2,11 +2,10 @@
 
 Write-Output "[START] Loading text"
 
-$LANG = $PSUICulture
 
-#switch ($LANG) {
+switch -Wildcard ($LANG) {
 
-#   "de*" {
+   "de-*" {
 
         #================================
         ### MAIN UI
@@ -91,7 +90,26 @@ Version 2.0.somethingsomething
         [string]$global:text_about_button_licence  = "Licence"
         [string]$global:text_about_button_support  = "Support me!"
 
-#    } # DE
+    } # DE
 
 
-#} # End of Big Switch
+
+
+
+
+
+
+
+    
+} # End of Big Switch
+
+
+
+[string]$global:text_abouttext             = "Made with love by Stella,
+for her work at Skrivanek GmbH
+
+I hope you find it useful !
+I am no developer, i studied economics, ive got no clue of those geek things.
+
+Version 2.0.somethingsomething
+2024 Stella Ménier, under GNU GPL v3"
