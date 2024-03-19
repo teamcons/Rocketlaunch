@@ -27,7 +27,7 @@ switch -Wildcard ($LANG) {
         [string]$global:text_columns_time              = 'Ankunft'
 
 
-        [string]$global:text_sourcefiles_refresh              = 'Aktualisieren'
+        [string]$global:text_sourcefiles_refresh              = 'Erneut laden'
 
         # DOWNLOADS
         [string]$global:text_label_from_Downloads            = "Ansicht: Alle Dateien, die seit heute heruntergeladen wurden"
