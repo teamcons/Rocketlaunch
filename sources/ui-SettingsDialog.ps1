@@ -48,7 +48,7 @@ $moresettingsnota.Size                = New-Object System.Drawing.Size(300,20)
 $moresettingsnota.Left                = $GUI_Form_MainWindow_leftalign
 $moresettingsnota.Top                 = 33
 $moresettingsnota.Text                = $text_settingsnota
-$moresettingsnota.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Italic)
+$moresettingsnota.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 8, [System.Drawing.FontStyle]::Italic)
 
 
 $CheckIfCreateExplorerQuickAccess                       = New-Object System.Windows.Forms.CheckBox        

@@ -124,7 +124,7 @@ $labelsourcefiles.Size                  = New-Object System.Drawing.Size(450,20)
 
 $sourcefile_refreshButton                               = New-Object System.Windows.Forms.Button
 $sourcefile_refreshButton.Text                          = $global:text_sourcefiles_refresh
-$sourcefile_refreshButton.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 490),4)
+$sourcefile_refreshButton.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 485),4)
 $sourcefile_refreshButton.Size                          = New-Object System.Drawing.Size(95,24)
 $sourcefile_refreshButton.Anchor                        = "Top,Right"
 $sourcefile_refreshButton.Add_Click({$sourcefiles.Items.Clear() ; Load-RelevantMails})
@@ -201,7 +201,7 @@ $labeltemplate.Anchor                   = "Left,Top"
 
 $templates_refreshButton                               = New-Object System.Windows.Forms.Button
 $templates_refreshButton.Text                          = $global:text_sourcefiles_refresh
-$templates_refreshButton.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 490),4)
+$templates_refreshButton.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 485),4)
 $templates_refreshButton.Size                          = New-Object System.Drawing.Size(95,24)
 $templates_refreshButton.Anchor                        = "Top,Right"
 $templates_refreshButton.Add_Click({$templates.Rows.Clear() ; $templates = load_template $templates $templatefile })
