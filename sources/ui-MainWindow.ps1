@@ -29,6 +29,7 @@ $GUI_Form_MainWindow.StartPosition              = 'CenterScreen'
 $GUI_Form_MainWindow.Topmost                    = $default_ontop
 $GUI_Form_MainWindow.BackColor                  = "White"
 $GUI_Form_MainWindow.Icon                       = $icon
+$GUI_Form_MainWindow.Add_Closing({Close-All})
 
 # Allow input to window for TextBoxes, etc
 #[System.Windows.Forms.Integration.ElementHost]::EnableModelessKeyboardInterop($GUI_Form_MainWindow)
@@ -307,9 +308,12 @@ $gui_okButton.UseVisualStyleBackColor       = $True
 $gui_okButton.Anchor                        = "Bottom,Right"
 #$gui_okButton.BackColor                     = ”Green”
 #$gui_okButton.ForeColor                     = ”White”
-$gui_okButton.DialogResult                  = [System.Windows.Forms.DialogResult]::OK
-$GUI_Form_MainWindow.AcceptButton                          = $gui_okButton
-#[void]$GUI_Form_MainWindow.Controls.Add($gui_okButton)
+
+# Everything happens here
+$gui_okButton.add_click({Main-ProjectCreation})
+
+
+
 
 $gui_cancelButton                           = New-Object System.Windows.Forms.Button
 $gui_cancelButton.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 610),10)
@@ -321,7 +325,7 @@ $gui_cancelButton.Anchor                    = "Bottom, Right"
 #$gui_cancelButton.ForeColor                  = ”White”
 $gui_cancelButton.DialogResult              = [System.Windows.Forms.DialogResult]::Cancel
 $GUI_Form_MainWindow.CancelButton                          = $gui_cancelButton
-#[void]$GUI_Form_MainWindow.Controls.Add($gui_cancelButton)
+$gui_cancelButton.add_click({Close-All})
 
 
 $gui_panel.Controls.Add($gui_help)
