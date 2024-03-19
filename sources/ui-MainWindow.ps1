@@ -199,10 +199,18 @@ $labeltemplate.Top                      = 10
 $labeltemplate.Size                     = New-Object System.Drawing.Size(400,20)
 $labeltemplate.Anchor                   = "Left,Top"
 
+$templates_refreshButton                               = New-Object System.Windows.Forms.Button
+$templates_refreshButton.Text                          = $global:text_sourcefiles_refresh
+$templates_refreshButton.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 490),4)
+$templates_refreshButton.Size                          = New-Object System.Drawing.Size(95,24)
+$templates_refreshButton.Anchor                        = "Top,Right"
+$templates_refreshButton.Add_Click({$templates.Rows.Clear() ; $templates = load_template $templates $templatefile })
+
+
 # Check if start new trados project
 $CheckIfSaveTemplateChanges                  = New-Object System.Windows.Forms.CheckBox        
 $CheckIfSaveTemplateChanges.Text             = $text_savetemplatechanges
-$CheckIfSaveTemplateChanges.Location         = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 590),10)
+$CheckIfSaveTemplateChanges.Location         = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 590),6)
 $CheckIfSaveTemplateChanges.Size             = New-Object System.Drawing.Size(180,20)
 $CheckIfSaveTemplateChanges.Checked          = $default_savetemplatechanges
 $CheckIfSaveTemplateChanges.Anchor           = "Top,Right"
@@ -251,6 +259,7 @@ $templates = load_template $templates $templatefile
 
 $templates.Rows[0].Selected = $true #.Selected = $true
 
+$panel_template.Controls.Add($templates_refreshButton)
 $panel_template.Controls.Add($CheckIfSaveTemplateChanges)
 $panel_template.Controls.Add($labeltemplate)
 $panel_template.Controls.Add($templates)
