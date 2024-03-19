@@ -229,10 +229,10 @@ for ($i=1; $i -lt $templates.ColumnCount ; $i++)
 }
 
 
-#$templatefile = -join($ScriptPath,"\",$TEMPLATE)
-#$templates = load_template $templates $templatefile
+$templatefile = -join($LOAD_TEMPLATES_FROM,"\",$TEMPLATEFILE)
+$templates = load_template $templates $templatefile
 
-[void]$templates.Rows.Add("Minimal","info","orig");
+<# [void]$templates.Rows.Add("Minimal","info","orig");
 [void]$templates.Rows.Add("Standard TEP","info","orig","trados","to trans","from trans","to proof","from proof","to client")
 [void]$templates.Rows.Add("Full TEP","info","orig","trados","to TEP","from TEP","to client")
 [void]$templates.Rows.Add("Acolad-MemoQ","info","orig","MemoQ","to client")
@@ -240,7 +240,7 @@ for ($i=1; $i -lt $templates.ColumnCount ; $i++)
 [void]$templates.Rows.Add("Sworn Translation","info","orig","to client")
 [void]$templates.Rows.Add("Astrid Special","info","orig","studio","trans","proof","to client")
 [void]$templates.Rows.Add("Pizza Margherita","Tomate","Mozzarella","Basilikum","Oliven")
-
+ #>
 
 $templates.Rows[0].Selected = $true #.Selected = $true
 
