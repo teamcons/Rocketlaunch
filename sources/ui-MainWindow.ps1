@@ -31,7 +31,7 @@ $GUI_Form_MainWindow.BackColor                  = "White"
 $GUI_Form_MainWindow.Icon                       = $icon
 
 # Allow input to window for TextBoxes, etc
-[System.Windows.Forms.Integration.ElementHost]::EnableModelessKeyboardInterop($GUI_Form_MainWindow)
+#[System.Windows.Forms.Integration.ElementHost]::EnableModelessKeyboardInterop($GUI_Form_MainWindow)
 
 
 #==============

@@ -22,7 +22,7 @@ $GUI_Form_MoreStuff.FormBorderStyle     = "FixedSingle"
 $GUI_Form_MoreStuff.MaximizeBox         = $false
 
 # Allow input to window for TextBoxes, etc
-[System.Windows.Forms.Integration.ElementHost]::EnableModelessKeyboardInterop($GUI_Form_MoreStuff)
+#[System.Windows.Forms.Integration.ElementHost]::EnableModelessKeyboardInterop($GUI_Form_MoreStuff)
 
 $GUI_Form_MainWindowTabControl                         = New-object System.Windows.Forms.TabControl 
 $GUI_Form_MainWindowTabControl.Dock = "Fill" 
