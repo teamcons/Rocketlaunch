@@ -127,7 +127,7 @@ $sourcefile_refreshButton.Text                          = $global:text_sourcefil
 $sourcefile_refreshButton.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 490),4)
 $sourcefile_refreshButton.Size                          = New-Object System.Drawing.Size(95,24)
 $sourcefile_refreshButton.Anchor                        = "Top,Right"
-$sourcefile_refreshButton.Add_Click({Load-RelevantMails})
+$sourcefile_refreshButton.Add_Click({$sourcefiles.Items.Clear() ; Load-RelevantMails})
 
 $script:gui_filesource                  = New-Object System.Windows.Forms.Combobox
 $gui_filesource.Location                = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 590),5)
@@ -173,7 +173,6 @@ $sourcefiles.BorderStyle            = "FixedSingle"
 
 $panel_sourcefile.Controls.Add($sourcefile_refreshButton)
 $panel_sourcefile.Controls.Add($gui_filesource)
-
 $panel_sourcefile.Controls.Add($labelsourcefiles)
 $panel_sourcefile.Controls.Add($sourcefiles)
 
@@ -197,22 +196,17 @@ $labeltemplate.Text                     = $text_usewhichtemplate
 #$labeltemplate.Font                     = New-Object System.Drawing.Font('Calibri', 10, [System.Drawing.FontStyle]::Regular)
 $labeltemplate.Left                     = $GUI_Form_MainWindow_leftalign
 $labeltemplate.Top                      = 10
-$labeltemplate.Size                     = New-Object System.Drawing.Size(600,20)
+$labeltemplate.Size                     = New-Object System.Drawing.Size(400,20)
 $labeltemplate.Anchor                   = "Left,Top"
 
-$gui_browsetemplate                   = New-Object System.Windows.Forms.Button
-$gui_browsetemplate.Left              = ($GUI_Form_MainWindow_leftalign + 630)
-$gui_browsetemplate.Top               = 5
-$gui_browsetemplate.Size              = New-Object System.Drawing.Size(100,25)
-$gui_browsetemplate.Text              = $text_loadtemplate
-$gui_browsetemplate.Anchor            = "Right,Top"
-$gui_browsetemplate.add_click({ 
-    $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog -Property @{
-                                                                                InitialDirectory = [Environment]::GetFolderPath('Desktop')
-                                                                            }
-    $file = $FileBrowser.ShowDialog()    
-    $templates = load_template $templates $file
-    $templates.Refresh()})
+# Check if start new trados project
+$CheckIfSaveTemplateChanges                  = New-Object System.Windows.Forms.CheckBox        
+$CheckIfSaveTemplateChanges.Text             = $text_savetemplatechanges
+$CheckIfSaveTemplateChanges.Location         = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 590),10)
+$CheckIfSaveTemplateChanges.Size             = New-Object System.Drawing.Size(180,20)
+$CheckIfSaveTemplateChanges.Checked          = $default_savetemplatechanges
+$CheckIfSaveTemplateChanges.Anchor           = "Top,Right"
+
 
 $templates                          = New-Object System.Windows.Forms.DataGridView
 $templates.Location                 = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,30)
@@ -223,7 +217,6 @@ $templates.BackgroundColor          = "White"
 $templates.BackColor                = "LightBlue"
 $templates.GridColor                = "White"
 $templates.BorderStyle              = "FixedSingle"
-
 $templates.CellBorderStyle          = "SingleHorizontal"
 $templates.SelectionMode            = "FullRowSelect"
 $templates.RowHeadersVisible        = $false
@@ -258,8 +251,8 @@ $templates = load_template $templates $templatefile
 
 $templates.Rows[0].Selected = $true #.Selected = $true
 
+$panel_template.Controls.Add($CheckIfSaveTemplateChanges)
 $panel_template.Controls.Add($labeltemplate)
-#$panel_template.Controls.Add($gui_browsetemplate)
 $panel_template.Controls.Add($templates)
 $panel_template.Show()
 

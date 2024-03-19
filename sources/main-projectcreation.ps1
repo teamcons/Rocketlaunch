@@ -121,7 +121,11 @@ if ($CheckIfOpenExplorer.Checked)               { start-process explorer "$BASEF
 # Yeah i redid a Linux command deal with it
 if ($CheckIfNotify.Checked)                     { Notify-Send $PROJECTNAME $text_NotifyText }
 
-# Yeah i redid a Linux command deal with it
+
+# If user want their homemade changes on the template to be saved
+if ($CheckIfSaveTemplateChanges.Checked)        { Save-DataGridView $templates $templatefile}
+
+# If user want to close app after creation
 if ($CheckIfCloseAfter.Checked)                 { Close-All $GUI_Form_MainWindow}
 
 

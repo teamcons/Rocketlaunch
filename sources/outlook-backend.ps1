@@ -88,8 +88,6 @@ function Get-LastBusinessDay
 #### GET RELEVANT MAILSSSS
 function Load-RelevantMails
 {
-
-
     [void]$sourcefiles.Columns.Add($text_columns_Subject,300)
     [void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
     [void]$sourcefiles.Columns.Add($text_columns_Attachments,70)

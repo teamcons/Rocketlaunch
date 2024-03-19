@@ -50,7 +50,7 @@ switch -Wildcard ($LANG) {
         #================================
         # Datagridview, templates
         [string]$global:text_usewhichtemplate          = 'Welche Projektvorlage verwenden?' #(Tipp: Namen eines Ordners durch Doppelklicken ändern)'
-        [string]$global:text_loadtemplate              = "Laden..."
+        [string]$global:text_savetemplatechanges       = "Änderungen speichern"
         [string]$global:text_help                      = "Mehr"
         [string]$global:text_OK                        = "Los!"
         [string]$global:text_Cancel                    = "Nö"

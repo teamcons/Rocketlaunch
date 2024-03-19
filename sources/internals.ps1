@@ -12,10 +12,11 @@ function load_template{
         [System.Windows.Forms.DataGridView]$GRID,
         [string]$FILE)
     try {
-        $detectedtemplate = (Import-Csv -Delimiter $TEMPLATEDELIMITER -Path $FILE -Header "Name","00","01","02","03","04","05","06","07","08","09")
+        # Import all, skip the first one - It is the delimiter
+        $detectedtemplate = (Import-Csv -Delimiter $TEMPLATEDELIMITER -Path $FILE -Header "Name","00","01","02","03","04","05","06","07","08","09" | Select-Object -Skip 1)
         foreach ($row in $detectedtemplate)
         {
-            [void]$GRID.Rows.Add($row."Name",$row."00",$row."01",$row."02",$row."03",$row."04",$row."05",$row."06",$row."07",$row."08",$row."09");
+            [void]$GRID.Rows.Add($row."Name",$row."00",$row."01",$row."02",$row."03",$row."04",$row."05",$row."06",$row."07",$row."08",$row."09",$row."10",$row."11",$row."12");
         }
     }
     catch {
@@ -303,6 +304,50 @@ function Start-TradosProject
     .\SDLTradosStudio.exe /createProject /name $projectname
 
 }
+
+
+
+
+
+
+#================================================================
+# Close app gracefully
+function Save-DataGridView
+{
+    param($datagridview,$file)
+    
+    # Just in case, check the variable hasnt been doestroyened
+    if (($file -ne $none) -and ($file -ne ""))
+    {
+        # Create the CSV, specify separator to avoid issues opening the csv in your fav office software
+        # Also no append, so we smonch the previous template
+        Write-Output (-join("sep=",$TEMPLATEDELIMITER)) | Out-File -FilePath "$file"
+
+        # Rebuild and append each line
+        foreach ($row in $datagridview.Rows )
+        {
+
+            if (($row[0].Cells[0].Value -ne $none) -and ($row[0].Cells[0].Value -ne ""))
+            {
+
+                $rebuiltrow = ""
+                for($i = 0; $i -lt 12; $i++) {
+                    $rebuiltrow = -join($rebuiltrow, $row[0].Cells[$i].Value,$TEMPLATEDELIMITER)
+                }
+
+                Write-Output $rebuiltrow | Out-File -FilePath "$file" -Append
+
+            }
+
+
+        }
+    } # end of if
+} # end offunction
+
+
+
+
+
 
 
 
