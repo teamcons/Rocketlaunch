@@ -36,10 +36,8 @@ Import-Module $ScriptPath/sources/ui-MainWindow.ps1
 Import-Module $ScriptPath/sources/ui-SettingsDialog.ps1 
 Import-Module $ScriptPath/sources/outlook-backend.ps1 
 
-# Create an application context for it to all run within.
-# This helps with responsiveness, especially when clicking Exit.
-#$appContext = New-Object System.Windows.Forms.ApplicationContext
-#[void][System.Windows.Forms.Application]::Run($appContext)
+
+
 
 #========================================
 # Create the Emails table
@@ -75,6 +73,9 @@ $newcol = New-Object system.Data.DataColumn $text_columns_DD_Path,([string]); $D
 #========================================
 # Interface defined in the ui module
 Write-Output "[START] Show main window"; $result = $GUI_Form_MainWindow.ShowDialog()
+#$result = $GUI_Form_MainWindow.Show()
+#$GUI_Form_MainWindow.Activate()
+
 
 # Cancel culture : Close if cancel
 if ($result -eq [System.Windows.Forms.DialogResult]::Cancel) { Write-Output "[INPUT] Got Cancel. Aw. Exit." ; exit }
@@ -180,3 +181,7 @@ if ($CheckIfOpenExplorer.Checked)               { start-process explorer "$BASEF
 if ($CheckIfNotify.Checked)                     { Notify-Send $PROJECTNAME $text_NotifyText }
 
 
+# Create an application context for it to all run within. 
+# This helps with responsiveness and threading.
+#$appContext = New-Object System.Windows.Forms.ApplicationContext 
+#[void][System.Windows.Forms.Application]::Run($appContext)
