@@ -12,8 +12,7 @@
 
 
 
-
-#================
+#================================
 #= INITIAL WORK =
 
 [int]$GUI_Form_MainWindow_leftalign = 15
@@ -24,7 +23,7 @@ $script:GUI_Form_MainWindow                     = New-Object System.Windows.Form
 $GUI_Form_MainWindow.Text                       = -join($APPNAME," - ",$text_aboutsubtitle)
 $GUI_Form_MainWindow.Size                       = New-Object System.Drawing.Size(775,($GUI_Form_MainWindow_verticalalign + 85 ))
 $GUI_Form_MainWindow.MinimumSize                = New-Object System.Drawing.Size(500,170)
-$GUI_Form_MainWindow.Font                       = New-Object System.Drawing.Font('Calibri', 9, [System.Drawing.FontStyle]::Regular)
+#$GUI_Form_MainWindow.Font                       = New-Object System.Drawing.Font('Calibri', 9, [System.Drawing.FontStyle]::Regular)
 $GUI_Form_MainWindow.StartPosition              = 'CenterScreen'
 $GUI_Form_MainWindow.Topmost                    = $default_ontop
 $GUI_Form_MainWindow.BackColor                  = "White"
@@ -35,7 +34,7 @@ $GUI_Form_MainWindow.Add_Closing({Close-All})
 #[System.Windows.Forms.Integration.ElementHost]::EnableModelessKeyboardInterop($GUI_Form_MainWindow)
 
 
-#==============
+#================================
 #= INPUT TEXT =
 
 $panel_top = New-Object System.Windows.Forms.Panel
@@ -105,7 +104,7 @@ $GUI_Form_MainWindow.Add_Shown({$gui_code.Select()})
 
 
 
-#===================
+#================================
 #= SOURCE FILES    =
 
 $panel_sourcefile                       = New-Object System.Windows.Forms.Panel
@@ -119,9 +118,16 @@ $panel_sourcefile.Dock                  = "Fill"
 # Label above input
 $labelsourcefiles                       = New-Object System.Windows.Forms.Label
 $labelsourcefiles.Text                  = $text_label_from_Outlook
-$labelsourcefiles.Font                  = New-Object System.Drawing.Font('Calibri', 10, [System.Drawing.FontStyle]::Regular)
+#$labelsourcefiles.Font                  = New-Object System.Drawing.Font('Calibri', 10, [System.Drawing.FontStyle]::Regular)
 $labelsourcefiles.Location              = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,10)
 $labelsourcefiles.Size                  = New-Object System.Drawing.Size(450,20)
+
+$sourcefile_refreshButton                               = New-Object System.Windows.Forms.Button
+$sourcefile_refreshButton.Text                          = $global:text_sourcefiles_refresh
+$sourcefile_refreshButton.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 490),4)
+$sourcefile_refreshButton.Size                          = New-Object System.Drawing.Size(95,24)
+$sourcefile_refreshButton.Anchor                        = "Top,Right"
+$sourcefile_refreshButton.Add_Click({Load-RelevantMails})
 
 $script:gui_filesource                  = New-Object System.Windows.Forms.Combobox
 $gui_filesource.Location                = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 590),5)
@@ -152,6 +158,8 @@ $gui_filesource.Add_SelectedIndexChanged({
 
 
 
+
+#================================
 ## Configure the ListView
 $sourcefiles                        = New-Object System.Windows.Forms.ListView
 $sourcefiles.Location               = New-Object System.Drawing.Size($GUI_Form_MainWindow_leftalign,30) 
@@ -163,13 +171,15 @@ $sourcefiles.View                   = [System.Windows.Forms.View]::Details
 $sourcefiles.BorderStyle            = "FixedSingle"
 
 
-$panel_sourcefile.Controls.Add($labelsourcefiles)
+$panel_sourcefile.Controls.Add($sourcefile_refreshButton)
 $panel_sourcefile.Controls.Add($gui_filesource)
+
+$panel_sourcefile.Controls.Add($labelsourcefiles)
 $panel_sourcefile.Controls.Add($sourcefiles)
 
 
 
-#=====================
+#================================
 #= LIST OF TEMPLATES =
 
 $panel_template                         = New-Object System.Windows.Forms.Panel
@@ -184,7 +194,7 @@ $panel_template.Dock = "Fill"
 # Label and button
 $labeltemplate                          = New-Object System.Windows.Forms.Label
 $labeltemplate.Text                     = $text_usewhichtemplate
-$labeltemplate.Font                     = New-Object System.Drawing.Font('Calibri', 10, [System.Drawing.FontStyle]::Regular)
+#$labeltemplate.Font                     = New-Object System.Drawing.Font('Calibri', 10, [System.Drawing.FontStyle]::Regular)
 $labeltemplate.Left                     = $GUI_Form_MainWindow_leftalign
 $labeltemplate.Top                      = 10
 $labeltemplate.Size                     = New-Object System.Drawing.Size(600,20)
@@ -279,6 +289,7 @@ $gui_panel.Height = 50
 $gui_panel.BackColor = '241,241,241'
 $gui_panel.Anchor = "Left,Bottom,Right"
 
+# This one offers more settings
 $gui_help                   = New-Object System.Windows.Forms.Button
 $gui_help.Location          = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign),10)
 $gui_help.Size              = New-Object System.Drawing.Size(120,25)
@@ -286,8 +297,6 @@ $gui_help.Text              = $text_help
 $gui_help.UseVisualStyleBackColor = $True
 $gui_help.Anchor            = "Left, Bottom"
 $gui_help.add_click({$GUI_Form_MoreStuff.ShowDialog()})
-#[void]$GUI_Form_MainWindow.Controls.Add($gui_help)
-
 
 # Check if start new trados project
 $CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox        
@@ -296,10 +305,8 @@ $CheckIfTrados.Size             = New-Object System.Drawing.Size(70,20)
 $CheckIfTrados.Text             = $text_opentrados
 $CheckIfTrados.Checked          = $default_opentrados
 $CheckIfTrados.Anchor           = "Top,Left"
-#[void]$GUI_Form_MainWindow.Controls.Add($CheckIfTrados)
 
-
-
+# This one creates the project
 $gui_okButton                               = New-Object System.Windows.Forms.Button
 $gui_okButton.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 480),10)
 $gui_okButton.Size                          = New-Object System.Drawing.Size(120,25)
@@ -308,12 +315,8 @@ $gui_okButton.UseVisualStyleBackColor       = $True
 $gui_okButton.Anchor                        = "Bottom,Right"
 #$gui_okButton.BackColor                     = ”Green”
 #$gui_okButton.ForeColor                     = ”White”
-
 # Everything happens here
 $gui_okButton.add_click({Main-ProjectCreation})
-
-
-
 
 $gui_cancelButton                           = New-Object System.Windows.Forms.Button
 $gui_cancelButton.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 610),10)
@@ -326,7 +329,6 @@ $gui_cancelButton.Anchor                    = "Bottom, Right"
 $gui_cancelButton.DialogResult              = [System.Windows.Forms.DialogResult]::Cancel
 $GUI_Form_MainWindow.CancelButton                          = $gui_cancelButton
 $gui_cancelButton.add_click({Close-All $GUI_Form_MainWindow})
-
 
 $gui_panel.Controls.Add($gui_help)
 $gui_panel.Controls.Add($CheckIfTrados)

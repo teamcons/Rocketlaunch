@@ -26,6 +26,9 @@ switch -Wildcard ($LANG) {
         [string]$global:text_columns_Attachments       = 'Dateien'
         [string]$global:text_columns_time              = 'Ankunft'
 
+
+        [string]$global:text_sourcefiles_refresh              = 'Aktualisieren'
+
         # DOWNLOADS
         [string]$global:text_label_from_Downloads            = "Ansicht: Alle Dateien, die seit heute heruntergeladen wurden"
         [string]$global:text_from_Downloads            = "(TODO) In Downloads"
