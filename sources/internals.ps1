@@ -303,3 +303,20 @@ function Start-TradosProject
     .\SDLTradosStudio.exe /createProject /name $projectname
 
 }
+
+
+
+
+#================================================================
+# Close app gracefully
+function Close-All {
+    param($GUI)
+
+    Write-Output "[INPUT] Got Cancel. Aw. Exit."
+
+    $GUI.Dispose();
+    [System.Windows.Forms.Application]::Exit()
+    
+    #Stop-Process $pid
+    exit
+}

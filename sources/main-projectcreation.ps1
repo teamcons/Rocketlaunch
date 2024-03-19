@@ -1,16 +1,6 @@
 
 
 
-function Close-All {
-
-    Write-Output "[INPUT] Got Cancel. Aw. Exit."
-
-    $GUI_Form_MainWindow.Dispose();
-    [System.Windows.Forms.Application]::Exit()
-    
-    #Stop-Process $pid
-    exit
-}
 
 
 
@@ -114,6 +104,11 @@ if ($CheckIfOpenExplorer.Checked)               { start-process explorer "$BASEF
 
 # Yeah i redid a Linux command deal with it
 if ($CheckIfNotify.Checked)                     { Notify-Send $PROJECTNAME $text_NotifyText }
+
+# Yeah i redid a Linux command deal with it
+if ($CheckIfCloseAfter.Checked)                 { Close-All $GUI_Form_MainWindow}
+
+
 
 }
 

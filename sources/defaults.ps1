@@ -14,7 +14,7 @@ Write-Output "[START] Loading defaults"
 
     [string]$script:TEMPLATEDELIMITER               = ';'
 
-    [string]$script:LANG                            = $PSUICulture
+
 
 
     

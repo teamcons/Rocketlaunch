@@ -2,7 +2,7 @@
 
 Write-Output "[START] Loading text"
 
-
+[string]$script:LANG                            = $PSUICulture
 switch -Wildcard ($LANG) {
 
    "de-*" {

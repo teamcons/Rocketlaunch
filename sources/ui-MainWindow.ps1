@@ -325,7 +325,7 @@ $gui_cancelButton.Anchor                    = "Bottom, Right"
 #$gui_cancelButton.ForeColor                  = ”White”
 $gui_cancelButton.DialogResult              = [System.Windows.Forms.DialogResult]::Cancel
 $GUI_Form_MainWindow.CancelButton                          = $gui_cancelButton
-$gui_cancelButton.add_click({Close-All})
+$gui_cancelButton.add_click({Close-All $GUI_Form_MainWindow})
 
 
 $gui_panel.Controls.Add($gui_help)

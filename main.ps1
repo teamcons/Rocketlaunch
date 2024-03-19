@@ -29,13 +29,15 @@ $script:templatefile        = -join($ScriptPath,"\documentation\Project template
 $script:image               = [system.drawing.image]::FromFile((get-item $ScriptPath\assets\icon-mini.ico))
 
 # Load everything we need
-Import-Module $ScriptPath/sources/defaults.ps1
 Import-Module $ScriptPath/sources/text.ps1
+Import-Module $ScriptPath/sources/defaults.ps1
 Import-Module $ScriptPath/sources/internals.ps1
 Import-Module $ScriptPath/sources/ui-MainWindow.ps1 
 Import-Module $ScriptPath/sources/ui-SettingsDialog.ps1 
-Import-Module $ScriptPath/sources/outlook-backend.ps1 
-Import-Module $ScriptPath/sources/main-projectcreation.ps1
+
+# This is the toolbar icon and description
+#$GUI_Form_MainWindow.TaskbarItemInfo.Overlay        = $icon
+#$GUI_Form_MainWindow.TaskbarItemInfo.Description    = $GUI_Form_MainWindow.Title
 
 
 
@@ -74,6 +76,11 @@ $newcol = New-Object system.Data.DataColumn $text_columns_DD_Path,([string]); $D
 
 # Running this without $appContext and ::Run would actually cause a really poor response.
 $GUI_Form_MainWindow.Show()
+
+
+Import-Module $ScriptPath/sources/outlook-backend.ps1 
+Import-Module $ScriptPath/sources/main-projectcreation.ps1
+
 
 # This makes it pop up
 $GUI_Form_MainWindow.Activate()
