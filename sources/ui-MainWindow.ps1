@@ -26,7 +26,6 @@ $GUI_Form_MainWindow.MinimumSize                = New-Object System.Drawing.Size
 #$GUI_Form_MainWindow.Font                       = New-Object System.Drawing.Font('Calibri', 9, [System.Drawing.FontStyle]::Regular)
 $GUI_Form_MainWindow.StartPosition              = 'CenterScreen'
 $GUI_Form_MainWindow.Topmost                    = $default_ontop
-$GUI_Form_MainWindow.BackColor                  = "White"
 $GUI_Form_MainWindow.Icon                       = $icon
 $GUI_Form_MainWindow.Add_Closing({Close-All})
 
@@ -45,8 +44,6 @@ $panel_top.Left          = 0
 $panel_top.BackColor     = "Orange" #'Ti'
 #$panel_top.ForeColor     = "White" #'Ti'
 $panel_top.Dock          = "Top"
-#$panel_top.BackgroundImage          = [Drawing.Image]::FromFile(( -join($ScriptPath,'\assets\brushsteel.jpg')))
-#$panel_top.BackgroundImageLayout    = "Stretch"
 
 
 # FANCY ICON
@@ -72,7 +69,7 @@ $label.Anchor           = "Left,Top"
 $gui_year                  = New-Object System.Windows.Forms.Label
 $gui_year.Location         = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 80),52)
 $gui_year.Size             = New-Object System.Drawing.Size(20,20)
-$gui_year.Font             = New-Object System.Drawing.Font('Calibri', 11, [System.Drawing.FontStyle]::Regular)
+$gui_year.Font             = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
 $gui_year.AutoSize         = $true
 $gui_year.Text             = -join($YEAR," -")
 $gui_year.Anchor           = "Left,Top"
@@ -97,7 +94,6 @@ $gui_keepontop                           = New-Object System.Windows.Forms.Check
 $gui_keepontop.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 350),52)
 $gui_keepontop.Size                      = New-Object System.Drawing.Size(160,20)
 $gui_keepontop.Text                      = $text_keepontop
-$gui_keepontop.UseVisualStyleBackColor   = $True
 $gui_keepontop.Checked                   = $GUI_Form_MainWindow.Topmost
 $gui_keepontop.Anchor                    = "Top, Left"
 $gui_keepontop.Add_Click({$GUI_Form_MainWindow.Topmost = $gui_keepontop.Checked})
@@ -298,7 +294,6 @@ $Split.Top                          = 90
 $Split.Height                       = ($GUI_Form_MainWindow_verticalalign - 100 )
 $Split.Width                        = 775
 $Split.Orientation                  = "Horizontal"
-$Split.BackColor                    = "LightBlue"
 $Split.SplitterDistance             = 220
 
 $Split.Panel1.Controls.Add($panel_sourcefile)
@@ -309,37 +304,34 @@ $GUI_Form_MainWindow.Controls.Add($Split)
 #====================
 #= OKCANCEL BUTTONS =
 
-$gui_panel = New-Object System.Windows.Forms.Panel
-$gui_panel.Left = 0
-$gui_panel.Top = ($GUI_Form_MainWindow_verticalalign)
-$gui_panel.Width = 775
-$gui_panel.Height = 50
-$gui_panel.BackColor = '241,241,241'
-$gui_panel.Anchor = "Left,Bottom,Right"
+$bottom_panel = New-Object System.Windows.Forms.Panel
+$bottom_panel.Left = 0
+$bottom_panel.Top = ($GUI_Form_MainWindow_verticalalign)
+$bottom_panel.Width = 775
+$bottom_panel.Height = 50
+$bottom_panel.Anchor = "Left,Bottom,Right"
 
 # This one offers more settings
 $gui_help                   = New-Object System.Windows.Forms.Button
 $gui_help.Location          = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign),10)
 $gui_help.Size              = New-Object System.Drawing.Size(120,25)
 $gui_help.Text              = $text_help
-$gui_help.UseVisualStyleBackColor = $True
 $gui_help.Anchor            = "Left, Bottom"
 $gui_help.add_click({$GUI_Form_MoreStuff.ShowDialog()})
 
 # Check if start new trados project
-$CheckIfTrados                  = New-Object System.Windows.Forms.CheckBox        
-$CheckIfTrados.Location         = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),12)
-$CheckIfTrados.Size             = New-Object System.Drawing.Size(70,20)
-$CheckIfTrados.Text             = $text_opentrados
-$CheckIfTrados.Checked          = $default_opentrados
-$CheckIfTrados.Anchor           = "Top,Left"
+$CheckIfTrados                              = New-Object System.Windows.Forms.CheckBox        
+$CheckIfTrados.Location                     = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),12)
+$CheckIfTrados.Size                         = New-Object System.Drawing.Size(70,20)
+$CheckIfTrados.Text                         = $text_opentrados
+$CheckIfTrados.Checked                      = $default_opentrados
+$CheckIfTrados.Anchor                       = "Top,Left"
 
 # This one creates the project
 $gui_okButton                               = New-Object System.Windows.Forms.Button
 $gui_okButton.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 480),10)
 $gui_okButton.Size                          = New-Object System.Drawing.Size(120,25)
 $gui_okButton.Text                          = $text_OK
-$gui_okButton.UseVisualStyleBackColor       = $True
 $gui_okButton.Anchor                        = "Bottom,Right"
 #$gui_okButton.BackColor                     = ”Green”
 #$gui_okButton.ForeColor                     = ”White”
@@ -350,7 +342,6 @@ $gui_cancelButton                           = New-Object System.Windows.Forms.Bu
 $gui_cancelButton.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 610),10)
 $gui_cancelButton.Size                      = New-Object System.Drawing.Size(120,25)
 $gui_cancelButton.Text                      = $text_Cancel
-$gui_cancelButton.UseVisualStyleBackColor   = $True
 $gui_cancelButton.Anchor                    = "Bottom, Right"
 #$gui_cancelButton.BackColor                  = ”Red”
 #$gui_cancelButton.ForeColor                  = ”White”
@@ -358,13 +349,19 @@ $gui_cancelButton.DialogResult              = [System.Windows.Forms.DialogResult
 $GUI_Form_MainWindow.CancelButton                          = $gui_cancelButton
 $gui_cancelButton.add_click({Close-All $GUI_Form_MainWindow})
 
-$gui_panel.Controls.Add($gui_help)
-$gui_panel.Controls.Add($CheckIfTrados)
-$gui_panel.Controls.Add($gui_okButton)
-$gui_panel.Controls.Add($gui_cancelButton)
-$gui_panel.Show()
 
-[void]$GUI_Form_MainWindow.Controls.Add($gui_panel)
+$gui_help.UseVisualStyleBackColor           = $True
+$gui_okButton.UseVisualStyleBackColor       = $True
+$gui_cancelButton.UseVisualStyleBackColor   = $True
+
+
+$bottom_panel.Controls.Add($gui_help)
+$bottom_panel.Controls.Add($CheckIfTrados)
+$bottom_panel.Controls.Add($gui_okButton)
+$bottom_panel.Controls.Add($gui_cancelButton)
+$bottom_panel.Show()
+
+[void]$GUI_Form_MainWindow.Controls.Add($bottom_panel)
 
 
 

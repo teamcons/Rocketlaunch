@@ -16,7 +16,7 @@ Write-Output "[START] Loading defaults"
 
 
     # Orange, Lightblue, Brushed Metal+LightGray - Aqua ?
-    [string]$script:THEME               = 'Orange'
+    [string]$script:THEME                           = "Modern Color"
 
     
     [string]$script:supported_filetypes               = $text_from_Outlook
