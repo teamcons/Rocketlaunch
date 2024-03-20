@@ -11,53 +11,76 @@ function Change-Theme {
 
             # Slick soft modern look
             $GUI_Form_MainWindow.BackColor          = "White"
+            $GUI_Form_MoreStuff.BackColor          = "White"
+            
             $panel_top.BackColor                    = "Orange"
             $panel_top.ForeColor                    = "Black"
-            $Split.BackColor                        = "LightBlue"
-            $bottom_panel.BackColor                 = '241,241,241'
-
             $panel_top.BackgroundImage.Dispose()
+
+            $panel_sourcefile.BackColor             = "White"
+            $Split.BackColor                        = "LightBlue"
+            $panel_template.BackColor               = "White" #'Red'
+
+            $bottom_panel.BackColor                 = '245,245,245'
             $bottom_panel.BackgroundImage.Dispose()
+
         }
         "Brushed Metal" {
 
             # I liked that era of MacOs, it had some flair
             # Resizing gets very slow
-            $GUI_Form_MainWindow.BackColor          = "White"
+            $GUI_Form_MainWindow.BackColor          = "LightGray"
+            $GUI_Form_MoreStuff.BackColor           = "LightGray"
+ 
             $panel_top.BackColor                    = [System.Drawing.Color]::Transparent
             $panel_top.ForeColor                    = "Black"
-            $Split.BackColor                        = "LightGray"
-            $bottom_panel.BackColor                 = [System.Drawing.Color]::Transparent
-
             $panel_top.BackgroundImage              = [Drawing.Image]::FromFile(( -join($ScriptPath,'\assets\brushsteel.jpg')))
             $panel_top.BackgroundImageLayout        = "Stretch"
+ 
+            $panel_sourcefile.BackColor             = "LightGray"
+            $Split.BackColor                        = "Blue"
+            $panel_template.BackColor               = "LightGray" #'Red'
+
+            $bottom_panel.BackColor                 = [System.Drawing.Color]::Transparent
             $bottom_panel.BackgroundImage           = $panel_top.BackgroundImage
             $bottom_panel.BackgroundImageLayout     = "Stretch"
-
-            $gui_okButton.UseVisualStyleBackColor       = $True
-            $gui_cancelButton.UseVisualStyleBackColor   = $True
         }
         "Windows 98" {
 
             # Back to the good old classics
             # Need to disable VisualStyles too
-            $GUI_Form_MainWindow.BackColor          = "Gray"
+            $GUI_Form_MainWindow.BackColor          = "LightGray"
+            $GUI_Form_MoreStuff.BackColor          = "LightGray"
+            
             $panel_top.BackColor                    = "Blue"
             $panel_top.ForeColor                    = "White"
-            $Split.BackColor                        = "Gray"
-            $bottom_panel.BackColor                 = 'Gray'
-
             $panel_top.BackgroundImage.Dispose()
+
+            $panel_sourcefile.BackColor             = "LightGray"
+            $Split.BackColor                        = "Blue"
+            $panel_template.BackColor               = "LightGray" #'Red'
+
+            $bottom_panel.BackColor                 = "LightGray"
             $bottom_panel.BackgroundImage.Dispose()
-
-            $gui_okButton.UseVisualStyleBackColor       = $False
-            $gui_cancelButton.UseVisualStyleBackColor   = $False
         }
+        "Boring" {
+            # No fancy. All defaults. Bleh.
+            $GUI_Form_MainWindow.ResetBackColor()
+            $GUI_Form_MoreStuff.ResetBackColor()
+            
+            $panel_top.ResetBackColor()
+            $panel_top.ResetForeColor()
+            $panel_top.BackgroundImage.Dispose()
 
+            $panel_sourcefile.ResetBackColor()
+            $Split.ResetBackColor()
+            $panel_template.ResetBackColor()
 
-        Default {}
+            $bottom_panel.ResetBackColor()
+            $bottom_panel.BackgroundImage.Dispose()
+        }
     }
 }
 
 
-Change-Theme "Modern Color" #$THEME
+Change-Theme $THEME

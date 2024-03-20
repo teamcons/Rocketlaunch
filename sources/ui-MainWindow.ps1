@@ -119,7 +119,6 @@ $panel_sourcefile.Width                 = 775
 $panel_sourcefile.Top                   = 25
 $panel_sourcefile.Height                = 200
 $panel_sourcefile.Left                  = 0
-$panel_sourcefile.BackColor             = "White" #'Green'
 $panel_sourcefile.Dock                  = "Fill"
 
 # Label above input
@@ -205,7 +204,7 @@ $panel_template.Width                   = 775
 $panel_template.Height                  = 100
 $panel_template.Top                     = 260
 $panel_template.Left                    = 0
-$panel_template.BackColor               = "White" #'Red'
+
 $panel_template.Dock = "Fill"
 
 
@@ -240,7 +239,7 @@ $templates.Location                 = New-Object System.Drawing.Point($GUI_Form_
 $templates.Size                     = New-Object System.Drawing.Size(730,70)
 $templates.AutoResizeColumns(2)
 $templates.Anchor                   = "Left,Right,Top,Bottom"
-$templates.BackgroundColor          = "White"
+
 $templates.BackColor                = "LightBlue"
 $templates.GridColor                = "White"
 $templates.BorderStyle              = "FixedSingle"
