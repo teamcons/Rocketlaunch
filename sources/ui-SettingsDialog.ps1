@@ -108,14 +108,14 @@ $CheckIfCloseAfter.Checked                              = $default_closeafter
 
 #####################
 $helptitle                                              = New-Object System.Windows.Forms.Label
-$helptitle.Size                                         = New-Object System.Drawing.Size(300,20)
+$helptitle.Size                                         = New-Object System.Drawing.Size(280,20)
 $helptitle.Left                                         = $GUI_Form_MainWindow_leftalign
 $helptitle.Top                                          = 280
 $helptitle.Text                                         = $text_settings_helptitle
 $helptitle.Font                                         = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
 
 $getthedoc                                              = New-Object System.Windows.Forms.Button
-$getthedoc.Size                                         = New-Object System.Drawing.Size (180,25)
+$getthedoc.Size                                         = New-Object System.Drawing.Size (150,25)
 $getthedoc.Left                                         = $GUI_Form_MainWindow_leftalign
 $getthedoc.Top                                          = 320
 $getthedoc.Text                                         = $text_settings_getthedoc
@@ -124,8 +124,8 @@ $getthedoc.Add_Click( {start-process '$ScriptPath\documentation\Rocketlaunch Man
 
 $askme                                                  = New-Object System.Windows.Forms.Button
 $askme.Text                                             = $text_settings_askme
-$askme.Size                                             = New-Object System.Drawing.Size (120,25)
-$askme.Left                                             = ($GUI_Form_MainWindow_leftalign + 185)
+$askme.Size                                             = New-Object System.Drawing.Size (150,25)
+$askme.Left                                             = ($GUI_Form_MainWindow_leftalign + 155)
 $askme.Top                                              = $getthedoc.Top 
 $askme.Add_Click( {start-process "Mailto:stella.menier@gmx.de"})
 
