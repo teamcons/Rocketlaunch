@@ -170,9 +170,9 @@ $allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").It
 
 
 Load-RelevantMails
-try     {$sourcefiles.Items[0].Selected = $true ;}
+try     {$sourcefiles.Items[0].Selected = $true ; Adapt-Prediction}
 catch   {Write-Output "No mail with relevant attach !"}
 
 
-Adapt-Prediction
+
 

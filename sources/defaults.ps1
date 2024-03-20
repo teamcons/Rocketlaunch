@@ -22,9 +22,9 @@ Write-Output "[START] Loading defaults"
 
     [string]$script:default_filesfrom               = $text_from_Outlook
     #[string]$global:default_fromdisk                = '$env:USERPROFILE\Downloads'
-    [bool]$script:default_ontop                = $false
+    [bool]$script:default_ontop                     = $false
     [bool]$script:default_opentrados                = $true
-    [bool]$script:default_savetemplatechanges       = $true
+    [bool]$script:default_savetemplatechanges       = $false
 
     [bool]$script:default_createshortcut            = $true
     [bool]$script:default_createoutlookfolder       = $true
