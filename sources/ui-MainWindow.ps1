@@ -45,6 +45,8 @@ $panel_top.Left          = 0
 $panel_top.BackColor     = "Orange" #'Ti'
 #$panel_top.ForeColor     = "White" #'Ti'
 $panel_top.Dock          = "Top"
+#$panel_top.BackgroundImage          = [Drawing.Image]::FromFile(( -join($ScriptPath,'\assets\brushsteel.jpg')))
+#$panel_top.BackgroundImageLayout    = "Stretch"
 
 
 # FANCY ICON

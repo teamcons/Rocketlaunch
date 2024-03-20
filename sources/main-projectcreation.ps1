@@ -9,7 +9,9 @@ function Main-ProjectCreation {
 
 #Set-TaskbarItemProgressIndicator $ti -Progress 1 -State Paused
 
-
+# "Close" the form, for the psychological effect of "omg it started"
+# No reaction on the form when starting a new project, is very jarring
+$GUI_Form_MainWindow.Hide()
 
 
 
@@ -120,7 +122,7 @@ if ($CheckIfSaveTemplateChanges.Checked)        { Save-DataGridView $templates $
 
 # If user want to close app after creation
 if ($CheckIfCloseAfter.Checked)                 { Close-All $GUI_Form_MainWindow}
-
+else {$GUI_Form_MainWindow.Show()}
 
 
 }
