@@ -119,9 +119,12 @@ $combobox_select_lang.Top                = ($label_select_lang.Top - 3)
 $combobox_select_lang.Left               = ($GUI_Form_MainWindow_leftalign + 200 )
 $combobox_select_lang.Size                = New-Object System.Drawing.Size(100,20)
 $combobox_select_lang.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
-[void]$combobox_select_lang.Items.Add("de-DE")
-[void]$combobox_select_lang.Items.Add("TODO: fr-FR")
-[void]$combobox_select_lang.Items.Add("TODO: es-ES")
+
+
+
+[void]$combobox_select_lang.Items.Add($text_lang_german)
+[void]$combobox_select_lang.Items.Add($text_lang_french)
+[void]$combobox_select_lang.Items.Add($text_lang_spanish)
 $combobox_select_lang.SelectedItem = $combobox_select_lang.Items[0]
 
 
