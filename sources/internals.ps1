@@ -359,6 +359,8 @@ function Close-All {
 
     Write-Output "[INPUT] Got Cancel. Aw. Exit."
 
+    $GUI.Hide();
+
     #$GUI.Dispose();
     [System.Windows.Forms.Application]::Exit()
     
