@@ -359,7 +359,7 @@ function Close-All {
 
     Write-Output "[INPUT] Got Cancel. Aw. Exit."
 
-    $GUI.Dispose();
+    #$GUI.Dispose();
     [System.Windows.Forms.Application]::Exit()
     
     #Stop-Process $pid
