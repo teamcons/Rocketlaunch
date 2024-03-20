@@ -106,6 +106,64 @@ $CheckIfCloseAfter.Checked                              = $default_closeafter
 
 
 
+
+# CHANGE LANGUAGE
+$label_select_lang                     = New-Object System.Windows.Forms.Label
+$label_select_lang.Text                = $text_label_select_lang
+$label_select_lang.Top                 = $CheckIfCloseAfter.Top + 35
+$label_select_lang.Left                = $GUI_Form_MainWindow_leftalign
+$label_select_lang.Size                = New-Object System.Drawing.Size(200,20)
+
+$combobox_select_lang                    = New-Object System.Windows.Forms.Combobox
+$combobox_select_lang.Top                = ($label_select_lang.Top - 3)
+$combobox_select_lang.Left               = ($GUI_Form_MainWindow_leftalign + 200 )
+$combobox_select_lang.Size                = New-Object System.Drawing.Size(100,20)
+$combobox_select_lang.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
+[void]$combobox_select_lang.Items.Add("de-DE")
+[void]$combobox_select_lang.Items.Add("TODO: fr-FR")
+[void]$combobox_select_lang.Items.Add("TODO: es-ES")
+$combobox_select_lang.SelectedItem = $combobox_select_lang.Items[0]
+
+
+# CHANGE LANGUAGE
+$label_select_theme                             = New-Object System.Windows.Forms.Label
+$label_select_theme.Text                        = $text_label_select_theme
+$label_select_theme.Top                         = $label_select_lang.Top + 35
+$label_select_theme.Left                        = $GUI_Form_MainWindow_leftalign
+$label_select_theme.Size                        = New-Object System.Drawing.Size(200,20)
+
+$combobox_select_theme                          = New-Object System.Windows.Forms.Combobox
+$combobox_select_theme.Top                      = ($label_select_theme.Top - 3)
+$combobox_select_theme.Left                     = ($GUI_Form_MainWindow_leftalign + 200 )
+$combobox_select_theme.Size                     = New-Object System.Drawing.Size(100,20)
+$combobox_select_theme.DropDownStyle            = [System.Windows.Forms.ComboBoxStyle]::DropDownList
+[void]$combobox_select_theme.Items.Add("Modern Color")
+[void]$combobox_select_theme.Items.Add("Boring")
+[void]$combobox_select_theme.Items.Add("Brushed Metal")
+[void]$combobox_select_theme.Items.Add("Windows 98")
+[void]$combobox_select_theme.Items.Add("Princess Eyebleed")
+$combobox_select_theme.SelectedItem = $combobox_select_theme.Items[0]
+
+
+
+
+#$GUI_Tab_Settings.Controls.Add($moresettingstitle)
+$GUI_Tab_Settings.Controls.Add($moresettingsnota)
+#$GUI_Tab_Settings.Controls.Add($GUI_More_Close)
+$GUI_Tab_Settings.Controls.Add($CheckIfCreateExplorerQuickAccess)
+$GUI_Tab_Settings.Controls.Add($CheckIfCreateOutlookFolder)
+$GUI_Tab_Settings.Controls.Add($CheckIfExpandArchives)
+$GUI_Tab_Settings.Controls.Add($CheckIfCountWords)
+$GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)
+$GUI_Tab_Settings.Controls.Add($CheckIfNotify)
+$GUI_Tab_Settings.Controls.Add($CheckIfCloseAfter)
+
+$GUI_Tab_Settings.Controls.Add($label_select_lang)
+$GUI_Tab_Settings.Controls.Add($combobox_select_lang)
+$GUI_Tab_Settings.Controls.Add($label_select_theme)
+$GUI_Tab_Settings.Controls.Add($combobox_select_theme)
+
+
 #####################
 $helptitle                                              = New-Object System.Windows.Forms.Label
 $helptitle.Size                                         = New-Object System.Drawing.Size(280,20)
@@ -135,16 +193,7 @@ $GUI_More_Close.Location                      = New-Object System.Drawing.Point(
 $GUI_More_Close.Size                          = New-Object System.Drawing.Size(120,25)
 $GUI_More_Close.UseVisualStyleBackColor       = $True
 
-#$GUI_Tab_Settings.Controls.Add($moresettingstitle)
-$GUI_Tab_Settings.Controls.Add($moresettingsnota)
-#$GUI_Tab_Settings.Controls.Add($GUI_More_Close)
-$GUI_Tab_Settings.Controls.Add($CheckIfCreateExplorerQuickAccess)
-$GUI_Tab_Settings.Controls.Add($CheckIfCreateOutlookFolder)
-$GUI_Tab_Settings.Controls.Add($CheckIfExpandArchives)
-$GUI_Tab_Settings.Controls.Add($CheckIfCountWords)
-$GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)
-$GUI_Tab_Settings.Controls.Add($CheckIfNotify)
-$GUI_Tab_Settings.Controls.Add($CheckIfCloseAfter)
+
 #$GUI_Tab_Settings.Controls.Add($helptitle)
 $GUI_Tab_Settings.Controls.Add($getthedoc)
 $GUI_Tab_Settings.Controls.Add($askme)

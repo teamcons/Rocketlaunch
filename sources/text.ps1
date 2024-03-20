@@ -70,6 +70,9 @@ switch -Wildcard ($LANG) {
         [string]$global:text_settings_Notify                = "Eine Benachrichtigung senden, wenn fertig ?"
         [string]$global:text_settings_CloseAfter            = "Programm nach der Erstellung verlassen?"
 
+        [string]$script:text_label_select_lang = "Change app language (TODO)"
+        [string]$script:text_label_select_theme = "Change app theme (TODO)"
+
         # HELP
         [string]$global:text_settings_helptitle             = "Hilfe"
         [string]$global:text_settings_getthedoc             = "Dokumentation Öffnen"

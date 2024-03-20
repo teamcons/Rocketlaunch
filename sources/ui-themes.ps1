@@ -1,7 +1,7 @@
 
 
 #================================================================
-# Close app gracefully
+# Takes a string, change theme.
 
 
 function Change-Theme {
@@ -11,7 +11,7 @@ function Change-Theme {
 
             # Slick soft modern look
             $GUI_Form_MainWindow.BackColor          = "White"
-            $GUI_Form_MoreStuff.BackColor          = "White"
+            $GUI_Form_MoreStuff.BackColor           = "White"
             
             $panel_top.BackColor                    = "Orange"
             $panel_top.ForeColor                    = "Black"
@@ -24,6 +24,22 @@ function Change-Theme {
             $bottom_panel.BackColor                 = '245,245,245'
             $bottom_panel.BackgroundImage.Dispose()
 
+        }
+        "Boring" {
+            # No fancy. All defaults. Bleh.
+            $GUI_Form_MainWindow.ResetBackColor()
+            $GUI_Form_MoreStuff.ResetBackColor()
+            
+            $panel_top.ResetBackColor()
+            $panel_top.ResetForeColor()
+            $panel_top.BackgroundImage.Dispose()
+
+            $panel_sourcefile.ResetBackColor()
+            $Split.ResetBackColor()
+            $panel_template.ResetBackColor()
+
+            $bottom_panel.ResetBackColor()
+            $bottom_panel.BackgroundImage.Dispose()
         }
         "Brushed Metal" {
 
@@ -50,7 +66,7 @@ function Change-Theme {
             # Back to the good old classics
             # Need to disable VisualStyles too
             $GUI_Form_MainWindow.BackColor          = "LightGray"
-            $GUI_Form_MoreStuff.BackColor          = "LightGray"
+            $GUI_Form_MoreStuff.BackColor           = "LightGray"
             
             $panel_top.BackColor                    = "Blue"
             $panel_top.ForeColor                    = "White"
@@ -63,21 +79,23 @@ function Change-Theme {
             $bottom_panel.BackColor                 = "LightGray"
             $bottom_panel.BackgroundImage.Dispose()
         }
-        "Boring" {
-            # No fancy. All defaults. Bleh.
-            $GUI_Form_MainWindow.ResetBackColor()
-            $GUI_Form_MoreStuff.ResetBackColor()
+        "Princess Eyebleed" {
+
+            # MY EYES
+            $GUI_Form_MainWindow.BackColor          = "Cyan"
+            $GUI_Form_MoreStuff.BackColor           = "Cyan"
             
-            $panel_top.ResetBackColor()
-            $panel_top.ResetForeColor()
+            $panel_top.BackColor                    = "Pink"
+            $panel_top.ForeColor                    = "Yellow"
             $panel_top.BackgroundImage.Dispose()
 
-            $panel_sourcefile.ResetBackColor()
-            $Split.ResetBackColor()
-            $panel_template.ResetBackColor()
+            $panel_sourcefile.BackColor             = "Aqua"
+            $Split.BackColor                        = "Green"
+            $panel_template.BackColor               = "Aqua" #'Red'
 
-            $bottom_panel.ResetBackColor()
+            $bottom_panel.BackColor                 = 'Pink'
             $bottom_panel.BackgroundImage.Dispose()
+
         }
     }
 }
