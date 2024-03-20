@@ -46,14 +46,14 @@ $moresettingstitle.Font                = New-Object System.Drawing.Font('Microso
 $moresettingsnota                     = New-Object System.Windows.Forms.Label
 $moresettingsnota.Size                = New-Object System.Drawing.Size(300,20)
 $moresettingsnota.Left                = $GUI_Form_MainWindow_leftalign
-$moresettingsnota.Top                 = 33
+$moresettingsnota.Top                 = 10
 $moresettingsnota.Text                = $text_settingsnota
 $moresettingsnota.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 8, [System.Drawing.FontStyle]::Italic)
 
 
 $CheckIfCreateExplorerQuickAccess                       = New-Object System.Windows.Forms.CheckBox        
 $CheckIfCreateExplorerQuickAccess.Left                  = $GUI_Form_MainWindow_leftalign
-$CheckIfCreateExplorerQuickAccess.Top                   = 55
+$CheckIfCreateExplorerQuickAccess.Top                   = 35
 $CheckIfCreateExplorerQuickAccess.Size                  = New-Object System.Drawing.Size(400,20)
 $CheckIfCreateExplorerQuickAccess.Text                  = $text_settings_ExplorerQuickAccess
 $CheckIfCreateExplorerQuickAccess.Checked               = $default_createshortcut
@@ -64,7 +64,6 @@ $CheckIfCreateOutlookFolder.Top                         = $CheckIfCreateExplorer
 $CheckIfCreateOutlookFolder.Size                        = New-Object System.Drawing.Size(400,20)
 $CheckIfCreateOutlookFolder.Text                        = $text_settings_OutlookFolder
 $CheckIfCreateOutlookFolder.Checked                     = $default_createoutlookfolder
-
 
 
 #$CheckIfExpandArchives                = New-Object System.Windows.Forms.CheckBox        
@@ -118,7 +117,7 @@ $helptitle.Font                                         = New-Object System.Draw
 $getthedoc                                              = New-Object System.Windows.Forms.Button
 $getthedoc.Size                                         = New-Object System.Drawing.Size (180,25)
 $getthedoc.Left                                         = $GUI_Form_MainWindow_leftalign
-$getthedoc.Top                                          = 310
+$getthedoc.Top                                          = 320
 $getthedoc.Text                                         = $text_settings_getthedoc
 #$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
 $getthedoc.Add_Click( {start-process '$ScriptPath\documentation\Rocketlaunch Manual.docx' } )
@@ -127,7 +126,7 @@ $askme                                                  = New-Object System.Wind
 $askme.Text                                             = $text_settings_askme
 $askme.Size                                             = New-Object System.Drawing.Size (120,25)
 $askme.Left                                             = ($GUI_Form_MainWindow_leftalign + 185)
-$askme.Top                                              = 310
+$askme.Top                                              = $getthedoc.Top 
 $askme.Add_Click( {start-process "Mailto:stella.menier@gmx.de"})
 
 $GUI_More_Close                               = New-Object System.Windows.Forms.Button
@@ -136,7 +135,7 @@ $GUI_More_Close.Location                      = New-Object System.Drawing.Point(
 $GUI_More_Close.Size                          = New-Object System.Drawing.Size(120,25)
 $GUI_More_Close.UseVisualStyleBackColor       = $True
 
-$GUI_Tab_Settings.Controls.Add($moresettingstitle)
+#$GUI_Tab_Settings.Controls.Add($moresettingstitle)
 $GUI_Tab_Settings.Controls.Add($moresettingsnota)
 #$GUI_Tab_Settings.Controls.Add($GUI_More_Close)
 $GUI_Tab_Settings.Controls.Add($CheckIfCreateExplorerQuickAccess)
@@ -146,7 +145,7 @@ $GUI_Tab_Settings.Controls.Add($CheckIfCountWords)
 $GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)
 $GUI_Tab_Settings.Controls.Add($CheckIfNotify)
 $GUI_Tab_Settings.Controls.Add($CheckIfCloseAfter)
-$GUI_Tab_Settings.Controls.Add($helptitle)
+#$GUI_Tab_Settings.Controls.Add($helptitle)
 $GUI_Tab_Settings.Controls.Add($getthedoc)
 $GUI_Tab_Settings.Controls.Add($askme)
 $GUI_Form_MainWindowTabControl.Controls.Add($GUI_Tab_Settings)

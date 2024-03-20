@@ -253,7 +253,8 @@ $templates.SelectionMode            = "FullRowSelect"
 $templates.RowHeadersVisible        = $false
 $templates.MultiSelect              = $false
 $templates.AllowUserToResizeRows    = $false
-$templates.ColumnCount = 10
+$templates.ColumnHeadersHeightSizeMode    = "DisableResizing"
+$templates.ColumnCount = 14
 $templates.AutoGenerateColumns = $true
 
 
@@ -262,7 +263,9 @@ $templates.Columns[0].Name = "Vorlage"
 $templates.Columns[0].Width = 120
 for ($i=1; $i -lt $templates.ColumnCount ; $i++)
 {
-    $templates.Columns[$i].Name = -join("0",($i - 1))
+    if ($i -le 10)  {$templates.Columns[$i].Name = -join("0",($i - 1)) }
+    else            {$templates.Columns[$i].Name = ($i - 1)}
+
     $templates.Columns[$i].Width = $folder_spacing
 }
 
