@@ -34,7 +34,7 @@ Import-Module $ScriptPath/sources/defaults.ps1
 Import-Module $ScriptPath/sources/internals.ps1
 Import-Module $ScriptPath/sources/ui-MainWindow.ps1 
 Import-Module $ScriptPath/sources/ui-SettingsDialog.ps1 
-Import-Module $ScriptPath/sources/themes.ps1 
+Import-Module $ScriptPath/sources/ui-themes.ps1 
 
 # This is the toolbar icon and description
 #$GUI_Form_MainWindow.TaskbarItemInfo.Overlay        = $icon
