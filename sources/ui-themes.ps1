@@ -15,14 +15,17 @@ function Change-Theme {
             
             $panel_top.BackColor                    = "Orange"
             $panel_top.ForeColor                    = "Black"
-            $panel_top.BackgroundImage.Dispose()
 
+            try {$panel_top.BackgroundImage.Dispose()}
+            catch {Write-Output "Nothing to dispose"}
             $panel_sourcefile.BackColor             = "White"
             $Split.BackColor                        = "LightBlue"
             $panel_template.BackColor               = "White" #'Red'
 
             $bottom_panel.BackColor                 = '245,245,245'
-            $bottom_panel.BackgroundImage.Dispose()
+            try {$bottom_panel.BackgroundImage.Dispose()}
+            catch {Write-Output "Nothing to dispose"}
+
 
         }
         "Boring" {
