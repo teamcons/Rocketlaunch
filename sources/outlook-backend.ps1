@@ -173,6 +173,6 @@ Load-RelevantMails
 try     {$sourcefiles.Items[0].Selected = $true ;}
 catch   {Write-Output "No mail with relevant attach !"}
 
-[int]$script:PREDICT_CODE           = (Predict-StructCode)[-1] 
+
 Adapt-Prediction
 

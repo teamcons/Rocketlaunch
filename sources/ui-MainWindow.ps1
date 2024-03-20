@@ -77,12 +77,14 @@ $gui_year.Anchor           = "Left,Top"
 
 $script:gui_code                    = New-Object System.Windows.Forms.Combobox
 $gui_code.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),50)
-$gui_code.Size                      = New-Object System.Drawing.Size(210,30)    
-[void]$gui_code.Items.Add("")
-[void]$gui_code.Items.Add("")
-[void]$gui_code.Items.Add("")
-[void]$gui_code.Items.Add("")
-[void]$gui_code.Items.Add("")
+$gui_code.Size                      = New-Object System.Drawing.Size(210,30)
+
+[int]$script:PREDICT_CODE           = (Predict-StructCode)[-1]     
+[void]$gui_code.Items.Add((-join(($PREDICT_CODE),"_")))
+[void]$gui_code.Items.Add((-join(($PREDICT_CODE + 1),"_")))
+[void]$gui_code.Items.Add((-join(($PREDICT_CODE + 2),"_")))
+[void]$gui_code.Items.Add((-join(($PREDICT_CODE + 3),"_")))
+[void]$gui_code.Items.Add((-join(($PREDICT_CODE + 4),"_")))
 $gui_code.SelectedItem              = $gui_code.Items[0]
 
 
