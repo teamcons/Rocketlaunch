@@ -368,3 +368,97 @@ function Close-All {
     exit
 }
 
+
+
+
+
+
+
+
+
+#================================================================
+# Count all
+function Count-AllWords {
+    param($where, $saveto)
+
+    # We, sadly, need Words
+    $script:word            = New-Object -ComObject Word.Application
+    [string]$analysisfile   = -join($saveto,"\",$default_csv_analysis)    
+    [int]$totalcount        = 0    
+    [int]$totaltime         = 0    
+
+    # Create the CSV, specify separator to avoid issues opening the csv in your fav office software
+    Write-Output (-join("sep=",$TEMPLATEDELIMITER)) | Out-File -FilePath $analysisfile
+
+        # Add column headers
+    $top = -join($text_csv_file,$TEMPLATEDELIMITER,$text_csv_wordcount,$TEMPLATEDELIMITER,$text_csv_proofreadtime,$TEMPLATEDELIMITER)
+    Write-Output $top | Out-File -FilePath "$analysisfile" -Append 
+
+    foreach ($file in (Get-ChildItem $where) )
+    {
+
+        # Use different backend depending on what needed
+        # Each time, check the extension to know what we deal with
+        if ($file.Extension -match ".doc[|x]" )
+        {
+            # OPEN IN WORD, PROCESS COUNT
+            $filecontent = $word.Documents.Open($file.FullName)
+            [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Word.WdStatistic]::wdStatisticWords)
+            #CLOSE FILE
+            $filecontent.Close()
+            
+        }
+<#         elseif ($file.Extension -match ".xls[|x]" )
+        {
+
+            #foreach ($cell in $b.ActiveSheet.Rows[3].Cells) { if ($cell.Text -ne "") {$cell.Text} }
+
+            # OPEN IN EXCEL, PROCESS COUNT
+            $filecontent = $excel.Workbooks.Open($file.FullName)
+            [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Excel.WdStatistic]::wdStatisticWords)
+            #CLOSE FILE
+            $filecontent.Close()
+        }
+        elseif ($file.Extension -match ".ppt[|x]" )
+        {
+            # OPEN IN POWRPOINT, PROCESS COUNT
+            $filecontent = $powerpoint.Documents.Open($file.FullName)
+            [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Powerpoint.WdStatistic]::wdStatisticWords)
+            #CLOSE FILE
+            $filecontent.Close()
+        } #>
+        elseif ($file.Extension -match ".pdf" )
+        {
+            # COUNT WORDS IN PDF FILE
+            [int]$wordcount = (Get-Content $file.FullName | Measure-Object –Word).Words
+        }
+    
+        elseif ($file.Extension -match ".[txt|csv|md|log]" )
+        {
+            # COUNT WORDS IN TXT FILE
+            [int]$wordcount = (Get-Content $file.FullName | Measure-Object –Word).Words
+        }
+        else
+        {
+            # IDK
+            [int]$wordcount = 0
+        }
+            
+        # Update totalcount
+        $proofreadtime      = [math]::round(($wordcount / $WORDS_PER_HOUR),$DECIMALS)
+        $totalcount         = $totalcount + $wordcount
+        $totaltime         = $totaltime + $proofreadtime
+        $line               = -join($file.Name,$TEMPLATEDELIMITER,$wordcount,$TEMPLATEDELIMITER,$proofreadtime,$TEMPLATEDELIMITER)
+        Write-Output $line | Out-File -FilePath $analysisfile -Append
+
+
+
+	} # End of processing list
+    
+    $line = -join($text_csv_total,$TEMPLATEDELIMITER,$totalcount,$TEMPLATEDELIMITER,$totaltime,$TEMPLATEDELIMITER)
+    Write-Output $line | Out-File -FilePath $analysisfile -Append
+
+    Set-Clipboard $totalcount
+    Start-Process $analysisfile
+
+} # End of Count-Allwords

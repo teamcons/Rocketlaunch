@@ -120,6 +120,11 @@ if ($CheckIfNotify.Checked)                     { Notify-Send $PROJECTNAME $text
 # If user want their homemade changes on the template to be saved
 if ($CheckIfSaveTemplateChanges.Checked)        { Save-DataGridView $templates $templatefile}
 
+
+# If user want their homemade changes on the template to be saved
+if ($CheckIfCountWords.Checked)        { Count-AllWords $ORIG $INFO}
+
+
 # If user want to close app after creation
 if ($CheckIfCloseAfter.Checked)                 { Close-All $GUI_Form_MainWindow}
 else {$GUI_Form_MainWindow.Show()}

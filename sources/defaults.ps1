@@ -12,7 +12,12 @@ Write-Output "[START] Loading defaults"
     [string]$script:YEAR                            = get-date –f yyyy
     [regex]$script:CODEPATTERN                      = -join($YEAR,"-[0-9]")
 
+
+[string]$script:default_csv_analysis                = "\Rocketlaunch-analysis.csv"
+
     [string]$script:TEMPLATEDELIMITER               = ';'
+    [int]$script:WORDS_PER_HOUR = 1800
+    [int]$script:DECIMALS = 2
 
 
     # Orange, Lightblue, Brushed Metal+LightGray - Aqua ?

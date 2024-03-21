@@ -57,6 +57,11 @@ switch -Wildcard ($LANG) {
         [string]$global:text_NotifyText                     = "Projekt ist bereit !"
 
 
+        [string]$global:text_csv_file                     = "Datei"
+        [string]$global:text_csv_wordcount                    = "Wortzahl"
+        [string]$global:text_csv_proofreadtime             = "Überprüfungszeit"
+        [string]$global:text_csv_total                     = "TOTAL"
+
         #================================
         ### Settings tab
         [string]$global:text_settingstag                    = "Erweiterte Einstellungen"
