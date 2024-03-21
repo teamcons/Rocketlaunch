@@ -280,7 +280,7 @@ $templates = load_template $templates $templatefile
 
 $templates.Rows[0].Selected = $true #.Selected = $true
 
-$panel_template.Controls.Add($templates_refreshButton)
+#$panel_template.Controls.Add($templates_refreshButton)
 $panel_template.Controls.Add($CheckIfSaveTemplateChanges)
 $panel_template.Controls.Add($labeltemplate)
 $panel_template.Controls.Add($templates)

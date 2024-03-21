@@ -70,11 +70,11 @@ switch -Wildcard ($LANG) {
         [string]$global:text_settings_Notify                = "Eine Benachrichtigung senden, wenn fertig ?"
         [string]$global:text_settings_CloseAfter            = "Programm nach der Erstellung verlassen?"
 
-        [string]$script:text_label_select_lang = "Sprache ändern (TODO)"
-        [string]$script:text_label_select_theme = "Thema ändern (TODO)"
-        [string]$script:text_lang_german = "Deutsch"
-        [string]$script:text_lang_french = "Französisch"
-        [string]$script:text_lang_spanish = "Spanish"
+        [string]$script:text_label_select_lang              = "Sprache ändern (TODO)"
+        [string]$script:text_label_select_theme             = "Thema ändern (TODO)"
+        [string]$script:text_lang_german                    = "Deutsch"
+        [string]$script:text_lang_french                    = "Französisch"
+        [string]$script:text_lang_spanish                   = "Spanish"
 
         # HELP
         [string]$global:text_settings_helptitle             = "Hilfe"

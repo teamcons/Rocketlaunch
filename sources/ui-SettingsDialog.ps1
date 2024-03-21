@@ -161,10 +161,10 @@ $GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)
 $GUI_Tab_Settings.Controls.Add($CheckIfNotify)
 $GUI_Tab_Settings.Controls.Add($CheckIfCloseAfter)
 
-$GUI_Tab_Settings.Controls.Add($label_select_lang)
-$GUI_Tab_Settings.Controls.Add($combobox_select_lang)
-$GUI_Tab_Settings.Controls.Add($label_select_theme)
-$GUI_Tab_Settings.Controls.Add($combobox_select_theme)
+#$GUI_Tab_Settings.Controls.Add($label_select_lang)
+#$GUI_Tab_Settings.Controls.Add($combobox_select_lang)
+#$GUI_Tab_Settings.Controls.Add($label_select_theme)
+#$GUI_Tab_Settings.Controls.Add($combobox_select_theme)
 
 
 #####################

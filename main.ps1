@@ -35,6 +35,8 @@ Import-Module $ScriptPath/sources/internals.ps1
 Import-Module $ScriptPath/sources/ui-MainWindow.ps1 
 Import-Module $ScriptPath/sources/ui-SettingsDialog.ps1 
 Import-Module $ScriptPath/sources/ui-themes.ps1 
+Import-Module $ScriptPath/sources/outlook-backend.ps1 
+Import-Module $ScriptPath/sources/main-projectcreation.ps1
 
 # This is the toolbar icon and description
 #$GUI_Form_MainWindow.TaskbarItemInfo.Overlay        = $icon
@@ -77,10 +79,6 @@ $newcol = New-Object system.Data.DataColumn $text_columns_DD_Path,([string]); $D
 
 # Running this without $appContext and ::Run would actually cause a really poor response.
 $GUI_Form_MainWindow.Show()
-
-
-Import-Module $ScriptPath/sources/outlook-backend.ps1 
-Import-Module $ScriptPath/sources/main-projectcreation.ps1
 
 
 # This makes it pop up
