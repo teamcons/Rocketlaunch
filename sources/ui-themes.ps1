@@ -11,7 +11,7 @@ function Change-Theme {
 
             # Slick soft modern look
             $GUI_Form_MainWindow.BackColor          = "White"
-            $GUI_Form_MoreStuff.BackColor           = '240,240,240'
+            $GUI_Form_MoreStuff.BackColor           = '237,237,237'
         
             $panel_top.BackColor                    = "Orange"
             $panel_top.ForeColor                    = "Black"
@@ -21,9 +21,10 @@ function Change-Theme {
 
             $panel_sourcefile.BackColor             = "White"
             $Split.BackColor                        = "LightBlue"
+            $templates.Backgroundcolor                    = "White"
             $panel_template.BackColor               = "White" #'Red'
 
-            $bottom_panel.BackColor                 = '240,240,240'
+            $bottom_panel.BackColor                 = '237,237,237'
             #try {$bottom_panel.BackgroundImage.Dispose()}
             #catch {Write-Output "Nothing to dispose"}
 
@@ -40,6 +41,7 @@ function Change-Theme {
 
             $panel_sourcefile.ResetBackColor()
             $Split.ResetBackColor()
+            $templates.ResetBackColor()
             $panel_template.ResetBackColor()
 
             $bottom_panel.ResetBackColor()
@@ -59,6 +61,7 @@ function Change-Theme {
  
             $panel_sourcefile.BackColor             = "LightGray"
             $Split.BackColor                        = "Blue"
+            $templates.Backgroundcolor                    = "White"
             $panel_template.BackColor               = "LightGray" #'Red'
 
             $bottom_panel.BackColor                 = [System.Drawing.Color]::Transparent
@@ -78,6 +81,7 @@ function Change-Theme {
 
             $panel_sourcefile.BackColor             = "LightGray"
             $Split.BackColor                        = "Blue"
+            $templates.Backgroundcolor                    = "White"
             $panel_template.BackColor               = "LightGray" #'Red'
 
             $bottom_panel.BackColor                 = "LightGray"
@@ -95,6 +99,7 @@ function Change-Theme {
 
             $panel_sourcefile.BackColor             = "Aqua"
             $Split.BackColor                        = "Green"
+            $templates.Backgroundcolor                    = "White"
             $panel_template.BackColor               = "Aqua" #'Red'
 
             $bottom_panel.BackColor                 = 'Pink'

@@ -240,7 +240,7 @@ $templates.Size                     = New-Object System.Drawing.Size(730,70)
 $templates.AutoResizeColumns(2)
 $templates.Anchor                   = "Left,Right,Top,Bottom"
 
-$templates.BackColor                = "LightBlue"
+
 $templates.GridColor                = "White"
 $templates.BorderStyle              = "FixedSingle"
 $templates.CellBorderStyle          = "SingleHorizontal"
