@@ -21,8 +21,8 @@
 
 $script:GUI_Form_MainWindow                     = New-Object System.Windows.Forms.Form
 $GUI_Form_MainWindow.Text                       = -join($APPNAME," - ",$text_aboutsubtitle)
-$GUI_Form_MainWindow.Size                       = New-Object System.Drawing.Size(775,($GUI_Form_MainWindow_verticalalign + 85 ))
-$GUI_Form_MainWindow.MinimumSize                = New-Object System.Drawing.Size(500,170)
+$GUI_Form_MainWindow.Size                       = New-Object System.Drawing.Size(775,($GUI_Form_MainWindow_verticalalign + 87 ))
+$GUI_Form_MainWindow.MinimumSize                = New-Object System.Drawing.Size(500,175)
 #$GUI_Form_MainWindow.Font                       = New-Object System.Drawing.Font('Calibri', 9, [System.Drawing.FontStyle]::Regular)
 $GUI_Form_MainWindow.StartPosition              = 'CenterScreen'
 $GUI_Form_MainWindow.Topmost                    = $default_ontop

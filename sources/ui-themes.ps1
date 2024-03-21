@@ -11,20 +11,21 @@ function Change-Theme {
 
             # Slick soft modern look
             $GUI_Form_MainWindow.BackColor          = "White"
-            $GUI_Form_MoreStuff.BackColor           = "White"
-            
+            $GUI_Form_MoreStuff.BackColor           = '240,240,240'
+        
             $panel_top.BackColor                    = "Orange"
             $panel_top.ForeColor                    = "Black"
 
-            try {$panel_top.BackgroundImage.Dispose()}
-            catch {Write-Output "Nothing to dispose"}
+            #try {$panel_top.BackgroundImage.Dispose()}
+            #catch {Write-Output "Nothing to dispose"}
+
             $panel_sourcefile.BackColor             = "White"
             $Split.BackColor                        = "LightBlue"
             $panel_template.BackColor               = "White" #'Red'
 
-            $bottom_panel.BackColor                 = '245,245,245'
-            try {$bottom_panel.BackgroundImage.Dispose()}
-            catch {Write-Output "Nothing to dispose"}
+            $bottom_panel.BackColor                 = '240,240,240'
+            #try {$bottom_panel.BackgroundImage.Dispose()}
+            #catch {Write-Output "Nothing to dispose"}
 
 
         }
