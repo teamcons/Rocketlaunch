@@ -23,6 +23,7 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 [void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
+
 # Load assets
 $script:icon                = New-Object system.drawing.icon $ScriptPath\assets\icon.ico
 $script:templatefile        = -join($ScriptPath,"\documentation\Project templates.csv")
@@ -35,35 +36,13 @@ Import-Module $ScriptPath/sources/internals.ps1
 Import-Module $ScriptPath/sources/ui-MainWindow.ps1 
 Import-Module $ScriptPath/sources/ui-SettingsDialog.ps1 
 Import-Module $ScriptPath/sources/ui-themes.ps1 
+Import-Module $ScriptPath/sources/ui-reactiveparts.ps1 
 Import-Module $ScriptPath/sources/outlook-backend.ps1 
 Import-Module $ScriptPath/sources/main-projectcreation.ps1
 
 # This is the toolbar icon and description
 #$GUI_Form_MainWindow.TaskbarItemInfo.Overlay        = $icon
 #$GUI_Form_MainWindow.TaskbarItemInfo.Description    = $GUI_Form_MainWindow.Title
-
-
-
-#========================================
-# Create the Emails table
-$Datatable_Emails = New-Object System.Data.DataTable
-$newcol = New-Object system.Data.DataColumn $text_columns_Subject,([string]); $Datatable_Emails.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_Sendername,([string]); $Datatable_Emails.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_Attachments,([int]); $Datatable_Emails.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_time,([int]); $Datatable_Emails.columns.add($newcol)  
-
-# Create the Files In Downloads table
-$Datatable_FilesInDownloads = New-Object System.Data.DataTable
-$newcol = New-Object system.Data.DataColumn "Checked",([bool]); $Datatable_FilesInDownloads.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_DL_File,([string]); $Datatable_FilesInDownloads.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_DL_LastWrite,([string]); $Datatable_FilesInDownloads.columns.add($newcol)  
-
-
-# Create the Files DragNDrop table
-$Datatable_FilesDragNDrop = New-Object System.Data.DataTable
-$newcol = New-Object system.Data.DataColumn "Checked",([bool]); $Datatable_FilesDragNDrop.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_DL_File,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_DD_Path,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)  
 
 
 

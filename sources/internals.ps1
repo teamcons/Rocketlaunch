@@ -22,6 +22,7 @@ function load_template{
     catch {
         Write-Output "[ERROR] Cannot load templates, falling back to default"
         $GRID.Rows.Add("Minimal","info","orig");
+        $GRID.Rows.Add("Standard TEP","info","orig","trados","to trans","from trans","to proof","from proof","to client")
     }
     return $GRID
 }
@@ -44,15 +45,16 @@ function Predict-StructCode {
  
     try {Set-Location $ROOTSTRUCTURE}
     catch {
+        Add-Type -AssemblyName PresentationCore,PresentationFramework
         $msg = -join("Struktur ist nicht verfügbar!`n",$ROOTSTRUCTURE," ist nicht erreichbar")
-        [System.Windows.MessageBox]::Show($msg,"Rocketlaunch",1,"Error")
+        [System.Windows.MessageBox]::Show($msg,"Nein",1,"Error")
         Close-All $GUI_Form_MainWindow
     }
 
 
     Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)   
     $PREDICT_CODE                               =  (Get-ChildItem -Directory | Select-Object -Last 1).Name.Substring(5,4)
-    [int]$PREDICT_CODE                   =  [int]$PREDICT_CODE + 1
+    [int]$PREDICT_CODE                          =  [int]$PREDICT_CODE + 1
     [bool]$script:CODE_PREDICTED                = $true
   
     return $PREDICT_CODE

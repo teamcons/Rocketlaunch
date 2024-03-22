@@ -199,7 +199,7 @@ $GUI_More_Close.UseVisualStyleBackColor       = $True
 
 #$GUI_Tab_Settings.Controls.Add($helptitle)
 $GUI_Tab_Settings.Controls.Add($getthedoc)
-$GUI_Tab_Settings.Controls.Add($askme)
+#$GUI_Tab_Settings.Controls.Add($askme)
 $GUI_Form_MainWindowTabControl.Controls.Add($GUI_Tab_Settings)
 
 
