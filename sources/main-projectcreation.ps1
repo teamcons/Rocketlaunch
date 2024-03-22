@@ -54,39 +54,44 @@ if ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource)
 {
 
 
-# CHECK WE HAVE THE MINIMUM FOLDERS BECAUSE WE DONT KNOW WHAT TEMPLATE USER USED
-# IF THE STANDARD MINIMUM ISNT THERE, JUST USE BASE FOLDER INSTEAD
-[string]$INFO = -join($BASEFOLDER,"\",(Get-ChildItem -Path "$BASEFOLDER" -Filter "00_*" | Select-Object -First 1).Name)
-[string]$ORIG = -join($BASEFOLDER,"\",(Get-ChildItem -Path "$BASEFOLDER" -Filter "01_*" | Select-Object -First 1).Name)
+    # CHECK WE HAVE THE MINIMUM FOLDERS BECAUSE WE DONT KNOW WHAT TEMPLATE USER USED
+    # IF THE STANDARD MINIMUM ISNT THERE, JUST USE BASE FOLDER INSTEAD
+    [string]$INFO = -join($BASEFOLDER,"\",(Get-ChildItem -Path "$BASEFOLDER" -Filter "00_*" | Select-Object -First 1).Name)
+    [string]$ORIG = -join($BASEFOLDER,"\",(Get-ChildItem -Path "$BASEFOLDER" -Filter "01_*" | Select-Object -First 1).Name)
 
 
-# Check which text has the combobox to decide how to handle this.
-switch ($gui_filesource.SelectedItem) {
-    $text_from_Outlook {
-        Write-Host "Saving from outlook"
-        Save-OutlookAttach $allgoodmails[$sourcefiles.SelectedItems.Index] $ORIG
-    }
-    $text_from_Downloads {
-        Write-Host "From Downloads, not implemented yet !"
-    }
-    $text_DragNDrop {
-        Write-Host "From DragNDrop, not implemented yet !"
-    }
-    $text_nofilesource {
-        Write-Host "No source - THIS SHOULD HAVE BEEN FILTERED OUT BY IF"
-    }
-    default {
-        Write-Host -join ("IDK, WTF IS ",$gui_filesource.SelectedItem)
-    }
-} # End of Switch Case
+    # Check which text has the combobox to decide how to handle this.
+    switch ($gui_filesource.SelectedItem) {
+        $text_from_Outlook {
+            Write-Host "Saving from outlook"
+            Save-OutlookAttach $allgoodmails[$sourcefiles.SelectedItems.Index] $ORIG
+        }
+        $text_from_Downloads {
+            Write-Host "From Downloads, not implemented yet !"
+            # Foreach path in $sourcefiles.SelectedItems.Value
+            # Move-Item -path $path -Destination $ORIG
+        }
+        $text_DragNDrop {
+            Write-Host "From DragNDrop, not implemented yet !"
+            # Foreach path in $sourcefiles.SelectedItems.Value
+            # Move-Item -path $path -Destination $ORIG
 
-# Before processing each source file, deal with the archives first
-# Just expand all archives
-Get-ChildItem -Path $ORIG -Filter *.zip | Expand-Archive -DestinationPath $ORIG
+        }
+        $text_nofilesource {
+            Write-Host "No source - THIS SHOULD HAVE BEEN FILTERED OUT BY IF"
+        }
+        default {
+            Write-Host -join ("IDK, WTF IS ",$gui_filesource.SelectedItem)
+        }
+    } # End of Switch Case
 
-# Make sure everything saved is named as we need it
-# Convention is to have Projectcode-File_orig.fileext
-Rename-Source $ORIG $PROJECTNAME.Substring(0,9) "_orig"
+    # Before processing each source file, deal with the archives first
+    # Just expand all archives
+    Get-ChildItem -Path $ORIG -Filter *.zip | Expand-Archive -DestinationPath $ORIG  | Out-Null
+
+    # Make sure everything saved is named as we need it
+    # Convention is to have Projectcode-File_orig.fileext
+    Rename-Source $ORIG $PROJECTNAME.Substring(0,9) "_orig"
 
 } # End of If we have source files
 

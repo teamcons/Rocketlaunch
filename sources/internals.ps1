@@ -385,7 +385,7 @@ function Count-AllWords {
     $script:word            = New-Object -ComObject Word.Application
     [string]$analysisfile   = -join($saveto,"\",$default_csv_analysis)    
     [int]$totalcount        = 0    
-    [int]$totaltime         = 0    
+    [float]$totaltime         = 0    
 
     # Create the CSV, specify separator to avoid issues opening the csv in your fav office software
     Write-Output (-join("sep=",$TEMPLATEDELIMITER)) | Out-File -FilePath $analysisfile
