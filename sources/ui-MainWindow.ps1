@@ -10,6 +10,8 @@
 #================================
 # INITIAL WORK
 
+Write-Output "[START] Loading UI"
+
 [int]$GUI_Form_MainWindow_leftalign = 15
 [int]$GUI_Form_MainWindow_verticalalign = 600
 

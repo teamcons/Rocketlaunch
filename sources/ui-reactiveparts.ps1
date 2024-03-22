@@ -48,24 +48,22 @@ $gui_filesource.Add_SelectedIndexChanged({
 
 # Try to guess client from selected email sendermail
 
-#$sourcefiles.Add_Click({Adapt-Prediction})
+#    #[System.Windows.MessageBox]::Show($sourcefiles.SelectedIndex,"Rocketlaunch",1,"Error")
 
 
 
-Add-Type -AssemblyName PresentationCore,PresentationFramework
+#$sourcefiles.Add_SelectedIndexChanged({
+#    [System.Windows.MessageBox]::Show("nuh uh","Nein",1,"Error")
+ #   Adapt-Prediction
+#})
 
-$sourcefiles_ItemSelectionChanged={
-    Add-Type -AssemblyName PresentationCore,PresentationFramework
-    [System.Windows.MessageBox]::Show("Changed","Rocketlaunch",1,"Error")
-    #Adapt-Prediction
-}
-$sourcefiles.Add_Mouseclick({[System.Windows.MessageBox]::Show("Mouse","Rocketlaunch",1,"Error")})
 
-$sourcefiles.Add_Click(    {[System.Windows.MessageBox]::Show("Click","Rocketlaunch",1,"Error")})
-$sourcefiles.Add_SelectedIndexChanged(    {
-    [System.Windows.MessageBox]::Show("SelectedInd","Rocketlaunch",1,"Error")
-#Adapt-Prediction})
+$sourcefiles.Add_Click({
+    Adapt-Prediction
+    $gui_code
+
 })
+
 
 
 

@@ -45,9 +45,8 @@ function Predict-StructCode {
  
     try {Set-Location $ROOTSTRUCTURE}
     catch {
-        Add-Type -AssemblyName PresentationCore,PresentationFramework
         $msg = -join("Struktur ist nicht verfügbar!`n",$ROOTSTRUCTURE," ist nicht erreichbar")
-        [System.Windows.MessageBox]::Show($msg,"Nein",1,"Error")
+        [System.Windows.MessageBox]::Show($msg,"Nein",1)
         Close-All $GUI_Form_MainWindow
     }
 

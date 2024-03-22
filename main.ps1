@@ -21,6 +21,7 @@ else
 # Allow having a fancing GUI
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
+Add-Type -AssemblyName PresentationCore,PresentationFramework
 [void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
 

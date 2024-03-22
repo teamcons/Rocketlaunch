@@ -140,16 +140,21 @@ function Load-RelevantMails
 
 function Adapt-Prediction {
 
-    [int]$selected                      = $sourcefiles.SelectedIndex
+    [int]$selected                      = $sourcefiles.SelectedItems[0].Index
     [string]$email                      = $allgoodmails[$selected].SenderEmailAddress
     [string]$FirstSelectionMail         = (Get-CompanyName $email)[-1]
 
-    [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$FirstSelectionMail )
-    [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$FirstSelectionMail )
-    [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$FirstSelectionMail )
-    [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$FirstSelectionMail )
-    [string]$gui_code.Items[4] = -join(($PREDICT_CODE + 4),"_",$FirstSelectionMail )
+    # Conserve the code user was using and if they entered any additional text after client name
+    #$afterclientname = ($gui_code.Text.split(' ',2))[1]
+    #if ($afterclientname -ne $none) {$afterclientname = -join(" ",$afterclientname)}
 
+    [string]$gui_code.Items[0] = -join($PREDICT_CODE,"_",$FirstSelectionMail)
+    [string]$gui_code.Items[1] = -join(($PREDICT_CODE + 1),"_",$FirstSelectionMail)
+    [string]$gui_code.Items[2] = -join(($PREDICT_CODE + 2),"_",$FirstSelectionMail)
+    [string]$gui_code.Items[3] = -join(($PREDICT_CODE + 3),"_",$FirstSelectionMail)
+    [string]$gui_code.Items[4] = -join(($PREDICT_CODE + 4),"_",$FirstSelectionMail)
+
+    $gui_code.Text = -join($gui_code.Text.split("_",2)[0],"_",$FirstSelectionMail)
 }
 
 #================================================================
