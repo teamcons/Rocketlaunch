@@ -179,7 +179,7 @@ $sourcefiles.BorderStyle            = "FixedSingle"
 
 [void]$sourcefiles.Columns.Add($text_columns_Subject,350)
 [void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
-[void]$sourcefiles.Columns.Add($text_columns_Attachments,70)
+[void]$sourcefiles.Columns.Add($text_columns_Attachments,90)
 [void]$sourcefiles.Columns.Add($text_columns_time,100)
 
 
