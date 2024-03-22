@@ -42,7 +42,14 @@ function Get-CompanyName {
 # Try to predict what next number would be 
 function Predict-StructCode {
  
-    Set-Location $ROOTSTRUCTURE
+    try {Set-Location $ROOTSTRUCTURE}
+    catch {
+        $msg = -join("Struktur ist nicht verfügbar!`n",$ROOTSTRUCTURE," ist nicht erreichbar")
+        [System.Windows.MessageBox]::Show($msg,"Rocketlaunch",1,"Error")
+        Close-All $GUI_Form_MainWindow
+    }
+
+
     Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)   
     $PREDICT_CODE                               =  (Get-ChildItem -Directory | Select-Object -Last 1).Name.Substring(5,4)
     [int]$PREDICT_CODE                   =  [int]$PREDICT_CODE + 1

@@ -147,6 +147,7 @@ $gui_filesource.Anchor                  = "Top,Right"
 
 $gui_filesource.SelectedItem = $default_filesfrom
 $gui_filesource.Add_SelectedIndexChanged({
+    Write-Output "[UI] CHANGE DETECTED"
     switch ($gui_filesource.SelectedItem ) {
         $text_from_Outlook {
                             $labelsourcefiles.Text = $text_label_from_Outlook }
