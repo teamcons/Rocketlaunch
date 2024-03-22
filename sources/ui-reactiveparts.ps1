@@ -29,11 +29,9 @@ $gui_filesource.Add_SelectedIndexChanged({
                             $labelsourcefiles.Text = $text_label_from_Outlook }
 
         $text_from_Downloads {
-                            [System.Windows.MessageBox]::Show("Changed","Rocketlaunch",1,"Error")
                             $labelsourcefiles.Text = $text_label_from_Downloads }
 
-        $text_DragNDrop {
-                            [System.Windows.MessageBox]::Show("Changed","Rocketlaunch",1,"Error")            
+        $text_DragNDrop {         
                             $labelsourcefiles.Text = $text_label_DragNDrop }
                             
         $text_nofilesource {
@@ -53,16 +51,21 @@ $gui_filesource.Add_SelectedIndexChanged({
 #$sourcefiles.Add_Click({Adapt-Prediction})
 
 
+
+Add-Type -AssemblyName PresentationCore,PresentationFramework
+
 $sourcefiles_ItemSelectionChanged={
+    Add-Type -AssemblyName PresentationCore,PresentationFramework
     [System.Windows.MessageBox]::Show("Changed","Rocketlaunch",1,"Error")
     #Adapt-Prediction
 }
-$sourcefiles.Add_Mouseclick({echo "MOUSE"})
-$sourcefiles.Add_MouseUp({echo "MOUSE UP"})
-$sourcefiles.Add_Click($sourcefiles_ItemSelectionChanged)
-$sourcefiles.Add_SelectedIndexChanged({echo "CHANGED"})
+$sourcefiles.Add_Mouseclick({[System.Windows.MessageBox]::Show("Mouse","Rocketlaunch",1,"Error")})
 
-
+$sourcefiles.Add_Click(    {[System.Windows.MessageBox]::Show("Click","Rocketlaunch",1,"Error")})
+$sourcefiles.Add_SelectedIndexChanged(    {
+    [System.Windows.MessageBox]::Show("SelectedInd","Rocketlaunch",1,"Error")
+#Adapt-Prediction})
+})
 
 
 
@@ -84,7 +87,6 @@ for ($i=1; $i -lt $templates.ColumnCount ; $i++)
 {
     if ($i -le 10)  {$templates.Columns[$i].Name = -join("0",($i-1)) }
     else            {$templates.Columns[$i].Name = ($i-1)}
-
     $templates.Columns[$i].Width = 80
 }
 
@@ -96,8 +98,7 @@ $templates = load_template $templates $templatefile
 
 # Select the second one in the list 
 # The first one is way too skeleton
-$templates.Rows[1].Selected = $true #.Selected = $true
-
+#$templates.Rows[1].Selected = $true
 
 
 

@@ -11,7 +11,7 @@ function Main-ProjectCreation {
 
 # "Close" the form, for the psychological effect of "omg it started"
 # No reaction on the form when starting a new project, is very jarring
-$GUI_Form_MainWindow.Hide()
+$GUI_Form_MainWindow.WindowState = "Minimized"
 
 
 
@@ -132,7 +132,6 @@ if (($CheckIfCountWords.Checked) -and ($gui_filesource.SelectedItem.ToString() -
 
 # If user want to close app after creation
 if ($CheckIfCloseAfter.Checked)                 { Close-All $GUI_Form_MainWindow}
-else {$GUI_Form_MainWindow.Show()}
 
 
 }
