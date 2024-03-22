@@ -177,6 +177,10 @@ $sourcefiles.View                   = [System.Windows.Forms.View]::Details
 $sourcefiles.BorderStyle            = "FixedSingle"
 #$sourcefiles.Add_Click({Adapt-Prediction})
 
+[void]$sourcefiles.Columns.Add($text_columns_Subject,300)
+[void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
+[void]$sourcefiles.Columns.Add($text_columns_Attachments,70)
+[void]$sourcefiles.Columns.Add($text_columns_time,100)
 
 
 $sourcefiles_ItemSelectionChanged={
