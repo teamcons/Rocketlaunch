@@ -82,7 +82,7 @@ $GUI_Form_MainWindow.Show()
 
 
 # This makes it pop up
-#$GUI_Form_MainWindow.Activate()
+$GUI_Form_MainWindow.Activate()
  
 # Create an application context for it to all run within. 
 # This helps with responsiveness and threading.

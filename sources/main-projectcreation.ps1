@@ -1,4 +1,4 @@
-
+﻿
 # Everything. All Of it. All at once.
 function Main-ProjectCreation {
 
@@ -126,8 +126,8 @@ if ($CheckIfNotify.Checked)                     { Notify-Send $PROJECTNAME $text
 if ($CheckIfSaveTemplateChanges.Checked)        { Save-DataGridView $templates $templatefile}
 
 
-# If user want their homemade changes on the template to be saved
-if ($CheckIfCountWords.Checked)        { Count-AllWords $ORIG $INFO}
+# If user asked to count number of words, and theres actually source files
+if (($CheckIfCountWords.Checked) -and ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource))        { Count-AllWords $ORIG $INFO}
 
 
 # If user want to close app after creation

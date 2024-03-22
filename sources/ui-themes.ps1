@@ -1,4 +1,4 @@
-
+﻿
 
 #================================================================
 # Takes a string, change theme.
@@ -10,21 +10,34 @@ function Change-Theme {
         "Modern Color" {
 
             # Slick soft modern look
-            $GUI_Form_MainWindow.BackColor          = "White"
-            $GUI_Form_MoreStuff.BackColor           = '237,237,237'
-        
-            $panel_top.BackColor                    = "Orange"
-            $panel_top.ForeColor                    = "Black"
+            $GUI_Form_MainWindow.BackColor                          = "White"
+            $GUI_Form_MoreStuff.BackColor                           = '237,237,237'
 
+            # MAIN UI
+            $panel_top.BackColor                                    = "Orange"
+            $panel_top.ForeColor                                    = "Black"
+
+            $panel_sourcefile.BackColor                             = "White"
+            #$sourcefiles.AlternatingRowsDefaultCellStyle.BackColor = "LightBlue"
+            #$sourcefiles.ColumnHeadersDefaultCellStyle.BackColor = "LightBlue"
+            $Split.BackColor                                        = "LightBlue"
+            $panel_template.BackColor                               = "White" #'Red'
+            $templates.Backgroundcolor                              = "White"
+            $templates.AlternatingRowsDefaultCellStyle.BackColor    = '237,237,237'
+
+
+            $bottom_panel.BackColor                                 = '237,237,237'
+
+            <# 
+            $gui_okButton.BackColor                     = "Green"
+            $gui_okButton.ForeColor                     = "White"
+            $gui_cancelButton.BackColor                  = "Red"
+            $gui_cancelButton.ForeColor                  = "White"
+            #>
+
+            # If there is a theme with background images - dispose it
             #try {$panel_top.BackgroundImage.Dispose()}
             #catch {Write-Output "Nothing to dispose"}
-
-            $panel_sourcefile.BackColor             = "White"
-            $Split.BackColor                        = "LightBlue"
-            $templates.Backgroundcolor                    = "White"
-            $panel_template.BackColor               = "White" #'Red'
-
-            $bottom_panel.BackColor                 = '237,237,237'
             #try {$bottom_panel.BackgroundImage.Dispose()}
             #catch {Write-Output "Nothing to dispose"}
 

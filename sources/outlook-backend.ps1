@@ -1,4 +1,4 @@
-
+﻿
 
 # Look for emails with attachments
 # For each email, we look attachments and count the ones with supported formats

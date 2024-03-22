@@ -337,8 +337,7 @@ $gui_okButton.Location                      = New-Object System.Drawing.Point(($
 $gui_okButton.Size                          = New-Object System.Drawing.Size(120,25)
 $gui_okButton.Text                          = $text_OK
 $gui_okButton.Anchor                        = "Bottom,Right"
-#$gui_okButton.BackColor                     = ”Green”
-#$gui_okButton.ForeColor                     = ”White”
+
 # Everything happens here
 $gui_okButton.add_click({Main-ProjectCreation})
 
@@ -347,10 +346,8 @@ $gui_cancelButton.Location                  = New-Object System.Drawing.Point(($
 $gui_cancelButton.Size                      = New-Object System.Drawing.Size(120,25)
 $gui_cancelButton.Text                      = $text_Cancel
 $gui_cancelButton.Anchor                    = "Bottom, Right"
-#$gui_cancelButton.BackColor                  = ”Red”
-#$gui_cancelButton.ForeColor                  = ”White”
-$gui_cancelButton.DialogResult              = [System.Windows.Forms.DialogResult]::Cancel
-$GUI_Form_MainWindow.CancelButton                          = $gui_cancelButton
+#$gui_cancelButton.DialogResult              = [System.Windows.Forms.DialogResult]::Cancel
+#$GUI_Form_MainWindow.CancelButton                          = $gui_cancelButton
 $gui_cancelButton.add_click({Close-All $GUI_Form_MainWindow})
 
 

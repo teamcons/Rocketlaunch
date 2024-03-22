@@ -13,7 +13,7 @@ function load_template{
         [string]$FILE)
     try {
         # Import all, skip the first one - It is the delimiter
-        $detectedtemplate = (Import-Csv -Delimiter $TEMPLATEDELIMITER -Path $FILE -Header "Name","00","01","02","03","04","05","06","07","08","09" | Select-Object -Skip 1)
+        $detectedtemplate = (Import-Csv -Delimiter $SEP -Path $FILE -Header "Name","00","01","02","03","04","05","06","07","08","09" | Select-Object -Skip 1)
         foreach ($row in $detectedtemplate)
         {
             [void]$GRID.Rows.Add($row."Name",$row."00",$row."01",$row."02",$row."03",$row."04",$row."05",$row."06",$row."07",$row."08",$row."09",$row."10",$row."11",$row."12");
@@ -328,7 +328,7 @@ function Save-DataGridView
     {
         # Create the CSV, specify separator to avoid issues opening the csv in your fav office software
         # Also no append, so we smonch the previous template
-        Write-Output (-join("sep=",$TEMPLATEDELIMITER)) | Out-File -FilePath "$file"
+        Write-Output (-join("sep=",$SEP)) | Out-File -FilePath "$file"
 
         # Rebuild and append each line
         foreach ($row in $datagridview.Rows )
@@ -339,7 +339,7 @@ function Save-DataGridView
 
                 $rebuiltrow = ""
                 for($i = 0; $i -lt 12; $i++) {
-                    $rebuiltrow = -join($rebuiltrow, $row[0].Cells[$i].Value,$TEMPLATEDELIMITER)
+                    $rebuiltrow = -join($rebuiltrow, $row[0].Cells[$i].Value,$SEP)
                 }
 
                 Write-Output $rebuiltrow | Out-File -FilePath "$file" -Append
@@ -395,10 +395,10 @@ function Count-AllWords {
     [float]$totaltime         = 0    
 
     # Create the CSV, specify separator to avoid issues opening the csv in your fav office software
-    Write-Output (-join("sep=",$TEMPLATEDELIMITER)) | Out-File -FilePath $analysisfile
+    Write-Output (-join("sep=",$SEP)) | Out-File -FilePath $analysisfile
 
         # Add column headers
-    $top = -join($text_csv_file,$TEMPLATEDELIMITER,$text_csv_wordcount,$TEMPLATEDELIMITER,$text_csv_proofreadtime,$TEMPLATEDELIMITER)
+    $top = -join($text_csv_file,$SEP,$text_csv_wordcount,$SEP,$text_csv_proofreadtime,$SEP)
     Write-Output $top | Out-File -FilePath "$analysisfile" -Append 
 
     foreach ($file in (Get-ChildItem $where) )
@@ -455,17 +455,21 @@ function Count-AllWords {
         $proofreadtime      = [math]::round(($wordcount / $WORDS_PER_HOUR),$DECIMALS)
         $totalcount         = $totalcount + $wordcount
         $totaltime         = $totaltime + $proofreadtime
-        $line               = -join($file.Name,$TEMPLATEDELIMITER,$wordcount,$TEMPLATEDELIMITER,$proofreadtime,$TEMPLATEDELIMITER)
+        $line               = -join($file.Name,$SEP,$wordcount,$SEP,$proofreadtime,$SEP)
         Write-Output $line | Out-File -FilePath $analysisfile -Append
 
 
 
 	} # End of processing list
     
-    $line = -join($text_csv_total,$TEMPLATEDELIMITER,$totalcount,$TEMPLATEDELIMITER,$totaltime,$TEMPLATEDELIMITER)
+    $line = -join($text_csv_total,$SEP,$totalcount,$SEP,$totaltime,$SEP)
     Write-Output $line | Out-File -FilePath $analysisfile -Append
 
     Set-Clipboard $totalcount
-    Start-Process $analysisfile
+    Import-Csv -Path $analysisfile `
+        -Delimiter $SEP
+        -Header $text_csv_file,$text_csv_wordcount,$text_csv_proofreadtime |
+        Select-Object -Skip 1 |
+        Out-GridView –Title "Rocketlaunch"
 
 } # End of Count-Allwords
