@@ -267,9 +267,12 @@ function Notify-Send
     $objNotifyIcon.BalloonTipTitle          = $title
     $objNotifyIcon.BalloonTipIcon           = "Info"
     $objNotifyIcon.BalloonTipText           = $text
-    #$objNotifyIcon.Visible                  = $True
+    $objNotifyIcon.Visible                  = $True
     $objNotifyIcon.ShowBalloonTip(5000)
 
+    $objNotifyIcon.Visible                  = $False
+    #$objNotifyIcon.Icon.Dispose();
+    $objNotifyIcon.Dispose();
 
 }
 
@@ -361,13 +364,12 @@ function Save-DataGridView
 # Close app gracefully
 function Close-All {
     param($GUI)
- 
+
     Write-Output "[INPUT] Got Cancel. Aw. Exit."
 
-    Try {$GUI.Dispose();}
+    Try {$GUI.hide();}
     Catch {Write-Output "Oop"}
-
-    
+    #$GUI.Dispose();
     [System.Windows.Forms.Application]::Exit()
     
     #Stop-Process $pid

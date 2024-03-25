@@ -99,7 +99,7 @@ $CheckIfNotify.Checked                                  = $default_notifywhenfin
 
 $CheckIfCloseAfter                                      = New-Object System.Windows.Forms.CheckBox        
 $CheckIfCloseAfter.Left                                 = $GUI_Form_MainWindow_leftalign
-$CheckIfCloseAfter.Top                                  = $CheckIfOpenExplorer.Top + 30
+$CheckIfCloseAfter.Top                                  = $CheckIfNotify.Top + 30
 $CheckIfCloseAfter.Size                                 = New-Object System.Drawing.Size(400,20)
 $CheckIfCloseAfter.Text                                 = $text_settings_CloseAfter
 $CheckIfCloseAfter.Checked                              = $default_closeafter
@@ -158,7 +158,7 @@ $GUI_Tab_Settings.Controls.Add($CheckIfCreateOutlookFolder)
 $GUI_Tab_Settings.Controls.Add($CheckIfExpandArchives)
 $GUI_Tab_Settings.Controls.Add($CheckIfCountWords)
 $GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)
-#$GUI_Tab_Settings.Controls.Add($CheckIfNotify)
+$GUI_Tab_Settings.Controls.Add($CheckIfNotify)
 $GUI_Tab_Settings.Controls.Add($CheckIfCloseAfter)
 
 #$GUI_Tab_Settings.Controls.Add($label_select_lang)
