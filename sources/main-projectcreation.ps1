@@ -21,34 +21,6 @@ function Main-ProjectCreation {
     else                                {$GUI_Form_MainWindow.WindowState = "Minimized"}
 
 
-
-
-<# 
-    Add-Type -AssemblyName System.Windows.Forms
-    
-    $progressForm = New-Object System.Windows.Forms.Form
-    $progressForm.Width = 330
-    $progressForm.Height = 150
-    $progressForm.FormBorderStyle = [System.Windows.Forms.FormBorderStyle]::FixedSingle
-    $progressForm.Text = "Processing data..."
-    
-    $progressBar = New-Object System.Windows.Forms.ProgressBar
-    $progressBar.Location = New-Object System.Drawing.Point(10, 50)
-    $progressBar.Size = New-Object System.Drawing.Size(280, 20)
-    $progressForm.Controls.Add($progressBar)
-    
-    $progressLabel = New-Object System.Windows.Forms.Label
-    $progressLabel.Location = New-Object System.Drawing.Point(10, 20)
-    $progressLabel.Size = New-Object System.Drawing.Size(280, 20)
-    $progressLabel.Text = "0% Complete"
-    $progressForm.Controls.Add($progressLabel)
-    
-    $progressForm.Show()
-    
- #>
-
-
-
         #=================================================
         #                Process Le Input                =
         #=================================================
@@ -92,8 +64,6 @@ function Main-ProjectCreation {
 
     #========================================
     # If user asked to include source files, include those in new folder, with naming conventions
-
-    $progressBar.Value = 20 ; $progressLabel.Text = "Including source files"
 
 
     if ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource)
@@ -180,8 +150,6 @@ function Main-ProjectCreation {
     if ($CheckIfCloseAfter.Checked)                 { Close-All $GUI_Form_MainWindow}
     else                                            {$GUI_Form_MainWindow.WindowState = "Normal" }
 
-    #$progressBar.Value = 100 ; $progressLabel.Text = "Ready to go !"
-    #$progressForm.Close()
 
 
 } # End of Main Creation Function

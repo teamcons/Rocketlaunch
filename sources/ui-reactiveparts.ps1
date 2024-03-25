@@ -141,3 +141,45 @@ $newcol = New-Object system.Data.DataColumn "Checked",([bool]); $Datatable_Files
 $newcol = New-Object system.Data.DataColumn $text_columns_DL_File,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)  
 $newcol = New-Object system.Data.DataColumn $text_columns_DD_Path,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)  
  #>
+
+
+
+
+<# 
+
+
+ 
+Add-Type -AssemblyName System.Windows.Forms
+    
+$UI_Splash                                      = New-Object System.Windows.Forms.Form
+$UI_Splash.Text                                 = "Processing data..."
+$UI_Splash.Width                                = 310
+$UI_Splash.Height                               = 200
+$UI_Splash.FormBorderStyle                      = "FixedSingle"
+$UI_Splash.ControlBox                           = $false
+
+
+# FANCY ICON
+$UI_Splash_logo                                 = new-object Windows.Forms.PictureBox
+$UI_Splash_logo.Width                           = 64
+$UI_Splash_logo.Height                          = 64
+$UI_Splash_logo.Image                           = $image
+$UI_Splash_logo.Location                        = New-Object System.Drawing.Point(100,10)
+
+$progressLabel                                  = New-Object System.Windows.Forms.Label
+$progressLabel.Location                         = New-Object System.Drawing.Point(10,84)
+$progressLabel.Size                             = New-Object System.Drawing.Size(280, 20)
+$progressLabel.Text                             = "0% Complete"
+$UI_Splash.Controls.Add($progressLabel)
+
+$progressBar                                    = New-Object System.Windows.Forms.ProgressBar
+$progressBar.Location                           = New-Object System.Drawing.Point(10, 104)
+$progressBar.Size                               = New-Object System.Drawing.Size(280, 20)
+#$progressBar.UseVisualStyleBackColor            = $true
+$UI_Splash.Controls.Add($progressBar)
+
+#$UI_Splash.Show()
+
+#$progressBar.Value = 100 ; $progressLabel.Text = "Ready to go !"
+#$progressForm.Close()
+ #>
