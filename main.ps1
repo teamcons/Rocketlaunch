@@ -64,7 +64,8 @@ Import-Module $ScriptPath\sources\main-projectcreation.ps1
 #Write-Output "[START] Show main window"; $result = $GUI_Form_MainWindow.ShowDialog()
 
 # Running this without $appContext and ::Run would actually cause a really poor response.
-$UI_Splash.Hide()
+$GUI_Form_MainWindow.Add_Shown({$UI_Splash.Hide()})
+
 $GUI_Form_MainWindow.Show()
 
 
