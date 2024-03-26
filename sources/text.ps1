@@ -14,6 +14,9 @@ switch -Wildcard ($LANG) {
         [string]$global:text_opentrados                     = "Trados?"
         [string]$global:text_keepontop                      = "Über alle Fenster"
 
+        [string]$global:text_splash_loadingoutlook          = "Ladet Outlook..."
+        [string]$global:text_splash_loading                 = "Ladet: "
+
         #================================
         # Listview
         [string]$global:text_loadfilesfrom                  = 'Ausgangsdatei aus Quelle'

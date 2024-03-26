@@ -89,19 +89,25 @@ function Get-LastBusinessDay
 function Load-RelevantMails
 {
 
-    $ProgressLabel.Text = "Loading Outlook..."
-    $ProgressBar.Value = 0
+    $ProgressLabel.Text                 = $text_splash_loadingoutlook
+    $ProgressBar.Value                  = 0
 
-    $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
-    $ns                         = $OL.GETNAMESPACE("MAPI")
-    $date                       = Get-LastBusinessDay
-    $filter                     = "[ReceivedTime] >= '$date'"
-    #$filter                     = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"
-    #$filter                     = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
-    $script:allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
+    $OL                                 = New-Object -ComObject OUTLOOK.APPLICATION
+    $ns                                 = $OL.GETNAMESPACE("MAPI")
+    $date                               = Get-LastBusinessDay
+    $filter                             = "[ReceivedTime] >= '$date'"
+    #$filter                            = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"
+    #$filter                            = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
+    $script:allmails                    = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
     
     # So we know how to iterate the splash
-    [int]$percent_per_email = (100 / $allmails.Count())
+    # Ok, outlook itself can count as one email loaded
+
+    [int]$percent_per_email             = (100 / ($allmails.Count() + 1 ) )
+
+    # So we loaded Outlook, count it as progress
+    [string]$ProgressBar.Value          = $percent_per_email
+
 
     # This holds all the mails relevant to us
     # It avoids us the hassle later
@@ -113,7 +119,7 @@ function Load-RelevantMails
 
 
         # Saying what we parse on the splash
-        $ProgressLabel.Text = -join("Checking out ",$mail.Subject)
+        $ProgressLabel.Text = -join($mail.Subject.Substring(0,20),"...")
 
 
         # Deal with it only if SMTP
