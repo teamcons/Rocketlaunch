@@ -28,16 +28,14 @@ switch -Wildcard ($LANG) {
         [string]$global:text_columns_Sendername             = 'Von'
         [string]$global:text_columns_Attachments            = 'Dateien'
         [string]$global:text_columns_time                   = 'Ankunft'
-
-
         [string]$global:text_sourcefiles_refresh            = 'Erneut laden'
 
         # DOWNLOADS
         [string]$global:text_label_from_Downloads           = "Ansicht: Alle Dateien, die seit heute heruntergeladen wurden"
         [string]$global:text_from_Downloads                 = "(TODO) Downloads"
-        [string]$global:text_columns_File                = 'Datei'
-        [string]$global:text_columns_Directory                = 'Ordner'
-        [string]$global:text_columns_LastWrite           = 'Letzte Änderung'
+        [string]$global:text_columns_File                   = 'Datei'
+        [string]$global:text_columns_Directory              = 'Ordner'
+        [string]$global:text_columns_LastWrite              = 'ÄnderungsDatum'
 
         # DRAG N DROP
         [string]$global:text_DragNDrop                      = "Drag & Drop"

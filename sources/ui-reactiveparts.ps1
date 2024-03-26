@@ -28,52 +28,77 @@ $newcol = New-Object system.Data.DataColumn $text_columns_Directory,([string]); 
 $newcol = New-Object system.Data.DataColumn $text_columns_LastWrite,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)
 $newcol = New-Object system.Data.DataColumn $text_columns_Path,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)
 
-$gui_filesource.Add_SelectedIndexChanged({
-    Write-Output "[UI] CHANGE DETECTED"
 
-    $sourcefiles.Clear()
-    $sourcefiles.Columns.Clear()
+function Rebuild-Outlook-View
+{
+    [void]$sourcefiles.Columns.Add($text_columns_Subject,330)
+    [void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
+    [void]$sourcefiles.Columns.Add($text_columns_Attachments,80)
+    [void]$sourcefiles.Columns.Add($text_columns_time,100)
+    Load-RelevantMails
+} # End of Rebuild-Outlook-View
 
-    switch ($gui_filesource.SelectedItem ) {
 
-        # User selected Outlook
-        $text_from_Outlook {
-                            $labelsourcefiles.Text              = $text_label_from_Outlook
-                            [void]$sourcefiles.Columns.Add($text_columns_Subject,350)
-                            [void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
-                            [void]$sourcefiles.Columns.Add($text_columns_Attachments,80)
-                            [void]$sourcefiles.Columns.Add($text_columns_time,100)
-                            Load-RelevantMails
-                        }
-        # User selected Downloads
-        $text_from_Downloads {
-                            $labelsourcefiles.Text = $text_label_from_Downloads
-                        
-                        }
-        # User selected DragNDrop
-        $text_DragNDrop {     
-                            $labelsourcefiles.Text              = $text_label_DragNDrop 
-                            #[void]$sourcefiles.Columns.Add("Checked",100)
-                            [void]$sourcefiles.Columns.Add($text_columns_File,250)
-                            [void]$sourcefiles.Columns.Add($text_columns_Directory,100)
-                            [void]$sourcefiles.Columns.Add($text_columns_LastWrite,150)
-                            [void]$sourcefiles.Columns.Add($text_columns_Path,250)
 
-                            foreach ($row in $Datatable_FilesDragNDrop.rows)
-                            {
-                                $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($row[$text_columns_File])
-                                [void]$sourcefilesItem.Subitems.Add($row[$text_columns_Directory])
-                                [void]$sourcefilesItem.Subitems.Add($row[$text_columns_LastWrite])
-                                [void]$sourcefilesItem.Subitems.Add($row[$text_columns_Path])
-                                [void]$sourcefiles.Items.Add($sourcefilesItem)
-                            }
-                        }
-        # User selected no
-        $text_nofilesource {
-                            $labelsourcefiles.Text              = $text_label_nofilesource                   
-                        }
+function Rebuild-DragNDrop-View
+{
+    #[void]$sourcefiles.Columns.Add("Checked",100)
+    [void]$sourcefiles.Columns.Add($text_columns_File,230)
+    [void]$sourcefiles.Columns.Add($text_columns_Directory,100)
+    [void]$sourcefiles.Columns.Add($text_columns_LastWrite,150)
+    [void]$sourcefiles.Columns.Add($text_columns_Path,250)
+
+    foreach ($row in $Datatable_FilesDragNDrop.rows)
+    {
+        $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($row[$text_columns_File])
+        [void]$sourcefilesItem.Subitems.Add($row[$text_columns_Directory])
+        [void]$sourcefilesItem.Subitems.Add($row[$text_columns_LastWrite])
+        [void]$sourcefilesItem.Subitems.Add($row[$text_columns_Path])
+        [void]$sourcefiles.Items.Add($sourcefilesItem)
     }
-})
+} # End of Rebuild-DragNDrop-View
+
+
+Function Reset-View{
+    
+Write-Output "[UI] CHANGE DETECTED"
+$sourcefiles.Items.Clear()
+$sourcefiles.Columns.Clear()
+
+switch ($gui_filesource.Text ) {
+
+    # User selected Outlook
+    $text_from_Outlook {
+                        $labelsourcefiles.Text              = $text_label_from_Outlook
+                        Rebuild-Outlook-View
+                    }
+    # User selected Downloads
+    $text_from_Downloads {
+                        $labelsourcefiles.Text = $text_label_from_Downloads
+                    }
+    # User selected DragNDrop
+    $text_DragNDrop {     
+                        $labelsourcefiles.Text = $text_label_DragNDrop 
+                        Rebuild-DragNDrop-View
+                    }
+    # User selected no
+    $text_nofilesource {
+                        $labelsourcefiles.Text = $text_label_nofilesource                   
+                    }
+}# End of Switch
+}
+
+
+
+
+
+#================================
+# When user needs to reload the view
+$sourcefile_refreshButton.Add_Click({Reset-View})
+
+#================================
+# When user select a different source
+$gui_filesource.Add_SelectedIndexChanged({Reset-View})
 
 
 
@@ -117,7 +142,7 @@ $DragDrop = [System.Windows.Forms.DragEventHandler]{
         $Datatable_FilesDragNDrop.rows.Add($row)
 
         # Correct view, add new item
-        if ($gui_filesource -match $text_DragNDrop)
+        if ($gui_filesource.Text -match $text_DragNDrop)
             {$sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($file.Name)
             [void]$sourcefilesItem.Subitems.Add($file.Directory.Name)
             [void]$sourcefilesItem.Subitems.Add($file.LastWriteTime.ToString())
@@ -195,8 +220,7 @@ $templates = load_template $templates $templatefile
 # If checked, topmost is checked (and window then stays on top)
 $gui_keepontop.Add_Click({$GUI_Form_MainWindow.Topmost = $gui_keepontop.Checked})
 
-# Reload the relevant emails
-$sourcefile_refreshButton.Add_Click({$sourcefiles.Items.Clear() ; Load-RelevantMails})
+
 
 # Show settings
 $gui_help.add_click({$GUI_Form_MoreStuff.ShowDialog()})
