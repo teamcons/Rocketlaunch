@@ -18,11 +18,22 @@ As we work in Trados Studio, pre-fill and start the New Project assistant
     <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/images/Screenshot App.png" /></td>
 </div>
 
+<div align="center">
+    <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/images/settings.png" /></td>
+</div>
+
+<div align="center">
+    <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/images/splash 2.png" /></td>
+</div>
+
+
+<div align="center">
+    <img src="https://github.com/teamcons/Skrivanek-Rocketlaunch/blob/main/images/dragndrop.png" /></td>
+</div>
 
 ## TODO
--Choose whether to get source files from emails, Downloads folder, or None. Listview for the two latters, with icons
--Load for real from a CSV, and a button to load others. Also icons.
--Drag N Drop
+-Add a view for Downloads
+-Add icons
 
 ## CODE PHILOSOPHY
 
