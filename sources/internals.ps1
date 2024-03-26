@@ -1,10 +1,26 @@
 ﻿
+
+
+
+
+
+        #==========================================
+        #                INTERNALS                =
+        #==========================================
+
+
+<#
+All the gory innards, intermediate functions and all that
+TODO: Split into two, have one dedicated to all the skrivanek-specific stuff
+
+#>
+
+
+
+
+#========================================
 Write-Output "[START] Loading internal functions"
 
-
-Add-Type -AssemblyName System.Windows.Forms
-Add-Type -AssemblyName System.Drawing
-[void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
 #================================================================
 function load_template{

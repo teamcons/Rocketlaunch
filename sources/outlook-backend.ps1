@@ -1,5 +1,20 @@
 ﻿
 
+
+
+
+        #===============================================
+        #                OUTLOOK BACKEND               =
+        #===============================================
+
+<# 
+Everything Outlook and to load emails
+Contains stuff executed on load
+#>
+
+
+
+#================================================================
 # Look for emails with attachments
 # For each email, we look attachments and count the ones with supported formats
 # We are not interested in junk like image001.jpg etc... which is signatures and stuff
@@ -39,25 +54,6 @@ function Save-OutlookAttach {
 
 } # End of function
 
-<#     elseif ($gui_filesource.SelectedItem -match $text_from_Downloads )
-    {
-         Write-Output "[DETECTED] Load source files"
-         # Grab source files
-         $load_files = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
-             InitialDirectory    = $default_fromdisk
-             Multiselect         = $true
-             Title               = $APPNAME
-         }
-         $null = $load_files.ShowDialog()
-         Write-Output "[INPUT] Got:"
-         Write-Output $SOURCEFILES.FileNames
-
-         foreach ($file in $load_files)
-         {
-             Write-Output "Moving $file"
-             Move-Item -Path $file -Destination $ORIG
-         }
-    } # End of user load themselves #>
 
 
 

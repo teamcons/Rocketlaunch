@@ -33,39 +33,32 @@ Import-Module $ScriptPath\sources\text.ps1
 Import-Module $ScriptPath\sources\defaults.ps1
 Import-Module $ScriptPath\sources\ui-splash.ps1
 
+# We have enough to display the splash
+$UI_Splash.Show()
+$UI_Splash.Activate()
+
 Import-Module $ScriptPath\sources\internals.ps1
 Import-Module $ScriptPath\sources\ui-MainWindow.ps1 
 Import-Module $ScriptPath\sources\ui-SettingsDialog.ps1 
 Import-Module $ScriptPath\sources\ui-themes.ps1 
 Import-Module $ScriptPath\sources\ui-reactiveparts.ps1 
 
-$UI_Splash.Show()
-$UI_Splash.Activate()
-
+# Outlook Backend is the main intended one for splash
+# Because its so fcking slo
 Import-Module $ScriptPath\sources\outlook-backend.ps1 
 Import-Module $ScriptPath\sources\main-projectcreation.ps1
-
-
-
-# This is the toolbar icon and description
-#$GUI_Form_MainWindow.TaskbarItemInfo.Overlay        = $icon
-#$GUI_Form_MainWindow.TaskbarItemInfo.Description    = $GUI_Form_MainWindow.Title
-
-
-
-        #=======================================================
-        #                Display User Interface                =
-        #=======================================================
-
 
 
 #========================================
 # Interface defined in the ui module
 #Write-Output "[START] Show main window"; $result = $GUI_Form_MainWindow.ShowDialog()
 
-# Running this without $appContext and ::Run would actually cause a really poor response.
+# Hide the splash when main UI is shown
+# You could just hide it the step before, but i like the idea of a smooth transition
 $GUI_Form_MainWindow.Add_Shown({$UI_Splash.Hide()})
 
+# Show the main interface. Thats where everything happens.
+# Not ShowDialog because ShowDialog blocks the script and we need appcontext to run
 $GUI_Form_MainWindow.Show()
 
 

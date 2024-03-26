@@ -1,4 +1,16 @@
 ﻿
+
+        #=========================================
+        #                DEFAULTS                =
+        #=========================================
+
+<# 
+All the default environment values
+Some are obsolete, some would maybe be better in limited scope
+Some arent really supposed to be changed
+#>
+
+
 #========================================
 # Get all important variables in place 
 

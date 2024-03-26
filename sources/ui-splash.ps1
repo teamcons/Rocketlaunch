@@ -1,5 +1,11 @@
 ﻿
 
+
+        #==============================================
+        #                SPLASH Module                =
+        #==============================================
+
+
 #================================================================
 # Create a splash. Just create it.
 
@@ -25,13 +31,13 @@ $UI_Splash.Controls.Add($UI_Splash_logo)
 $progressLabel                                  = New-Object System.Windows.Forms.Label
 $progressLabel.Location                         = New-Object System.Drawing.Point(10,84)
 $progressLabel.Size                             = New-Object System.Drawing.Size(320, 20)
-#$progressLabel.Text                             = "..."
+$progressLabel.Text                             = $text_splash_loadingapp
 $UI_Splash.Controls.Add($progressLabel)
 
 $progressBar                                    = New-Object System.Windows.Forms.ProgressBar
 $progressBar.Location                           = New-Object System.Drawing.Point(10, 104)
 $progressBar.Size                               = New-Object System.Drawing.Size(300, 20)
-#$progressBar.UseVisualStyleBackColor            = $true
+$progressBar.Value                              = 0
 $UI_Splash.Controls.Add($progressBar)
 
 

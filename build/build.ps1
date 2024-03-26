@@ -1,4 +1,18 @@
 
+
+        #===========================================
+        #                Build Tool                =
+        #===========================================
+
+<# 
+Wraps into an EXE the main launcher, and an install script
+
+#>
+
+
+
+
+
 if ($MyInvocation.MyCommand.CommandType -eq "ExternalScript")
     { $global:ScriptPath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition }
 else

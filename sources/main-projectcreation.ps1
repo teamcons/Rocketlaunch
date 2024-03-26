@@ -1,138 +1,149 @@
 ﻿
+
+
+
+        #========================================================
+        #                MAIN - Project Creation                =
+        #========================================================
+
+<# 
+This is where everything happens
+
+This is the main behind the scene thing, which just acts on everything defined before
+It grabs from the GUI
+
+#>
+
+
+
+#========================================
 # Everything. All Of it. All at once.
 function Main-ProjectCreation {
 
 
-#Import-Module $ScriptPath\modules\PoshTaskbarItem
-#$ti = New-TaskbarItem -Title 'Countdown'
-#Show-TaskbarItem $ti
-
-#Set-TaskbarItemProgressIndicator $ti -Progress 1 -State Paused
-
-# "Close" the form, for the psychological effect of "omg it started"
-# No reaction on the form when starting a new project, is very jarring
-$GUI_Form_MainWindow.WindowState = "Minimized"
+        #=================================================
+        #                Process Le Input                =
+        #=================================================
 
 
+    #========================================
+    # "Close" the form, for the psychological effect of "omg it started"
+    # No reaction on the form when starting a new project, is very jarring
+    $GUI_Form_MainWindow.WindowState = "Minimized"
 
-    #=================================================
-    #                Process Le Input                =
-    #=================================================
 
+    # Make sure we have clean input
+    [string]$PROJECTNAME                = $gui_code.Text ; Write-Output "[INPUT] Got: $PROJECTNAME"
+    [string]$PROJECTNAME                = (Get-CleanifiedCodename $PROJECTNAME)[-1]
+    [string]$BASEFOLDER                 = (Rebuild-Tree $PROJECTNAME)[-1]
 
-#========================================
-# Make sure we have clean input
-[string]$PROJECTNAME                = $gui_code.Text ; Write-Output "[INPUT] Got: $PROJECTNAME"
-[string]$PROJECTNAME                = (Get-CleanifiedCodename $PROJECTNAME)[-1]
-[string]$BASEFOLDER                 = (Rebuild-Tree $PROJECTNAME)[-1]
+    # Create project folder
+    Write-Output "[ACTION] Create base folder: $BASEFOLDER"
+    New-Item -ItemType Directory -Path "$BASEFOLDER"
 
-# Create project folder
-Write-Output "[ACTION] Create base folder: $BASEFOLDER"
-New-Item -ItemType Directory -Path "$BASEFOLDER"
+    # Get selected element. Skip the first element cuz no
+    $selectedrow                        = $templates.CurrentCell.RowIndex
+    $allfolderstocreate                 = ($templates.Rows[$selectedrow].Cells | Select-Object -Skip 1 )
 
-# Get selected element. Skip the first element cuz no
-$selectedrow                        = $templates.CurrentCell.RowIndex
-$allfolderstocreate                 = ($templates.Rows[$selectedrow].Cells | Select-Object -Skip 1 )
-
-# CREATE ALLLLL THE FOLDERS
-Create-AllFolders $BASEFOLDER $allfolderstocreate
+    # CREATE ALLLLL THE FOLDERS
+    Create-AllFolders $BASEFOLDER $allfolderstocreate
 
 
 
 
 
-    #=======================================================
-    #                Include Original Files                =
-    #=======================================================
+        #=======================================================
+        #                Include Original Files                =
+        #=======================================================
 
 
 
 
-#========================================
-# If user asked to include source files, include those in new folder, with naming conventions
-if ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource)
-{
+    #========================================
+    # If user asked to include source files, include those in new folder, with naming conventions
+    if ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource)
+    {
 
 
-    # CHECK WE HAVE THE MINIMUM FOLDERS BECAUSE WE DONT KNOW WHAT TEMPLATE USER USED
-    # IF THE STANDARD MINIMUM ISNT THERE, JUST USE BASE FOLDER INSTEAD
-    [string]$INFO = -join($BASEFOLDER,"\",(Get-ChildItem -Path "$BASEFOLDER" -Filter "00_*" | Select-Object -First 1).Name)
-    [string]$ORIG = -join($BASEFOLDER,"\",(Get-ChildItem -Path "$BASEFOLDER" -Filter "01_*" | Select-Object -First 1).Name)
+        # CHECK WE HAVE THE MINIMUM FOLDERS BECAUSE WE DONT KNOW WHAT TEMPLATE USER USED
+        # IF THE STANDARD MINIMUM ISNT THERE, JUST USE BASE FOLDER INSTEAD
+        [string]$INFO = -join($BASEFOLDER,"\",(Get-ChildItem -Path "$BASEFOLDER" -Filter "00_*" | Select-Object -First 1).Name)
+        [string]$ORIG = -join($BASEFOLDER,"\",(Get-ChildItem -Path "$BASEFOLDER" -Filter "01_*" | Select-Object -First 1).Name)
 
 
-    # Check which text has the combobox to decide how to handle this.
-    switch ($gui_filesource.SelectedItem) {
-        $text_from_Outlook {
-            Write-Host "Saving from outlook"
-            Save-OutlookAttach $allgoodmails[$sourcefiles.SelectedItems.Index] $ORIG
-        }
-        $text_from_Downloads {
-            Write-Host "Saving from Downloads"
-        }
-        $text_DragNDrop {
-            Write-Host "From DragNDrop"
-            foreach ( $file in $sourcefiles.Items)
-                {
-                    Write-Output (-join("[MOVE] File at ",$file.SubItems[-1].text))
-                    Move-Item -path $file.SubItems[-1].text -Destination $ORIG
+        # Check which text has the combobox to decide how to handle this.
+        switch ($gui_filesource.SelectedItem) {
+            $text_from_Outlook {
+                Write-Host "Saving from outlook"
+                Save-OutlookAttach $allgoodmails[$sourcefiles.SelectedItems.Index] $ORIG
+            }
+            $text_from_Downloads {
+                Write-Host "Saving from Downloads"
+            }
+            $text_DragNDrop {
+                Write-Host "From DragNDrop"
+                foreach ( $file in $sourcefiles.Items)
+                    {
+                        Write-Output (-join("[MOVE] File at ",$file.SubItems[-1].text))
+                        Move-Item -path $file.SubItems[-1].text -Destination $ORIG
 
-                }
-        }
-        $text_nofilesource {
-            Write-Host "No source - THIS SHOULD HAVE BEEN FILTERED OUT BY IF"
-        }
-        default {
-            Write-Host -join ("IDK, WTF IS ",$gui_filesource.SelectedItem)
-        }
-    } # End of Switch Case
+                    }
+            }
+            $text_nofilesource {
+                Write-Host "No source - THIS SHOULD HAVE BEEN FILTERED OUT BY IF"
+            }
+            default {
+                Write-Host -join ("IDK, WTF IS ",$gui_filesource.SelectedItem)
+            }
+        } # End of Switch Case
 
-    # Before processing each source file, deal with the archives first
-    # Just expand all archives
-    Get-ChildItem -Path $ORIG -Filter *.zip | Expand-Archive -DestinationPath $ORIG  | Out-Null
+        # Before processing each source file, deal with the archives first
+        # Just expand all archives
+        Get-ChildItem -Path $ORIG -Filter *.zip | Expand-Archive -DestinationPath $ORIG  | Out-Null
 
-    # Make sure everything saved is named as we need it
-    # Convention is to have Projectcode-File_orig.fileext
-    Rename-Source $ORIG $PROJECTNAME.Substring(0,9) "_orig"
+        # Make sure everything saved is named as we need it
+        # Convention is to have Projectcode-File_orig.fileext
+        Rename-Source $ORIG $PROJECTNAME.Substring(0,9) "_orig"
 
-} # End of If we have source files
-
-
-
-
-
-    #===============================================
-    #                POSTPROCESSING                =
-    #===============================================
+    } # End of If we have source files
 
 
 
-#========================================
-# Pin to quick access in explorer
-if ($CheckIfCreateExplorerQuickAccess.Checked)  { Create-QuickAccess $BASEFOLDER }
-
-# Create a folder in outlook
-if ($CheckIfCreateOutlookFolder.Checked)        { Create-OutlookFolder $PROJECTNAME $ns }
-
-# Start trados project creator and fill what we can
-if ($CheckIfTrados.Checked)                     { Start-TradosProject $PROJECTNAME }
-
-# Open explorer if its wanted
-if ($CheckIfOpenExplorer.Checked)               { start-process explorer "$BASEFOLDER" }
-
-# Yeah i redid a Linux command deal with it
-if ($CheckIfNotify.Checked)                     { Notify-Send $PROJECTNAME $text_NotifyText }
 
 
-# If user want their homemade changes on the template to be saved
-if ($CheckIfSaveTemplateChanges.Checked)        { Save-DataGridView $templates $templatefile}
+        #===============================================
+        #                POSTPROCESSING                =
+        #===============================================
 
 
-# If user asked to count number of words, and theres actually source files
-if (($CheckIfCountWords.Checked) -and ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource))        { Count-AllWords $ORIG $INFO}
+
+    #========================================
+    # Pin to quick access in explorer
+    if ($CheckIfCreateExplorerQuickAccess.Checked)  { Create-QuickAccess $BASEFOLDER }
+
+    # Create a folder in outlook
+    if ($CheckIfCreateOutlookFolder.Checked)        { Create-OutlookFolder $PROJECTNAME $ns }
+
+    # Start trados project creator and fill what we can
+    if ($CheckIfTrados.Checked)                     { Start-TradosProject $PROJECTNAME }
+
+    # Open explorer if its wanted
+    if ($CheckIfOpenExplorer.Checked)               { start-process explorer "$BASEFOLDER" }
+
+    # Yeah i redid a Linux command deal with it
+    if ($CheckIfNotify.Checked)                     { Notify-Send $PROJECTNAME $text_NotifyText }
 
 
-# If user want to close app after creation
-if ($CheckIfCloseAfter.Checked)                 { Close-All $GUI_Form_MainWindow}
+    # If user want their homemade changes on the template to be saved
+    if ($CheckIfSaveTemplateChanges.Checked)        { Save-DataGridView $templates $templatefile}
+
+
+    # If user asked to count number of words, and theres actually source files
+    if (($CheckIfCountWords.Checked) -and ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource))        { Count-AllWords $ORIG $INFO}
+
+
+    # If user want to close app after creation
+    if ($CheckIfCloseAfter.Checked)                 { Close-All $GUI_Form_MainWindow}
 
 
 }

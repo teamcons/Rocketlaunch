@@ -1,5 +1,20 @@
 ﻿
 
+
+        #=============================================
+        #                THEME Module                =
+        #=============================================
+
+
+
+<# 
+Play with interface stuff, see what looks good
+See what looks tacky
+Switcher works, but hidden from settings, because i feel bad about it
+#>
+
+
+
 #================================================================
 # Takes a string, change theme.
 

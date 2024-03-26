@@ -3,12 +3,18 @@
         #                GUI - About Dialog                =
         #===================================================
 
+
+<#
+Define the settings interface
+Defined but not shown, stuff that on second thought is just clutter
+
+#>
+
+
+
+
+#========================================
 Write-Output "[START] Loading graphical user interface"
-
-
-Add-Type -AssemblyName System.Windows.Forms
-Add-Type -AssemblyName System.Drawing
-[void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
 [int]$GUI_Form_MainWindow_leftalign = 5
 

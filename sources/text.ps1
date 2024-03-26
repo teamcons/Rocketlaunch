@@ -1,5 +1,20 @@
 ﻿
 
+
+        #=====================================
+        #                TEXT                =
+        #=====================================
+
+<# 
+All text strings
+Maybe for localization, load from a CSV ?...
+Powershell builtin tools arent super KISS to my taste...
+
+#>
+
+
+
+#================================================================
 Write-Output "[START] Loading text"
 
 [string]$script:LANG                            = $PSUICulture
@@ -14,6 +29,7 @@ switch -Wildcard ($LANG) {
         [string]$global:text_opentrados                     = "Trados?"
         [string]$global:text_keepontop                      = "Über alle Fenster"
 
+        [string]$global:text_splash_loadingapp              = "Ladung der Module"
         [string]$global:text_splash_loadingoutlook          = "Ladet Outlook..."
         [string]$global:text_splash_loading                 = "Ladet email: "
 
