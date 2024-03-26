@@ -43,10 +43,10 @@ function Rebuild-Outlook-View
 function Rebuild-DragNDrop-View
 {
     #[void]$sourcefiles.Columns.Add("Checked",100)
-    [void]$sourcefiles.Columns.Add($text_columns_File,200)
-    [void]$sourcefiles.Columns.Add($text_columns_Directory,160)
-    [void]$sourcefiles.Columns.Add($text_columns_LastWrite,200)
-    [void]$sourcefiles.Columns.Add($text_columns_Path,180)
+    [void]$sourcefiles.Columns.Add($text_columns_File,180)
+    [void]$sourcefiles.Columns.Add($text_columns_Directory,100)
+    [void]$sourcefiles.Columns.Add($text_columns_LastWrite,160)
+    [void]$sourcefiles.Columns.Add($text_columns_Path,260)
 
     foreach ($row in $Datatable_FilesDragNDrop.rows)
     {

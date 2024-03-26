@@ -111,7 +111,14 @@ switch -Wildcard ($LANG) {
         # ABOUT TAB
         [string]$global:text_abouttab                       = "Stella!" 
         [string]$global:text_aboutsubtitle                  = "Start new projects, but very very quickly !"
-        [string]$global:text_abouttext                      = "Made with love by Stella,`nfor her work at Skrivanek GmbH`n`nI hope you find it useful !`nI am no developer, i studied economics, ive got no clue of those geek things.`n`nVersion 2.0.somethingsomething`n2024 Stella Ménier, under GNU GPL v3"
+        [string]$global:text_abouttext                      = "Made with love by Stella,
+for her work at Skrivanek GmbH
+
+I hope you find it useful !
+I am no developer, i studied economics, ive got no clue of those geek things.
+
+Version 2.0.somethingsomething
+2024 Stella Ménier, under GNU GPL v3"
         [string]$global:text_about_button_repo              = "Project repo"
         [string]$global:text_about_button_licence           = "Licence"
         [string]$global:text_about_button_support           = "Support me!"
