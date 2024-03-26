@@ -15,7 +15,7 @@ switch -Wildcard ($LANG) {
         [string]$global:text_keepontop                      = "Über alle Fenster"
 
         [string]$global:text_splash_loadingoutlook          = "Ladet Outlook..."
-        [string]$global:text_splash_loading                 = "Ladet: "
+        [string]$global:text_splash_loading                 = "Ladet email: "
 
         #================================
         # Listview

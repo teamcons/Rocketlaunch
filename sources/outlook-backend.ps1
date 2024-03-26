@@ -107,7 +107,7 @@ function Load-RelevantMails
 
     # So we loaded Outlook, count it as progress
     [string]$ProgressBar.Value          = $percent_per_email
-
+    Write-Output (-join("[LOAD] Update Splash: ",$ProgressBar.Value,"% done"))    
 
     # This holds all the mails relevant to us
     # It avoids us the hassle later
@@ -119,8 +119,8 @@ function Load-RelevantMails
 
 
         # Saying what we parse on the splash
-        $ProgressLabel.Text = -join($mail.Subject.Substring(0,20),"...")
-
+        $ProgressLabel.Text = -join($text_splash_loading,$mail.Subject,"...")
+        Write-Output (-join("[LOAD] Processing: ",$mail.Subject,"..."))
 
         # Deal with it only if SMTP
         # Answers from us are "EX", and parsing them just is waste of timne
@@ -159,15 +159,23 @@ function Load-RelevantMails
                 $goodmailindex += 1
             } # End of adding goodmail
 
-            # Update splash progress bar
-            # Avoid going over 100 because we are dealing in Int
-            if (($ProgressBar.Value + $percent_per_email) -gt 100)
-                {$ProgressBar.Value = 100}
-            else
-                {$ProgressBar.Value = $ProgressBar.Value + $percent_per_email}
-
-
         } # End of only deal in SMTP
+
+
+
+        # Update splash progress bar
+        # Avoid going over 100 because we are dealing in Int
+        if (($ProgressBar.Value + $percent_per_email) -gt 100)
+            {$ProgressBar.Value = 100}
+        else
+            {$ProgressBar.Value = $ProgressBar.Value + $percent_per_email}
+
+        # We update even if the mail was skipped - Else the progress bar never goes fully until the end
+        # Even if it displays half a second, it looks more reactive too
+        Write-Output (-join("[LOAD] Update Splash: ",$ProgressBar.Value,"% done"))
+
+
+
     } # End of looking for emails with attachments
 } # End of function Load-RelevantMails
     
