@@ -39,7 +39,7 @@ switch -Wildcard ($LANG) {
 
         # OUTLOOK
         [string]$global:text_label_from_Outlook             = "Ausgangsdatei unter alle E-Mails mit Anhang seit dem Vortag, 17:30 Uhr"
-        [string]$global:text_from_Outlook                   = "Outlook"
+        [string]$global:text_from_Outlook                   = "Outlook Emails"
         [string]$global:text_columns_Subject                = 'Betreff'
         [string]$global:text_columns_Sendername             = 'Von'
         [string]$global:text_columns_Attachments            = 'Dateien'
