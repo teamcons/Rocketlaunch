@@ -43,8 +43,6 @@ Write-Output "[START] Loading defaults"
     # Orange, Lightblue, Brushed Metal+LightGray - Aqua ?
     [string]$script:THEME                           = "Modern Color"
 
-
-
     # Do we still use it ???
     [string]$script:supported_filetypes               = $text_from_Outlook
 

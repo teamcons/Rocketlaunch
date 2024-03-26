@@ -115,12 +115,6 @@ function Load-RelevantMails
         # Saying what we parse on the splash
         $ProgressLabel.Text = -join("Checking out ",$mail.Subject)
 
-        # Avoid going over 100 because we are dealing in Int
-        if (($ProgressBar.Value + $percent_per_email) -gt 100)
-            {$ProgressBar.Value = 100}
-        else
-            {$ProgressBar.Value = $ProgressBar.Value + $percent_per_email}
-
 
         # Deal with it only if SMTP
         # Answers from us are "EX", and parsing them just is waste of timne
@@ -159,11 +153,16 @@ function Load-RelevantMails
                 $goodmailindex += 1
             } # End of adding goodmail
 
+            # Update splash progress bar
+            # Avoid going over 100 because we are dealing in Int
+            if (($ProgressBar.Value + $percent_per_email) -gt 100)
+                {$ProgressBar.Value = 100}
+            else
+                {$ProgressBar.Value = $ProgressBar.Value + $percent_per_email}
+
+
         } # End of only deal in SMTP
     } # End of looking for emails with attachments
-    
-    
-
 } # End of function Load-RelevantMails
     
 

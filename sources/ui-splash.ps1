@@ -1,7 +1,9 @@
 ﻿
 
 #================================================================
-# Takes a string, change theme.
+# Create a splash. Just create it.
+
+Write-Output "[START] Preparing Splash"
 
 $UI_Splash                                      = New-Object System.Windows.Forms.Form
 $UI_Splash.Text                                 = -join($APPNAME)
@@ -23,7 +25,7 @@ $UI_Splash.Controls.Add($UI_Splash_logo)
 $progressLabel                                  = New-Object System.Windows.Forms.Label
 $progressLabel.Location                         = New-Object System.Drawing.Point(10,84)
 $progressLabel.Size                             = New-Object System.Drawing.Size(280, 20)
-$progressLabel.Text                             = "0% Complete"
+$progressLabel.Text                             = "..."
 $UI_Splash.Controls.Add($progressLabel)
 
 $progressBar                                    = New-Object System.Windows.Forms.ProgressBar
