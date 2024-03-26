@@ -51,11 +51,11 @@ switch -Wildcard ($LANG) {
         [string]$global:text_from_Downloads                 = "(TODO) Downloads"
         [string]$global:text_columns_File                   = 'Datei'
         [string]$global:text_columns_Directory              = 'Ordner'
-        [string]$global:text_columns_LastWrite              = 'ÄnderungsDatum'
+        [string]$global:text_columns_LastWrite              = 'Änderungsdatum'
 
         # DRAG N DROP
         [string]$global:text_DragNDrop                      = "Drag & Drop"
-        [string]$global:text_columns_Path                = 'Weg'
+        [string]$global:text_columns_Path                   = 'Weg'
         [string]$global:text_label_DragNDrop                = "Ansicht: Alle in der Rasteransicht abgelegten Dateien"
 
 
