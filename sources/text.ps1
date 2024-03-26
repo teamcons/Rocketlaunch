@@ -35,12 +35,13 @@ switch -Wildcard ($LANG) {
         # DOWNLOADS
         [string]$global:text_label_from_Downloads           = "Ansicht: Alle Dateien, die seit heute heruntergeladen wurden"
         [string]$global:text_from_Downloads                 = "(TODO) Downloads"
-        [string]$global:text_columns_DL_File                = 'Datei'
-        [string]$global:text_columns_DL_LastWrite           = 'LastWrite'
+        [string]$global:text_columns_File                = 'Datei'
+        [string]$global:text_columns_Directory                = 'Ordner'
+        [string]$global:text_columns_LastWrite           = 'Letzte Änderung'
 
         # DRAG N DROP
-        [string]$global:text_DragNDrop                      = "(TODO) Drag&Drop"
-        [string]$global:text_columns_DD_Path                = 'Path'
+        [string]$global:text_DragNDrop                      = "Drag & Drop"
+        [string]$global:text_columns_Path                = 'Weg'
         [string]$global:text_label_DragNDrop                = "Ansicht: Alle in der Rasteransicht abgelegten Dateien"
 
 

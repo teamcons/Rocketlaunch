@@ -67,15 +67,16 @@ if ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource)
             Save-OutlookAttach $allgoodmails[$sourcefiles.SelectedItems.Index] $ORIG
         }
         $text_from_Downloads {
-            Write-Host "From Downloads, not implemented yet !"
-            # Foreach path in $sourcefiles.SelectedItems.Value
-            # Move-Item -path $path -Destination $ORIG
+            Write-Host "Saving from Downloads"
         }
         $text_DragNDrop {
-            Write-Host "From DragNDrop, not implemented yet !"
-            # Foreach path in $sourcefiles.SelectedItems.Value
-            # Move-Item -path $path -Destination $ORIG
+            Write-Host "From DragNDrop"
+            foreach ( $file in $sourcefiles.Items)
+                {
+                    Write-Output (-join("[MOVE] File at ",$file.SubItems[-1].text))
+                    Move-Item -path $file.SubItems[-1].text -Destination $ORIG
 
+                }
         }
         $text_nofilesource {
             Write-Host "No source - THIS SHOULD HAVE BEEN FILTERED OUT BY IF"

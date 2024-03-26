@@ -139,6 +139,7 @@ $sourcefiles.HideSelection          = $false
 $sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
 $sourcefiles.View                   = [System.Windows.Forms.View]::Details
 $sourcefiles.BorderStyle            = "FixedSingle"
+$sourcefiles.AllowDrop              = $true    
 
 [void]$sourcefiles.Columns.Add($text_columns_Subject,350)
 [void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
@@ -210,6 +211,13 @@ $templates.AutoGenerateColumns              = $true
 $templates.Columns[0].Name = $text_template_name
 $templates.Columns[0].Width = 120
 
+# Fill the grid
+for ($i=1; $i -lt $templates.ColumnCount ; $i++)
+{
+    if ($i -le 10)  {$templates.Columns[$i].Name = -join("0",($i-1)) }
+    else            {$templates.Columns[$i].Name = ($i-1)}
+    $templates.Columns[$i].Width = 80
+}
 
 #$panel_template.Controls.Add($templates_refreshButton)
 $panel_template.Controls.Add($CheckIfSaveTemplateChanges)
