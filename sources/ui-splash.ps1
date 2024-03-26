@@ -19,7 +19,7 @@ $UI_Splash.FormBorderStyle                      = "Fixed3D"
 $UI_Splash.ControlBox                           = $false
 $UI_Splash.StartPosition                        = 'CenterScreen'
 $UI_Splash.Icon                                 = $icon
-$UI_Splash.BackColor                                 = "White"
+
 
 # FANCY ICON
 $UI_Splash_logo                                 = new-object Windows.Forms.PictureBox
