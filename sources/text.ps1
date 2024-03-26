@@ -54,8 +54,8 @@ switch -Wildcard ($LANG) {
         [string]$global:text_columns_LastWrite              = 'Änderungsdatum'
 
         # DRAG N DROP
-        [string]$global:text_DragNDrop                      = "Drag & Drop"
-        [string]$global:text_columns_Path                   = 'Weg'
+        [string]$global:text_DragNDrop                      = "Ziehen & Ablegen"
+        [string]$global:text_columns_Path                   = 'Vollständiger Pfad'
         [string]$global:text_label_DragNDrop                = "Ansicht: Alle in der Rasteransicht abgelegten Dateien"
 
 
