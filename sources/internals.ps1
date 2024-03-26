@@ -43,6 +43,8 @@ function Get-CompanyName {
 # Try to predict what next number would be 
 function Predict-StructCode {
  
+    # Check if we can access the drive first, as it is a remote one
+    # Try to go at the base structure
     try {Set-Location $ROOTSTRUCTURE}
     catch {
         $msg = -join("Struktur ist nicht verfügbar!`n",$ROOTSTRUCTURE," ist nicht erreichbar")
@@ -50,12 +52,16 @@ function Predict-StructCode {
         Close-All $GUI_Form_MainWindow
     }
 
+    # Go at the latest project directory
+    Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)
 
-    Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)   
-    $PREDICT_CODE                               =  (Get-ChildItem -Directory | Select-Object -Last 1).Name.Substring(5,4)
+    # Retrieve latest project, clean year and project name out of i
+    $PREDICT_CODE                               =  Get-ChildItem -Directory | Sort Name | Select-Object -Last 1
+    $PREDICT_CODE                               =  $PREDICT_CODE.Name.Split("-")[1].Split("_")[0]
     [int]$PREDICT_CODE                          =  [int]$PREDICT_CODE + 1
     [bool]$script:CODE_PREDICTED                = $true
   
+    # Nice
     return $PREDICT_CODE
     #$PREDICT_CODE = -join($YEAR,"-")
 }

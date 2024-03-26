@@ -1,6 +1,4 @@
 ﻿
-
-
         #===============================================
         #                Initialization                =
         #===============================================
@@ -31,15 +29,23 @@ $script:templatefile        = -join($ScriptPath,"\documentation\Project template
 $script:image               = [system.drawing.image]::FromFile((get-item $ScriptPath\assets\icon-mini.ico))
 
 # Load everything we need
-Import-Module $ScriptPath/sources/text.ps1
-Import-Module $ScriptPath/sources/defaults.ps1
-Import-Module $ScriptPath/sources/internals.ps1
-Import-Module $ScriptPath/sources/ui-MainWindow.ps1 
-Import-Module $ScriptPath/sources/ui-SettingsDialog.ps1 
-Import-Module $ScriptPath/sources/ui-themes.ps1 
-Import-Module $ScriptPath/sources/ui-reactiveparts.ps1 
-Import-Module $ScriptPath/sources/outlook-backend.ps1 
-Import-Module $ScriptPath/sources/main-projectcreation.ps1
+Import-Module $ScriptPath\sources\text.ps1
+Import-Module $ScriptPath\sources\defaults.ps1
+Import-Module $ScriptPath\sources\ui-splash.ps1
+
+Import-Module $ScriptPath\sources\internals.ps1
+Import-Module $ScriptPath\sources\ui-MainWindow.ps1 
+Import-Module $ScriptPath\sources\ui-SettingsDialog.ps1 
+Import-Module $ScriptPath\sources\ui-themes.ps1 
+Import-Module $ScriptPath\sources\ui-reactiveparts.ps1 
+
+$UI_Splash.Show()
+$UI_Splash.Activate()
+
+Import-Module $ScriptPath\sources\outlook-backend.ps1 
+Import-Module $ScriptPath\sources\main-projectcreation.ps1
+
+
 
 # This is the toolbar icon and description
 #$GUI_Form_MainWindow.TaskbarItemInfo.Overlay        = $icon
@@ -58,6 +64,7 @@ Import-Module $ScriptPath/sources/main-projectcreation.ps1
 #Write-Output "[START] Show main window"; $result = $GUI_Form_MainWindow.ShowDialog()
 
 # Running this without $appContext and ::Run would actually cause a really poor response.
+$UI_Splash.Hide()
 $GUI_Form_MainWindow.Show()
 
 

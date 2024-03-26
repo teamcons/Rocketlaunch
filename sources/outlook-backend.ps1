@@ -89,43 +89,77 @@ function Get-LastBusinessDay
 function Load-RelevantMails
 {
 
+    $ProgressLabel.Text = "Loading Outlook..."
+    $ProgressBar.Value = 0
 
-    [bool]$StopSearching = $false
+    $OL                         = New-Object -ComObject OUTLOOK.APPLICATION
+    $ns                         = $OL.GETNAMESPACE("MAPI")
+    $date                       = Get-LastBusinessDay
+    $filter                     = "[ReceivedTime] >= '$date'"
+    #$filter                     = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"
+    #$filter                     = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
+    $script:allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
+    
+    # So we know how to iterate the splash
+    [int]$percent_per_email = (100 / $allmails.Count())
+
+    # This holds all the mails relevant to us
+    # It avoids us the hassle later
     $script:allgoodmails = New-Object -TypeName 'System.Collections.ArrayList'
 
+    # For each email we get our hands on
     foreach ($mail in $allmails)
     {
-    
-        [bool]$AddToGoodMails = $false
-        [int]$CountGoodAttachments = 0
-        foreach ( $attach in $mail.Attachments ) 
+
+
+        # Saying what we parse on the splash
+        $ProgressLabel.Text = -join("Checking out ",$mail.Subject)
+
+        # Avoid going over 100 because we are dealing in Int
+        if (($ProgressBar.Value + $percent_per_email) -gt 100)
+            {$ProgressBar.Value = 100}
+        else
+            {$ProgressBar.Value = $ProgressBar.Value + $percent_per_email}
+
+
+        # Deal with it only if SMTP
+        # Answers from us are "EX", and parsing them just is waste of timne
+        if ($mail.SenderEmailType -match "SMTP")
         {
-            #echo $attach.FileName
-            if ($attach.FileName -match  ".(pdf|doc|docx|xls|xlsx|ppt|pptx|xml|idml|csv|txt|zip|sdlppx)" )
+        
+            # First loop through the email, to see if it has the attachments
+            [bool]$AddToGoodMails = $false
+            [int]$CountGoodAttachments = 0
+            foreach ( $attach in $mail.Attachments ) 
             {
-                echo (-join("MATCH:",$attach.FileName))
-                $AddToGoodMails = $true
-                [int]$CountGoodAttachments += 1
-    
-            }   # End of each mails
-            #else {echo (-join("NOTMATCH:",$attach.FileName)) }  
-        } #End of checking attachments
-    
-        # we found one with attachment !
-        if ($AddToGoodMails -eq $true)
-        {
-            # Currently observed one is a good one
-            $allgoodmails.Add($mail)
-    
-            # Add to da list
-            $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($mail.Subject)
-            [void]$sourcefilesItem.Subitems.Add($mail.SenderName)
-            [void]$sourcefilesItem.Subitems.Add($CountGoodAttachments)
-            [void]$sourcefilesItem.Subitems.Add( (Get-Date -Date $mail.ReceivedTime -UFormat "%A, %H:%M").ToString() )
-            [void]$sourcefiles.Items.Add($sourcefilesItem)
-            $goodmailindex += 1
-        } # End of adding goodmail
-    
+                #echo $attach.FileName
+                if ($attach.FileName -match $accepted_attachments )
+                {
+                    echo (-join("MATCH:",$attach.FileName))
+                    $AddToGoodMails = $true
+                    [int]$CountGoodAttachments += 1
+        
+                }   # End of each mails
+                #else {echo (-join("NOTMATCH:",$attach.FileName)) }  
+            } #End of checking attachments
+        
+            # we found one with a supported attachment !
+            # So we add it where we need it. Save it in a list also
+            if ($AddToGoodMails -eq $true)
+            {
+                # Currently observed one is a good one
+                $allgoodmails.Add($mail)
+        
+                # Add to da list
+                $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($mail.Subject)
+                [void]$sourcefilesItem.Subitems.Add($mail.SenderName)
+                [void]$sourcefilesItem.Subitems.Add($CountGoodAttachments)
+                [void]$sourcefilesItem.Subitems.Add( (Get-Date -Date $mail.ReceivedTime -UFormat "%A, %H:%M").ToString() )
+                [void]$sourcefiles.Items.Add($sourcefilesItem)
+                $goodmailindex += 1
+            } # End of adding goodmail
+
+        } # End of only deal in SMTP
     } # End of looking for emails with attachments
     
     
@@ -158,14 +192,6 @@ function Adapt-Prediction {
 }
 
 #================================================================
-
-$OL                         = New-Object -ComObject OUTLOOK.APPLICATION
-$ns                         = $OL.GETNAMESPACE("MAPI")
-$date                       = Get-LastBusinessDay
-$filter                     = "[ReceivedTime] >= '$date'"
-#$filter                     = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"
-#$filter                     = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
-$allmails                   = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
 
 
 Load-RelevantMails

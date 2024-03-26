@@ -12,6 +12,8 @@ Write-Output "[START] Loading defaults"
     [regex]$script:CODEPATTERN                      = -join($YEAR,"-[0-9]")
 
 
+    [regex]$script:accepted_attachments             = ".(pdf|doc|docx|xls|xlsx|ppt|pptx|xml|idml|csv|txt|zip|sdlppx)"
+
     # CSV shenanigans
     [string]$script:default_csv_analysis            = "\Rocketlaunch-analysis.csv"
     [string]$script:TEMPLATEDELIMITER               = ';'
