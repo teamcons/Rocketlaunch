@@ -50,7 +50,8 @@ function Rebuild-DragNDrop-View
 
     foreach ($row in $Datatable_FilesDragNDrop.rows)
     {
-        $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($row[$text_columns_File])
+        $sourcefilesItem            = New-Object System.Windows.Forms.ListViewItem($row[$text_columns_File])
+        $sourcefilesItem.Checked    = $true
         [void]$sourcefilesItem.Subitems.Add($row[$text_columns_Directory])
         [void]$sourcefilesItem.Subitems.Add($row[$text_columns_LastWrite])
         [void]$sourcefilesItem.Subitems.Add($row[$text_columns_Path])
@@ -74,7 +75,8 @@ function Rebuild-Downloads-View
         if ($file.LastWriteTime.ToString("dd.MM") -match (Get-Date -Format "dd.MM"))
         {
             # Add it
-            $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($file.Name)
+            $sourcefilesItem            = New-Object System.Windows.Forms.ListViewItem($file.Name)
+            $sourcefilesItem.Checked    = $false
             [void]$sourcefilesItem.Subitems.Add($file.Directory.Name)
             [void]$sourcefilesItem.Subitems.Add($file.LastWriteTime.ToString())
             [void]$sourcefilesItem.Subitems.Add($file.FullName)
@@ -180,6 +182,7 @@ $DragDrop = [System.Windows.Forms.DragEventHandler]{
         # Correct view, add new item
         if ($gui_filesource.Text -match $text_DragNDrop)
             {$sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($file.Name)
+            $sourcefilesItem.Checked = $true
             [void]$sourcefilesItem.Subitems.Add($file.Directory.Name)
             [void]$sourcefilesItem.Subitems.Add($file.LastWriteTime.ToString())
             [void]$sourcefilesItem.Subitems.Add($file.FullName)
