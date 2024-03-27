@@ -266,16 +266,16 @@ $gui_help.Text                  = $text_help
 $gui_help.Anchor                = "Left, Bottom"
 
 
-# Check if start new trados project
+# What outlook folder to create a project folder in ?
 $script:gui_folderinoutlook                  = New-Object System.Windows.Forms.Combobox
 $gui_folderinoutlook.Location                = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),12)
 $gui_folderinoutlook.Size                    = New-Object System.Drawing.Size(110,25)
 $gui_folderinoutlook.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 $gui_folderinoutlook.Anchor                  = "Top,Left"
 
-[void] $gui_folderinoutlook.Items.Add("01_QUOTES")
-[void] $gui_folderinoutlook.Items.Add("02_CURRENT JOBS")
-[void] $gui_folderinoutlook.Items.Add($text_nooutlook)      
+[void]$gui_folderinoutlook.Items.Add("01_QUOTES")
+[void]$gui_folderinoutlook.Items.Add("02_CURRENT JOBS")
+[void]$gui_folderinoutlook.Items.Add($text_nooutlook)      
 $gui_folderinoutlook.SelectedItem = $gui_folderinoutlook.Items[0]
 
 # Check if start new trados project
@@ -312,9 +312,6 @@ $bottom_panel.Controls.Add($gui_okButton)
 $bottom_panel.Controls.Add($gui_cancelButton)
 $bottom_panel.Controls.Add($gui_folderinoutlook)
 $bottom_panel.Controls.Add($CheckIfTrados)
-
-
-
 [void]$GUI_Form_MainWindow.Controls.Add($bottom_panel)
 
 
