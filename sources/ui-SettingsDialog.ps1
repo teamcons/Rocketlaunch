@@ -185,7 +185,7 @@ $getthedoc.Left                                         = $GUI_Form_MainWindow_l
 $getthedoc.Top                                          = 320
 $getthedoc.Text                                         = $text_settings_getthedoc
 #$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
-$getthedoc.Add_Click( {start-process '$ScriptPath\documentation\Rocketlaunch Manual.pdf' } )
+$getthedoc.Add_Click( {start-process (-join($ScriptPath,"\documentation\Rocketlaunch Manual.pdf")) } )
 
 $askme                                                  = New-Object System.Windows.Forms.Button
 $askme.Text                                             = $text_settings_askme
