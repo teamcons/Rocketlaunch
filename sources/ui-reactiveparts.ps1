@@ -3,6 +3,17 @@
 
 
 
+
+        #==============================================
+        #                REACTIVE PARTS               =
+        #==============================================
+
+<# 
+Wire up event functions, onclick stuff, and everything that happens while interacting with the UI
+
+#>
+
+
 #========================================
 # Code prediction
 
@@ -194,39 +205,9 @@ $DragDrop = [System.Windows.Forms.DragEventHandler]{
 	} # End of processing list
 }
 
+# Wire it up !
 $sourcefiles.Add_DragOver($DragOver)
 $sourcefiles.Add_DragDrop($DragDrop)
-
-
-
-
-
-
-
-
-
-<# 
-#========================================
-# Create the Emails table
-$Datatable_Emails = New-Object System.Data.DataTable
-$newcol = New-Object system.Data.DataColumn $text_columns_Subject,([string]); $Datatable_Emails.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_Sendername,([string]); $Datatable_Emails.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_Attachments,([int]); $Datatable_Emails.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_time,([int]); $Datatable_Emails.columns.add($newcol)  
-
-# Create the Files In Downloads table
-$Datatable_FilesInDownloads = New-Object System.Data.DataTable
-$newcol = New-Object system.Data.DataColumn "Checked",([bool]); $Datatable_FilesInDownloads.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_DL_File,([string]); $Datatable_FilesInDownloads.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_DL_LastWrite,([string]); $Datatable_FilesInDownloads.columns.add($newcol)  
-
-
-# Create the Files DragNDrop table
-$Datatable_FilesDragNDrop = New-Object System.Data.DataTable
-$newcol = New-Object system.Data.DataColumn "Checked",([bool]); $Datatable_FilesDragNDrop.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_DL_File,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_DD_Path,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)  
- #>
 
 
 
