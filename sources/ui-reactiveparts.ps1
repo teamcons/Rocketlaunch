@@ -69,7 +69,7 @@ function Rebuild-Downloads-View
     [void]$sourcefiles.Columns.Add($text_columns_Path,260)
 
     # For each file in the downloads folder
-    foreach ($file in (Get-ChildItem $env:USERPROFILE\Downloads  | Sort LastWriteTime -Descending ))
+    foreach ($file in (Get-ChildItem -Files $env:USERPROFILE\Downloads | Sort LastWriteTime -Descending ))
     {
         # If its fresh from today
         if ($file.LastWriteTime.ToString("dd.MM") -match (Get-Date -Format "dd.MM"))
