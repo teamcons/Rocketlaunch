@@ -244,33 +244,6 @@ function Clear-Datagridview
 }
 
 
-#================================================================
-# Load in datagridview the files in downloads
-function Load-RecentDownloads
-{
-    param($datagridview)
-
-    # NUKE IT
-    Clear-Datagridview $datagridview
-
-    # New columns
-    [void]$datagridview.Columns.Add($text_columns_DL_File,300)
-    [void]$datagridview.Columns.Add($text_columns_DL_LastWrite,200)
-    
-    # Get Info
-    $folder = '$env:USERPROFILE\Downloads'
-    $recentfiles = (Get-Childitem $folder * -Recurse | Where-Object {$_.LastWriteTime -gt (Get-Date).Date })
-
-    # Repopulate
-    foreach ($file in $recentfiles)
-    {
-        $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($file.Name)
-        [void]$sourcefilesItem.Subitems.Add((Get-Date $file.LastWriteTime -UFormat "%H:%M").ToString())
-        [void]$datagridview.Items.Add($sourcefilesItem)
-    }
-
-}
-
 
 
 

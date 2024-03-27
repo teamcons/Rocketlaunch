@@ -36,7 +36,6 @@ Write-Output "[START] Loading defaults"
 
     # Exposed in main UI
     [string]$script:default_filesfrom               = $text_from_Outlook
-    #[string]$script:default_fromdisk                = '$env:USERPROFILE\Downloads'
     [bool]$script:default_ontop                     = $false
     [bool]$script:default_opentrados                = $true
     [bool]$script:default_savetemplatechanges       = $false
@@ -56,6 +55,6 @@ Write-Output "[START] Loading defaults"
     [string]$script:THEME                           = "Modern Color"
 
     # Do we still use it ???
-    [string]$script:supported_filetypes               = $text_from_Outlook
+    #[string]$script:supported_filetypes               = $text_from_Outlook
 
 

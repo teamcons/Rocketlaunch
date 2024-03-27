@@ -64,24 +64,24 @@ $CheckIfCreateExplorerQuickAccess.Size                  = New-Object System.Draw
 $CheckIfCreateExplorerQuickAccess.Text                  = $text_settings_ExplorerQuickAccess
 $CheckIfCreateExplorerQuickAccess.Checked               = $default_createshortcut
 
-$CheckIfCreateOutlookFolder                             = New-Object System.Windows.Forms.CheckBox        
+<# $CheckIfCreateOutlookFolder                             = New-Object System.Windows.Forms.CheckBox        
 $CheckIfCreateOutlookFolder.Left                        = $GUI_Form_MainWindow_leftalign
 $CheckIfCreateOutlookFolder.Top                         = $CheckIfCreateExplorerQuickAccess.Top + 30
 $CheckIfCreateOutlookFolder.Size                        = New-Object System.Drawing.Size(400,20)
 $CheckIfCreateOutlookFolder.Text                        = $text_settings_OutlookFolder
-$CheckIfCreateOutlookFolder.Checked                     = $default_createoutlookfolder
+$CheckIfCreateOutlookFolder.Checked                     = $default_createoutlookfolder #>
 
-
-#$CheckIfExpandArchives                = New-Object System.Windows.Forms.CheckBox        
-#$CheckIfExpandArchives.Location       = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,120)
-#$CheckIfExpandArchives.Size           = New-Object System.Drawing.Size(400,20)
-#$CheckIfExpandArchives.Text           = $text_settings_ExpandArchives
-#$CheckIfExpandArchives.Checked        = $default_expandarchives
-
+<# 
+$CheckIfExpandArchives                = New-Object System.Windows.Forms.CheckBox        
+$CheckIfExpandArchives.Location       = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,120)
+$CheckIfExpandArchives.Size           = New-Object System.Drawing.Size(400,20)
+$CheckIfExpandArchives.Text           = $text_settings_ExpandArchives
+$CheckIfExpandArchives.Checked        = $default_expandarchives
+ #>
 
 $CheckIfCountWords                                      = New-Object System.Windows.Forms.CheckBox        
 $CheckIfCountWords.Left                                 = $GUI_Form_MainWindow_leftalign
-$CheckIfCountWords.Top                                  = $CheckIfCreateOutlookFolder.Top + 30
+$CheckIfCountWords.Top                                  = $CheckIfCreateExplorerQuickAccess.Top + 30
 $CheckIfCountWords.Size                                 = New-Object System.Drawing.Size(400,20)
 $CheckIfCountWords.Text                                 = $text_settings_Countwords
 $CheckIfCountWords.Checked                              = $default_countwords
@@ -113,7 +113,7 @@ $CheckIfCloseAfter.Checked                              = $default_closeafter
 
 
 
-# CHANGE LANGUAGE
+<# # CHANGE LANGUAGE
 $label_select_lang                     = New-Object System.Windows.Forms.Label
 $label_select_lang.Text                = $text_label_select_lang
 $label_select_lang.Top                 = $CheckIfCloseAfter.Top + 35
@@ -126,12 +126,10 @@ $combobox_select_lang.Left               = ($GUI_Form_MainWindow_leftalign + 200
 $combobox_select_lang.Size                = New-Object System.Drawing.Size(100,20)
 $combobox_select_lang.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 
-
-
 [void]$combobox_select_lang.Items.Add($text_lang_german)
 [void]$combobox_select_lang.Items.Add($text_lang_french)
 [void]$combobox_select_lang.Items.Add($text_lang_spanish)
-$combobox_select_lang.SelectedItem = $combobox_select_lang.Items[0]
+$combobox_select_lang.SelectedItem = $combobox_select_lang.Items[0] #>
 
 
 # CHANGE LANGUAGE
@@ -160,7 +158,7 @@ $combobox_select_theme.SelectedItem = $combobox_select_theme.Items[0]
 $GUI_Tab_Settings.Controls.Add($moresettingsnota)
 #$GUI_Tab_Settings.Controls.Add($GUI_More_Close)
 $GUI_Tab_Settings.Controls.Add($CheckIfCreateExplorerQuickAccess)
-$GUI_Tab_Settings.Controls.Add($CheckIfCreateOutlookFolder)
+#$GUI_Tab_Settings.Controls.Add($CheckIfCreateOutlookFolder)
 $GUI_Tab_Settings.Controls.Add($CheckIfExpandArchives)
 $GUI_Tab_Settings.Controls.Add($CheckIfCountWords)
 $GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)

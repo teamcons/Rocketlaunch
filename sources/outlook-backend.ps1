@@ -27,13 +27,14 @@ Write-Output "[START] Loading Outlook capabilities"
 function Create-OutlookFolder {
     param(
         [string]$foldername,
-        $namespace
+        $namespace,
+        [string]$infolder
     )
     Write-Output "[CREATE] Folder in Outlook"
     [string]$Username = $Env:UserName.split(".")[0]
     $TextInfo = (Get-Culture).TextInfo
     [string]$Username = $TextInfo.ToTitleCase($Username)
-    $namespace.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("02_ONGOING JOBS").Folders.Item($Username).Folders.Add($PROJECTNAME)
+    $namespace.Folders.Item(1).Folders.Item("Posteingang").Folders.Item($infolder).Folders.Item($Username).Folders.Add($PROJECTNAME)
 }
 
 
@@ -89,7 +90,7 @@ function Load-RelevantMails
     $ProgressBar.Value                  = 0
 
     $OL                                 = New-Object -ComObject OUTLOOK.APPLICATION
-    $ns                                 = $OL.GETNAMESPACE("MAPI")
+    $script:ns                          = $OL.GETNAMESPACE("MAPI")
     $date                               = Get-LastBusinessDay
     $filter                             = "[ReceivedTime] >= '$date'"
     #$filter                            = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"

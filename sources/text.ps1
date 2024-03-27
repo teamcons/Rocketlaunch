@@ -38,7 +38,7 @@ switch -Wildcard ($LANG) {
         [string]$global:text_loadfilesfrom                  = 'Ausgangsdatei aus Quelle'
 
         # OUTLOOK
-        [string]$global:text_label_from_Outlook             = "Ausgangsdatei unter alle E-Mails mit Anhang seit dem Vortag, 17:30 Uhr"
+        [string]$global:text_label_from_Outlook             = "Ansicht: Ausgangsdatei unter alle E-Mails mit Anhang seit dem Vortag, 17:30 Uhr"
         [string]$global:text_from_Outlook                   = "Outlook Emails"
         [string]$global:text_columns_Subject                = 'Betreff'
         [string]$global:text_columns_Sendername             = 'Von'
@@ -62,6 +62,9 @@ switch -Wildcard ($LANG) {
         # NONE WITH LEFT BEEF
         [string]$global:text_label_nofilesource             = "Keine Ausgangsdatei einbeziehen"
         [string]$global:text_nofilesource                   = "Keine Ausgangsdatei"
+
+
+        [string]$global:text_nooutlook                   = "Kein Outlook Ordner"
 
 
 

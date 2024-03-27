@@ -73,49 +73,65 @@ function Main-ProjectCreation {
 
         # Check which text has the combobox to decide how to handle this.
         switch ($gui_filesource.SelectedItem) {
+            
+            # If from Outlook, use the dedicated function
             $text_from_Outlook {
                 Write-Host "Saving from outlook"
                 Save-OutlookAttach $allgoodmails[$sourcefiles.SelectedItems.Index] $ORIG
             }
+
+            # If from downloads, iterate through items, move the checked ones
             $text_from_Downloads {
                 Write-Host "Saving from Downloads"
                 foreach ( $file in $sourcefiles.Items)
                 {
                     if ($file.Checked)
                     {
+                        # Path to file is displayed as last item, just use that
                         Write-Output (-join("[MOVE] File at ",$file.SubItems[-1].text))
                         Move-Item -path $file.SubItems[-1].text -Destination $ORIG
                     }
 
                 }
             }
+
+            # If from downloads, iterate through items, move the checked ones
             $text_DragNDrop {
                 Write-Host "From DragNDrop"
                 foreach ( $file in $sourcefiles.Items)
                 {
                     if ($file.Checked)
                     {
+                        # Path to file is displayed as last item, just use that
                         Write-Output (-join("[MOVE] File at ",$file.SubItems[-1].text))
                         Move-Item -path $file.SubItems[-1].text -Destination $ORIG
                     }
 
                 }
             }
+
+            # No source, do nothing lol
             $text_nofilesource {
                 Write-Host "No source - THIS SHOULD HAVE BEEN FILTERED OUT BY IF"
             }
+
+            # The fuck
             default {
                 Write-Host -join ("IDK, WTF IS ",$gui_filesource.SelectedItem)
             }
         } # End of Switch Case
 
+
+
         # Before processing each source file, deal with the archives first
         # Just expand all archives
         Get-ChildItem -Path $ORIG -Filter *.zip | Expand-Archive -DestinationPath $ORIG  | Out-Null
 
+
         # Make sure everything saved is named as we need it
         # Convention is to have Projectcode-File_orig.fileext
         Rename-Source $ORIG $PROJECTNAME.Substring(0,9) "_orig"
+
 
     } # End of If we have source files
 
@@ -134,7 +150,7 @@ function Main-ProjectCreation {
     if ($CheckIfCreateExplorerQuickAccess.Checked)  { Create-QuickAccess $BASEFOLDER }
 
     # Create a folder in outlook
-    if ($CheckIfCreateOutlookFolder.Checked)        { Create-OutlookFolder $PROJECTNAME $ns }
+    if ($gui_folderinoutlook.Text -notmatch $text_nooutlook)        { Create-OutlookFolder $PROJECTNAME $ns $gui_folderinoutlook.Text}
 
     # Start trados project creator and fill what we can
     if ($CheckIfTrados.Checked)                     { Start-TradosProject $PROJECTNAME }

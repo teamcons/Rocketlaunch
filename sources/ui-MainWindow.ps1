@@ -267,8 +267,20 @@ $gui_help.Anchor                = "Left, Bottom"
 
 
 # Check if start new trados project
+$script:gui_folderinoutlook                  = New-Object System.Windows.Forms.Combobox
+$gui_folderinoutlook.Location                = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),12)
+$gui_folderinoutlook.Size                    = New-Object System.Drawing.Size(110,25)
+$gui_folderinoutlook.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
+$gui_folderinoutlook.Anchor                  = "Top,Left"
+
+[void] $gui_folderinoutlook.Items.Add("01_QUOTE")
+[void] $gui_folderinoutlook.Items.Add("02_ONGOING JOBS")
+[void] $gui_folderinoutlook.Items.Add($text_nooutlook)      
+$gui_folderinoutlook.SelectedItem = $gui_folderinoutlook.Items[0]
+
+# Check if start new trados project
 $CheckIfTrados                              = New-Object System.Windows.Forms.CheckBox        
-$CheckIfTrados.Location                     = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),13)
+$CheckIfTrados.Location                     = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 250),13)
 $CheckIfTrados.Size                         = New-Object System.Drawing.Size(70,20)
 $CheckIfTrados.Text                         = $text_opentrados
 $CheckIfTrados.Checked                      = $default_opentrados
@@ -296,9 +308,11 @@ $gui_cancelButton.UseVisualStyleBackColor   = $True
 
 
 $bottom_panel.Controls.Add($gui_help)
-$bottom_panel.Controls.Add($CheckIfTrados)
 $bottom_panel.Controls.Add($gui_okButton)
 $bottom_panel.Controls.Add($gui_cancelButton)
+$bottom_panel.Controls.Add($gui_folderinoutlook)
+$bottom_panel.Controls.Add($CheckIfTrados)
+
 
 
 [void]$GUI_Form_MainWindow.Controls.Add($bottom_panel)
