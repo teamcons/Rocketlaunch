@@ -51,7 +51,7 @@ switch -Wildcard ($LANG) {
         [string]$global:text_from_Downloads                 = "Downloads"
         [string]$global:text_columns_File                   = 'Datei'
         [string]$global:text_columns_Directory              = 'Ordner'
-        [string]$global:text_columns_LastWrite              = 'Änderungsdatum'
+        [string]$global:text_columns_LastWrite              = 'Letzte Änderung'
 
         # DRAG N DROP
         [string]$global:text_DragNDrop                      = "Ziehen & Ablegen"
