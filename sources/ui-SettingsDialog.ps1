@@ -182,27 +182,29 @@ $helptitle.Font                                         = New-Object System.Draw
 $getthedoc                                              = New-Object System.Windows.Forms.Button
 $getthedoc.Size                                         = New-Object System.Drawing.Size (150,25)
 $getthedoc.Left                                         = $GUI_Form_MainWindow_leftalign
-$getthedoc.Top                                          = 320
+$getthedoc.Top                                          = 325
 $getthedoc.Text                                         = $text_settings_getthedoc
 #$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
 $getthedoc.Add_Click( {start-process (-join($ScriptPath,"\documentation\Rocketlaunch Manual.pdf")) } )
 
-$askme                                                  = New-Object System.Windows.Forms.Button
+<# $askme                                                  = New-Object System.Windows.Forms.Button
 $askme.Text                                             = $text_settings_askme
 $askme.Size                                             = New-Object System.Drawing.Size (150,25)
 $askme.Left                                             = ($GUI_Form_MainWindow_leftalign + 155)
 $askme.Top                                              = $getthedoc.Top 
-$askme.Add_Click( {start-process "Mailto:stella.menier@gmx.de"})
+$askme.Add_Click( {start-process "Mailto:stella.menier@gmx.de"}) #>
 
-$GUI_More_Close                               = New-Object System.Windows.Forms.Button
-$GUI_More_Close.Text                          = $text_close_settings
-$GUI_More_Close.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign ),140)
-$GUI_More_Close.Size                          = New-Object System.Drawing.Size(120,25)
-$GUI_More_Close.UseVisualStyleBackColor       = $True
-
+$GUI_More_Closebutton                               = New-Object System.Windows.Forms.Button
+$GUI_More_Closebutton.Text                          = $text_settings_close
+$GUI_More_Closebutton.Size                          = New-Object System.Drawing.Size(100,25)
+$GUI_More_Closebutton.Left                          = 215
+$GUI_More_Closebutton.Top                           = 325
+$GUI_More_Closebutton.Add_Click( {$GUI_Form_MoreStuff.Close() } )
 
 #$GUI_Tab_Settings.Controls.Add($helptitle)
 $GUI_Tab_Settings.Controls.Add($getthedoc)
+$GUI_Tab_Settings.Controls.Add($GUI_More_Closebutton)
+
 #$GUI_Tab_Settings.Controls.Add($askme)
 $GUI_Form_MainWindowTabControl.Controls.Add($GUI_Tab_Settings)
 

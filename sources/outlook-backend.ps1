@@ -116,7 +116,10 @@ function Load-RelevantMails
 
 
         # Saying what we parse on the splash
-        $ProgressLabel.Text = -join($text_splash_loading,$mail.Subject,"...")
+        # We dont display the full mail subject, but limit to 40 characters
+        # To avoid some ugly text clipping below the progress bar
+        # If you cant say it in 40 characters, dont say it
+        $ProgressLabel.Text = -join($text_splash_loading,-join($mail.Subject[0..40]),"...")
         Write-Output (-join("[LOAD] Processing: ",$mail.Subject,"..."))
 
         # Deal with it only if SMTP

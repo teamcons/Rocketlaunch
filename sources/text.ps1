@@ -108,7 +108,7 @@ switch -Wildcard ($LANG) {
         [string]$global:text_settings_getthedoc             = "Dokumentation Öffnen"
         [string]$global:text_settings_askme                 = "Mich fragen"
 
-        [string]$global:text_settings_close                 = "Yeah, ok"
+        [string]$global:text_settings_close                 = "Ok!"
 
         #================================
         # ABOUT TAB
