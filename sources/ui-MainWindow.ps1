@@ -269,7 +269,7 @@ $gui_help.Anchor                = "Left, Bottom"
 # What outlook folder to create a project folder in ?
 $script:gui_folderinoutlook                  = New-Object System.Windows.Forms.Combobox
 $gui_folderinoutlook.Location                = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),12)
-$gui_folderinoutlook.Size                    = New-Object System.Drawing.Size(110,25)
+$gui_folderinoutlook.Size                    = New-Object System.Drawing.Size(110,30)
 $gui_folderinoutlook.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 $gui_folderinoutlook.Anchor                  = "Top,Left"
 
