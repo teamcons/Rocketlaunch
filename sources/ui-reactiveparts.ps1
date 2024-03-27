@@ -78,7 +78,7 @@ function Rebuild-Downloads-View
             $sourcefilesItem            = New-Object System.Windows.Forms.ListViewItem($file.Name)
             $sourcefilesItem.Checked    = $false
             [void]$sourcefilesItem.Subitems.Add($file.Directory.Name)
-            [void]$sourcefilesItem.Subitems.Add($file.LastWriteTime.ToString())
+            [void]$sourcefilesItem.Subitems.Add($file.LastWriteTime.ToString("HH:mm"))
             [void]$sourcefilesItem.Subitems.Add($file.FullName)
             [void]$sourcefiles.Items.Add($sourcefilesItem)
         }
@@ -175,7 +175,7 @@ $DragDrop = [System.Windows.Forms.DragEventHandler]{
         #$row[0] = $true
         $row[$text_columns_File] = $file.Name
         $row[$text_columns_Directory] = $file.Directory.Name
-        $row[$text_columns_LastWrite] = $file.LastWriteTime.ToString()
+        $row[$text_columns_LastWrite] = $file.LastWriteTime.ToString("dd.MM, HH:mm")
         $row[$text_columns_Path] = $file.FullName
         $Datatable_FilesDragNDrop.rows.Add($row)
 
@@ -184,12 +184,12 @@ $DragDrop = [System.Windows.Forms.DragEventHandler]{
             {$sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($file.Name)
             $sourcefilesItem.Checked = $true
             [void]$sourcefilesItem.Subitems.Add($file.Directory.Name)
-            [void]$sourcefilesItem.Subitems.Add($file.LastWriteTime.ToString())
+            [void]$sourcefilesItem.Subitems.Add($file.LastWriteTime.ToString("dd.MM, HH:mm"))
             [void]$sourcefilesItem.Subitems.Add($file.FullName)
             [void]$sourcefiles.Items.Add($sourcefilesItem)
         }
 
-
+        
 
 	} # End of processing list
 }
