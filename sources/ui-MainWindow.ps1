@@ -274,7 +274,7 @@ $gui_folderinoutlook.DropDownStyle           = [System.Windows.Forms.ComboBoxSty
 $gui_folderinoutlook.Anchor                  = "Top,Left"
 
 [void] $gui_folderinoutlook.Items.Add("01_QUOTES")
-[void] $gui_folderinoutlook.Items.Add("02_ONGOING JOBS")
+[void] $gui_folderinoutlook.Items.Add("02_CURRENT JOBS")
 [void] $gui_folderinoutlook.Items.Add($text_nooutlook)      
 $gui_folderinoutlook.SelectedItem = $gui_folderinoutlook.Items[0]
 
