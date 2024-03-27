@@ -28,7 +28,7 @@ $newcol = New-Object system.Data.DataColumn $text_columns_Directory,([string]); 
 $newcol = New-Object system.Data.DataColumn $text_columns_LastWrite,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)
 $newcol = New-Object system.Data.DataColumn $text_columns_Path,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)
 
-
+#========================================
 function Rebuild-Outlook-View
 {
     [void]$sourcefiles.Columns.Add($text_columns_Subject,330)
@@ -39,7 +39,7 @@ function Rebuild-Outlook-View
 } # End of Rebuild-Outlook-View
 
 
-
+#========================================
 function Rebuild-DragNDrop-View
 {
     #[void]$sourcefiles.Columns.Add("Checked",100)
@@ -58,34 +58,70 @@ function Rebuild-DragNDrop-View
     }
 } # End of Rebuild-DragNDrop-View
 
+#========================================
+function Rebuild-Downloads-View
+{
+    #[void]$sourcefiles.Columns.Add("Checked",100)
+    [void]$sourcefiles.Columns.Add($text_columns_File,180)
+    [void]$sourcefiles.Columns.Add($text_columns_Directory,100)
+    [void]$sourcefiles.Columns.Add($text_columns_LastWrite,160)
+    [void]$sourcefiles.Columns.Add($text_columns_Path,260)
 
+    # For each file in the downloads folder
+    foreach ($file in (Get-ChildItem $env:USERPROFILE\Downloads  | Sort LastWriteTime -Descending ))
+    {
+        # If its fresh from today
+        if ($file.LastWriteTime.ToString("dd.MM") -match (Get-Date -Format "dd.MM"))
+        {
+            # Add it
+            $sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($file.Name)
+            [void]$sourcefilesItem.Subitems.Add($file.Directory.Name)
+            [void]$sourcefilesItem.Subitems.Add($file.LastWriteTime.ToString())
+            [void]$sourcefilesItem.Subitems.Add($file.FullName)
+            [void]$sourcefiles.Items.Add($sourcefilesItem)
+        }
+    }
+} # End of Rebuild-Downloads-View
+
+
+
+
+
+#========================================
 Function Reset-View{
-    
-Write-Output "[UI] CHANGE DETECTED"
-$sourcefiles.Items.Clear()
-$sourcefiles.Columns.Clear()
 
-switch ($gui_filesource.Text ) {
+    # Empty everything
+    Write-Output "[UI] CHANGE DETECTED"
+    $sourcefiles.Items.Clear()
+    $sourcefiles.Columns.Clear()
 
-    # User selected Outlook
-    $text_from_Outlook {
-                        $labelsourcefiles.Text              = $text_label_from_Outlook
-                        Rebuild-Outlook-View
-                    }
-    # User selected Downloads
-    $text_from_Downloads {
-                        $labelsourcefiles.Text = $text_label_from_Downloads
-                    }
-    # User selected DragNDrop
-    $text_DragNDrop {     
-                        $labelsourcefiles.Text = $text_label_DragNDrop 
-                        Rebuild-DragNDrop-View
-                    }
-    # User selected no
-    $text_nofilesource {
-                        $labelsourcefiles.Text = $text_label_nofilesource                   
-                    }
-}# End of Switch
+    # Rebuild based on what is the source
+    switch ($gui_filesource.Text ) {
+
+        # User selected Outlook
+        $text_from_Outlook {
+                            $labelsourcefiles.Text      = $text_label_from_Outlook
+                            $sourcefiles.Checkboxes     = $false
+                            Rebuild-Outlook-View
+                        }
+        # User selected Downloads
+        $text_from_Downloads {
+                            $labelsourcefiles.Text      = $text_label_from_Downloads
+                            $sourcefiles.Checkboxes     = $true 
+                            Rebuild-Downloads-View
+                        }
+        # User selected DragNDrop
+        $text_DragNDrop {
+                            $labelsourcefiles.Text      = $text_label_DragNDrop
+                            $sourcefiles.Checkboxes     = $true 
+                            Rebuild-DragNDrop-View
+                        }
+        # User selected no
+        $text_nofilesource {
+                            $labelsourcefiles.Text      = $text_label_nofilesource
+                            $sourcefiles.Checkboxes     = $false                
+                        }
+    }# End of Switch
 }
 
 

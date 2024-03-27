@@ -132,7 +132,7 @@ $gui_filesource.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::
 $gui_filesource.Anchor                  = "Top,Right"
 
 [void] $gui_filesource.Items.Add($text_from_Outlook) 
-#[void] $gui_filesource.Items.Add($text_from_Downloads)
+[void] $gui_filesource.Items.Add($text_from_Downloads)
 [void] $gui_filesource.Items.Add($text_DragNDrop)      
 [void] $gui_filesource.Items.Add($text_nofilesource)  
 $gui_filesource.SelectedItem = $default_filesfrom
@@ -148,6 +148,7 @@ $sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
 $sourcefiles.View                   = [System.Windows.Forms.View]::Details
 $sourcefiles.BorderStyle            = "FixedSingle"
 $sourcefiles.AllowDrop              = $true    
+
 
 [void]$sourcefiles.Columns.Add($text_columns_Subject,350)
 [void]$sourcefiles.Columns.Add($text_columns_Sendername,200)

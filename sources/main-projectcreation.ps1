@@ -79,15 +79,27 @@ function Main-ProjectCreation {
             }
             $text_from_Downloads {
                 Write-Host "Saving from Downloads"
+                foreach ( $file in $sourcefiles.Items)
+                {
+                    if ($file.Checked)
+                    {
+                        Write-Output (-join("[MOVE] File at ",$file.SubItems[-1].text))
+                        Move-Item -path $file.SubItems[-1].text -Destination $ORIG
+                    }
+
+                }
             }
             $text_DragNDrop {
                 Write-Host "From DragNDrop"
                 foreach ( $file in $sourcefiles.Items)
+                {
+                    if ($file.Checked)
                     {
                         Write-Output (-join("[MOVE] File at ",$file.SubItems[-1].text))
                         Move-Item -path $file.SubItems[-1].text -Destination $ORIG
-
                     }
+
+                }
             }
             $text_nofilesource {
                 Write-Host "No source - THIS SHOULD HAVE BEEN FILTERED OUT BY IF"

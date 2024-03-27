@@ -48,7 +48,7 @@ switch -Wildcard ($LANG) {
 
         # DOWNLOADS
         [string]$global:text_label_from_Downloads           = "Ansicht: Alle Dateien, die seit heute heruntergeladen wurden"
-        [string]$global:text_from_Downloads                 = "(TODO) Downloads"
+        [string]$global:text_from_Downloads                 = "Downloads"
         [string]$global:text_columns_File                   = 'Datei'
         [string]$global:text_columns_Directory              = 'Ordner'
         [string]$global:text_columns_LastWrite              = 'Änderungsdatum'
