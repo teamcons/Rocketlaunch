@@ -99,7 +99,7 @@ function Get-CleanifiedCodename {
     }
 
     # Remove invalid character, just in case
-    $PROJECTNAME = $PROJECTNAME.Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
+    $PROJECTNAME = $PROJECTNAME.Split([IO.Path]::GetInvalidFileNameChars()) -join ''
     #Write-Output "Removed invalid. Now: $PROJECTNAME"
 
 
@@ -187,7 +187,7 @@ function Create-AllFolders
         if ($folder.Value )
         {
             #Append folder number at start, construct full path
-            [string]$newfolder = -join("0",$foldernumber,"_",$folder.Value)
+            [string]$newfolder = -join("0",$foldernumber,"_",($folder.Value.Split([IO.Path]::GetInvalidFileNameChars()) -join ''))
             [string]$newfolder = -join($BASEFOLDER,'\',$newfolder)
 
             # Say what we do, do it
