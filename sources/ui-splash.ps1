@@ -30,13 +30,13 @@ $UI_Splash_logo.Location                        = New-Object System.Drawing.Poin
 $UI_Splash.Controls.Add($UI_Splash_logo)
 
 $progressLabel                                  = New-Object System.Windows.Forms.Label
-$progressLabel.Location                         = New-Object System.Drawing.Point(10,84)
+$progressLabel.Location                         = New-Object System.Drawing.Point(10,89)
 $progressLabel.Size                             = New-Object System.Drawing.Size(320, 20)
 $progressLabel.Text                             = $text_splash_loadingapp
 $UI_Splash.Controls.Add($progressLabel)
 
 $progressBar                                    = New-Object System.Windows.Forms.ProgressBar
-$progressBar.Location                           = New-Object System.Drawing.Point(10, 104)
+$progressBar.Location                           = New-Object System.Drawing.Point(10, 109)
 $progressBar.Size                               = New-Object System.Drawing.Size(300, 20)
 $progressBar.Value                              = 0
 $UI_Splash.Controls.Add($progressBar)
