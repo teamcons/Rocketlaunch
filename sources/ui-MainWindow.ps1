@@ -27,7 +27,7 @@ Write-Output "[START] Loading UI"
 $script:GUI_Form_MainWindow                     = New-Object System.Windows.Forms.Form
 $GUI_Form_MainWindow.Text                       = -join($APPNAME," - ",$text_aboutsubtitle)
 $GUI_Form_MainWindow.Size                       = New-Object System.Drawing.Size(775,($GUI_Form_MainWindow_verticalalign + 85 ))
-$GUI_Form_MainWindow.MinimumSize                = New-Object System.Drawing.Size(585,172)
+$GUI_Form_MainWindow.MinimumSize                = New-Object System.Drawing.Size(555,172)
 $GUI_Form_MainWindow.StartPosition              = 'CenterScreen'
 $GUI_Form_MainWindow.Topmost                    = $default_ontop
 $GUI_Form_MainWindow.Icon                       = $icon
@@ -75,14 +75,14 @@ $gui_year.Anchor                    = "Left,Top"
 
 $script:gui_code                    = New-Object System.Windows.Forms.Combobox
 $gui_code.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),50)
-$gui_code.Size                      = New-Object System.Drawing.Size(210,30)
+$gui_code.Size                      = New-Object System.Drawing.Size(180,30)
 
 
 
 
 # What outlook folder to create a project folder in ?
 $script:gui_folderinoutlook                  = New-Object System.Windows.Forms.Combobox
-$gui_folderinoutlook.Location                = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 350),50)
+$gui_folderinoutlook.Location                = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 320),50)
 $gui_folderinoutlook.Size                    = New-Object System.Drawing.Size(125,30)
 $gui_folderinoutlook.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 $gui_folderinoutlook.Anchor                  = "Top,Left"
@@ -94,7 +94,7 @@ $gui_folderinoutlook.SelectedItem = $gui_folderinoutlook.Items[1]
 
 # Check if start new trados project
 $CheckIfTrados                              = New-Object System.Windows.Forms.CheckBox        
-$CheckIfTrados.Location                     = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 485),50)
+$CheckIfTrados.Location                     = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 455),50)
 $CheckIfTrados.Size                         = New-Object System.Drawing.Size(70,20)
 $CheckIfTrados.Text                         = $text_opentrados
 $CheckIfTrados.Checked                      = $default_opentrados
