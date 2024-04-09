@@ -27,7 +27,7 @@ Write-Output "[START] Loading UI"
 $script:GUI_Form_MainWindow                     = New-Object System.Windows.Forms.Form
 $GUI_Form_MainWindow.Text                       = -join($APPNAME," - ",$text_aboutsubtitle)
 $GUI_Form_MainWindow.Size                       = New-Object System.Drawing.Size(775,($GUI_Form_MainWindow_verticalalign + 85 ))
-$GUI_Form_MainWindow.MinimumSize                = New-Object System.Drawing.Size(500,170)
+$GUI_Form_MainWindow.MinimumSize                = New-Object System.Drawing.Size(585,172)
 $GUI_Form_MainWindow.StartPosition              = 'CenterScreen'
 $GUI_Form_MainWindow.Topmost                    = $default_ontop
 $GUI_Form_MainWindow.Icon                       = $icon
@@ -80,14 +80,28 @@ $gui_code.Size                      = New-Object System.Drawing.Size(210,30)
 
 
 
-# Topmost according to whether checked or not
-$gui_keepontop                           = New-Object System.Windows.Forms.Checkbox
-#$gui_keepontop.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 365),52)
-$gui_keepontop.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 350),52)
-$gui_keepontop.Size                      = New-Object System.Drawing.Size(160,20)
-$gui_keepontop.Text                      = $text_keepontop
-$gui_keepontop.Checked                   = $GUI_Form_MainWindow.Topmost
-$gui_keepontop.Anchor                    = "Top, Left"
+# What outlook folder to create a project folder in ?
+$script:gui_folderinoutlook                  = New-Object System.Windows.Forms.Combobox
+$gui_folderinoutlook.Location                = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 350),50)
+$gui_folderinoutlook.Size                    = New-Object System.Drawing.Size(125,30)
+$gui_folderinoutlook.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
+$gui_folderinoutlook.Anchor                  = "Top,Left"
+
+[void]$gui_folderinoutlook.Items.Add("01_QUOTES")
+[void]$gui_folderinoutlook.Items.Add("02_CURRENT JOBS")
+[void]$gui_folderinoutlook.Items.Add($text_nooutlook)      
+$gui_folderinoutlook.SelectedItem = $gui_folderinoutlook.Items[1]
+
+# Check if start new trados project
+$CheckIfTrados                              = New-Object System.Windows.Forms.CheckBox        
+$CheckIfTrados.Location                     = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 485),50)
+$CheckIfTrados.Size                         = New-Object System.Drawing.Size(70,20)
+$CheckIfTrados.Text                         = $text_opentrados
+$CheckIfTrados.Checked                      = $default_opentrados
+$CheckIfTrados.Anchor                       = "Top,Left"
+
+$panel_top.Controls.Add($gui_folderinoutlook)
+$panel_top.Controls.Add($CheckIfTrados)
 
 
 
@@ -95,7 +109,7 @@ $panel_top.controls.add($pictureBox)
 $panel_top.Controls.Add($label)
 $panel_top.Controls.Add($gui_year)
 $panel_top.Controls.Add($gui_code)    
-$panel_top.Controls.Add($gui_keepontop)    
+
 
 $GUI_Form_MainWindow.Controls.Add($panel_top)
 $GUI_Form_MainWindow.Add_Shown({$gui_code.Select()})
@@ -265,26 +279,19 @@ $gui_help.Size                  = New-Object System.Drawing.Size(120,25)
 $gui_help.Text                  = $text_help
 $gui_help.Anchor                = "Left, Bottom"
 
+# Topmost according to whether checked or not
+$gui_keepontop                           = New-Object System.Windows.Forms.Checkbox
+#$gui_keepontop.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 365),52)
+$gui_keepontop.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),13)
+$gui_keepontop.Size                      = New-Object System.Drawing.Size(160,20)
+$gui_keepontop.Text                      = $text_keepontop
+$gui_keepontop.Checked                   = $GUI_Form_MainWindow.Topmost
+$gui_keepontop.Anchor                    = "Top, Left"
 
-# What outlook folder to create a project folder in ?
-$script:gui_folderinoutlook                  = New-Object System.Windows.Forms.Combobox
-$gui_folderinoutlook.Location                = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),12)
-$gui_folderinoutlook.Size                    = New-Object System.Drawing.Size(110,30)
-$gui_folderinoutlook.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
-$gui_folderinoutlook.Anchor                  = "Top,Left"
 
-[void]$gui_folderinoutlook.Items.Add("01_QUOTES")
-[void]$gui_folderinoutlook.Items.Add("02_CURRENT JOBS")
-[void]$gui_folderinoutlook.Items.Add($text_nooutlook)      
-$gui_folderinoutlook.SelectedItem = $gui_folderinoutlook.Items[0]
 
-# Check if start new trados project
-$CheckIfTrados                              = New-Object System.Windows.Forms.CheckBox        
-$CheckIfTrados.Location                     = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 250),13)
-$CheckIfTrados.Size                         = New-Object System.Drawing.Size(70,20)
-$CheckIfTrados.Text                         = $text_opentrados
-$CheckIfTrados.Checked                      = $default_opentrados
-$CheckIfTrados.Anchor                       = "Top,Left"
+
+
 
 # This one creates the project
 $gui_okButton                               = New-Object System.Windows.Forms.Button
@@ -307,11 +314,15 @@ $gui_okButton.UseVisualStyleBackColor       = $True
 $gui_cancelButton.UseVisualStyleBackColor   = $True
 
 
+
+
 $bottom_panel.Controls.Add($gui_help)
 $bottom_panel.Controls.Add($gui_okButton)
 $bottom_panel.Controls.Add($gui_cancelButton)
-$bottom_panel.Controls.Add($gui_folderinoutlook)
-$bottom_panel.Controls.Add($CheckIfTrados)
+
+
+$bottom_panel.Controls.Add($gui_keepontop)    
+
 [void]$GUI_Form_MainWindow.Controls.Add($bottom_panel)
 
 
