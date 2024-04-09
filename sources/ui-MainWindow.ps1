@@ -160,7 +160,7 @@ $sourcefiles.FullRowSelect          = $True
 $sourcefiles.HideSelection          = $false
 $sourcefiles.Anchor                 = "Left,Right,Top,Bottom"
 $sourcefiles.View                   = [System.Windows.Forms.View]::Details
-$sourcefiles.BorderStyle            = "FixedSingle"
+$sourcefiles.BorderStyle            = "Fixed3D"
 $sourcefiles.AllowDrop              = $true    
 
 
@@ -221,7 +221,7 @@ $templates.Anchor                           = "Left,Right,Top,Bottom"
 
 
 $templates.GridColor                        = "White"
-$templates.BorderStyle                      = "FixedSingle"
+$templates.BorderStyle                      = "Fixed3D"
 $templates.CellBorderStyle                  = "SingleHorizontal"
 $templates.SelectionMode                    = "FullRowSelect"
 $templates.RowHeadersVisible                = $false
