@@ -170,7 +170,7 @@ $sourcefiles.AllowDrop              = $true
 [void]$sourcefiles.Columns.Add($text_columns_time,100)
 
 
-$panel_sourcefile.Controls.Add($sourcefile_refreshButton)
+#$panel_sourcefile.Controls.Add($sourcefile_refreshButton)
 $panel_sourcefile.Controls.Add($gui_filesource)
 $panel_sourcefile.Controls.Add($labelsourcefiles)
 $panel_sourcefile.Controls.Add($sourcefiles)
