@@ -73,7 +73,7 @@ switch -Wildcard ($LANG) {
         [string]$global:text_usewhichtemplate               = 'Welche Projektvorlage verwenden?' #(Tipp: Namen eines Ordners durch Doppelklicken ändern)'
         [string]$global:text_savetemplatechanges            = "Änderungen speichern"
         [string]$global:text_template_name                  = "Vorlage"
-        [string]$global:text_help                           = "Mehr"
+        [string]$global:text_help                           = "Erweitert"
         [string]$global:text_OK                             = "Los!"
         [string]$global:text_Cancel                         = "Nö"
         [string]$global:text_NotifyText                     = "Projekt ist bereit !"
