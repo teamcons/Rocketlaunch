@@ -38,7 +38,7 @@ switch -Wildcard ($LANG) {
         [string]$global:text_loadfilesfrom                  = 'Ausgangsdatei aus Quelle'
 
         # OUTLOOK
-        [string]$global:text_label_from_Outlook             = "Ansicht: Ausgangsdatei unter alle E-Mails mit Anhang seit dem Vortag, 17:30 Uhr"
+        [string]$global:text_label_from_Outlook             = "Ausgangsdatei unter alle E-Mails mit Anhang seit dem Vortag, 17:30 Uhr"
         [string]$global:text_from_Outlook                   = "Outlook Emails"
         [string]$global:text_columns_Subject                = 'Betreff'
         [string]$global:text_columns_Sendername             = 'Von'
@@ -47,7 +47,7 @@ switch -Wildcard ($LANG) {
         [string]$global:text_sourcefiles_refresh            = 'Erneut laden'
 
         # DOWNLOADS
-        [string]$global:text_label_from_Downloads           = "Ansicht: Alle Dateien, die seit heute heruntergeladen wurden"
+        [string]$global:text_label_from_Downloads           = "Alle Dateien, die seit heute heruntergeladen wurden"
         [string]$global:text_from_Downloads                 = "Downloads"
         [string]$global:text_columns_File                   = 'Datei'
         [string]$global:text_columns_Directory              = 'Ordner'
@@ -56,7 +56,7 @@ switch -Wildcard ($LANG) {
         # DRAG N DROP
         [string]$global:text_DragNDrop                      = "Ziehen & Ablegen"
         [string]$global:text_columns_Path                   = 'Vollständiger Pfad'
-        [string]$global:text_label_DragNDrop                = "Ansicht: Alle in der Rasteransicht abgelegten Dateien"
+        [string]$global:text_label_DragNDrop                = "Alle in der Rasteransicht abgelegten Dateien"
 
 
         # NONE WITH LEFT BEEF
