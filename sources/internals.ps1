@@ -291,7 +291,7 @@ function Create-QuickAccess
 #================================================================
 function Start-TradosProject
 {
-    param([string]$projectname)
+    param([string]$projectname,[string]$projectfiles)
 
 	Write-Output "Starting Trados Studio..."
     # May not be where expected
@@ -304,7 +304,7 @@ function Start-TradosProject
         Set-Location $TRADOSDIR
         }
 
-    .\SDLTradosStudio.exe /createProject /name $projectname
+    .\SDLTradosStudio.exe /createProject /name $projectname /files $projectfiles\*
 
 }
 

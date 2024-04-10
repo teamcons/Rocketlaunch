@@ -153,7 +153,7 @@ function Main-ProjectCreation {
     if ($gui_folderinoutlook.Text -notmatch $text_nooutlook)        { Create-OutlookFolder $PROJECTNAME $ns $gui_folderinoutlook.Text}
 
     # Start trados project creator and fill what we can
-    if ($CheckIfTrados.Checked)                     { Start-TradosProject $PROJECTNAME }
+    if ($CheckIfTrados.Checked)                     { Start-TradosProject $PROJECTNAME $ORIG}
 
     # Open explorer if its wanted
     if ($CheckIfOpenExplorer.Checked)               { start-process explorer "$BASEFOLDER" }
