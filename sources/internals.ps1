@@ -304,7 +304,7 @@ function Start-TradosProject
         Set-Location $TRADOSDIR
         }
 
-    .\SDLTradosStudio.exe /createProject /name $projectname /files $projectfiles\*
+    .\SDLTradosStudio.exe /createProject /name $projectname #/files $projectfiles\*
 
 }
 
