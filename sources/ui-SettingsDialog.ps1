@@ -17,6 +17,9 @@ Defined but not shown, stuff that on second thought is just clutter
 Write-Output "[START] Loading graphical user interface"
 
 [int]$GUI_Form_MainWindow_leftalign = 5
+[int]$buttonalign = 332
+
+
 
 $script:GUI_Form_MoreStuff              = New-Object System.Windows.Forms.Form
 $GUI_Form_MoreStuff.Text                = -join($APPNAME," - ",$text_aboutsubtitle)
@@ -182,7 +185,7 @@ $helptitle.Font                                         = New-Object System.Draw
 $getthedoc                                              = New-Object System.Windows.Forms.Button
 $getthedoc.Size                                         = New-Object System.Drawing.Size (150,25)
 $getthedoc.Left                                         = $GUI_Form_MainWindow_leftalign
-$getthedoc.Top                                          = 330
+$getthedoc.Top                                          = $buttonalign
 $getthedoc.Text                                         = $text_settings_getthedoc
 #$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
 $getthedoc.Add_Click( {start-process (-join($ScriptPath,"\documentation\Rocketlaunch Manual.pdf")) } )
@@ -198,7 +201,7 @@ $GUI_More_Closebutton                               = New-Object System.Windows.
 $GUI_More_Closebutton.Text                          = $text_settings_close
 $GUI_More_Closebutton.Size                          = New-Object System.Drawing.Size(100,25)
 $GUI_More_Closebutton.Left                          = 215
-$GUI_More_Closebutton.Top                           = 330
+$GUI_More_Closebutton.Top                           = $buttonalign
 $GUI_More_Closebutton.Add_Click( {$GUI_Form_MoreStuff.Close() } )
 
 #$GUI_Tab_Settings.Controls.Add($helptitle)
@@ -246,7 +249,7 @@ $aboutsubtitle.Font             = New-Object System.Drawing.Font('Microsoft Sans
 # Label above input
 $abouttext                      = New-Object System.Windows.Forms.TextBox
 $abouttext.Text                 = $text_abouttext
-$abouttext.Size                 = New-Object System.Drawing.Size(255,155)
+$abouttext.Size                 = New-Object System.Drawing.Size(255,162)
 $abouttext.Left                 = ($GUI_Form_MainWindow_leftalign + 25)
 $abouttext.Top                  = 150
 $abouttext.ReadOnly             = $true
@@ -256,7 +259,7 @@ $abouttext.TextAlign            = "Center"
 $abouttext.Font                 = New-Object System.Drawing.Font('Microsoft Sans Serif', 9, [System.Drawing.FontStyle]::Regular)
 
 
-[int]$buttonalign = 330
+
 
 $gotogithub                     = New-Object System.Windows.Forms.Button
 $gotogithub.Size                = New-Object System.Drawing.Size (100,25)
