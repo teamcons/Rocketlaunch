@@ -183,7 +183,7 @@ $helptitle.Text                                         = $text_settings_helptit
 $helptitle.Font                                         = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
 
 $getthedoc                                              = New-Object System.Windows.Forms.Button
-$getthedoc.Size                                         = New-Object System.Drawing.Size (150,25)
+$getthedoc.Size                                         = New-Object System.Drawing.Size (205,25)
 $getthedoc.Left                                         = $GUI_Form_MainWindow_leftalign
 $getthedoc.Top                                          = $buttonalign
 $getthedoc.Text                                         = $text_settings_getthedoc
@@ -249,7 +249,7 @@ $aboutsubtitle.Font             = New-Object System.Drawing.Font('Microsoft Sans
 # Label above input
 $abouttext                      = New-Object System.Windows.Forms.TextBox
 $abouttext.Text                 = $text_abouttext
-$abouttext.Size                 = New-Object System.Drawing.Size(255,162)
+$abouttext.Size                 = New-Object System.Drawing.Size(255,165)
 $abouttext.Left                 = ($GUI_Form_MainWindow_leftalign + 25)
 $abouttext.Top                  = 150
 $abouttext.ReadOnly             = $true
