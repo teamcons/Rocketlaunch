@@ -25,6 +25,8 @@ Write-Output "[START] Loading defaults"
 
 
     [regex]$script:accepted_attachments             = ".(pdf|doc|docx|xls|xlsx|ppt|pptx|xml|idml|csv|txt|zip|sdlppx)"
+    [regex]$script:unsupported                      = ".(jpg|png|gif|webp|jpeg)"
+
 
     # CSV shenanigans
     [string]$script:default_csv_analysis            = "\Rocketlaunch-analysis.csv"

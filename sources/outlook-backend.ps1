@@ -133,7 +133,8 @@ function Load-RelevantMails
             foreach ( $attach in $mail.Attachments ) 
             {
                 #echo $attach.FileName
-                if ($attach.FileName -notmatch ".(jpg|png|gif|webp)" )
+                # Ignore unsupported formats
+                if ($attach.FileName -notmatch $script:unsupported )
                 #if ($attach.FileName -match $accepted_attachments )
                 {
                     echo (-join("MATCH:",$attach.FileName))
