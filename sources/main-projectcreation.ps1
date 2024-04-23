@@ -171,8 +171,21 @@ function Main-ProjectCreation {
 
 
     # If user want to close app after creation
-    if ($CheckIfCloseAfter.Checked)                 { Close-All $GUI_Form_MainWindow}
+    if ($CheckIfCloseAfter.Checked)
+    {
+        Close-All $GUI_Form_MainWindow
+    }
+    else {
 
+        # If not, recalculate/repredict
+        [int]$script:PREDICT_CODE           = (Predict-StructCode)[-1]     
+        [void]$gui_code.Items.Add((-join(($PREDICT_CODE),"_")))
+        [void]$gui_code.Items.Add((-join(($PREDICT_CODE + 1),"_")))
+        [void]$gui_code.Items.Add((-join(($PREDICT_CODE + 2),"_")))
+        [void]$gui_code.Items.Add((-join(($PREDICT_CODE + 3),"_")))
+        [void]$gui_code.Items.Add((-join(($PREDICT_CODE + 4),"_")))
+        $gui_code.SelectedItem              = $gui_code.Items[0]    
+    }
 
 }
 
