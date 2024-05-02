@@ -104,18 +104,18 @@ function Get-CleanifiedCodename {
 
 
     # is it missing zeros
-    if ($PROJECTNAME -match "^[0-9][0-9][0-9]")
+    if ($PROJECTNAME -match "^[0-9][0-9][0-9]\D")
     {
         $PROJECTNAME = -join("0",$PROJECTNAME)
         #Write-Output "Missing first zero. Now: $PROJECTNAME"
 
     }
-    elseif ($PROJECTNAME -match "^[0-9][0-9]")
+    elseif ($PROJECTNAME -match "^[0-9][0-9]\D")
     {
         $PROJECTNAME = -join("00",$PROJECTNAME)
         #Write-Output "Missing two zero. Now: $PROJECTNAME"
     }
-    elseif ($PROJECTNAME -match "^[0-9]")
+    elseif ($PROJECTNAME -match "^[0-9]\D")
     {
         $PROJECTNAME = -join("000",$PROJECTNAME)
         #Write-Output "Missing three zero. Now: $PROJECTNAME"
