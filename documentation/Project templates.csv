@@ -1,9 +1,10 @@
 sep=;
 Minimal;info;orig;;;;;;
 Standard TEP;info;orig;trados;to trans;from trans;to proof;from proof;to client
-TEP;info;orig;trados;to TEP;from TEP;to client;;
+Full TEP;info;orig;trados;to TEP;from TEP;to client;;
+MemoQ;info;orig;MemoQ;to client;;;;
+Phrase;info;orig;to client;;;;
+Phrase-export;info;orig;export;from PE;to client;;;;
 Sworn Translation;info;orig;to client;;;;;
 Nur Proofreading;info;orig;to proof;to client;;;;
-MemoQ;info;orig;MemoQ;to client;;;;
 Astrid Style;info;orig;trados;trans;proof;to client;;
-Pizza Margherita;Tomatensauce;Mozzarella;Basilikum;Oliven÷l;;;;

@@ -128,6 +128,11 @@ function Main-ProjectCreation {
         Get-ChildItem -Path $ORIG -Filter *.zip | Expand-Archive -DestinationPath $ORIG  | Out-Null
 
 
+        # Before processing each source file, move PO and analysis to INFO folder
+        Get-ChildItem -Path $ORIG -Filter *Analys*.csv | Move-Item -Destination $INFO
+        Get-ChildItem -Path $ORIG -Filter CA-*.pdf | Move-Item -Destination $INFO
+
+
         # Make sure everything saved is named as we need it
         # Convention is to have Projectcode-File_orig.fileext
         Rename-Source $ORIG $PROJECTNAME.Substring(0,9) "_orig"
