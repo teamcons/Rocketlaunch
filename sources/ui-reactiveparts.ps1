@@ -227,7 +227,15 @@ $templates = load_template $templates $templatefile
 
 # Select the second one in the list 
 # The first one is way too skeleton
-#$templates.Rows[1].Selected = $true
+
+try {
+    <#Do this if a terminating exception happens#>
+    $templates.Rows[1].Selected = $true    
+}
+catch {
+    $templates.Rows[0].Selected = $true
+}
+
 
 
 
