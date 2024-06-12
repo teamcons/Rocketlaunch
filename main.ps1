@@ -48,14 +48,14 @@ Import-Module $ScriptPath\sources\ui-reactiveparts.ps1
 Import-Module $ScriptPath\sources\outlook-backend.ps1 
 Import-Module $ScriptPath\sources\main-projectcreation.ps1
 
-
 #========================================
 # Interface defined in the ui module
 #Write-Output "[START] Show main window"; $result = $GUI_Form_MainWindow.ShowDialog()
 
 # Hide the splash when main UI is shown
 # You could just hide it the step before, but i like the idea of a smooth transition
-$GUI_Form_MainWindow.Add_Shown({$UI_Splash.Hide()})
+$GUI_Form_MainWindow.Add_Shown({$UI_Splash.Hide() ; $templates.Rows[1].Selected = $true})
+
 
 # Show the main interface. Thats where everything happens.
 # Not ShowDialog because ShowDialog blocks the script and we need appcontext to run

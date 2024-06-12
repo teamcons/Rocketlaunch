@@ -224,21 +224,6 @@ $sourcefiles.Add_Click({
 # Try to load templates, and if that doesnt work, have minimal ones
 $templates = load_template $templates $templatefile
 
-
-# Select the second one in the list 
-# The first one is way too skeleton
-
-try {
-    <#Do this if a terminating exception happens#>
-    $templates.Rows[1].Selected = $true    
-}
-catch {
-    $templates.Rows[0].Selected = $true
-}
-
-
-
-
 #========================================
 # Button clicks
 

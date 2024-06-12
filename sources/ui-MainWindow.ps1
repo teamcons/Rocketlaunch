@@ -213,7 +213,7 @@ $CheckIfSaveTemplateChanges.Checked          = $default_savetemplatechanges
 $CheckIfSaveTemplateChanges.Anchor           = "Top,Right"
 
 
-$templates                                  = New-Object System.Windows.Forms.DataGridView
+$script:templates                                  = New-Object System.Windows.Forms.DataGridView
 $templates.Location                         = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,30)
 $templates.Size                             = New-Object System.Drawing.Size(730,70)
 $templates.AutoResizeColumns(2)
@@ -241,6 +241,9 @@ for ($i=1; $i -lt $templates.ColumnCount ; $i++)
     else            {$templates.Columns[$i].Name = ($i-1)}
     $templates.Columns[$i].Width = 80
 }
+
+
+
 
 #$panel_template.Controls.Add($templates_refreshButton)
 $panel_template.Controls.Add($CheckIfSaveTemplateChanges)

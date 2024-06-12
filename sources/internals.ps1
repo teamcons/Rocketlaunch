@@ -40,6 +40,7 @@ function load_template{
         $GRID.Rows.Add("Minimal","info","orig");
         $GRID.Rows.Add("Standard TEP","info","orig","trados","to trans","from trans","to proof","from proof","to client")
     }
+
     return $GRID
 }
 
