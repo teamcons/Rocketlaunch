@@ -212,7 +212,7 @@ $sourcefiles.Add_DragDrop($DragDrop)
 # Adapting prediction
 # Try to guess client from selected email sendermail
 $sourcefiles.Add_Click({ 
-    if ($gui_filesource -match $text_from_Outlook)
+    if ($gui_filesource.Text -match $text_from_Outlook)
         {Adapt-Prediction}
 })
 

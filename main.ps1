@@ -48,6 +48,11 @@ Import-Module $ScriptPath\sources\ui-reactiveparts.ps1
 Import-Module $ScriptPath\sources\outlook-backend.ps1 
 Import-Module $ScriptPath\sources\main-projectcreation.ps1
 
+
+
+
+
+
 #========================================
 # Interface defined in the ui module
 #Write-Output "[START] Show main window"; $result = $GUI_Form_MainWindow.ShowDialog()

@@ -209,10 +209,31 @@ function Adapt-Prediction {
 #================================================================
 
 
+
+# Load relevant emails.
 Load-RelevantMails
-try     {$sourcefiles.Items[0].Selected = $true ; Adapt-Prediction}
-catch   {Write-Output "No mail with relevant attach !"}
+
+# Try selecting the first item
+try     {
+    $sourcefiles.Items[0].Selected = $true ; Adapt-Prediction}
 
 
+# If it does not work, then there is no relevant email at all
+catch   {
+    Write-Output "No mail with relevant attach !"
+
+    # If there is no email at all, then user may want to switch to loading from downloads
+    # So do it for them
+    $gui_filesource.Text = $text_from_Downloads
+    Reset-View
+
+    # After loading downloads, if there is no item, then user may want to drag and drop instead
+    if ($sourcefiles.Items.Count -eq 0) 
+    {
+        # So switch to exactly that.
+        $gui_filesource.Text = $text_DragNDrop
+        Reset-View
+    }
+}
 
 
