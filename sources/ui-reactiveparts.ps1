@@ -224,6 +224,15 @@ $sourcefiles.Add_Click({
 # Try to load templates, and if that doesnt work, have minimal ones
 $templates = load_template $templates $templatefile
 
+try {
+    $templates.CurrentCell = $templates[0,1]
+}
+catch {
+    <#Do this if a terminating exception happens#>
+    pass
+}
+
+
 #========================================
 # Button clicks
 

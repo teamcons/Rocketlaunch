@@ -54,7 +54,7 @@ Import-Module $ScriptPath\sources\main-projectcreation.ps1
 
 # Hide the splash when main UI is shown
 # You could just hide it the step before, but i like the idea of a smooth transition
-$GUI_Form_MainWindow.Add_Shown({$UI_Splash.Hide() ; $templates.CurrentCell = $templates[0,1] })
+$GUI_Form_MainWindow.Add_Shown({$UI_Splash.Hide() })
 
 # Show the main interface. Thats where everything happens.
 # Not ShowDialog because ShowDialog blocks the script and we need appcontext to run
