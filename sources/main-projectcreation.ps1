@@ -125,8 +125,10 @@ function Main-ProjectCreation {
 
         # Before processing each source file, deal with the archives first
         # Just expand all archives
-        Get-ChildItem -Path $ORIG -Filter *.zip | Expand-Archive -DestinationPath $ORIG  | Out-Null
+        Get-ChildItem -Path $ORIG -Filter *.zip -File | Expand-Archive -DestinationPath $ORIG  | Out-Null
 
+        # And get rid of them bc not useful
+        Get-ChildItem -Path $ORIG -Filter *.zip -File | Remove-Item        
 
         # Before processing each source file, move PO and analysis to INFO folder
         Get-ChildItem -Path $ORIG -Filter *Analys*.csv | Move-Item -Destination $INFO
