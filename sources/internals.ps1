@@ -70,7 +70,7 @@ function Predict-StructCode {
     }
 
     # Go at the latest project directory
-    Set-Location (Get-ChildItem 2024_* -Directory | Select-Object -Last 1)
+    Set-Location (Get-ChildItem -Directory | Where-Object { $_.Name -match "^$YEAR" }  | Select-Object -Last 1)
 
     # Retrieve latest project, clean year and project name out of i
     $PREDICT_CODE                               =  Get-ChildItem -Directory | Where-Object { $_.Name -match "^[0-9][0-9][0-9][0-9]-[0-9]{1,4}_" } | Sort Name | Select-Object -Last 1
