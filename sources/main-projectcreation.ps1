@@ -176,6 +176,11 @@ function Main-ProjectCreation {
     # If user asked to count number of words, and theres actually source files
     if (($CheckIfCountWords.Checked) -and ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource))        { Count-AllWords $ORIG $INFO}
 
+    # Create an archive folder in outloot
+#    if ($gui_folderinoutlook.Checked)        { Create-ArchiveFolder $PROJECTNAME $ns}
+
+
+
 
     # If user want to close app after creation
     if ($CheckIfCloseAfter.Checked)

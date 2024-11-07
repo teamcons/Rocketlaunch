@@ -98,9 +98,17 @@ $CheckIfOpenExplorer.Size                               = New-Object System.Draw
 $CheckIfOpenExplorer.Text                               = $text_settings_OpenExplorer
 $CheckIfOpenExplorer.Checked                            = $default_openexplorer
 
+$CheckIfArchiveFolder                                          = New-Object System.Windows.Forms.CheckBox        
+$CheckIfArchiveFolder.Left                                     = $GUI_Form_MainWindow_leftalign
+$CheckIfArchiveFolder.Top                                      = $CheckIfOpenExplorer.Top + 30
+$CheckIfArchiveFolder.Size                                     = New-Object System.Drawing.Size(400,20)
+$CheckIfArchiveFolder.Text                                     = $text_settings_createarchivefolder
+$CheckIfArchiveFolder.Checked                                  = $default_createarchivefolder
+
+
 $CheckIfNotify                                          = New-Object System.Windows.Forms.CheckBox        
 $CheckIfNotify.Left                                     = $GUI_Form_MainWindow_leftalign
-$CheckIfNotify.Top                                      = $CheckIfOpenExplorer.Top + 30
+$CheckIfNotify.Top                                      = $CheckIfArchiveFolder.Top + 30
 $CheckIfNotify.Size                                     = New-Object System.Drawing.Size(400,20)
 $CheckIfNotify.Text                                     = $text_settings_Notify
 $CheckIfNotify.Checked                                  = $default_notifywhenfinished
@@ -165,6 +173,7 @@ $GUI_Tab_Settings.Controls.Add($CheckIfCreateExplorerQuickAccess)
 $GUI_Tab_Settings.Controls.Add($CheckIfExpandArchives)
 $GUI_Tab_Settings.Controls.Add($CheckIfCountWords)
 $GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)
+$GUI_Tab_Settings.Controls.Add($CheckIfArchiveFolder)   
 $GUI_Tab_Settings.Controls.Add($CheckIfNotify)
 $GUI_Tab_Settings.Controls.Add($CheckIfCloseAfter)
 

@@ -94,6 +94,7 @@ switch -Wildcard ($LANG) {
         [string]$global:text_settings_OutlookFolder         = "Einen Ordner in Outlook erstellen?"
         [string]$global:text_settings_Countwords            = "Wörter zählen ?"
         [string]$global:text_settings_OpenExplorer          = "Neu erstellten Ordner nach Fertigstellung öffnen ?"
+        [string]$global:text_settings_createarchivefolder         = "ArchivenOrdner in Delivered Erstellen wenn nötig ?"
         [string]$global:text_settings_Notify                = "Eine Benachrichtigung senden, wenn fertig ?"
         [string]$global:text_settings_CloseAfter            = "Programm nach der Erstellung verlassen?"
 

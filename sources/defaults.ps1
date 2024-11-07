@@ -46,6 +46,7 @@ Write-Output "[START] Loading defaults"
     [bool]$script:default_createshortcut            = $true
     [bool]$script:default_createoutlookfolder       = $true
     [bool]$script:default_movesourcemail            = $true
+    [bool]$script:default_createarchivefolder       = $true # True whenever can figure out detect
     [bool]$script:default_openexplorer              = $true
     [bool]$script:default_notifywhenfinished        = $true
     [bool]$script:default_closeafter                = $true

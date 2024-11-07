@@ -208,7 +208,46 @@ function Adapt-Prediction {
 
 #================================================================
 
+# Check if theres a "DELIVERED" folder in outlook for the code
+# If not create it
 
+function Create-ArchiveFolder {
+    param(
+        [string]$projectcode,
+        $namespace
+    )
+
+    # Calculate range
+    # "2024-2033_client to 2024-2033"
+    $code = $projectcode.Split("_")[0]
+
+    # "2024-2033" to "2024-20"
+    $range = $code -replace ".{2}$" 
+
+    # "2024-20" to "2024-2000 to 2024-2099"
+    $range = $range + "00 to " + $range + "99"
+
+    $yearfolder = "XTRF-" + $code.Split("-")[0]
+    
+    try {
+        $namespace.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("03_DELIVERED JOBS").Folders.Item($yearfolder).Folders.Item($range)
+    }
+    catch {
+        echo "[CREATE] Archive top folder"
+        $namespace.Folders.Item(1).Folders.Item("Posteingang").Folders.Item("03_DELIVERED JOBS").Folders.Item($yearfolder).Folders.Add($range)
+    }
+
+
+
+}
+
+
+
+
+
+
+
+#================================================================
 
 # Load relevant emails.
 Load-RelevantMails
