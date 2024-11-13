@@ -23,6 +23,8 @@ Add-Type -AssemblyName PresentationCore,PresentationFramework
 [void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
 
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy ByPass -F
+
 # Load assets
 $script:icon                = New-Object system.drawing.icon $ScriptPath\assets\icon.ico
 $script:templatefile        = -join($ScriptPath,"\documentation\Project templates.csv")
