@@ -12,6 +12,7 @@ else
     {$global:ScriptPath = Split-Path -Parent -Path ([Environment]::GetCommandLineArgs()[0]) 
     if (!$ScriptPath){ $global:ScriptPath = "." } }
 
+$global:MainDir = $ScriptPath
 
 #========================================
 # Get all resources
@@ -22,7 +23,7 @@ Add-Type -AssemblyName System.Drawing
 Add-Type -AssemblyName PresentationCore,PresentationFramework
 [void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
-
+# Ensure companion scripts run
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy ByPass -F
 
 # Load assets
@@ -33,17 +34,17 @@ $script:image               = [system.drawing.image]::FromFile((get-item $Script
 # Load everything we need
 Import-Module $ScriptPath\sources\text.ps1
 Import-Module $ScriptPath\sources\defaults.ps1
-Import-Module $ScriptPath\sources\ui-splash.ps1
+Import-Module $ScriptPath\sources\ui\splash.ps1
 
 # We have enough to display the splash
 $UI_Splash.Show()
 $UI_Splash.Activate()
 
 Import-Module $ScriptPath\sources\internals.ps1
-Import-Module $ScriptPath\sources\ui-MainWindow.ps1 
-Import-Module $ScriptPath\sources\ui-SettingsDialog.ps1 
-Import-Module $ScriptPath\sources\ui-themes.ps1 
-Import-Module $ScriptPath\sources\ui-reactiveparts.ps1 
+Import-Module $ScriptPath\sources\ui\mainWindow.ps1 
+Import-Module $ScriptPath\sources\ui\settingsDialog.ps1 
+Import-Module $ScriptPath\sources\ui\themes.ps1 
+Import-Module $ScriptPath\sources\ui\reactiveparts.ps1 
 
 # Outlook Backend is the main intended one for splash
 # Because its so fcking slo
