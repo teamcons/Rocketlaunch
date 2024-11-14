@@ -4,12 +4,15 @@
         #===================================================
 
 
-
 $GUI_Tab_SoftwareSettings = New-object System.Windows.Forms.Tabpage
 $GUI_Tab_SoftwareSettings.UseVisualStyleBackColor = $True 
 $GUI_Tab_SoftwareSettings.Name = "About" 
 $GUI_Tab_SoftwareSettings.Text = $text.Softwaresettings.tab
 
+
+
+
+################################
 # CHANGE LANGUAGE
 $label_select_lang                     = New-Object System.Windows.Forms.Label
 $label_select_lang.Text                = $text.Softwaresettings.lang
@@ -28,13 +31,22 @@ $combobox_select_lang.DropDownStyle           = [System.Windows.Forms.ComboBoxSt
 
 Foreach ($language in (Get-ChildItem -Directory $MainDir/localization))
 {
-[void]$combobox_select_lang.Items.Add($language.Name)
+        [void]$combobox_select_lang.Items.Add($language.Name)
 }
 
 # Then default
 $combobox_select_lang.SelectedItem = (Get-WinUserLanguageList).LanguageTag
 
 
+
+# React to new select
+$combobox_select_lang.Add_SelectedIndexChanged({
+        $script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localization -UICulture $combobox_select_lang.SelectedItem
+})
+    
+
+
+################################################################
 # CHANGE LANGUAGE
 $label_select_theme                             = New-Object System.Windows.Forms.Label
 $label_select_theme.Text                        = $text.Softwaresettings.theme
@@ -56,6 +68,8 @@ $combobox_select_theme.SelectedItem = $combobox_select_theme.Items[0]
 
 
 
+$combobox_select_theme.Add_SelectedIndexChanged({Change-Theme $combobox_select_theme.SelectedItem})
+    
 
 $GUI_Tab_SoftwareSettings.Controls.Add($label_select_lang)
 $GUI_Tab_SoftwareSettings.Controls.Add($combobox_select_lang)

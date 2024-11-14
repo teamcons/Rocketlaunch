@@ -13,31 +13,7 @@ Defined but not shown, stuff that on second thought is just clutter
 
 
 
-#========================================
-Write-Output "[START] Loading graphical user interface"
 
-[int]$GUI_Form_MainWindow_leftalign = 5
-[int]$buttonalign = 332
-
-
-
-$script:GUI_Form_MoreStuff              = New-Object System.Windows.Forms.Form
-$GUI_Form_MoreStuff.Text                = -join($APPNAME," - ",$text.About.tagline)
-$GUI_Form_MoreStuff.Icon                = $icon
-$GUI_Form_MoreStuff.StartPosition       = "CenterScreen"
-$GUI_Form_MoreStuff.Topmost             = $gui_keepontop.Checked
-$GUI_Form_MoreStuff.Size                = "340,420"
-$GUI_Form_MoreStuff.FormBorderStyle     = "FixedSingle"
-$GUI_Form_MoreStuff.MaximizeBox         = $false
-
-# Allow input to window for TextBoxes, etc
-#[System.Windows.Forms.Integration.ElementHost]::EnableModelessKeyboardInterop($GUI_Form_MoreStuff)
-
-$GUI_Form_MainWindowTabControl                         = New-object System.Windows.Forms.TabControl 
-$GUI_Form_MainWindowTabControl.Dock = "Fill" 
-$GUI_Form_MoreStuff.Controls.Add($GUI_Form_MainWindowTabControl)
-
-####################################
 
 $GUI_Tab_Settings = New-object System.Windows.Forms.Tabpage
 $GUI_Tab_Settings.Name = "Advanced" 
@@ -81,13 +57,6 @@ $CheckIfExpandArchives.Size           = New-Object System.Drawing.Size(400,20)
 $CheckIfExpandArchives.Text           = $text_settings_ExpandArchives
 $CheckIfExpandArchives.Checked        = $default_expandarchives
  #>
-
-<# $CheckIfCountWords                                      = New-Object System.Windows.Forms.CheckBox        
-$CheckIfCountWords.Left                                 = $GUI_Form_MainWindow_leftalign
-$CheckIfCountWords.Top                                  = $CheckIfCreateExplorerQuickAccess.Top + 30
-$CheckIfCountWords.Size                                 = New-Object System.Drawing.Size(400,20)
-$CheckIfCountWords.Text                                 = $text_settings_Countwords
-$CheckIfCountWords.Checked                              = $default_countwords #>
 
 
 $CheckIfOpenExplorer                                    = New-Object System.Windows.Forms.CheckBox        
@@ -136,7 +105,7 @@ $GUI_Tab_Settings.Controls.Add($CheckIfCloseAfter)
 
 
 
-#####################
+################################
 $helptitle                                              = New-Object System.Windows.Forms.Label
 $helptitle.Size                                         = New-Object System.Drawing.Size(280,20)
 $helptitle.Left                                         = $GUI_Form_MainWindow_leftalign

@@ -135,12 +135,6 @@ Function Reset-View{
 
 
 
-
-
-#================================
-# When user needs to reload the view
-$sourcefile_refreshButton.Add_Click({Reset-View})
-
 #================================
 # When user select a different source
 $gui_filesource.Add_SelectedIndexChanged({Reset-View})
@@ -245,4 +239,3 @@ $gui_cancelButton.add_click({Close-All $GUI_Form_MainWindow})
 
 
 
-$combobox_select_theme.Add_SelectedIndexChanged({Change-Theme $combobox_select_theme.SelectedItem})
