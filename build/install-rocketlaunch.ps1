@@ -29,6 +29,8 @@ $NEWPLACE = $NEWPLACE.FullName
 Copy-Item -Path $ScriptPath\sources -Destination $NEWPLACE -Force -Recurse
 Copy-Item -Path $ScriptPath\assets -Destination $NEWPLACE -Force -Recurse
 Copy-Item -Path $ScriptPath\documentation -Destination $NEWPLACE -Force -Recurse
+Copy-Item -Path $ScriptPath\localization -Destination $NEWPLACE -Force -Recurse
+Copy-Item -Path $ScriptPath\data -Destination $NEWPLACE -Force -Recurse
 
 Copy-Item -Path $ScriptPath\LICENSE -Destination $NEWPLACE\documentation -Force
 Copy-Item -Path $ScriptPath\README.md -Destination $NEWPLACE\documentation -Force

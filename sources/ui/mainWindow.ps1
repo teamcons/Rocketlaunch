@@ -301,7 +301,7 @@ $gui_okButton.Anchor                        = "Bottom,Right"
 $gui_cancelButton                           = New-Object System.Windows.Forms.Button
 $gui_cancelButton.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 610),10)
 $gui_cancelButton.Size                      = New-Object System.Drawing.Size(120,25)
-$gui_cancelButton.Text                      = $text_Cancel
+$gui_cancelButton.Text                      = $text.MainUI.Cancel
 $gui_cancelButton.Anchor                    = "Bottom, Right"
 
 

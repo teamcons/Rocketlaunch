@@ -86,8 +86,16 @@ Settings = @{
     getthedoc             = "Dokumentation Öffnen"
     askme                 = "Mich fragen"
     close                 = "Ok!"
-
 }
+
+
+Softwaresettings = @{
+    tab                       = "Software settings" 
+    lang                       = "Sprache Ändern" 
+    theme                       = "Theme Ändern" 
+}
+
+
 
 About = @{
     tab                       = "About!" 

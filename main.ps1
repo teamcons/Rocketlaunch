@@ -27,36 +27,30 @@ Add-Type -AssemblyName PresentationCore,PresentationFramework
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy ByPass -F
 
 # Load assets
-$script:icon                = New-Object system.drawing.icon $ScriptPath\assets\icon.ico
+$script:icon                = New-Object system.drawing.icon $MainDir\assets\icon.ico
 $script:templatefile        = -join($ScriptPath,"\data\Project templates.csv")
-$script:image               = [system.drawing.image]::FromFile((get-item $ScriptPath\assets\icon-mini.ico))
-
-# Load everything we need
-Import-Module $ScriptPath\sources\text.ps1
-
+$script:image               = [system.drawing.image]::FromFile((get-item $MainDir\assets\icon-mini.ico))
 
 # Get localization
-$script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localizations
+$script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localization
 
-
-
-Import-Module $ScriptPath\sources\defaults.ps1
-Import-Module $ScriptPath\sources\ui\splash.ps1
+Import-Module $MainDir\sources\defaults.ps1
+Import-Module $MainDir\sources\ui\splash.ps1
 
 # We have enough to display the splash
 $UI_Splash.Show()
 $UI_Splash.Activate()
 
-Import-Module $ScriptPath\sources\internals.ps1
-Import-Module $ScriptPath\sources\ui\mainWindow.ps1 
-Import-Module $ScriptPath\sources\ui\settingsDialog.ps1 
-Import-Module $ScriptPath\sources\ui\themes.ps1 
-Import-Module $ScriptPath\sources\ui\reactiveparts.ps1 
+Import-Module $MainDir\sources\internals.ps1
+Import-Module $MainDir\sources\ui\mainWindow.ps1 
+Import-Module $MainDir\sources\ui\settingsDialog.ps1 
+Import-Module $MainDir\sources\ui\themes.ps1 
+Import-Module $MainDir\sources\ui\reactiveparts.ps1 
 
 # Outlook Backend is the main intended one for splash
 # Because its so fcking slo
-Import-Module $ScriptPath\sources\outlook-backend.ps1 
-Import-Module $ScriptPath\sources\main-projectcreation.ps1
+Import-Module $MainDir\sources\outlook-backend.ps1 
+Import-Module $MainDir\sources\main-projectcreation.ps1
 
 
 

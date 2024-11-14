@@ -263,14 +263,14 @@ catch   {
 
     # If there is no email at all, then user may want to switch to loading from downloads
     # So do it for them
-    $gui_filesource.Text = $text_from_Downloads
+    $gui_filesource.Text = $text.Sourceview.from_Downloads
     Reset-View
 
     # After loading downloads, if there is no item, then user may want to drag and drop instead
     if ($sourcefiles.Items.Count -eq 0) 
     {
         # So switch to exactly that.
-        $gui_filesource.Text = $text_DragNDrop
+        $gui_filesource.Text = $text.Sourceview.DragNDrop
         Reset-View
     }
 }

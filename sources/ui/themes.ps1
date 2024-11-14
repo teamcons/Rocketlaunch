@@ -126,7 +126,7 @@ function Change-Theme {
             $panel_top.BackgroundImage.Dispose()
 
             $panel_sourcefile.BackColor             = "Aqua"
-            $Split.BackColor                        = "Green"
+            $Split.BackColor                        = "Orange"
             $templates.Backgroundcolor                    = "White"
             $panel_template.BackColor               = "Aqua" #'Red'
 

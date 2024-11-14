@@ -172,11 +172,11 @@ $GUI_Form_MainWindowTabControl.Controls.Add($GUI_Tab_Settings)
 $GUI_Tab_SoftwareSettings = New-object System.Windows.Forms.Tabpage
 $GUI_Tab_SoftwareSettings.UseVisualStyleBackColor = $True 
 $GUI_Tab_SoftwareSettings.Name = "About" 
-$GUI_Tab_SoftwareSettings.Text = $text_abouttab
+$GUI_Tab_SoftwareSettings.Text = $text.Softwaresettings.tab
 
 # CHANGE LANGUAGE
 $label_select_lang                     = New-Object System.Windows.Forms.Label
-$label_select_lang.Text                = $text_label_select_lang
+$label_select_lang.Text                = $text.Softwaresettings.lang
 $label_select_lang.Top                 = 15
 $label_select_lang.Left                = $GUI_Form_MainWindow_leftalign
 $label_select_lang.Size                = New-Object System.Drawing.Size(200,20)
@@ -190,7 +190,7 @@ $combobox_select_lang.DropDownStyle           = [System.Windows.Forms.ComboBoxSt
 
 # For i in get-childiten localizations
 
-Foreach ($language in (Get-ChildItem -Directory $MainDir/localizations))
+Foreach ($language in (Get-ChildItem -Directory $MainDir/localization))
 {
 [void]$combobox_select_lang.Items.Add($language.Name)
 }
@@ -201,7 +201,7 @@ $combobox_select_lang.SelectedItem = (Get-WinUserLanguageList).LanguageTag
 
 # CHANGE LANGUAGE
 $label_select_theme                             = New-Object System.Windows.Forms.Label
-$label_select_theme.Text                        = $text_label_select_theme
+$label_select_theme.Text                        = $text.Softwaresettings.theme
 $label_select_theme.Top                         = $label_select_lang.Top + 35
 $label_select_theme.Left                        = $GUI_Form_MainWindow_leftalign
 $label_select_theme.Size                        = New-Object System.Drawing.Size(200,20)
@@ -213,7 +213,7 @@ $combobox_select_theme.Size                     = New-Object System.Drawing.Size
 $combobox_select_theme.DropDownStyle            = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 [void]$combobox_select_theme.Items.Add("Modern Color")
 [void]$combobox_select_theme.Items.Add("Boring")
-[void]$combobox_select_theme.Items.Add("Brushed Metal")
+#[void]$combobox_select_theme.Items.Add("Brushed Metal")
 [void]$combobox_select_theme.Items.Add("Windows 98")
 [void]$combobox_select_theme.Items.Add("Princess Eyebleed")
 $combobox_select_theme.SelectedItem = $combobox_select_theme.Items[0]
@@ -256,7 +256,7 @@ $abouttitle.Font                = New-Object System.Drawing.Font('Microsoft Sans
 
 # Label above input
 $aboutsubtitle                  = New-Object System.Windows.Forms.Label
-$aboutsubtitle.Text             = $text_aboutsubtitle
+$aboutsubtitle.Text             = $text.About.tagline
 $aboutsubtitle.Size             = New-Object System.Drawing.Size(360,20)
 $aboutsubtitle.Left             = ($GUI_Form_MainWindow_leftalign + 40)
 $aboutsubtitle.Top              = 120
@@ -264,7 +264,7 @@ $aboutsubtitle.Font             = New-Object System.Drawing.Font('Microsoft Sans
 
 # Label above input
 $abouttext                      = New-Object System.Windows.Forms.TextBox
-$abouttext.Text                 = $text_abouttext
+$abouttext.Text                 = $text.About.abouttext
 $abouttext.Size                 = New-Object System.Drawing.Size(255,165)
 $abouttext.Left                 = ($GUI_Form_MainWindow_leftalign + 25)
 $abouttext.Top                  = 150

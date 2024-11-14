@@ -57,7 +57,7 @@ function Rebuild-DragNDrop-View
 
     foreach ($row in $Datatable_FilesDragNDrop.rows)
     {
-        $sourcefilesItem            = New-Object System.Windows.Forms.ListViewItem($row[$text_columns_File])
+        $sourcefilesItem            = New-Object System.Windows.Forms.ListViewItem($row[$text.Sourceview.columns_File])
         $sourcefilesItem.Checked    = $true
         [void]$sourcefilesItem.Subitems.Add($row[$text.Sourceview.columns_Directory])
         [void]$sourcefilesItem.Subitems.Add($row[$text.Sourceview.columns_LastWrite])
@@ -108,25 +108,25 @@ Function Reset-View{
     switch ($gui_filesource.Text ) {
 
         # User selected Outlook
-        $text_from_Outlook {
+        $text.Sourceview.from_Outlook {
                             $labelsourcefiles.Text      = $text.Sourceview.label_from_Outlook
                             $sourcefiles.Checkboxes     = $false
                             Rebuild-Outlook-View
                         }
         # User selected Downloads
-        $text_from_Downloads {
+        $text.Sourceview.from_Downloads {
                             $labelsourcefiles.Text      = $text.Sourceview.label_from_Downloads
                             $sourcefiles.Checkboxes     = $true 
                             Rebuild-Downloads-View
                         }
         # User selected DragNDrop
-        $text_DragNDrop {
+        $text.Sourceview.DragNDrop {
                             $labelsourcefiles.Text      = $text.Sourceview.label_DragNDrop
                             $sourcefiles.Checkboxes     = $true 
                             Rebuild-DragNDrop-View
                         }
         # User selected no
-        $text_nofilesource {
+        $text.Sourceview.nofilesource {
                             $labelsourcefiles.Text      = $text.Sourceview.label_nofilesource
                             $sourcefiles.Checkboxes     = $false                
                         }
@@ -179,7 +179,7 @@ $DragDrop = [System.Windows.Forms.DragEventHandler]{
         $Datatable_FilesDragNDrop.rows.Add($row)
 
         # Correct view, add new item
-        if ($gui_filesource.Text -match $text_DragNDrop)
+        if ($gui_filesource.Text -match $text.Sourceview.DragNDrop)
             {$sourcefilesItem = New-Object System.Windows.Forms.ListViewItem($file.Name)
             $sourcefilesItem.Checked = $true
             [void]$sourcefilesItem.Subitems.Add($file.Directory.Name)
