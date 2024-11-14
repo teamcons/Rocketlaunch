@@ -73,7 +73,7 @@ function Predict-StructCode {
     Set-Location (Get-ChildItem -Directory | Where-Object { $_.Name -match "^$YEAR" }  | Select-Object -Last 1)
 
     # Retrieve latest project, clean year and project name out of i
-    $PREDICT_CODE                               =  Get-ChildItem -Directory | Where-Object { $_.Name -match "^[0-9][0-9][0-9][0-9]-[0-9]{1,4}_" } | Sort Name | Select-Object -Last 1
+    $PREDICT_CODE                               =  Get-ChildItem -Directory | Where-Object { $_.Name -match "^[0-9][0-9][0-9][0-9]-[0-9]{1,4}_" } | Sort-Object Name | Select-Object -Last 1
     $PREDICT_CODE                               =  $PREDICT_CODE.Name.Split("-")[1].Split("_")[0]
     [int]$PREDICT_CODE                          =  [int]$PREDICT_CODE + 1
     [bool]$script:CODE_PREDICTED                = $true
@@ -377,9 +377,7 @@ function Close-All {
 
 
 
-
-
-
+<# 
 #================================================================
 # Count all
 function Count-AllWords {
@@ -412,25 +410,6 @@ function Count-AllWords {
             $filecontent.Close()
             
         }
-<#         elseif ($file.Extension -match ".xls[|x]" )
-        {
-
-            #foreach ($cell in $b.ActiveSheet.Rows[3].Cells) { if ($cell.Text -ne "") {$cell.Text} }
-
-            # OPEN IN EXCEL, PROCESS COUNT
-            $filecontent = $excel.Workbooks.Open($file.FullName)
-            [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Excel.WdStatistic]::wdStatisticWords)
-            #CLOSE FILE
-            $filecontent.Close()
-        }
-        elseif ($file.Extension -match ".ppt[|x]" )
-        {
-            # OPEN IN POWRPOINT, PROCESS COUNT
-            $filecontent = $powerpoint.Documents.Open($file.FullName)
-            [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Powerpoint.WdStatistic]::wdStatisticWords)
-            #CLOSE FILE
-            $filecontent.Close()
-        } #>
         elseif ($file.Extension -match ".pdf" )
         {
             # COUNT WORDS IN PDF FILE
@@ -469,4 +448,4 @@ function Count-AllWords {
         Select-Object -Skip 1 |
         Out-GridView –Title "Rocketlaunch"
 
-} # End of Count-Allwords
+} # End of Count-Allwords #>

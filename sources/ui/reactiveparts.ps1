@@ -23,7 +23,6 @@ Wire up event functions, onclick stuff, and everything that happens while intera
 $gui_code.SelectedItem              = $gui_code.Items[0]
 
 
-
 #========================================
 # Change label if file source has changed
 # rebuild everything depending on what selection has been
@@ -145,14 +144,6 @@ $sourcefile_refreshButton.Add_Click({Reset-View})
 #================================
 # When user select a different source
 $gui_filesource.Add_SelectedIndexChanged({Reset-View})
-
-
-
-
-
-
-
-
 
 
 #================================
