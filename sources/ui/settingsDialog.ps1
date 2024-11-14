@@ -123,11 +123,61 @@ $CheckIfCloseAfter.Checked                              = $default_closeafter
 
 
 
+#$GUI_Tab_Settings.Controls.Add($moresettingstitle)
+$GUI_Tab_Settings.Controls.Add($moresettingsnota)
+#$GUI_Tab_Settings.Controls.Add($GUI_More_Close)
+$GUI_Tab_Settings.Controls.Add($CheckIfCreateExplorerQuickAccess)
+#$GUI_Tab_Settings.Controls.Add($CheckIfCreateOutlookFolder)
+$GUI_Tab_Settings.Controls.Add($CheckIfExpandArchives)
+$GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)
+$GUI_Tab_Settings.Controls.Add($CheckIfArchiveFolder)   
+$GUI_Tab_Settings.Controls.Add($CheckIfNotify)
+$GUI_Tab_Settings.Controls.Add($CheckIfCloseAfter)
 
-<# # CHANGE LANGUAGE
+
+
+#####################
+$helptitle                                              = New-Object System.Windows.Forms.Label
+$helptitle.Size                                         = New-Object System.Drawing.Size(280,20)
+$helptitle.Left                                         = $GUI_Form_MainWindow_leftalign
+$helptitle.Top                                          = 280
+$helptitle.Text                                         = $text_settings_helptitle
+$helptitle.Font                                         = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
+
+$getthedoc                                              = New-Object System.Windows.Forms.Button
+$getthedoc.Size                                         = New-Object System.Drawing.Size (205,25)
+$getthedoc.Left                                         = $GUI_Form_MainWindow_leftalign
+$getthedoc.Top                                          = $buttonalign
+$getthedoc.Text                                         = $text_settings_getthedoc
+#$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
+$getthedoc.Add_Click( {start-process (-join($ScriptPath,"\documentation\Rocketlaunch Manual.pdf")) } )
+
+
+$GUI_More_Closebutton                               = New-Object System.Windows.Forms.Button
+$GUI_More_Closebutton.Text                          = $text_settings_close
+$GUI_More_Closebutton.Size                          = New-Object System.Drawing.Size(100,25)
+$GUI_More_Closebutton.Left                          = 215
+$GUI_More_Closebutton.Top                           = $buttonalign
+$GUI_More_Closebutton.Add_Click( {$GUI_Form_MoreStuff.Close() } )
+
+#$GUI_Tab_Settings.Controls.Add($helptitle)
+$GUI_Tab_Settings.Controls.Add($getthedoc)
+$GUI_Tab_Settings.Controls.Add($GUI_More_Closebutton)
+
+#$GUI_Tab_Settings.Controls.Add($askme)
+$GUI_Form_MainWindowTabControl.Controls.Add($GUI_Tab_Settings)
+
+###############################################################################################
+
+$GUI_Tab_SoftwareSettings = New-object System.Windows.Forms.Tabpage
+$GUI_Tab_SoftwareSettings.UseVisualStyleBackColor = $True 
+$GUI_Tab_SoftwareSettings.Name = "About" 
+$GUI_Tab_SoftwareSettings.Text = $text_abouttab
+
+# CHANGE LANGUAGE
 $label_select_lang                     = New-Object System.Windows.Forms.Label
 $label_select_lang.Text                = $text_label_select_lang
-$label_select_lang.Top                 = $CheckIfCloseAfter.Top + 35
+$label_select_lang.Top                 = 35
 $label_select_lang.Left                = $GUI_Form_MainWindow_leftalign
 $label_select_lang.Size                = New-Object System.Drawing.Size(200,20)
 
@@ -137,10 +187,14 @@ $combobox_select_lang.Left               = ($GUI_Form_MainWindow_leftalign + 200
 $combobox_select_lang.Size                = New-Object System.Drawing.Size(100,20)
 $combobox_select_lang.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 
+
+# For i in get-childiten localizations
 [void]$combobox_select_lang.Items.Add($text_lang_german)
 [void]$combobox_select_lang.Items.Add($text_lang_french)
 [void]$combobox_select_lang.Items.Add($text_lang_spanish)
-$combobox_select_lang.SelectedItem = $combobox_select_lang.Items[0] #>
+
+# Then default
+$combobox_select_lang.SelectedItem = $combobox_select_lang.Items[0]
 
 
 # CHANGE LANGUAGE
@@ -163,63 +217,13 @@ $combobox_select_theme.DropDownStyle            = [System.Windows.Forms.ComboBox
 $combobox_select_theme.SelectedItem = $combobox_select_theme.Items[0]
 
 
+$GUI_Tab_SoftwareSettings.Controls.Add($label_select_lang)
+$GUI_Tab_SoftwareSettings.Controls.Add($combobox_select_lang)
+$GUI_Tab_SoftwareSettings.Controls.Add($label_select_theme)
+$GUI_Tab_SoftwareSettings.Controls.Add($combobox_select_theme)
+$GUI_Tab_SoftwareSettings.Controls.Add($GUI_More_Closebutton)
 
-
-#$GUI_Tab_Settings.Controls.Add($moresettingstitle)
-$GUI_Tab_Settings.Controls.Add($moresettingsnota)
-#$GUI_Tab_Settings.Controls.Add($GUI_More_Close)
-$GUI_Tab_Settings.Controls.Add($CheckIfCreateExplorerQuickAccess)
-#$GUI_Tab_Settings.Controls.Add($CheckIfCreateOutlookFolder)
-$GUI_Tab_Settings.Controls.Add($CheckIfExpandArchives)
-$GUI_Tab_Settings.Controls.Add($CheckIfCountWords)
-$GUI_Tab_Settings.Controls.Add($CheckIfOpenExplorer)
-$GUI_Tab_Settings.Controls.Add($CheckIfArchiveFolder)   
-$GUI_Tab_Settings.Controls.Add($CheckIfNotify)
-$GUI_Tab_Settings.Controls.Add($CheckIfCloseAfter)
-
-#$GUI_Tab_Settings.Controls.Add($label_select_lang)
-#$GUI_Tab_Settings.Controls.Add($combobox_select_lang)
-#$GUI_Tab_Settings.Controls.Add($label_select_theme)
-#$GUI_Tab_Settings.Controls.Add($combobox_select_theme)
-
-
-#####################
-$helptitle                                              = New-Object System.Windows.Forms.Label
-$helptitle.Size                                         = New-Object System.Drawing.Size(280,20)
-$helptitle.Left                                         = $GUI_Form_MainWindow_leftalign
-$helptitle.Top                                          = 280
-$helptitle.Text                                         = $text_settings_helptitle
-$helptitle.Font                                         = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
-
-$getthedoc                                              = New-Object System.Windows.Forms.Button
-$getthedoc.Size                                         = New-Object System.Drawing.Size (205,25)
-$getthedoc.Left                                         = $GUI_Form_MainWindow_leftalign
-$getthedoc.Top                                          = $buttonalign
-$getthedoc.Text                                         = $text_settings_getthedoc
-#$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
-$getthedoc.Add_Click( {start-process (-join($ScriptPath,"\documentation\Rocketlaunch Manual.pdf")) } )
-
-<# $askme                                                  = New-Object System.Windows.Forms.Button
-$askme.Text                                             = $text_settings_askme
-$askme.Size                                             = New-Object System.Drawing.Size (150,25)
-$askme.Left                                             = ($GUI_Form_MainWindow_leftalign + 155)
-$askme.Top                                              = $getthedoc.Top 
-$askme.Add_Click( {start-process "Mailto:stella.menier@gmx.de"}) #>
-
-$GUI_More_Closebutton                               = New-Object System.Windows.Forms.Button
-$GUI_More_Closebutton.Text                          = $text_settings_close
-$GUI_More_Closebutton.Size                          = New-Object System.Drawing.Size(100,25)
-$GUI_More_Closebutton.Left                          = 215
-$GUI_More_Closebutton.Top                           = $buttonalign
-$GUI_More_Closebutton.Add_Click( {$GUI_Form_MoreStuff.Close() } )
-
-#$GUI_Tab_Settings.Controls.Add($helptitle)
-$GUI_Tab_Settings.Controls.Add($getthedoc)
-$GUI_Tab_Settings.Controls.Add($GUI_More_Closebutton)
-
-#$GUI_Tab_Settings.Controls.Add($askme)
-$GUI_Form_MainWindowTabControl.Controls.Add($GUI_Tab_Settings)
-
+$GUI_Tab_SoftwareSettings.Controls.Add($GUI_Tab_Settings)
 
 ###############################################################################################
 

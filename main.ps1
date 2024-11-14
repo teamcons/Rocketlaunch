@@ -28,7 +28,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy ByPass -F
 
 # Load assets
 $script:icon                = New-Object system.drawing.icon $ScriptPath\assets\icon.ico
-$script:templatefile        = -join($ScriptPath,"\documentation\Project templates.csv")
+$script:templatefile        = -join($ScriptPath,"\data\Project templates.csv")
 $script:image               = [system.drawing.image]::FromFile((get-item $ScriptPath\assets\icon-mini.ico))
 
 # Load everything we need
