@@ -33,6 +33,13 @@ $script:image               = [system.drawing.image]::FromFile((get-item $Script
 
 # Load everything we need
 Import-Module $ScriptPath\sources\text.ps1
+
+
+# Get localization
+$script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localizations
+
+
+
 Import-Module $ScriptPath\sources\defaults.ps1
 Import-Module $ScriptPath\sources\ui\splash.ps1
 

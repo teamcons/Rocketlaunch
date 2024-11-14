@@ -37,7 +37,7 @@ Write-Output "[START] Loading defaults"
 
 
     # Exposed in main UI
-    [string]$script:default_filesfrom               = $text_from_Outlook
+    [string]$script:default_filesfrom               = $text.Sourceview.from_Outlook
     [bool]$script:default_ontop                     = $true
     [bool]$script:default_opentrados                = $true
     [bool]$script:default_savetemplatechanges       = $false

@@ -30,18 +30,18 @@ $gui_code.SelectedItem              = $gui_code.Items[0]
 # Create the Files DragNDrop table
 $Datatable_FilesDragNDrop = New-Object System.Data.DataTable
 #$newcol = New-Object system.Data.DataColumn "Checked",([bool]); $Datatable_FilesDragNDrop.columns.add($newcol) 
-$newcol = New-Object system.Data.DataColumn $text_columns_File,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)  
-$newcol = New-Object system.Data.DataColumn $text_columns_Directory,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)
-$newcol = New-Object system.Data.DataColumn $text_columns_LastWrite,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)
-$newcol = New-Object system.Data.DataColumn $text_columns_Path,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)
+$newcol = New-Object system.Data.DataColumn $text.Sourceview.columns_File,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)  
+$newcol = New-Object system.Data.DataColumn $text.Sourceview.columns_Directory,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)
+$newcol = New-Object system.Data.DataColumn $text.Sourceview.columns_LastWrite,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)
+$newcol = New-Object system.Data.DataColumn $text.Sourceview.columns_Path,([string]); $Datatable_FilesDragNDrop.columns.add($newcol)
 
 #========================================
 function Rebuild-Outlook-View
 {
-    [void]$sourcefiles.Columns.Add($text_columns_Subject,330)
-    [void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
-    [void]$sourcefiles.Columns.Add($text_columns_Attachments,80)
-    [void]$sourcefiles.Columns.Add($text_columns_time,100)
+    [void]$sourcefiles.Columns.Add($text.Sourceview.columns_Subject,330)
+    [void]$sourcefiles.Columns.Add($text.Sourceview.columns_Sendername,200)
+    [void]$sourcefiles.Columns.Add($text.Sourceview.columns_Attachments,80)
+    [void]$sourcefiles.Columns.Add($text.Sourceview.columns_time,100)
     Load-RelevantMails
 } # End of Rebuild-Outlook-View
 
@@ -50,18 +50,18 @@ function Rebuild-Outlook-View
 function Rebuild-DragNDrop-View
 {
     #[void]$sourcefiles.Columns.Add("Checked",100)
-    [void]$sourcefiles.Columns.Add($text_columns_File,180)
-    [void]$sourcefiles.Columns.Add($text_columns_Directory,100)
-    [void]$sourcefiles.Columns.Add($text_columns_LastWrite,160)
-    [void]$sourcefiles.Columns.Add($text_columns_Path,260)
+    [void]$sourcefiles.Columns.Add($text.Sourceview.columns_File,180)
+    [void]$sourcefiles.Columns.Add($text.Sourceview.columns_Directory,100)
+    [void]$sourcefiles.Columns.Add($text.Sourceview.columns_LastWrite,160)
+    [void]$sourcefiles.Columns.Add($text.Sourceview.columns_Path,260)
 
     foreach ($row in $Datatable_FilesDragNDrop.rows)
     {
         $sourcefilesItem            = New-Object System.Windows.Forms.ListViewItem($row[$text_columns_File])
         $sourcefilesItem.Checked    = $true
-        [void]$sourcefilesItem.Subitems.Add($row[$text_columns_Directory])
-        [void]$sourcefilesItem.Subitems.Add($row[$text_columns_LastWrite])
-        [void]$sourcefilesItem.Subitems.Add($row[$text_columns_Path])
+        [void]$sourcefilesItem.Subitems.Add($row[$text.Sourceview.columns_Directory])
+        [void]$sourcefilesItem.Subitems.Add($row[$text.Sourceview.columns_LastWrite])
+        [void]$sourcefilesItem.Subitems.Add($row[$text.Sourceview.columns_Path])
         [void]$sourcefiles.Items.Add($sourcefilesItem)
     }
 } # End of Rebuild-DragNDrop-View
@@ -70,10 +70,10 @@ function Rebuild-DragNDrop-View
 function Rebuild-Downloads-View
 {
     #[void]$sourcefiles.Columns.Add("Checked",100)
-    [void]$sourcefiles.Columns.Add($text_columns_File,180)
-    [void]$sourcefiles.Columns.Add($text_columns_Directory,100)
-    [void]$sourcefiles.Columns.Add($text_columns_LastWrite,160)
-    [void]$sourcefiles.Columns.Add($text_columns_Path,260)
+    [void]$sourcefiles.Columns.Add($text.Sourceview.columns_File,180)
+    [void]$sourcefiles.Columns.Add($text.Sourceview.columns_Directory,100)
+    [void]$sourcefiles.Columns.Add($text.Sourceview.columns_LastWrite,160)
+    [void]$sourcefiles.Columns.Add($text.Sourceview.columns_Path,260)
 
     # For each file in the downloads folder
     foreach ($file in (Get-ChildItem -File $env:USERPROFILE\Downloads | Sort LastWriteTime -Descending ))
@@ -109,25 +109,25 @@ Function Reset-View{
 
         # User selected Outlook
         $text_from_Outlook {
-                            $labelsourcefiles.Text      = $text_label_from_Outlook
+                            $labelsourcefiles.Text      = $text.Sourceview.label_from_Outlook
                             $sourcefiles.Checkboxes     = $false
                             Rebuild-Outlook-View
                         }
         # User selected Downloads
         $text_from_Downloads {
-                            $labelsourcefiles.Text      = $text_label_from_Downloads
+                            $labelsourcefiles.Text      = $text.Sourceview.label_from_Downloads
                             $sourcefiles.Checkboxes     = $true 
                             Rebuild-Downloads-View
                         }
         # User selected DragNDrop
         $text_DragNDrop {
-                            $labelsourcefiles.Text      = $text_label_DragNDrop
+                            $labelsourcefiles.Text      = $text.Sourceview.label_DragNDrop
                             $sourcefiles.Checkboxes     = $true 
                             Rebuild-DragNDrop-View
                         }
         # User selected no
         $text_nofilesource {
-                            $labelsourcefiles.Text      = $text_label_nofilesource
+                            $labelsourcefiles.Text      = $text.Sourceview.label_nofilesource
                             $sourcefiles.Checkboxes     = $false                
                         }
     }# End of Switch
@@ -172,10 +172,10 @@ $DragDrop = [System.Windows.Forms.DragEventHandler]{
 
         $row = $Datatable_FilesDragNDrop.NewRow()
         #$row[0] = $true
-        $row[$text_columns_File] = $file.Name
-        $row[$text_columns_Directory] = $file.Directory.Name
-        $row[$text_columns_LastWrite] = $file.LastWriteTime.ToString("dd.MM, HH:mm")
-        $row[$text_columns_Path] = $file.FullName
+        $row[$text.Sourceview.columns_File] = $file.Name
+        $row[$text.Sourceview.columns_Directory] = $file.Directory.Name
+        $row[$text.Sourceview.columns_LastWrite] = $file.LastWriteTime.ToString("dd.MM, HH:mm")
+        $row[$text.Sourceview.columns_Path] = $file.FullName
         $Datatable_FilesDragNDrop.rows.Add($row)
 
         # Correct view, add new item
@@ -203,7 +203,7 @@ $sourcefiles.Add_DragDrop($DragDrop)
 # Adapting prediction
 # Try to guess client from selected email sendermail
 $sourcefiles.Add_Click({ 
-    if ($gui_filesource.Text -match $text_from_Outlook)
+    if ($gui_filesource.Text -match $text.Sourceview.from_Outlook)
         {Adapt-Prediction}
 })
 

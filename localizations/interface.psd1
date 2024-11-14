@@ -10,7 +10,8 @@ Splash = @{
 MainUI = @{
 
     # Toplevel
-    projectname                    = "Projekt bereit zum Abflug!"
+    ready                    = "Projekt bereit zum Abflug!"
+    nooutlook                      = "Kein Outlook Ordner"
     opentrados                     = "Trados?"
     keepontop                      = "Über alle Fenster"
 

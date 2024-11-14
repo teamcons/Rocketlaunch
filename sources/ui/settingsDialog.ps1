@@ -22,7 +22,7 @@ Write-Output "[START] Loading graphical user interface"
 
 
 $script:GUI_Form_MoreStuff              = New-Object System.Windows.Forms.Form
-$GUI_Form_MoreStuff.Text                = -join($APPNAME," - ",$text_aboutsubtitle)
+$GUI_Form_MoreStuff.Text                = -join($APPNAME," - ",$text.About.tagline)
 $GUI_Form_MoreStuff.Icon                = $icon
 $GUI_Form_MoreStuff.StartPosition       = "CenterScreen"
 $GUI_Form_MoreStuff.Topmost             = $gui_keepontop.Checked
@@ -41,7 +41,7 @@ $GUI_Form_MoreStuff.Controls.Add($GUI_Form_MainWindowTabControl)
 
 $GUI_Tab_Settings = New-object System.Windows.Forms.Tabpage
 $GUI_Tab_Settings.Name = "Advanced" 
-$GUI_Tab_Settings.Text = $text_settingstag
+$GUI_Tab_Settings.Text = $text.Settings.settingstag
 $GUI_Tab_Settings.UseVisualStyleBackColor = $True 
 
 # Label above input
@@ -49,14 +49,14 @@ $moresettingstitle                     = New-Object System.Windows.Forms.Label
 $moresettingstitle.Size                = New-Object System.Drawing.Size(300,20)
 $moresettingstitle.Left                = $GUI_Form_MainWindow_leftalign
 $moresettingstitle.Top                 = 10
-$moresettingstitle.Text                = $text_settingstag
+$moresettingstitle.Text                = $text.Settings.settingstag
 $moresettingstitle.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
 
 $moresettingsnota                     = New-Object System.Windows.Forms.Label
 $moresettingsnota.Size                = New-Object System.Drawing.Size(300,20)
 $moresettingsnota.Left                = $GUI_Form_MainWindow_leftalign
 $moresettingsnota.Top                 = 10
-$moresettingsnota.Text                = $text_settingsnota
+$moresettingsnota.Text                = $text.Settings.settingsnota
 $moresettingsnota.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif', 8, [System.Drawing.FontStyle]::Italic)
 
 
@@ -64,7 +64,7 @@ $CheckIfCreateExplorerQuickAccess                       = New-Object System.Wind
 $CheckIfCreateExplorerQuickAccess.Left                  = $GUI_Form_MainWindow_leftalign
 $CheckIfCreateExplorerQuickAccess.Top                   = 35
 $CheckIfCreateExplorerQuickAccess.Size                  = New-Object System.Drawing.Size(400,20)
-$CheckIfCreateExplorerQuickAccess.Text                  = $text_settings_ExplorerQuickAccess
+$CheckIfCreateExplorerQuickAccess.Text                  = $text.Settings.ExplorerQuickAccess
 $CheckIfCreateExplorerQuickAccess.Checked               = $default_createshortcut
 
 <# $CheckIfCreateOutlookFolder                             = New-Object System.Windows.Forms.CheckBox        
@@ -95,14 +95,14 @@ $CheckIfOpenExplorer.Location                           = New-Object System.Draw
 $CheckIfOpenExplorer.Left                               = $GUI_Form_MainWindow_leftalign
 $CheckIfOpenExplorer.Top                                = $CheckIfCreateExplorerQuickAccess.Top + 30
 $CheckIfOpenExplorer.Size                               = New-Object System.Drawing.Size(400,20)
-$CheckIfOpenExplorer.Text                               = $text_settings_OpenExplorer
+$CheckIfOpenExplorer.Text                               = $text.Settings.OpenExplorer
 $CheckIfOpenExplorer.Checked                            = $default_openexplorer
 
 $CheckIfArchiveFolder                                          = New-Object System.Windows.Forms.CheckBox        
 $CheckIfArchiveFolder.Left                                     = $GUI_Form_MainWindow_leftalign
 $CheckIfArchiveFolder.Top                                      = $CheckIfOpenExplorer.Top + 30
 $CheckIfArchiveFolder.Size                                     = New-Object System.Drawing.Size(400,20)
-$CheckIfArchiveFolder.Text                                     = $text_settings_createarchivefolder
+$CheckIfArchiveFolder.Text                                     = $text.Settings.createarchivefolder
 $CheckIfArchiveFolder.Checked                                  = $default_createarchivefolder
 
 
@@ -110,7 +110,7 @@ $CheckIfNotify                                          = New-Object System.Wind
 $CheckIfNotify.Left                                     = $GUI_Form_MainWindow_leftalign
 $CheckIfNotify.Top                                      = $CheckIfArchiveFolder.Top + 30
 $CheckIfNotify.Size                                     = New-Object System.Drawing.Size(400,20)
-$CheckIfNotify.Text                                     = $text_settings_Notify
+$CheckIfNotify.Text                                     = $text.Settings.Notify
 $CheckIfNotify.Checked                                  = $default_notifywhenfinished
 
 
@@ -118,7 +118,7 @@ $CheckIfCloseAfter                                      = New-Object System.Wind
 $CheckIfCloseAfter.Left                                 = $GUI_Form_MainWindow_leftalign
 $CheckIfCloseAfter.Top                                  = $CheckIfNotify.Top + 30
 $CheckIfCloseAfter.Size                                 = New-Object System.Drawing.Size(400,20)
-$CheckIfCloseAfter.Text                                 = $text_settings_CloseAfter
+$CheckIfCloseAfter.Text                                 = $text.Settings.CloseAfter
 $CheckIfCloseAfter.Checked                              = $default_closeafter
 
 
@@ -141,20 +141,20 @@ $helptitle                                              = New-Object System.Wind
 $helptitle.Size                                         = New-Object System.Drawing.Size(280,20)
 $helptitle.Left                                         = $GUI_Form_MainWindow_leftalign
 $helptitle.Top                                          = 280
-$helptitle.Text                                         = $text_settings_helptitle
+$helptitle.Text                                         = $text.Settings.helptitle
 $helptitle.Font                                         = New-Object System.Drawing.Font('Microsoft Sans Serif', 11, [System.Drawing.FontStyle]::Regular)
 
 $getthedoc                                              = New-Object System.Windows.Forms.Button
 $getthedoc.Size                                         = New-Object System.Drawing.Size (205,25)
 $getthedoc.Left                                         = $GUI_Form_MainWindow_leftalign
 $getthedoc.Top                                          = $buttonalign
-$getthedoc.Text                                         = $text_settings_getthedoc
+$getthedoc.Text                                         = $text.Settings.getthedoc
 #$getthedoc.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch/raw/main/docs/Manual%20-%20Rocketlaunch.docx"})
 $getthedoc.Add_Click( {start-process (-join($ScriptPath,"\documentation\Rocketlaunch Manual.pdf")) } )
 
 
 $GUI_More_Closebutton                               = New-Object System.Windows.Forms.Button
-$GUI_More_Closebutton.Text                          = $text_settings_close
+$GUI_More_Closebutton.Text                          = $text.Settings.close
 $GUI_More_Closebutton.Size                          = New-Object System.Drawing.Size(100,25)
 $GUI_More_Closebutton.Left                          = 215
 $GUI_More_Closebutton.Top                           = $buttonalign
@@ -233,7 +233,7 @@ $GUI_Form_MainWindowTabControl.Controls.Add($GUI_Tab_SoftwareSettings)
 $GUI_Tab_About = New-object System.Windows.Forms.Tabpage
 $GUI_Tab_About.UseVisualStyleBackColor = $True 
 $GUI_Tab_About.Name = "About" 
-$GUI_Tab_About.Text = $text_abouttab
+$GUI_Tab_About.Text = $text.About.tab
 
 
 # FANCY ICON
@@ -281,14 +281,14 @@ $gotogithub                     = New-Object System.Windows.Forms.Button
 $gotogithub.Size                = New-Object System.Drawing.Size (100,25)
 $gotogithub.Left                = ($GUI_Form_MainWindow_leftalign)
 $gotogithub.Top                 = $buttonalign
-$gotogithub.Text                = $text_about_button_repo
+$gotogithub.Text                = $text.About.button_repo
 $gotogithub.Add_Click( {start-process "https://github.com/teamcons/Skrivanek-Rocketlaunch"} )
 
 $gotolicense                    = New-Object System.Windows.Forms.Button
 $gotolicense.Size               = New-Object System.Drawing.Size (100,25)
 $gotolicense.Left               = ($GUI_Form_MainWindow_leftalign + 105)
 $gotolicense.Top                = $buttonalign
-$gotolicense.Text               = $text_about_button_licence
+$gotolicense.Text               = $text.About.button_licence
 $gotolicense.Add_Click( {start-process "https://www.gnu.org/licenses/gpl-3.0.html"})
 
 
@@ -296,7 +296,7 @@ $supportme                      = New-Object System.Windows.Forms.Button
 $supportme.Size                 = New-Object System.Drawing.Size (100,25)
 $supportme.Left                 = ($GUI_Form_MainWindow_leftalign + 210)
 $supportme.Top                  = $buttonalign
-$supportme.Text                 = $text_about_button_support
+$supportme.Text                 = $text.About.button_support
 $supportme.Add_Click( {start-process "https://ko-fi.com/teamcons"})
 
 

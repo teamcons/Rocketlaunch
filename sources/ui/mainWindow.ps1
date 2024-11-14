@@ -25,7 +25,7 @@ Write-Output "[START] Loading UI"
 
 
 $script:GUI_Form_MainWindow                     = New-Object System.Windows.Forms.Form
-$GUI_Form_MainWindow.Text                       = -join($APPNAME," - ",$text_aboutsubtitle)
+$GUI_Form_MainWindow.Text                       = -join($APPNAME," - ",$text.About.tagline)
 $GUI_Form_MainWindow.Size                       = New-Object System.Drawing.Size(775,($GUI_Form_MainWindow_verticalalign + 85 ))
 $GUI_Form_MainWindow.MinimumSize                = New-Object System.Drawing.Size(555,172)
 $GUI_Form_MainWindow.StartPosition              = 'CenterScreen'
@@ -61,7 +61,7 @@ $label.Location                     = New-Object System.Drawing.Point(($GUI_Form
 $label.Size                         = New-Object System.Drawing.Size(300,30)
 $label.AutoSize                     = $true
 $label.Font                         = New-Object System.Drawing.Font('Calibri', 17, [System.Drawing.FontStyle]::Bold)
-$label.Text                         = $text_projectname
+$label.Text                         = $text.MainUI.ready
 $label.Anchor                       = "Left,Top"
 
 # Input box
@@ -89,14 +89,14 @@ $gui_folderinoutlook.Anchor                  = "Top,Left"
 
 [void]$gui_folderinoutlook.Items.Add("01_QUOTES")
 [void]$gui_folderinoutlook.Items.Add("02_CURRENT JOBS")
-[void]$gui_folderinoutlook.Items.Add($text_nooutlook)      
+[void]$gui_folderinoutlook.Items.Add($text.MainUI.nooutlook)      
 $gui_folderinoutlook.SelectedItem = $gui_folderinoutlook.Items[1]
 
 # Check if start new trados project
 $CheckIfTrados                              = New-Object System.Windows.Forms.CheckBox        
 $CheckIfTrados.Location                     = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 455),50)
 $CheckIfTrados.Size                         = New-Object System.Drawing.Size(70,20)
-$CheckIfTrados.Text                         = $text_opentrados
+$CheckIfTrados.Text                         = $text.MainUI.opentrados
 $CheckIfTrados.Checked                      = $default_opentrados
 $CheckIfTrados.Anchor                       = "Top,Left"
 
@@ -128,7 +128,7 @@ $panel_sourcefile.Dock                  = "Fill"
 
 # Label above input
 $labelsourcefiles                       = New-Object System.Windows.Forms.Label
-$labelsourcefiles.Text                  = $text_label_from_Outlook
+$labelsourcefiles.Text                  = $text.Sourceview.label_from_Outlook
 $labelsourcefiles.Location              = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,10)
 $labelsourcefiles.Size                  = New-Object System.Drawing.Size(450,20)
 
@@ -145,10 +145,10 @@ $gui_filesource.Size                    = New-Object System.Drawing.Size(140,20)
 $gui_filesource.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 $gui_filesource.Anchor                  = "Top,Right"
 
-[void] $gui_filesource.Items.Add($text_from_Outlook) 
-[void] $gui_filesource.Items.Add($text_from_Downloads)
-[void] $gui_filesource.Items.Add($text_DragNDrop)      
-[void] $gui_filesource.Items.Add($text_nofilesource)  
+[void] $gui_filesource.Items.Add($text.Sourceview.from_Outlook) 
+[void] $gui_filesource.Items.Add($text.Sourceview.from_Downloads)
+[void] $gui_filesource.Items.Add($text.Sourceview.DragNDrop)      
+[void] $gui_filesource.Items.Add($text.Sourceview.nofilesource)  
 $gui_filesource.SelectedItem = $default_filesfrom
 
 #================================
@@ -164,10 +164,10 @@ $sourcefiles.BorderStyle            = "Fixed3D"
 $sourcefiles.AllowDrop              = $true    
 
 
-[void]$sourcefiles.Columns.Add($text_columns_Subject,350)
-[void]$sourcefiles.Columns.Add($text_columns_Sendername,200)
-[void]$sourcefiles.Columns.Add($text_columns_Attachments,80)
-[void]$sourcefiles.Columns.Add($text_columns_time,100)
+[void]$sourcefiles.Columns.Add($text.Sourceview.columns_Subject,350)
+[void]$sourcefiles.Columns.Add($text.Sourceview.columns_Sendername,200)
+[void]$sourcefiles.Columns.Add($text.Sourceview.columns_Attachments,80)
+[void]$sourcefiles.Columns.Add($text.Sourceview.columns_time,100)
 
 
 #$panel_sourcefile.Controls.Add($sourcefile_refreshButton)
@@ -190,23 +190,16 @@ $panel_template.Dock = "Fill"
 
 # Label and button
 $labeltemplate                          = New-Object System.Windows.Forms.Label
-$labeltemplate.Text                     = $text_usewhichtemplate
+$labeltemplate.Text                     = $text.TemplateView.usewhichtemplate
 $labeltemplate.Left                     = $GUI_Form_MainWindow_leftalign
 $labeltemplate.Top                      = 10
 $labeltemplate.Size                     = New-Object System.Drawing.Size(400,20)
 $labeltemplate.Anchor                   = "Left,Top"
 
-$templates_refreshButton                               = New-Object System.Windows.Forms.Button
-$templates_refreshButton.Text                          = $global:text_sourcefiles_refresh
-$templates_refreshButton.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 485),4)
-$templates_refreshButton.Size                          = New-Object System.Drawing.Size(95,24)
-$templates_refreshButton.Anchor                        = "Top,Right"
-$templates_refreshButton.Add_Click({$templates.Rows.Clear() ; $templates = load_template $templates $templatefile })
-
 
 # Check if start new trados project
 $CheckIfSaveTemplateChanges                  = New-Object System.Windows.Forms.CheckBox        
-$CheckIfSaveTemplateChanges.Text             = $text_savetemplatechanges
+$CheckIfSaveTemplateChanges.Text             = $text.TemplateView.savetemplatechanges
 $CheckIfSaveTemplateChanges.Location         = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 590),8)
 $CheckIfSaveTemplateChanges.Size             = New-Object System.Drawing.Size(180,20)
 $CheckIfSaveTemplateChanges.Checked          = $default_savetemplatechanges
@@ -231,7 +224,7 @@ $templates.ColumnHeadersHeightSizeMode      = "DisableResizing"
 $templates.ColumnCount                      = 14
 $templates.AutoGenerateColumns              = $true
 
-$templates.Columns[0].Name = $text_template_name
+$templates.Columns[0].Name = $text.TemplateView.template_name
 $templates.Columns[0].Width = 120
 
 # Fill the grid
@@ -279,7 +272,7 @@ $bottom_panel.Anchor            = "Left,Bottom,Right"
 $gui_help                       = New-Object System.Windows.Forms.Button
 $gui_help.Location              = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign),10)
 $gui_help.Size                  = New-Object System.Drawing.Size(120,25)
-$gui_help.Text                  = $text_help
+$gui_help.Text                  = $text.MainUI.help
 $gui_help.Anchor                = "Left, Bottom"
 
 # Topmost according to whether checked or not
@@ -287,7 +280,7 @@ $gui_keepontop                           = New-Object System.Windows.Forms.Check
 #$gui_keepontop.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 365),52)
 $gui_keepontop.Location                  = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 130),13)
 $gui_keepontop.Size                      = New-Object System.Drawing.Size(160,20)
-$gui_keepontop.Text                      = $text_keepontop
+$gui_keepontop.Text                      = $text.MainUI.keepontop
 $gui_keepontop.Checked                   = $GUI_Form_MainWindow.Topmost
 $gui_keepontop.Anchor                    = "Top, Left"
 
@@ -300,7 +293,7 @@ $gui_keepontop.Anchor                    = "Top, Left"
 $gui_okButton                               = New-Object System.Windows.Forms.Button
 $gui_okButton.Location                      = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 480),10)
 $gui_okButton.Size                          = New-Object System.Drawing.Size(120,25)
-$gui_okButton.Text                          = $text_OK
+$gui_okButton.Text                          = $text.MainUI.OK
 $gui_okButton.Anchor                        = "Bottom,Right"
 
 
