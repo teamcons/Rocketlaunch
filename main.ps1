@@ -21,14 +21,12 @@ $global:MainDir = $ScriptPath
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 Add-Type -AssemblyName PresentationCore,PresentationFramework
-[void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
 # Ensure companion scripts run
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy ByPass -F
 
 # Load and parse the JSON configuration file
 $script:settings = (Get-Content $MainDir\data\settings.json -Raw -ErrorAction:SilentlyContinue -WarningAction:SilentlyContinue | ConvertFrom-Json -ErrorAction:SilentlyContinue -WarningAction:SilentlyContinue)
-
 
 
 # Get localization
@@ -43,18 +41,25 @@ else {
 }
 
 
+
+[System.Windows.Forms.Application]::EnableVisualStyles() 
+
+
 Import-Module $MainDir\sources\defaults.ps1
 Import-Module $MainDir\sources\ui\splash.ps1
-
-# We have enough to display the splash
-$UI_Splash.Show()
-$UI_Splash.Activate()
-
 Import-Module $MainDir\sources\internals.ps1
 Import-Module $MainDir\sources\ui\mainWindow.ps1 
 Import-Module $MainDir\sources\ui\settingsDialog.ps1 
 Import-Module $MainDir\sources\ui\themes.ps1 
 Import-Module $MainDir\sources\ui\reactiveparts.ps1 
+
+
+
+Change-Theme $settings.UI.Theme
+
+# We have enough to display the splash
+$UI_Splash.Show()
+$UI_Splash.Activate()
 
 # Outlook Backend is the main intended one for splash
 # Because its so fcking slo

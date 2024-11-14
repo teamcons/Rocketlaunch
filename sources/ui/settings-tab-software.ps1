@@ -5,7 +5,7 @@
 
 
 $GUI_Tab_SoftwareSettings = New-object System.Windows.Forms.Tabpage
-$GUI_Tab_SoftwareSettings.UseVisualStyleBackColor = $True 
+
 $GUI_Tab_SoftwareSettings.Name = "About" 
 $GUI_Tab_SoftwareSettings.Text = $text.Softwaresettings.tab
 
@@ -44,16 +44,16 @@ $combobox_select_lang.Size                = New-Object System.Drawing.Size(100,2
 $combobox_select_lang.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
 
 
-# For i in get-childiten localizations
+# Add system and all languages
+[void]$combobox_select_lang.Items.Add("System")
 
-[void]$combobox_select_lang.Items.Add($text.Softwaresettings.langdefault)
 Foreach ($language in (Get-ChildItem -Directory $MainDir/localization))
 {
         [void]$combobox_select_lang.Items.Add($language.Name)
 }
 
 # Then default
-$combobox_select_lang.SelectedItem = $settings.Preferences.Language
+$combobox_select_lang.SelectedItem = $settings.UI.Language
 $script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localization
 
 
@@ -61,7 +61,7 @@ $script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $Mai
 $combobox_select_lang.Add_SelectedIndexChanged({
 
         # If it is default, revert to system language
-        if ($combobox_select_lang.SelectedItem -match $text.Softwaresettings.langdefault)
+        if ($combobox_select_lang.SelectedItem -match "System")
         {
                 $script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localization
         }

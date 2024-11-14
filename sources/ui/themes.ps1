@@ -24,6 +24,15 @@ function Change-Theme {
     switch ($selectedtheme) {
         "Modern Colors" {
 
+            [System.Windows.Forms.Application]::EnableVisualStyles() 
+
+
+            $gui_help.UseVisualStyleBackColor           = $True
+            $gui_okButton.UseVisualStyleBackColor       = $True
+            $gui_cancelButton.UseVisualStyleBackColor   = $True
+            
+            $GUI_Tab_SoftwareSettings.UseVisualStyleBackColor = $True 
+
             # Slick soft modern look
             $GUI_Form_MainWindow.BackColor                          = "White"
             $GUI_Form_MoreStuff.BackColor                           = '237,237,237'
@@ -42,19 +51,8 @@ function Change-Theme {
 
 
             $bottom_panel.BackColor                                 = '237,237,237'
-<# 
-            
-            $gui_okButton.BackColor                     = "Green"
-            $gui_okButton.ForeColor                     = "White"
-            $gui_cancelButton.BackColor                  = "Red"
-            $gui_cancelButton.ForeColor                  = "White" #>
-            
 
-            # If there is a theme with background images - dispose it
-            #try {$panel_top.BackgroundImage.Dispose()}
-            #catch {Write-Output "Nothing to dispose"}
-            #try {$bottom_panel.BackgroundImage.Dispose()}
-            #catch {Write-Output "Nothing to dispose"}
+
 
 
         }
@@ -137,5 +135,3 @@ function Change-Theme {
     }
 }
 
-
-Change-Theme $THEME

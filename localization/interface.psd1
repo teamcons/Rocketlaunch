@@ -89,6 +89,7 @@ Settings = @{
 Softwaresettings = @{
     tab                       = "Software settings" 
     box                       = "Mailbox Ändern" 
+    inbox                       = "Posteingang" 
     lang                       = "Sprache Ändern" 
     langdefault                       = "System" 
     theme                       = "Theme Ändern" 

@@ -34,7 +34,7 @@ function Create-OutlookFolder {
     [string]$Username = $Env:UserName.split(".")[0]
     $TextInfo = (Get-Culture).TextInfo
     [string]$Username = $TextInfo.ToTitleCase($Username)
-    $namespace.Folders.Item(1).Folders.Item("Posteingang").Folders.Item($infolder).Folders.Item($Username).Folders.Add($PROJECTNAME)
+    $namespace.Folders.Item($Settings.UI.MailBox).Folders.Item($text.Softwaresettings.inbox).Folders.Item($infolder).Folders.Item($Username).Folders.Add($PROJECTNAME)
 }
 
 
@@ -95,7 +95,7 @@ function Load-RelevantMails
     $filter                             = "[ReceivedTime] >= '$date'"
     #$filter                            = "[ReceivedTime] >= '$date' And [FlagStatus] = 6"
     #$filter                            = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
-    $script:allmails                    = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
+    $script:allmails                    = $ns.Folders.Item($Settings.UI.MailBox).Folders.Item($text.Softwaresettings.inbox).Items.Restrict($filter)
     
     #TODO NEED TO DETECT $settings.UI.MailBox
 
