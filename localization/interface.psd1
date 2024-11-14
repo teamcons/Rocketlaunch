@@ -90,6 +90,7 @@ Softwaresettings = @{
     tab                       = "Software settings" 
     box                       = "Mailbox Ändern" 
     lang                       = "Sprache Ändern" 
+    langdefault                       = "System" 
     theme                       = "Theme Ändern" 
 }
 

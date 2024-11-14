@@ -15,7 +15,7 @@ $GUI_Tab_SoftwareSettings.Text = $text.Softwaresettings.tab
 ################################
 # CHANGE LANGUAGE
 $label_select_box                     = New-Object System.Windows.Forms.Label
-$label_select_box.Text                = $text.Softwaresettings.lang
+$label_select_box.Text                = $text.Softwaresettings.box
 $label_select_box.Top                 = 15
 $label_select_box.Left                = $GUI_Form_MainWindow_leftalign
 $label_select_box.Size                = New-Object System.Drawing.Size(200,20)
@@ -32,7 +32,7 @@ $combobox_select_box.DropDownStyle           = [System.Windows.Forms.ComboBoxSty
 ################################
 # CHANGE LANGUAGE
 $label_select_lang                     = New-Object System.Windows.Forms.Label
-$label_select_lang.Text                = $text.Softwaresettings.box
+$label_select_lang.Text                = $text.Softwaresettings.lang
 $label_select_lang.Top                 = $label_select_box.Top + 35
 $label_select_lang.Left                = $GUI_Form_MainWindow_leftalign
 $label_select_lang.Size                = New-Object System.Drawing.Size(200,20)
@@ -46,21 +46,38 @@ $combobox_select_lang.DropDownStyle           = [System.Windows.Forms.ComboBoxSt
 
 # For i in get-childiten localizations
 
+[void]$combobox_select_lang.Items.Add($text.Softwaresettings.langdefault)
 Foreach ($language in (Get-ChildItem -Directory $MainDir/localization))
 {
         [void]$combobox_select_lang.Items.Add($language.Name)
 }
 
 # Then default
-$combobox_select_lang.SelectedItem = (Get-WinUserLanguageList).LanguageTag
-
+$combobox_select_lang.SelectedItem = $settings.Preferences.Language
+$script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localization
 
 
 # React to new select
 $combobox_select_lang.Add_SelectedIndexChanged({
-        $script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localization -UICulture $combobox_select_lang.SelectedItem
+
+        # If it is default, revert to system language
+        if ($combobox_select_lang.SelectedItem -match $text.Softwaresettings.langdefault)
+        {
+                $script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localization
+        }
+        # Else take whatever is indicated
+        else {
+                $script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localization -UICulture $combobox_select_lang.SelectedItem
+        }
+        # Save choice in settings
+        $settings.UI.Language = $combobox_select_lang.SelectedItem
 })
-    
+
+
+
+
+
+
 
 
 ################################################################

@@ -31,13 +31,17 @@ $script:settings = (Get-Content $MainDir\data\settings.json -Raw -ErrorAction:Si
 
 
 
-# Load assets
-$script:icon                = New-Object system.drawing.icon $MainDir\assets\icon.ico
-$script:templatefile        = -join($MainDir,"\data\Project templates.csv")
-$script:image               = [system.drawing.image]::FromFile((get-item $MainDir\assets\icon-mini.ico))
-
 # Get localization
-$script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localization
+# If it is default, revert to system language
+if ($settings.UI.Language -match $text.Softwaresettings.langdefault)
+{
+    $script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localization
+}
+# Else take whatever is indicated
+else {
+    $script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localization -UICulture $settings.UI.Language
+}
+
 
 Import-Module $MainDir\sources\defaults.ps1
 Import-Module $MainDir\sources\ui\splash.ps1

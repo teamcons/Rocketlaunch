@@ -45,3 +45,8 @@ Write-Output "[START] Loading defaults"
 
     # Orange, Lightblue, Brushed Metal+LightGray - Aqua ?
     [string]$script:THEME                           = $settings.UI.Theme
+
+    # Load assets
+$script:icon                = New-Object system.drawing.icon $MainDir\assets\icon.ico
+$script:templatefile        = -join($MainDir,"\data\Project templates.csv")
+$script:image               = [system.drawing.image]::FromFile((get-item $MainDir\assets\icon-mini.ico))
