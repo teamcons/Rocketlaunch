@@ -33,7 +33,7 @@ $script:settings = (Get-Content $MainDir\data\settings.json -Raw -ErrorAction:Si
 
 # Get localization
 # If it is default, revert to system language
-if ($settings.UI.Language -match $text.Softwaresettings.langdefault)
+if ($settings.UI.Language -match "System")
 {
     $script:text = Import-LocalizedData -FileName interface.psd1 -BaseDirectory $MainDir\localization
 }
