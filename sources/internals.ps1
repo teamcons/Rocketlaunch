@@ -1,9 +1,4 @@
 ﻿
-
-
-
-
-
         #==========================================
         #                INTERNALS                =
         #==========================================
@@ -14,8 +9,6 @@ All the gory innards, intermediate functions and all that
 TODO: Split into two, have one dedicated to all the skrivanek-specific stuff
 
 #>
-
-
 
 
 #========================================
@@ -352,10 +345,6 @@ function Save-DataGridView
 
 
 
-
-
-
-
 #================================================================
 # Close app gracefully
 function Close-All {
@@ -372,80 +361,3 @@ function Close-All {
     exit
 }
 
-
-
-
-
-
-<# 
-#================================================================
-# Count all
-function Count-AllWords {
-    param($where, $saveto)
-
-    # We, sadly, need Words
-    $script:word            = New-Object -ComObject Word.Application
-    [string]$analysisfile   = -join($saveto,"\",$default_csv_analysis)    
-    [int]$totalcount        = 0    
-    [float]$totaltime         = 0    
-
-    # Create the CSV, specify separator to avoid issues opening the csv in your fav office software
-    Write-Output (-join("sep=",$SEP)) | Out-File -FilePath $analysisfile
-
-        # Add column headers
-    $top = -join($text_csv_file,$SEP,$text_csv_wordcount,$SEP,$text_csv_proofreadtime,$SEP)
-    Write-Output $top | Out-File -FilePath "$analysisfile" -Append 
-
-    foreach ($file in (Get-ChildItem $where) )
-    {
-
-        # Use different backend depending on what needed
-        # Each time, check the extension to know what we deal with
-        if ($file.Extension -match ".doc[|x]" )
-        {
-            # OPEN IN WORD, PROCESS COUNT
-            $filecontent = $word.Documents.Open($file.FullName)
-            [int]$wordcount = $filecontent.ComputeStatistics([Microsoft.Office.Interop.Word.WdStatistic]::wdStatisticWords)
-            #CLOSE FILE
-            $filecontent.Close()
-            
-        }
-        elseif ($file.Extension -match ".pdf" )
-        {
-            # COUNT WORDS IN PDF FILE
-            [int]$wordcount = (Get-Content $file.FullName | Measure-Object –Word).Words
-        }
-    
-        elseif ($file.Extension -match ".[txt|csv|md|log]" )
-        {
-            # COUNT WORDS IN TXT FILE
-            [int]$wordcount = (Get-Content $file.FullName | Measure-Object –Word).Words
-        }
-        else
-        {
-            # IDK
-            [int]$wordcount = 0
-        }
-            
-        # Update totalcount
-        $proofreadtime      = [math]::round(($wordcount / $WORDS_PER_HOUR),$DECIMALS)
-        $totalcount         = $totalcount + $wordcount
-        $totaltime         = $totaltime + $proofreadtime
-        $line               = -join($file.Name,$SEP,$wordcount,$SEP,$proofreadtime,$SEP)
-        Write-Output $line | Out-File -FilePath $analysisfile -Append
-
-
-
-	} # End of processing list
-    
-    $line = -join($text_csv_total,$SEP,$totalcount,$SEP,$totaltime,$SEP)
-    Write-Output $line | Out-File -FilePath $analysisfile -Append
-
-    Set-Clipboard $totalcount
-    Import-Csv -Path $analysisfile `
-        -Delimiter $SEP
-        -Header $text_csv_file,$text_csv_wordcount,$text_csv_proofreadtime |
-        Select-Object -Skip 1 |
-        Out-GridView –Title "Rocketlaunch"
-
-} # End of Count-Allwords #>

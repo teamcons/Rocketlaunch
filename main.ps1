@@ -28,7 +28,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy ByPass -F
 
 # Load assets
 $script:icon                = New-Object system.drawing.icon $MainDir\assets\icon.ico
-$script:templatefile        = -join($ScriptPath,"\data\Project templates.csv")
+$script:templatefile        = -join($MainDir,"\data\Project templates.csv")
 $script:image               = [system.drawing.image]::FromFile((get-item $MainDir\assets\icon-mini.ico))
 
 # Get localization

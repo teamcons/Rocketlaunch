@@ -62,9 +62,6 @@ TemplateView = @{
 }
 
 
-
-
-
 Settings = @{
     # Settings tab
     settingstag                    = "Erweiterte Einstellungen"
