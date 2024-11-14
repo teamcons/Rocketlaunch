@@ -276,3 +276,9 @@ catch   {
 }
 
 
+# Possible boxes
+Foreach ($box in $ns.Folders)
+{
+        [void]$combobox_select_box.Items.Add($box.Name)
+}
+

@@ -14,9 +14,27 @@ $GUI_Tab_SoftwareSettings.Text = $text.Softwaresettings.tab
 
 ################################
 # CHANGE LANGUAGE
+$label_select_box                     = New-Object System.Windows.Forms.Label
+$label_select_box.Text                = $text.Softwaresettings.lang
+$label_select_box.Top                 = 15
+$label_select_box.Left                = $GUI_Form_MainWindow_leftalign
+$label_select_box.Size                = New-Object System.Drawing.Size(200,20)
+
+$script:combobox_select_box                    = New-Object System.Windows.Forms.Combobox
+$combobox_select_box.Top                = ($label_select_box.Top - 3)
+$combobox_select_box.Left               = ($GUI_Form_MainWindow_leftalign + 200 )
+$combobox_select_box.Size                = New-Object System.Drawing.Size(100,20)
+$combobox_select_box.DropDownStyle           = [System.Windows.Forms.ComboBoxStyle]::DropDownList
+
+
+
+
+
+################################
+# CHANGE LANGUAGE
 $label_select_lang                     = New-Object System.Windows.Forms.Label
-$label_select_lang.Text                = $text.Softwaresettings.lang
-$label_select_lang.Top                 = 15
+$label_select_lang.Text                = $text.Softwaresettings.box
+$label_select_lang.Top                 = $label_select_box.Top + 35
 $label_select_lang.Left                = $GUI_Form_MainWindow_leftalign
 $label_select_lang.Size                = New-Object System.Drawing.Size(200,20)
 
@@ -70,6 +88,10 @@ $combobox_select_theme.SelectedItem = $combobox_select_theme.Items[0]
 
 $combobox_select_theme.Add_SelectedIndexChanged({Change-Theme $combobox_select_theme.SelectedItem})
     
+
+
+$GUI_Tab_SoftwareSettings.Controls.Add($label_select_box)
+$GUI_Tab_SoftwareSettings.Controls.Add($combobox_select_box)
 
 $GUI_Tab_SoftwareSettings.Controls.Add($label_select_lang)
 $GUI_Tab_SoftwareSettings.Controls.Add($combobox_select_lang)

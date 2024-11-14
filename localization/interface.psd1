@@ -88,6 +88,7 @@ Settings = @{
 
 Softwaresettings = @{
     tab                       = "Software settings" 
+    box                       = "Mailbox Ändern" 
     lang                       = "Sprache Ändern" 
     theme                       = "Theme Ändern" 
 }
