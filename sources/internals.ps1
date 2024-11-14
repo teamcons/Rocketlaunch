@@ -44,7 +44,7 @@ function Get-CompanyName {
     param([string]$mailadress)
     $mailadress -match "@(?<content>).*"
     $attempt_at_companyname         = $matches[0].trim("@").split(".")[0]
-    $attempt_at_companyname         = [cultureinfo]::GetCultureInfo("de-DE").TextInfo.ToTitleCase($attempt_at_companyname)
+    $attempt_at_companyname         = [cultureinfo]::GetCultureInfo($settings.UI.Language).TextInfo.ToTitleCase($attempt_at_companyname)
     return $attempt_at_companyname
 }
 
@@ -345,12 +345,21 @@ function Save-DataGridView
 
 
 
+
+function Save-Settings {
+    Write-Output $settings | ConvertTo-Json | Out-File -Encoding "UTF8" $MainDir\data\settings.json
+}
+
+
+
 #================================================================
 # Close app gracefully
 function Close-All {
     param($GUI)
 
     Write-Output "[INPUT] Got Cancel. Aw. Exit."
+
+    Save-Settings
 
     Try {$GUI.hide();}
     Catch {Write-Output "Oop"}
@@ -360,4 +369,6 @@ function Close-All {
     #Stop-Process $pid
     exit
 }
+
+
 

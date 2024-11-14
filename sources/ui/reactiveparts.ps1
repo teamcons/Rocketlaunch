@@ -222,8 +222,11 @@ catch {
 # Button clicks
 
 # If checked, topmost is checked (and window then stays on top)
-$gui_keepontop.Add_Click({$GUI_Form_MainWindow.Topmost = $gui_keepontop.Checked
-                        $GUI_Form_MoreStuff.Topmost = $gui_keepontop.Checked})
+$gui_keepontop.Add_Click({
+    $settings.UI.KeepOnTop = $gui_keepontop.Checked
+    $GUI_Form_MainWindow.Topmost = $settings.UI.KeepOnTop
+    $GUI_Form_MoreStuff.Topmost = $settings.UI.KeepOnTop
+})
 
 
 

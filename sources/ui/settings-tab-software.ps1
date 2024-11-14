@@ -29,7 +29,6 @@ $combobox_select_box.DropDownStyle           = [System.Windows.Forms.ComboBoxSty
 
 
 
-
 ################################
 # CHANGE LANGUAGE
 $label_select_lang                     = New-Object System.Windows.Forms.Label
@@ -85,9 +84,24 @@ $combobox_select_theme.DropDownStyle            = [System.Windows.Forms.ComboBox
 $combobox_select_theme.SelectedItem = $combobox_select_theme.Items[0]
 
 
-
+################################################################
+# Save
 $combobox_select_theme.Add_SelectedIndexChanged({Change-Theme $combobox_select_theme.SelectedItem})
     
+
+
+
+
+################################################################
+# Stitch back
+
+$GUI_Settingstabsoftware_Closebutton                               = New-Object System.Windows.Forms.Button
+$GUI_Settingstabsoftware_Closebutton.Text                          = $text.Settings.close
+$GUI_Settingstabsoftware_Closebutton.Size                          = New-Object System.Drawing.Size(100,25)
+$GUI_Settingstabsoftware_Closebutton.Left                          = 215
+$GUI_Settingstabsoftware_Closebutton.Top                           = $buttonalign
+$GUI_Settingstabsoftware_Closebutton.Add_Click( {Save-Settings ; $GUI_Form_MoreStuff.Close() } )
+
 
 
 $GUI_Tab_SoftwareSettings.Controls.Add($label_select_box)
@@ -98,4 +112,10 @@ $GUI_Tab_SoftwareSettings.Controls.Add($combobox_select_lang)
 $GUI_Tab_SoftwareSettings.Controls.Add($label_select_theme)
 $GUI_Tab_SoftwareSettings.Controls.Add($combobox_select_theme)
 
+$GUI_Tab_SoftwareSettings.Controls.Add($GUI_Settingstabsoftware_Closebutton)
+
+
 $GUI_Form_MainWindowTabControl.Controls.Add($GUI_Tab_SoftwareSettings)
+
+
+

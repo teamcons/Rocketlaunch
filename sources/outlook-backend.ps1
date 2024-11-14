@@ -97,6 +97,11 @@ function Load-RelevantMails
     #$filter                            = query ="@SQL='urn:schemas:httpmail:hasattachment'=1"
     $script:allmails                    = $ns.Folders.Item(1).Folders.Item("Posteingang").Items.Restrict($filter)
     
+    #TODO NEED TO DETECT $settings.UI.MailBox
+
+
+
+
     # So we know how to iterate the splash
     # Ok, outlook itself can count as one email loaded
 
@@ -282,3 +287,4 @@ Foreach ($box in $ns.Folders)
         [void]$combobox_select_box.Items.Add($box.Name)
 }
 
+$combobox_select_box.SelectedItem = $settings.UI.MailBox

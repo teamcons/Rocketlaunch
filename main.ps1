@@ -26,6 +26,11 @@ Add-Type -AssemblyName PresentationCore,PresentationFramework
 # Ensure companion scripts run
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy ByPass -F
 
+# Load and parse the JSON configuration file
+$script:settings = (Get-Content $MainDir\data\settings.json -Raw -ErrorAction:SilentlyContinue -WarningAction:SilentlyContinue | ConvertFrom-Json -ErrorAction:SilentlyContinue -WarningAction:SilentlyContinue)
+
+
+
 # Load assets
 $script:icon                = New-Object system.drawing.icon $MainDir\assets\icon.ico
 $script:templatefile        = -join($MainDir,"\data\Project templates.csv")

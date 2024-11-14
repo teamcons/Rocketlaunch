@@ -29,7 +29,7 @@ $GUI_Form_MainWindow.Text                       = -join($APPNAME," - ",$text.Abo
 $GUI_Form_MainWindow.Size                       = New-Object System.Drawing.Size(775,($GUI_Form_MainWindow_verticalalign + 85 ))
 $GUI_Form_MainWindow.MinimumSize                = New-Object System.Drawing.Size(555,172)
 $GUI_Form_MainWindow.StartPosition              = 'CenterScreen'
-$GUI_Form_MainWindow.Topmost                    = $default_ontop
+$GUI_Form_MainWindow.Topmost                    = $settings.UI.KeepOnTop
 $GUI_Form_MainWindow.Icon                       = $icon
 $GUI_Form_MainWindow.Add_Closing({Close-All})
 
@@ -283,7 +283,6 @@ $gui_keepontop.Size                      = New-Object System.Drawing.Size(160,20
 $gui_keepontop.Text                      = $text.MainUI.keepontop
 $gui_keepontop.Checked                   = $GUI_Form_MainWindow.Topmost
 $gui_keepontop.Anchor                    = "Top, Left"
-
 
 
 

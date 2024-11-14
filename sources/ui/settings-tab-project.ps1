@@ -127,7 +127,7 @@ $GUI_More_Closebutton.Text                          = $text.Settings.close
 $GUI_More_Closebutton.Size                          = New-Object System.Drawing.Size(100,25)
 $GUI_More_Closebutton.Left                          = 215
 $GUI_More_Closebutton.Top                           = $buttonalign
-$GUI_More_Closebutton.Add_Click( {$GUI_Form_MoreStuff.Close() } )
+$GUI_More_Closebutton.Add_Click( {Save-Settings ; $GUI_Form_MoreStuff.Close() } )
 
 #$GUI_Tab_Settings.Controls.Add($helptitle)
 $GUI_Tab_Settings.Controls.Add($getthedoc)
