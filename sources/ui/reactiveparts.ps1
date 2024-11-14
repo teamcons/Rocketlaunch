@@ -242,3 +242,7 @@ $gui_okButton.add_click({Main-ProjectCreation})
 # Close everything
 $gui_cancelButton.add_click({Close-All $GUI_Form_MainWindow})
 
+
+
+
+$combobox_select_theme.Add_SelectedIndexChanged({Change-Theme $combobox_select_theme.SelectedItem})

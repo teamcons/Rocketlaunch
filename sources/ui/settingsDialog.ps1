@@ -82,18 +82,18 @@ $CheckIfExpandArchives.Text           = $text_settings_ExpandArchives
 $CheckIfExpandArchives.Checked        = $default_expandarchives
  #>
 
-$CheckIfCountWords                                      = New-Object System.Windows.Forms.CheckBox        
+<# $CheckIfCountWords                                      = New-Object System.Windows.Forms.CheckBox        
 $CheckIfCountWords.Left                                 = $GUI_Form_MainWindow_leftalign
 $CheckIfCountWords.Top                                  = $CheckIfCreateExplorerQuickAccess.Top + 30
 $CheckIfCountWords.Size                                 = New-Object System.Drawing.Size(400,20)
 $CheckIfCountWords.Text                                 = $text_settings_Countwords
-$CheckIfCountWords.Checked                              = $default_countwords
+$CheckIfCountWords.Checked                              = $default_countwords #>
 
 
 $CheckIfOpenExplorer                                    = New-Object System.Windows.Forms.CheckBox        
 $CheckIfOpenExplorer.Location                           = New-Object System.Drawing.Point($GUI_Form_MainWindow_leftalign,180)
 $CheckIfOpenExplorer.Left                               = $GUI_Form_MainWindow_leftalign
-$CheckIfOpenExplorer.Top                                = $CheckIfCountWords.Top + 30
+$CheckIfOpenExplorer.Top                                = $CheckIfCreateExplorerQuickAccess.Top + 30
 $CheckIfOpenExplorer.Size                               = New-Object System.Drawing.Size(400,20)
 $CheckIfOpenExplorer.Text                               = $text_settings_OpenExplorer
 $CheckIfOpenExplorer.Checked                            = $default_openexplorer
@@ -177,7 +177,7 @@ $GUI_Tab_SoftwareSettings.Text = $text_abouttab
 # CHANGE LANGUAGE
 $label_select_lang                     = New-Object System.Windows.Forms.Label
 $label_select_lang.Text                = $text_label_select_lang
-$label_select_lang.Top                 = 35
+$label_select_lang.Top                 = 15
 $label_select_lang.Left                = $GUI_Form_MainWindow_leftalign
 $label_select_lang.Size                = New-Object System.Drawing.Size(200,20)
 
@@ -189,12 +189,14 @@ $combobox_select_lang.DropDownStyle           = [System.Windows.Forms.ComboBoxSt
 
 
 # For i in get-childiten localizations
-[void]$combobox_select_lang.Items.Add($text_lang_german)
-[void]$combobox_select_lang.Items.Add($text_lang_french)
-[void]$combobox_select_lang.Items.Add($text_lang_spanish)
+
+Foreach ($language in (Get-ChildItem -Directory $MainDir/localizations))
+{
+[void]$combobox_select_lang.Items.Add($language.Name)
+}
 
 # Then default
-$combobox_select_lang.SelectedItem = $combobox_select_lang.Items[0]
+$combobox_select_lang.SelectedItem = (Get-WinUserLanguageList).LanguageTag
 
 
 # CHANGE LANGUAGE
@@ -217,13 +219,14 @@ $combobox_select_theme.DropDownStyle            = [System.Windows.Forms.ComboBox
 $combobox_select_theme.SelectedItem = $combobox_select_theme.Items[0]
 
 
+
+
 $GUI_Tab_SoftwareSettings.Controls.Add($label_select_lang)
 $GUI_Tab_SoftwareSettings.Controls.Add($combobox_select_lang)
 $GUI_Tab_SoftwareSettings.Controls.Add($label_select_theme)
 $GUI_Tab_SoftwareSettings.Controls.Add($combobox_select_theme)
-$GUI_Tab_SoftwareSettings.Controls.Add($GUI_More_Closebutton)
 
-$GUI_Tab_SoftwareSettings.Controls.Add($GUI_Tab_Settings)
+$GUI_Form_MainWindowTabControl.Controls.Add($GUI_Tab_SoftwareSettings)
 
 ###############################################################################################
 

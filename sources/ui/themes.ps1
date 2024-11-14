@@ -75,7 +75,7 @@ function Change-Theme {
             $bottom_panel.ResetBackColor()
             $bottom_panel.BackgroundImage.Dispose()
         }
-        "Brushed Metal" {
+<#         "Brushed Metal" {
 
             # I liked that era of MacOs, it had some flair
             # Resizing gets very slow
@@ -95,7 +95,7 @@ function Change-Theme {
             $bottom_panel.BackColor                 = [System.Drawing.Color]::Transparent
             $bottom_panel.BackgroundImage           = $panel_top.BackgroundImage
             $bottom_panel.BackgroundImageLayout     = "Stretch"
-        }
+        } #>
         "Windows 98" {
 
             # Back to the good old classics
