@@ -42,12 +42,12 @@ function Change-Theme {
 
 
             $bottom_panel.BackColor                                 = '237,237,237'
-
+<# 
             
             $gui_okButton.BackColor                     = "Green"
             $gui_okButton.ForeColor                     = "White"
             $gui_cancelButton.BackColor                  = "Red"
-            $gui_cancelButton.ForeColor                  = "White"
+            $gui_cancelButton.ForeColor                  = "White" #>
             
 
             # If there is a theme with background images - dispose it
