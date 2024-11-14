@@ -4,10 +4,10 @@
         #===================================================
 
 
-$GUI_Tab_About = New-object System.Windows.Forms.Tabpage
-$GUI_Tab_About.UseVisualStyleBackColor = $True 
-$GUI_Tab_About.Name = "About" 
-$GUI_Tab_About.Text = $text.About.tab
+$GUI_Tab_About                  = New-object System.Windows.Forms.Tabpage
+$GUI_Tab_About.UseVisualStyleBackColor   = $True 
+$GUI_Tab_About.Name             = "About" 
+$GUI_Tab_About.Text             = $text.About.tab
 
 
 # FANCY ICON

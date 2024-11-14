@@ -65,14 +65,14 @@ $CheckIfOpenExplorer.Left                               = $GUI_Form_MainWindow_l
 $CheckIfOpenExplorer.Top                                = $CheckIfCreateExplorerQuickAccess.Top + 30
 $CheckIfOpenExplorer.Size                               = New-Object System.Drawing.Size(400,20)
 $CheckIfOpenExplorer.Text                               = $text.Settings.OpenExplorer
-$CheckIfOpenExplorer.Checked                            = $default_openexplorer
+$CheckIfOpenExplorer.Checked                            = $settings.Preferences.openexplorer
 
 $CheckIfArchiveFolder                                          = New-Object System.Windows.Forms.CheckBox        
 $CheckIfArchiveFolder.Left                                     = $GUI_Form_MainWindow_leftalign
 $CheckIfArchiveFolder.Top                                      = $CheckIfOpenExplorer.Top + 30
 $CheckIfArchiveFolder.Size                                     = New-Object System.Drawing.Size(400,20)
 $CheckIfArchiveFolder.Text                                     = $text.Settings.createarchivefolder
-$CheckIfArchiveFolder.Checked                                  = $default_createarchivefolder
+$CheckIfArchiveFolder.Checked                                  = $settings.Preferences.createarchivefolder
 
 
 $CheckIfNotify                                          = New-Object System.Windows.Forms.CheckBox        
@@ -80,7 +80,7 @@ $CheckIfNotify.Left                                     = $GUI_Form_MainWindow_l
 $CheckIfNotify.Top                                      = $CheckIfArchiveFolder.Top + 30
 $CheckIfNotify.Size                                     = New-Object System.Drawing.Size(400,20)
 $CheckIfNotify.Text                                     = $text.Settings.Notify
-$CheckIfNotify.Checked                                  = $default_notifywhenfinished
+$CheckIfNotify.Checked                                  = $settings.Preferences.notifywhenfinished
 
 
 $CheckIfCloseAfter                                      = New-Object System.Windows.Forms.CheckBox        
@@ -88,7 +88,7 @@ $CheckIfCloseAfter.Left                                 = $GUI_Form_MainWindow_l
 $CheckIfCloseAfter.Top                                  = $CheckIfNotify.Top + 30
 $CheckIfCloseAfter.Size                                 = New-Object System.Drawing.Size(400,20)
 $CheckIfCloseAfter.Text                                 = $text.Settings.CloseAfter
-$CheckIfCloseAfter.Checked                              = $default_closeafter
+$CheckIfCloseAfter.Checked                              = $settings.Preferences.keepopen
 
 
 

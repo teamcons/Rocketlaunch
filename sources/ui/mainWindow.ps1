@@ -201,8 +201,9 @@ $CheckIfSaveTemplateChanges                  = New-Object System.Windows.Forms.C
 $CheckIfSaveTemplateChanges.Text             = $text.TemplateView.savetemplatechanges
 $CheckIfSaveTemplateChanges.Location         = New-Object System.Drawing.Point(($GUI_Form_MainWindow_leftalign + 590),8)
 $CheckIfSaveTemplateChanges.Size             = New-Object System.Drawing.Size(180,20)
-$CheckIfSaveTemplateChanges.Checked          = $default_savetemplatechanges
+$CheckIfSaveTemplateChanges.Checked          = $settings.Preferences.savetemplatechanges
 $CheckIfSaveTemplateChanges.Anchor           = "Top,Right"
+$CheckIfSaveTemplateChanges.Add_Click({$settings.Preferences.savetemplatechanges = $CheckIfSaveTemplateChanges.Checked})
 
 
 $script:templates                                  = New-Object System.Windows.Forms.DataGridView
@@ -308,13 +309,9 @@ $gui_okButton.UseVisualStyleBackColor       = $True
 $gui_cancelButton.UseVisualStyleBackColor   = $True
 
 
-
-
 $bottom_panel.Controls.Add($gui_help)
 $bottom_panel.Controls.Add($gui_okButton)
 $bottom_panel.Controls.Add($gui_cancelButton)
-
-
 $bottom_panel.Controls.Add($gui_keepontop)    
 
 [void]$GUI_Form_MainWindow.Controls.Add($bottom_panel)

@@ -176,7 +176,7 @@ function Main-ProjectCreation {
 #    if ($gui_folderinoutlook.Checked)        { Create-ArchiveFolder $PROJECTNAME $ns}
 
     # If user want to close app after creation
-    if ($CheckIfCloseAfter.Checked)
+    if (-Not $CheckIfCloseAfter.Checked)
     {
         Close-All $GUI_Form_MainWindow
     }
