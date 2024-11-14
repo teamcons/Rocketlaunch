@@ -214,7 +214,7 @@ try {
 }
 catch {
     <#Do this if a terminating exception happens#>
-    pass
+    Write-Output "Cannot set default selection !!"
 }
 
 

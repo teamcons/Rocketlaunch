@@ -1,8 +1,20 @@
-{
+﻿{
     "UI":  {
-                            "KeepOnTop":  "true",
-                            "Language":  "en-GB",
-                            "Mailbox":  "SKRIVANEK Belgium",
-                            "Theme":  "Modern Colors"
-                        }
+               "KeepOnTop":  true,
+               "Language":  "en-GB",
+               "Mailbox":  "SKRIVANEK Belgium",
+               "Theme":  "Modern Colors"
+           },
+    "Preferences":  {
+                        "opentrados":  true,
+                        "savetemplatechanges":  false,
+                        "createshortcut":  true,
+                        "createoutlookfolder":  true,
+                        "createin":  "01_QUOTES",
+                        "movesourcemail":  true,
+                        "createarchivefolder":  true,
+                        "openexplorer":  true,
+                        "notifywhenfinished":  true,
+                        "keepopen":  false
+                    }
 }

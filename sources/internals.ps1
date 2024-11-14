@@ -29,7 +29,6 @@ function load_template{
         }
     }
     catch {
-        Write-Output "[ERROR] Cannot load templates, falling back to default"
         $GRID.Rows.Add("Minimal","info","orig");
         $GRID.Rows.Add("Standard TEP","info","orig","trados","to trans","from trans","to proof","from proof","to client")
     }

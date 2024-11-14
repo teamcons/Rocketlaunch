@@ -76,7 +76,7 @@ $combobox_select_theme.Top                      = ($label_select_theme.Top - 3)
 $combobox_select_theme.Left                     = ($GUI_Form_MainWindow_leftalign + 200 )
 $combobox_select_theme.Size                     = New-Object System.Drawing.Size(100,20)
 $combobox_select_theme.DropDownStyle            = [System.Windows.Forms.ComboBoxStyle]::DropDownList
-[void]$combobox_select_theme.Items.Add("Modern Color")
+[void]$combobox_select_theme.Items.Add("Modern Colors")
 [void]$combobox_select_theme.Items.Add("Boring")
 #[void]$combobox_select_theme.Items.Add("Brushed Metal")
 [void]$combobox_select_theme.Items.Add("Windows 98")

@@ -22,7 +22,7 @@ Switcher works, but hidden from settings, because i feel bad about it
 function Change-Theme {
     param($selectedtheme)
     switch ($selectedtheme) {
-        "Modern Color" {
+        "Modern Colors" {
 
             # Slick soft modern look
             $GUI_Form_MainWindow.BackColor                          = "White"
