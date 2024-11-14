@@ -19,7 +19,7 @@ MainUI = @{
     help                           = "Erweitert"
     OK                             = "Los!"
     Cancel                         = "Nö"
-    NotifyText                     = "Projekt ist bereit !"
+    NotifyText                     = "Projekt ist bereit!"
 }
 
 Sourceview = @{

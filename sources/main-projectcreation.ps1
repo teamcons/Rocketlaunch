@@ -61,7 +61,7 @@ function Main-ProjectCreation {
 
     #========================================
     # If user asked to include source files, include those in new folder, with naming conventions
-    if ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource)
+    if ($gui_filesource.SelectedItem.ToString() -ne $text.Sourceview.nofilesource)
     {
 
 
@@ -75,13 +75,13 @@ function Main-ProjectCreation {
         switch ($gui_filesource.SelectedItem) {
             
             # If from Outlook, use the dedicated function
-            $text_from_Outlook {
+            $text.Sourceview.from_Outlook {
                 Write-Host "Saving from outlook"
                 Save-OutlookAttach $allgoodmails[$sourcefiles.SelectedItems.Index] $ORIG
             }
 
             # If from downloads, iterate through items, move the checked ones
-            $text_from_Downloads {
+            $text.Sourceview.from_Downloads {
                 Write-Host "Saving from Downloads"
                 foreach ( $file in $sourcefiles.Items)
                 {
@@ -96,7 +96,7 @@ function Main-ProjectCreation {
             }
 
             # If from downloads, iterate through items, move the checked ones
-            $text_DragNDrop {
+            $text.Sourceview.DragNDrop {
                 Write-Host "From DragNDrop"
                 foreach ( $file in $sourcefiles.Items)
                 {
@@ -111,7 +111,7 @@ function Main-ProjectCreation {
             }
 
             # No source, do nothing lol
-            $text_nofilesource {
+            $text.Sourceview.nofilesource {
                 Write-Host "No source - THIS SHOULD HAVE BEEN FILTERED OUT BY IF"
             }
 
@@ -157,7 +157,7 @@ function Main-ProjectCreation {
     if ($CheckIfCreateExplorerQuickAccess.Checked)  { Create-QuickAccess $BASEFOLDER }
 
     # Create a folder in outlook
-    if ($gui_folderinoutlook.Text -notmatch $text_nooutlook)        { Create-OutlookFolder $PROJECTNAME $ns $gui_folderinoutlook.Text}
+    if ($gui_folderinoutlook.Text -notmatch $text.MainUI.nooutlook)        { Create-OutlookFolder $PROJECTNAME $ns $gui_folderinoutlook.Text}
 
     # Start trados project creator and fill what we can
     if ($CheckIfTrados.Checked)                     { Start-TradosProject $PROJECTNAME $ORIG}
@@ -166,21 +166,14 @@ function Main-ProjectCreation {
     if ($CheckIfOpenExplorer.Checked)               { start-process explorer "$BASEFOLDER" }
 
     # Yeah i redid a Linux command deal with it
-    if ($CheckIfNotify.Checked)                     { Notify-Send $PROJECTNAME $text_NotifyText }
+    if ($CheckIfNotify.Checked)                     { Notify-Send $PROJECTNAME $text.MainUI.NotifyText }
 
 
     # If user want their homemade changes on the template to be saved
     if ($CheckIfSaveTemplateChanges.Checked)        { Save-DataGridView $templates $templatefile}
 
-
-    # If user asked to count number of words, and theres actually source files
-#    if (($CheckIfCountWords.Checked) -and ($gui_filesource.SelectedItem.ToString() -ne $text_nofilesource))        { Count-AllWords $ORIG $INFO}
-
     # Create an archive folder in outloot
 #    if ($gui_folderinoutlook.Checked)        { Create-ArchiveFolder $PROJECTNAME $ns}
-
-
-
 
     # If user want to close app after creation
     if ($CheckIfCloseAfter.Checked)
